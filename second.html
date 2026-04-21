@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Executing Exploit...</title>
     <style>
         body {
@@ -15,24 +15,25 @@
             margin: 0;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            -webkit-user-select: none;
         }
 
         .terminal-container {
-            width: 90%;
+            width: 92%;
             max-width: 600px;
             padding: 20px;
             border: 1px solid #333;
-            background: rgba(10, 10, 10, 0.9);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.1);
         }
 
         #console {
-            min-height: 150px;
+            min-height: 180px;
+            font-size: 13px;
         }
 
         .line {
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
             opacity: 0;
             animation: fadeIn 0.1s forwards;
         }
@@ -40,13 +41,22 @@
         @keyframes fadeIn { to { opacity: 1; } }
 
         .status { color: #fff; font-weight: bold; }
-        .cursor {
-            display: inline-block;
-            width: 8px; height: 15px;
-            background: #00ff00;
-            animation: blink 0.8s infinite;
+        .path { color: #1ad2dc; }
+
+        /* Стиль для огромного таймера */
+        #countdown {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #000;
+            color: #ff3b30; /* Красный Apple цвет */
+            font-size: 150px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
         }
-        @keyframes blink { 50% { opacity: 0; } }
 
         .footer {
             margin-top: 30px; font-size: 10px; color: #444;
@@ -61,29 +71,33 @@
 </head>
 <body>
 
-    <div class="terminal-container">
+    <div id="terminal" class="terminal-container">
         <div id="console"></div>
         <div class="footer">
             © 2026 <span>neonmodder123</span> | Licensed under MIT
         </div>
     </div>
 
+    <div id="countdown"></div>
+
     <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
     <script>
         const consoleEl = document.getElementById('console');
+        const terminalEl = document.getElementById('terminal');
+        const countdownEl = document.getElementById('countdown');
         
-        // Список фейковых логов
         const logs = [
-            "[INFO] Connection established with kernel...",
-            "[OK] Checking system version: iOS 17/18 found.",
-            "[INFO] Initializing memory heap spray...",
-            "[INFO] Attempting PAC bypass...",
-            "[OK] Success! Escalating privileges...",
-            "[INFO] Mapping I/O surfaces...",
-            "[WRN] WebKit thread saturation detected.",
-            "[RUN] Launching final payload: respring_loop.js...",
-            "READY IN 3... 2... 1..."
+            "[INFO] Starting session...",
+            "[OK] Connected to kernel exploit service.",
+            "[INFO] Escaping Sandbox...",
+            "[OK] Root access obtained.",
+            "[INFO] Mounting <span class='path'>/var/mobile/Containers/</span>",
+            "[INFO] Reading <span class='path'>/private/var/mobile/Library/</span>",
+            "[OK] Found SpringBoard configuration.",
+            "[INFO] Patching <span class='path'>/System/Library/CoreServices/</span>",
+            "[WRN] Memory pressure critical (Heap Spraying)",
+            "[RUN] Launching final payload..."
         ];
 
         let lineIndex = 0;
@@ -95,18 +109,35 @@
                 div.innerHTML = logs[lineIndex];
                 consoleEl.appendChild(div);
                 lineIndex++;
-                
-                // Скорость появления строк (каждые 600мс)
-                setTimeout(addLog, 600); 
+                let delay = Math.random() * (600 - 200) + 200;
+                setTimeout(addLog, delay); 
             } else {
-                // Когда логи кончились, запускаем респринг
-                startRespring();
+                startBigCountdown();
             }
+        }
+
+        function startBigCountdown() {
+            // Скрываем консоль, показываем таймер
+            terminalEl.style.display = 'none';
+            countdownEl.style.display = 'flex';
+            
+            let count = 3;
+            countdownEl.innerText = count;
+
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownEl.innerText = count;
+                } else {
+                    clearInterval(timer);
+                    countdownEl.innerText = "BYE"; // Последнее, что он увидит
+                    startRespring();
+                }
+            }, 1000);
         }
 
         function startRespring() {
             const frame = document.getElementById('respring-iframe');
-            // ТВОЙ ОРИГИНАЛЬНЫЙ КОД
             const respringScript = `
                 <html>
                 <body style="margin:0; overflow:hidden;">
@@ -135,7 +166,6 @@
             frame.srcdoc = respringScript;
         }
 
-        // Запускаем печать логов при загрузке
         window.onload = addLog;
     </script>
 </body>
