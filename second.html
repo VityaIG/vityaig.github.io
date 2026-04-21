@@ -13,7 +13,6 @@
 
         .terminal-container { width: 90%; max-width: 500px; padding: 20px; }
 
-        /* Прогресс-бар */
         .progress-container {
             width: 100%; border: 1px solid #333; height: 10px; margin-bottom: 20px;
         }
@@ -25,16 +24,12 @@
         .line { margin-bottom: 5px; opacity: 0; animation: fadeIn 0.1s forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* Экран смерти */
-        #countdown {
+        /* Экран паники */
+        #panic-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #ff3b30; font-size: 120px;
-            font-weight: bold; justify-content: center; align-items: center; z-index: 100;
+            background: #000; color: #ff3b30; font-size: 10px;
+            overflow: hidden; padding: 5px; word-break: break-all; z-index: 100;
         }
-
-        /* Эффект красной вспышки */
-        .glitch { animation: flash 0.2s infinite; }
-        @keyframes flash { 0% { background: #000; } 50% { background: #200; } 100% { background: #000; } }
 
         #respring-iframe { position: fixed; opacity: 0.01; pointer-events: none; }
     </style>
@@ -46,7 +41,7 @@
         <div id="console"></div>
     </div>
 
-    <div id="countdown"></div>
+    <div id="panic-screen"></div>
 
     <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
@@ -58,14 +53,14 @@
             "[!] Bypassing KPP...",
             "[!] Rootfs remounted as RW",
             "[!] Injecting tweaks...",
-            "[X] CRITICAL MEMORY LEAK DETECTED"
+            "[X] CRITICAL_STRUCTURE_CORRUPTION"
         ];
 
         let barWidth = 0;
         const bar = document.getElementById('bar');
         const consoleEl = document.getElementById('console');
+        const panicScreen = document.getElementById('panic-screen');
 
-        // 1. Сначала идет прогресс-бар
         const load = setInterval(() => {
             barWidth += 2;
             bar.style.width = barWidth + "%";
@@ -75,7 +70,6 @@
             }
         }, 30);
 
-        // 2. Потом идут логи
         function addLogs(index) {
             if (index < logs.length) {
                 const div = document.createElement('div');
@@ -84,31 +78,25 @@
                 consoleEl.appendChild(div);
                 setTimeout(() => addLogs(index + 1), 400);
             } else {
-                setTimeout(triggerFinal, 500);
+                setTimeout(triggerPanic, 500);
             }
         }
 
-        // 3. Финальный отсчет
-        function triggerFinal() {
+        function triggerPanic() {
             document.getElementById('terminal').style.display = 'none';
-            const cd = document.getElementById('countdown');
-            cd.style.display = 'flex';
-            cd.classList.add('glitch');
+            panicScreen.style.display = 'block';
             
-            let count = 3;
-            cd.innerText = count;
-            
-            const timer = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    cd.innerText = count;
-                    if (navigator.vibrate) navigator.vibrate(200); // Вибрация!
-                } else {
-                    clearInterval(timer);
-                    cd.innerText = "DIE";
-                    startRespring();
-                }
-            }, 1000);
+            // Заполняем экран мусором
+            const panicInterval = setInterval(() => {
+                panicScreen.innerText += " FATAL_ERROR: [mem_limit_exceeded] 0x" + Math.floor(Math.random()*16777215).toString(16);
+                
+                // Если экран заполнился (примерно через 2 секунды) - респринг
+            }, 20);
+
+            setTimeout(() => {
+                clearInterval(panicInterval);
+                startRespring();
+            }, 2500);
         }
 
         function startRespring() {
