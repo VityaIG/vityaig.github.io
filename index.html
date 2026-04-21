@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jailbreak Tool</title>
-    <style>
-        /* Это CSS - магия красоты */
+<style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
@@ -13,7 +6,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: radial-gradient(circle, #1a1a1a, #000000); /* Темный градиент */
+            background: radial-gradient(circle, #1a1a1a, #000000);
             color: white;
             text-align: center;
         }
@@ -26,6 +19,7 @@
             font-size: 3rem;
             margin-bottom: 10px;
             letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1); /* Легкое свечение текста */
         }
 
         p {
@@ -34,7 +28,7 @@
         }
 
         .btn {
-            background: #007aff; /* Синий цвет как у Apple */
+            background: #007aff;
             color: white;
             border: none;
             padding: 15px 40px;
@@ -42,25 +36,21 @@
             font-weight: 600;
             border-radius: 12px;
             text-decoration: none;
-            transition: transform 0.2s, background 0.2s;
+            transition: all 0.3s ease;
             display: inline-block;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3); /* Тень кнопки */
+        }
+
+        /* Эффект при наведении (или длинном тапе на iPhone) */
+        .btn:hover {
+            background: #0084ff;
+            box-shadow: 0 0 25px rgba(0, 122, 255, 0.6); /* Свечение */
+            transform: translateY(-2px);
         }
 
         .btn:active {
-            transform: scale(0.95); /* Эффект нажатия */
+            transform: scale(0.95);
             background: #0056b3;
         }
     </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>Welcome!</h1>
-        <p>Click to jailbreak your device experience.</p>
-        
-        <a href="second.html" class="btn">JAILBREAK</a>
-    </div>
-
-</body>
-</html>
