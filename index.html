@@ -1,15 +1,66 @@
-<!DOCTYPE html>  
-<html lang="ru">  
-<head>  
-    <meta charset="UTF-8">  
-    <title>Главная страница</title>  
-</head>  
-<body>  
-    <h1>Welcome!</h1>  
-    <p>Click to jailbreak.</p>  
-  
-    <a href="second.html">  
-        <button type="button">JAILBREAK</button>  
-    </a>  
-</body>  
-</html>  
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jailbreak Tool</title>
+    <style>
+        /* Это CSS - магия красоты */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: radial-gradient(circle, #1a1a1a, #000000); /* Темный градиент */
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        p {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #007aff; /* Синий цвет как у Apple */
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            transform: scale(0.95); /* Эффект нажатия */
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome!</h1>
+        <p>Click to jailbreak your device experience.</p>
+        
+        <a href="second.html" class="btn">JAILBREAK</a>
+    </div>
+
+</body>
+</html>
