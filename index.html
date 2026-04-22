@@ -42,7 +42,7 @@
             z-index: 10;
             position: relative;
             
-            /* Анимация всплытия */
+            /* Анимация всплытия снизу вверх */
             opacity: 0;
             transform: translateY(100px);
             animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
@@ -75,15 +75,48 @@
             text-transform: uppercase;
             letter-spacing: -0.8px;
             line-height: 1.1;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             background: linear-gradient(to bottom, #ffffff 0%, #a1a1a1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .server-status { font-size: 11px; color: #32d74b; display: flex; justify-content: center; align-items: center; gap: 5px; margin-bottom: 20px;}
-        .status-dot { width: 6px; height: 6px; background: #32d74b; border-radius: 50%; animation: pulse 1.5s infinite; }
+        .server-status { 
+            font-size: 11px; 
+            color: #32d74b; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 5px; 
+            margin-bottom: 20px;
+        }
+        
+        .status-dot { 
+            width: 6px; 
+            height: 6px; 
+            background: #32d74b; 
+            border-radius: 50%; 
+            animation: pulse 1.5s infinite; 
+        }
+        
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* Вернул блок с Target и Exploit */
+        .device-info {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'SF Mono', monospace;
+            font-size: 12px;
+            color: #fff;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-line { margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .info-line span { color: #555; }
+        .green-val { color: #32d74b; font-weight: bold; }
 
         .btn-jailbreak {
             background: #ffffff;
@@ -97,26 +130,47 @@
             text-decoration: none;
             display: block;
             transition: transform 0.2s;
+            margin-bottom: 15px;
         }
         .btn-jailbreak:active { transform: scale(0.96); }
 
-        .footer { margin-top: 30px; font-size: 10px; color: #444; }
+        .footer { 
+            margin-top: 15px; 
+            font-size: 10px; 
+            color: #444; 
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
     <canvas id="rainCanvas"></canvas>
+    
     <div class="main-card">
         <div class="verified-badge">✓ Verified Repository</div>
         <h1>First Browser Jailbreak</h1>
-        <div class="server-status"><div class="status-dot"></div> Exploit Servers: Online</div>
+        <div class="server-status">
+            <div class="status-dot"></div> Exploit Servers: Online
+        </div>
+
+        <div class="device-info">
+            <div class="info-line"><span>Target:</span> <span class="green-val">iOS 15.0 - 26.x</span></div>
+            <div class="info-line"><span>Method:</span> <span class="green-val">WebKit Exploit</span></div>
+            <div class="info-line"><span>Safety:</span> <span class="green-val">100% Secure</span></div>
+        </div>
+        
         <a href="second.html" class="btn-jailbreak">Jailbreak</a>
-        <div class="footer">© 2026 Repo made by Vitya</div>
+
+        <div class="footer">
+            Original code by <b>neonmodder123</b><br>
+            © 2026 Repo made by Vitya
+        </div>
     </div>
 
     <script>
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, drops;
+        
         function initRain() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
@@ -125,18 +179,28 @@
                 len: Math.random() * 30 + 15, speed: Math.random() * 2 + 2, op: Math.random() * 0.12 + 0.05
             }));
         }
+        
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
             ctx.fillRect(0, 0, width, height);
             ctx.strokeStyle = '#1ad2dc';
+            ctx.lineWidth = 1;
+            ctx.lineCap = 'round';
             drops.forEach(d => {
                 ctx.globalAlpha = d.op;
-                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.len); ctx.stroke();
-                d.y += d.speed; if (d.y > height) d.y = -d.len;
+                ctx.beginPath(); 
+                ctx.moveTo(d.x, d.y); 
+                ctx.lineTo(d.x, d.y + d.len); 
+                ctx.stroke();
+                d.y += d.speed; 
+                if (d.y > height) d.y = -d.len;
             });
             requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', initRain); initRain(); draw();
+        
+        window.addEventListener('resize', initRain); 
+        initRain(); 
+        draw();
     </script>
 </body>
 </html>
