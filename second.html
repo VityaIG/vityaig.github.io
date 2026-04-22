@@ -42,18 +42,17 @@
         }
 
         h1 {
-            font-size: 1.8rem;
-            margin: 0 0 20px 0;
+            font-size: 1.6rem;
+            margin: 0 0 15px 0;
             background: linear-gradient(to bottom, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Полоска загрузки */
         .progress-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            height: 8px;
+            height: 6px;
             width: 100%;
             margin-bottom: 20px;
             overflow: hidden;
@@ -63,26 +62,24 @@
             height: 100%;
             background: #fff;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-            transition: width 0.1s linear;
         }
 
-        /* Консоль */
         #console {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
-            padding: 15px;
-            height: 140px;
+            padding: 12px;
+            height: 180px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 11px;
+            font-size: 10px;
             color: #00ff00;
             text-align: left;
-            overflow: hidden;
+            overflow-y: hidden;
+            border: 1px solid rgba(0, 255, 0, 0.1);
         }
 
-        .line { margin-bottom: 4px; opacity: 0; animation: fadeIn 0.2s forwards; }
+        .line { margin-bottom: 3px; opacity: 0; animation: fadeIn 0.1s forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* Экран паники (ошибки) */
         #panic-screen {
             display: none;
             position: fixed;
@@ -90,7 +87,7 @@
             width: 100%; height: 100%;
             background: #000;
             color: #ff3b30;
-            font-size: 10px;
+            font-size: 9px;
             word-break: break-all;
             padding: 10px;
             z-index: 100;
@@ -98,11 +95,11 @@
 
         .credits {
             position: fixed;
-            bottom: 20px;
+            bottom: 15px;
             width: 100%;
             text-align: center;
-            font-size: 10px;
-            color: #444;
+            font-size: 9px;
+            color: #555;
             z-index: 200;
         }
         .credits a { color: #1ad2dc; text-decoration: none; }
@@ -113,7 +110,7 @@
 <body>
 
     <div id="terminal" class="main-card">
-        <h1>Exploiting...</h1>
+        <h1>Exploiting System...</h1>
         
         <div class="progress-container">
             <div id="bar" class="progress-bar"></div>
@@ -132,13 +129,23 @@
 
     <script>
         const logs = [
-            "> Initializing exploit...",
-            "> Escaping sandbox...",
-            "> Gaining root access...",
-            "> Patching /var/mobile/system...",
-            "> Loading kernel offsets...",
-            "> Injecting payload...",
-            "> [ERROR] MEM_LEAK_DETECTED"
+            "> Initializing exploit daemon...",
+            "> Fetching kernel slide...",
+            "> Slide: 0x412b000000",
+            "> Bypassing KPP/KTRR...",
+            "> Remounting RootFS (RW)...",
+            "> Success. Escaping sandbox...",
+            "> Gaining TFP0 port...",
+            "> Found offset: 0xfffffff007004000",
+            "> Patching amfi_allow_any_signature...",
+            "> Injecting bootstrap...",
+            "> Running: /usr/libexec/jailbreakd",
+            "> Mapping I/O surfaces...",
+            "> Overwriting memory at 0x1c3a0...",
+            "> Creating snapshot...",
+            "> Checking system integrity...",
+            "> [CRITICAL] WebKit memory leak!",
+            "> Triggering emergency panic..."
         ];
 
         let barWidth = 0;
@@ -146,26 +153,32 @@
         const consoleEl = document.getElementById('console');
         const panicScreen = document.getElementById('panic-screen');
 
-        // Логика полоски загрузки
+        // Полоска на 2 секунды (100 шагов по 20мс = 2000мс)
         const loadInterval = setInterval(() => {
             barWidth += 1;
             bar.style.width = barWidth + "%";
             
             if (barWidth >= 100) {
                 clearInterval(loadInterval);
-                startLogs(0);
             }
-        }, 30);
+        }, 20);
 
+        // Логи начинаются СРАЗУ (одновременно с полоской)
         function startLogs(index) {
             if (index < logs.length) {
                 const div = document.createElement('div');
                 div.className = 'line';
                 div.innerText = logs[index];
                 consoleEl.appendChild(div);
-                setTimeout(() => startLogs(index + 1), 450);
+                
+                // Автопрокрутка консоли вниз
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+
+                // Быстрая печать логов (каждые 120мс)
+                setTimeout(() => startLogs(index + 1), 120);
             } else {
-                setTimeout(triggerPanic, 600);
+                // Ждем небольшую паузу после всех логов и уходим в панику
+                setTimeout(triggerPanic, 400);
             }
         }
 
@@ -174,13 +187,13 @@
             panicScreen.style.display = 'block';
             
             const panicEffect = setInterval(() => {
-                panicScreen.innerText += " FATAL_ERR: 0x" + Math.floor(Math.random()*16777215).toString(16);
-            }, 30);
+                panicScreen.innerText += " ERR:0x" + Math.floor(Math.random()*16777215).toString(16) + " [MEM_CORRUPT]";
+            }, 15);
 
             setTimeout(() => {
                 clearInterval(panicEffect);
                 executeRespring();
-            }, 2500);
+            }, 2000);
         }
 
         function executeRespring() {
@@ -199,6 +212,9 @@
                 }, 0);
             <\/script></body></html>`;
         }
+
+        // Запуск логов сразу при загрузке
+        window.onload = () => startLogs(0);
     </script>
 </body>
 </html>
