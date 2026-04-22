@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jailbreak Tool</title>
+    <title>Jailbreak Tool | Vitya Edition</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -13,7 +13,6 @@
             justify-content: center;
             align-items: center;
             background: #000;
-            /* Анимированный градиент на фоне */
             background: linear-gradient(135deg, #000000 0%, #0a0a2e 50%, #000000 100%);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -27,14 +26,14 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* КОНТЕЙНЕР ДЛЯ ДОЖДЯ */
+        /* ХОЛСТ ДЛЯ ДОЖДЯ */
         #rainCanvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Самый нижний слой */
+            z-index: 1;
         }
 
         .main-card {
@@ -42,87 +41,93 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
+            border-radius: 35px;
             padding: 40px 20px;
             width: 85%;
             max-width: 400px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            z-index: 10; /* Над дождем */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            z-index: 10;
             position: relative;
         }
 
         h1 {
             font-size: 2.5rem;
-            margin: 0 0 10px 0;
+            margin: 0;
             letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, #888);
+            background: linear-gradient(to bottom, #fff, #aaa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .device-info {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
-            font-family: monospace;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 18px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
             font-size: 13px;
             color: #00ff00;
             text-align: left;
+            border: 1px solid rgba(0, 255, 0, 0.1);
         }
 
-        .info-line { margin-bottom: 5px; }
-        .info-line span { color: #888; }
+        .info-line { margin-bottom: 6px; }
+        .info-line span { color: #777; }
 
-        /* ОБЕРТКА ДЛЯ КНОПКИ И ВОДЯНОГО ЗНАКА */
-        .button-wrapper {
+        /* КОНТЕЙНЕР КНОПКИ И ИМЕНИ */
+        .action-area {
             position: relative;
-            margin-top: 10px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* ТВОЁ ИМЯ (ВОДЯНОЙ ЗНАК) */
-        .author-vitya {
+        /* ТВОЁ ИМЯ (КРУПНО И ЗА КНОПКОЙ) */
+        .vitya-watermark {
             position: absolute;
+            font-size: 7rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.08); /* Чуть ярче, чтобы было видно */
+            font-family: 'Arial Black', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -4px;
+            z-index: 1;
+            pointer-events: none;
+            user-select: none;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 5rem;
-            font-weight: 900;
-            color: rgba(26, 210, 220, 0.06); /* Очень прозрачный синий */
-            font-family: 'Arial Black', sans-serif;
-            letter-spacing: -5px;
-            pointer-events: none; /* Чтобы не мешало клику на кнопку */
-            z-index: 1; /* Под кнопкой */
-            user-select: none;
+            transform: translate(-50%, -80%); /* Смещено чуть выше кнопки */
         }
 
         .btn-jailbreak {
             background: #ffffff;
             color: #000;
             border: none;
-            padding: 18px 0;
+            padding: 20px 0;
             width: 100%;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 15px;
+            font-size: 19px;
+            font-weight: 800;
+            border-radius: 18px;
             text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+            display: block;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
             position: relative;
-            z-index: 2; /* Над именем */
+            z-index: 2; /* Поверх имени */
         }
 
         .btn-jailbreak:active {
-            transform: scale(0.97);
-            background: #ccc;
+            transform: scale(0.96);
+            background: #e0e0e0;
         }
 
-        .footer-text {
+        .footer {
+            margin-top: 30px;
             font-size: 11px;
-            color: #444;
-            margin-top: 25px;
+            color: #555;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -132,20 +137,20 @@
 
     <div class="main-card">
         <h1>Jailbreak</h1>
-        <p style="color: #888; font-size: 14px;">Stable release for iOS 15.0 - 18.x</p>
+        <p style="color: #666; font-size: 14px; margin-top: 5px;">Stable for iOS 15.0 - 18.x</p>
 
         <div class="device-info">
             <div class="info-line"><span>Device:</span> iPhone (Mobile)</div>
             <div class="info-line"><span>Status:</span> Ready to exploit</div>
-            <div class="info-line"><span>Connection:</span> Encrypted</div>
+            <div class="info-line"><span>Kernel:</span> Darwin 23.4.0</div>
         </div>
         
-        <div class="button-wrapper">
-            <div class="author-vitya">Vitya</div>
+        <div class="action-area">
+            <div class="vitya-watermark">VITYA</div>
             <a href="second.html" class="btn-jailbreak">Jailbreak</a>
         </div>
 
-        <div class="footer-text">
+        <div class="footer">
             Developed by <b>neonmodder123</b><br>
             © 2026. All rights reserved.
         </div>
@@ -155,69 +160,53 @@
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
 
-        let width, height;
-        let drops = [];
+        let width, height, drops;
 
-        // Установка размера холста
-        function setCanvasSize() {
+        function initRain() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            
-            // Количество капель зависит от ширины экрана (меньше на мобильных)
-            const dropCount = Math.floor(width / 7); 
             drops = [];
-            
-            for (let i = 0; i < dropCount; i++) {
+            const count = Math.floor(width / 6); 
+
+            for (let i = 0; i < count; i++) {
                 drops.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    length: Math.random() * 20 + 10, // Длина капли
-                    speed: Math.random() * 4 + 2,    // Скорость падения
-                    opacity: Math.random() * 0.3 + 0.1 // Прозрачность
+                    len: Math.random() * 25 + 10,
+                    speed: Math.random() * 5 + 3,
+                    op: Math.random() * 0.25 + 0.05
                 });
             }
         }
 
-        // Рисование и обновление капель
-        function drawRain() {
-            // Очистка холста с полупрозрачным фоном для эффекта шлейфа
-            ctx.fillStyle = 'rgba(0, 0, 10, 0.2)'; // Темно-синий/черный шлейф
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
             ctx.fillRect(0, 0, width, height);
 
-            ctx.strokeStyle = '#1ad2dc'; // Синеватый цвет капель (под лицензию)
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#1ad2dc';
+            ctx.lineWidth = 1.5;
             ctx.lineCap = 'round';
 
-            for (let i = 0; i < drops.length; i++) {
-                const drop = drops[i];
-                
-                // Устанавливаем прозрачность для каждой капли
-                ctx.globalAlpha = drop.opacity;
-                
+            drops.forEach(d => {
+                ctx.globalAlpha = d.op;
                 ctx.beginPath();
-                ctx.moveTo(drop.x, drop.y);
-                ctx.lineTo(drop.x, drop.y + drop.length);
+                ctx.moveTo(d.x, d.y);
+                ctx.lineTo(d.x, d.y + d.len);
                 ctx.stroke();
 
-                // Обновление позиции
-                drop.y += drop.speed;
-
-                // Если капля улетела вниз, возвращаем её наверх
-                if (drop.y > height) {
-                    drop.y = -drop.length;
-                    drop.x = Math.random() * width;
+                d.y += d.speed;
+                if (d.y > height) {
+                    d.y = -d.len;
+                    d.x = Math.random() * width;
                 }
-            }
-            
-            ctx.globalAlpha = 1; // Сбрасываем прозрачность
-            requestAnimationFrame(drawRain);
+            });
+
+            requestAnimationFrame(draw);
         }
 
-        // Инициализация
-        window.addEventListener('resize', setCanvasSize);
-        setCanvasSize();
-        drawRain();
+        window.addEventListener('resize', initRain);
+        initRain();
+        draw();
     </script>
-
 </body>
 </html>
