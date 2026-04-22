@@ -50,16 +50,27 @@
             position: relative;
         }
 
-        h1 {
-            font-size: 1.8rem; /* Уменьшил размер, чтобы фраза влезла в одну-две строки */
-            margin: 0;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
+        /* Общий стиль для градиентного текста */
+        .gradient-text {
             background: linear-gradient(to bottom, #fff, #999);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
             text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .repo-author {
+            font-size: 1rem;
+            margin-top: 10px;
+            display: block;
+            letter-spacing: 1px;
         }
 
         .device-info {
@@ -100,9 +111,10 @@
 
         .footer {
             margin-top: 35px;
-            font-size: 11px;
-            color: #444;
-            letter-spacing: 0.3px;
+            font-size: 10px;
+            color: #555;
+            letter-spacing: 0.2px;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -111,8 +123,10 @@
     <canvas id="rainCanvas"></canvas>
 
     <div class="main-card">
-        <h1>First Browser Jailbreak</h1>
-        <p style="color: #777; font-size: 14px; margin-top: 8px; font-weight: 500;">Stable Release for iOS 15 - 26.x</p>
+        <h1 class="gradient-text">First Browser Jailbreak</h1>
+        <span class="repo-author gradient-text">Repo made by Vitya</span>
+        
+        <p style="color: #777; font-size: 13px; margin-top: 15px; font-weight: 500;">Stable Release for iOS 15 - 26.x</p>
 
         <div class="device-info">
             <div class="info-line"><span>DEVICE:</span> iPhone (Connected)</div>
@@ -124,14 +138,13 @@
 
         <div class="footer">
             Original respring code developed by <b>neonmodder123</b><br>
-            © 2026. All rights reserved.
+            All rights reserved. 2026.
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
-
         let width, height, drops;
 
         function initRain() {
@@ -139,7 +152,6 @@
             height = canvas.height = window.innerHeight;
             drops = [];
             const count = Math.floor(width / 12); 
-
             for (let i = 0; i < count; i++) {
                 drops.push({
                     x: Math.random() * width,
@@ -154,25 +166,18 @@
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
             ctx.fillRect(0, 0, width, height);
-
             ctx.strokeStyle = '#1ad2dc';
             ctx.lineWidth = 1;
             ctx.lineCap = 'round';
-
             drops.forEach(d => {
                 ctx.globalAlpha = d.op;
                 ctx.beginPath();
                 ctx.moveTo(d.x, d.y);
                 ctx.lineTo(d.x, d.y + d.len);
                 ctx.stroke();
-
                 d.y += d.speed;
-                if (d.y > height) {
-                    d.y = -d.len;
-                    d.x = Math.random() * width;
-                }
+                if (d.y > height) { d.y = -d.len; d.x = Math.random() * width; }
             });
-
             requestAnimationFrame(draw);
         }
 
