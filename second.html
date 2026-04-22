@@ -19,7 +19,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 20px 0;
+            padding: 40px 0;
             overflow: hidden;
         }
         #fireworks-canvas {
@@ -61,17 +61,29 @@
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-title {
+            background: linear-gradient(90deg, #fff, #888, #222, #888, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 4s ease infinite;
+        }
+        @keyframes vShimmer {
+            0% { background-position: 50% 0%; }
+            50% { background-position: 50% 100%; }
+            100% { background-position: 50% 0%; }
+        }
         .animate-v-gray {
             background: linear-gradient(180deg, #444, #fff, #444);
             background-size: auto 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: vShimmer 3s linear infinite;
-        }
-        @keyframes vShimmer {
-            0% { background-position: 50% 0%; }
-            50% { background-position: 50% 100%; }
-            100% { background-position: 50% 0%; }
         }
         .glitch-screen {
             background: #450a0a;
@@ -97,9 +109,9 @@
             100% { background-position: -200% 0; }
         }
         .progress-gradient {
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #ffffff, #3b82f6, #1e3a8a);
+            background: linear-gradient(90deg, #eab308, #3b82f6, #eab308);
             background-size: 200% 100%;
-            animation: progressShimmer 1s linear infinite;
+            animation: progressShimmer 0.8s linear infinite;
         }
     </style>
 </head>
@@ -125,6 +137,7 @@
         </div>
     </div>
 
+    <!-- Glitch Phase -->
     <div id="error-screen" class="hidden fixed inset-0 z-[100] glitch-screen flex flex-col items-center justify-center">
         <div id="panic-bg" class="panic-overlay"></div>
     </div>
@@ -163,7 +176,7 @@
         }
         animate();
 
-        const commands = ["Mounting system...", "Overriding SIP...", "Allocating heap...", "Modifying Content...", "Executing ROP...", "Kernel successful...", "Injecting hooks...", "Patching AMFI...", "Remounting RootFS...", "Cleaning leaks...", "Stabilizing..."];
+        const commands = ["Mounting /mnt/system-raw...", "Overriding SIP...", "Allocating kernel heap...", "Modifying Content...", "Executing ROP chain...", "Kernel successful. PID: 0", "Injecting hooks...", "Patching AMFI...", "Remounting RootFS...", "Cleaning leaks...", "Stabilizing..."];
         const term = document.getElementById('terminal');
         let idx = 0; let p = 0;
 
@@ -177,7 +190,7 @@
         }
 
         const startTime = Date.now();
-        const duration = 640;
+        const duration = 230;
 
         const run = setInterval(() => {
             const now = Date.now();
@@ -188,13 +201,13 @@
             document.getElementById('bar').style.width = p + '%';
             document.getElementById('pct').innerText = Math.floor(p) + '%';
             
-            if (Math.random() > 0.6 && idx < commands.length) addLine();
+            if (Math.random() > 0.4 && idx < commands.length) addLine();
 
             if (p >= 100) { 
                 clearInterval(run); 
                 window.location.href = 'respring.html'; 
             }
-        }, 16); 
+        }, 10); 
     </script>
 </body>
 </html>
