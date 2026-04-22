@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>First Browser Jailbreak</title>
+
+    <meta property="og:title" content="First Browser Jailbreak for iOS 15 - 26.x">
+    <meta property="og:description" content="Official repository by Vitya. Execute exploit directly in your mobile browser. Compatible with all devices.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://vityaig.github.io/preview.png">
+    <meta name="theme-color" content="#1ad2dc">
+
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
@@ -36,23 +43,22 @@
         }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 35px;
-            padding: 40px 25px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 38px;
+            padding: 45px 30px;
             width: 85%;
-            max-width: 380px;
+            max-width: 360px;
             text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
             z-index: 10;
             position: relative;
         }
 
-        /* Общий стиль для градиентного текста */
         .gradient-text {
-            background: linear-gradient(to bottom, #fff, #999);
+            background: linear-gradient(to bottom, #ffffff 0%, #a1a1a1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
@@ -60,62 +66,62 @@
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             margin: 0;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
+            letter-spacing: -0.8px;
+            line-height: 1.1;
         }
 
         .device-info {
-            background: rgba(0, 0, 0, 0.45);
-            border-radius: 22px;
-            padding: 20px;
-            margin: 25px 0;
-            font-family: 'SF Mono', 'Courier New', monospace;
-            font-size: 13px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            padding: 22px;
+            margin: 30px 0;
+            font-family: 'SF Mono', 'ui-monospace', monospace;
+            font-size: 12px;
             color: #32d74b;
             text-align: left;
-            border: 1px solid rgba(50, 215, 75, 0.15);
+            border: 1px solid rgba(50, 215, 75, 0.1);
         }
 
-        .info-line { margin-bottom: 8px; }
-        .info-line span { color: #666; font-weight: bold; }
+        .info-line { margin-bottom: 10px; }
+        .info-line:last-child { margin-bottom: 0; }
+        .info-line span { color: #555; font-weight: 600; margin-right: 5px; }
 
         .btn-jailbreak {
             background: #ffffff;
             color: #000;
             border: none;
-            padding: 18px 0;
+            padding: 20px 0;
             width: 100%;
-            font-size: 19px;
+            font-size: 20px;
             font-weight: 700;
-            border-radius: 18px;
+            border-radius: 20px;
             text-decoration: none;
             display: block;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-            margin-top: 10px;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
         }
 
         .btn-jailbreak:active {
-            transform: scale(0.96);
-            background: #d1d1d1;
+            transform: scale(0.95);
+            background: #cfcfcf;
         }
 
         .footer {
-            margin-top: 35px;
+            margin-top: 40px;
             font-size: 10px;
-            color: #555;
-            letter-spacing: 0.2px;
-            line-height: 1.6;
+            color: #333;
+            line-height: 1.7;
+            text-transform: none;
         }
 
-        /* Твоя подпись внизу */
         .repo-made-by {
             display: block;
-            margin-top: 8px;
+            margin-top: 10px;
             font-size: 12px;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -126,7 +132,9 @@
     <div class="main-card">
         <h1 class="gradient-text">First Browser Jailbreak</h1>
         
-        <p style="color: #777; font-size: 13px; margin-top: 15px; font-weight: 500;">Stable Release for iOS 15 - 26.x</p>
+        <p style="color: #555; font-size: 13px; margin-top: 10px; font-weight: 600; letter-spacing: 0.5px;">
+            Stable Release for iOS 15 - 26.x
+        </p>
 
         <div class="device-info">
             <div class="info-line"><span>DEVICE:</span> iPhone (Connected)</div>
@@ -158,14 +166,14 @@
                     x: Math.random() * width,
                     y: Math.random() * height,
                     len: Math.random() * 30 + 15,
-                    speed: Math.random() * 3 + 2,
-                    op: Math.random() * 0.15 + 0.05
+                    speed: Math.random() * 2 + 2,
+                    op: Math.random() * 0.12 + 0.05
                 });
             }
         }
 
         function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
             ctx.fillRect(0, 0, width, height);
             ctx.strokeStyle = '#1ad2dc';
             ctx.lineWidth = 1;
@@ -188,12 +196,3 @@
     </script>
 </body>
 </html>
-<meta property="og:title" content="First Browser Jailbreak for iOS 15 - 26.x">
-
-<meta property="og:description" content="Official repository by Vitya. Compatible with all 64-bit devices. Execute exploit directly in your mobile browser.">
-
-<meta property="og:type" content="website">
-
-<meta property="og:image" content="https://vityaig.github.io/preview.png">
-
-<meta name="theme-color" content="#1ad2dc">
