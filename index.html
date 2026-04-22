@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>i26 | Terminal</title>
+    <title>WEB-BREAK</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='11' x='3' y='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -13,23 +14,37 @@
             color: #fff;
             font-family: 'Inter', sans-serif;
             margin: 0;
-            overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            padding: 40px 0;
+            overflow-x: hidden;
+        }
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
         .ios-card {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 40px;
             width: 90%;
             max-width: 380px;
             padding: 40px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 10;
         }
         .jailbreak-btn {
             background-color: #fff;
@@ -42,15 +57,33 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-top: 30px;
+        }
+        .jailbreak-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
         .jailbreak-btn:active {
             transform: scale(0.95);
             background-color: #ddd;
         }
+        @keyframes arrowSlideLeft {
+            0%, 100% { transform: translateX(-5px); opacity: 0.3; }
+            50% { transform: translateX(5px); opacity: 1; }
+        }
+        @keyframes arrowSlideRight {
+            0%, 100% { transform: translateX(5px); opacity: 0.3; }
+            50% { transform: translateX(-5px); opacity: 1; }
+        }
+        .arrow-indicator-left {
+            animation: arrowSlideLeft 1.5s ease-in-out infinite;
+        }
+        .arrow-indicator-right {
+            animation: arrowSlideRight 1.5s ease-in-out infinite;
+        }
         .icon-box {
-            background: linear-gradient(135deg, #222, #111);
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
             width: 80px;
             height: 80px;
             border-radius: 24px;
@@ -60,31 +93,82 @@
             margin: 0 auto 24px;
             border: 1px solid rgba(255,255,255,0.05);
         }
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-title {
+            background: linear-gradient(90deg, #fff, #888, #222, #888, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 4s ease infinite;
+        }
+        .animate-beige {
+            background: linear-gradient(90deg, #f5f5dc, #e3c9a1, #c2b280, #e3c9a1, #f5f5dc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s ease infinite;
+        }
+        @keyframes vShimmer {
+            0% { background-position: 50% 0%; }
+            50% { background-position: 50% 100%; }
+            100% { background-position: 50% 0%; }
+        }
+        .animate-v-gray {
+            background: linear-gradient(180deg, #444, #fff, #444);
+            background-size: auto 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: vShimmer 3s linear infinite;
+        }
     </style>
 </head>
-<body>
+<body class="p-6">
+    <canvas id="fireworks-canvas"></canvas>
 
     <div class="ios-card">
         <!-- Icon -->
         <div class="icon-box">
-            <i data-lucide="shield" class="w-10 h-10 text-white"></i>
+            <i data-lucide="lock" class="w-10 h-10 text-white"></i>
         </div>
 
         <!-- Text -->
-        <h1 class="text-xs font-mono tracking-[0.5em] text-indigo-500 uppercase mb-2">Project i26</h1>
-        <h2 class="text-4xl font-black tracking-tight mb-4 uppercase">Aurora</h2>
+        <h2 class="text-4xl font-black tracking-tight mb-4 uppercase animate-title text-center w-full">WEB-BREAK</h2>
         
         <p class="text-sm text-white/50 leading-relaxed px-2">
             The most advanced untethered exploit for iOS 26. Stable, secure, and ready for deployment.
         </p>
 
-        <!-- Button -->
-        <a href="second.html" class="block no-underline">
-            <button class="jailbreak-btn">
-                <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
-                Jailbreak
-            </button>
-        </a>
+        <!-- Action Area -->
+        <div class="mt-8">
+            <div id="prep-area" class="hidden mb-6 space-y-3">
+                <div class="flex justify-between text-[10px] uppercase tracking-widest text-white/40 font-mono">
+                    <span id="prep-status">Initializing...</span>
+                    <span id="prep-pct">0%</span>
+                </div>
+                <div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div id="prep-bar" class="h-full bg-indigo-500 transition-all duration-300 shadow-[0_0_10px_rgba(99,102,241,0.4)]" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-6 mt-8">
+                <i data-lucide="chevron-right" class="w-10 h-10 text-white arrow-indicator-left"></i>
+                <button id="jailbreak-btn" class="jailbreak-btn !mt-0 flex-1">
+                    <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
+                    Jailbreak
+                </button>
+                <i data-lucide="chevron-left" class="w-10 h-10 text-white arrow-indicator-right"></i>
+            </div>
+
+            <!-- Support Badge -->
+            <div class="mt-4 flex items-center justify-center gap-1.5 py-2 px-3 bg-green-500/10 rounded-2xl border border-green-500/20">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-green-500"></i>
+                <span class="text-[11px] font-medium text-green-500/90 tracking-wide">Your iOS is Supported</span>
+            </div>
+        </div>
 
         <!-- Stats -->
         <div class="mt-8 pt-8 border-t border-white/5 flex justify-around text-[10px] text-white/30 uppercase tracking-widest font-mono">
@@ -95,17 +179,252 @@
     </div>
 
     <!-- Footer Credits -->
-    <div class="fixed bottom-8 w-full text-center space-y-2 pointer-events-none">
+    <div id="ui-footer" class="w-full text-center space-y-2 pointer-events-none pb-10 relative z-10 transition-opacity duration-500">
         <p class="text-[9px] text-white/20 tracking-widest uppercase">
             Original respring code by neonmodder123
         </p>
         <p class="text-[9px] text-white/10 tracking-[0.3em] uppercase">
             Repo made by AI Google Studio
         </p>
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase animate-v-gray pt-1">
+            Idea by @VityaV on Telegram
+        </p>
+    </div>
+
+    <!-- Toggle Controls -->
+    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        <!-- Color Name Toast -->
+        <span id="color-toast" class="opacity-0 pointer-events-none transition-all duration-300 font-bold uppercase tracking-widest text-[10px] pr-2"></span>
+
+        <!-- Fireworks Color Control -->
+        <button id="fireworks-color-btn" class="hidden p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all group backdrop-blur-md animate-in fade-in zoom-in duration-500">
+            <i data-lucide="sparkles" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </button>
+
+        <!-- Toggle UI Button -->
+        <button id="hide-ui-btn" class="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all group backdrop-blur-md">
+            <i id="hide-ui-icon" data-lucide="eye-off" class="w-4 h-4 text-white/40 group-hover:text-white transition-colors"></i>
+        </button>
     </div>
 
     <script>
         lucide.createIcons();
+
+        // Fireworks Config
+        let currentFireworkColor = 'rgba(255, 255, 255, 0.8)';
+        const fireworkColors = [
+            'rgba(255, 255, 255, 0.8)', // White
+            'rgba(99, 102, 241, 0.8)', // Indigo
+            'rgba(239, 68, 68, 0.8)',   // Red
+            'rgba(34, 197, 94, 0.8)',   // Green
+            'rgba(234, 179, 8, 0.8)',   // Yellow
+            'rgba(168, 85, 247, 0.8)'   // Purple
+        ];
+        const colorNames = ["White", "Indigo", "Red", "Green", "Yellow", "Purple"];
+        let colorIndex = 0;
+
+        // Toggle UI Logic
+        const hideBtn = document.getElementById('hide-ui-btn');
+        const colorBtn = document.getElementById('fireworks-color-btn');
+        const colorToast = document.getElementById('color-toast');
+        const hideIcon = document.getElementById('hide-ui-icon');
+        const card = document.querySelector('.ios-card');
+        const footer = document.getElementById('ui-footer');
+        let uiHidden = false;
+
+        hideBtn.addEventListener('click', () => {
+            uiHidden = !uiHidden;
+            card.style.opacity = uiHidden ? '0' : '1';
+            card.style.pointerEvents = uiHidden ? 'none' : 'auto';
+            card.style.transform = uiHidden ? 'scale(0.95)' : 'scale(1)';
+            card.style.transition = 'all 0.5s ease';
+
+            footer.style.opacity = uiHidden ? '0' : '1';
+            
+            // Show/Hide color button
+            colorBtn.classList.toggle('hidden', !uiHidden);
+            if (!uiHidden) colorToast.style.opacity = '0';
+
+            hideIcon.setAttribute('data-lucide', uiHidden ? 'eye' : 'eye-off');
+            hideBtn.classList.toggle('bg-indigo-500/20', uiHidden);
+            hideBtn.classList.toggle('border-indigo-500/30', uiHidden);
+            lucide.createIcons();
+        });
+
+        let toastTimeout;
+        colorBtn.addEventListener('click', () => {
+            colorIndex = (colorIndex + 1) % fireworkColors.length;
+            currentFireworkColor = fireworkColors[colorIndex];
+            
+            // Effect on button
+            colorBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => colorBtn.style.transform = 'scale(1)', 100);
+            
+            // Update icon color to preview
+            const icon = colorBtn.querySelector('svg') || colorBtn.querySelector('i');
+            if (icon) icon.style.color = currentFireworkColor;
+
+            // Show Toast
+            colorToast.innerText = colorNames[colorIndex];
+            colorToast.style.color = currentFireworkColor;
+            colorToast.style.opacity = '1';
+            colorToast.style.transform = 'translateX(0)';
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                colorToast.style.opacity = '0';
+                colorToast.style.transform = 'translateX(10px)';
+            }, 1000);
+        });
+
+        // Fireworks Logic
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1;
+                this.friction = 0.95;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.01;
+            }
+        }
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = height;
+                this.targetY = Math.random() * (height * 0.5);
+                this.velocity = { x: 0, y: -Math.random() * 5 - 5 };
+                this.particles = [];
+                this.exploded = false;
+                this.color = currentFireworkColor;
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                } else {
+                    this.particles.forEach(p => p.draw());
+                }
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y += this.velocity.y;
+                    if (this.y <= this.targetY) {
+                        this.exploded = true;
+                        for (let i = 0; i < 25; i++) {
+                            this.particles.push(new Particle(this.x, this.y, this.color));
+                        }
+                    }
+                } else {
+                    this.particles.forEach(p => p.update());
+                    this.particles = this.particles.filter(p => p.alpha > 0);
+                }
+            }
+        }
+
+        let fireworks = [];
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            
+            if (Math.random() < 0.05) {
+                fireworks.push(new Firework());
+            }
+
+            fireworks.forEach((fw, i) => {
+                fw.update();
+                fw.draw();
+                if (fw.exploded && fw.particles.length === 0) {
+                    fireworks.splice(i, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Original logic
+        const btn = document.getElementById('jailbreak-btn');
+        const prepArea = document.getElementById('prep-area');
+        const prepBar = document.getElementById('prep-bar');
+        const prepPct = document.getElementById('prep-pct');
+        const prepStatus = document.getElementById('prep-status');
+
+        const statuses = [
+            "Checking device...",
+            "Fetching offsets...",
+            "Bypassing amfid...",
+            "Ready to deploy."
+        ];
+
+        btn.addEventListener('click', () => {
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.4';
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Preparing';
+            lucide.createIcons();
+            
+            prepArea.classList.remove('hidden');
+
+            let p = 0;
+            let statusIdx = 0;
+
+            const interval = setInterval(() => {
+                p += Math.random() * 15 + 5;
+                if (p > 100) p = 100;
+
+                prepBar.style.width = p + '%';
+                prepPct.innerText = Math.floor(p) + '%';
+
+                if (p > (statusIdx + 1) * 25 && statusIdx < statuses.length - 1) {
+                    statusIdx++;
+                    prepStatus.innerText = statuses[statusIdx];
+                }
+
+                if (p >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        window.location.href = 'second.html';
+                    }, 200);
+                }
+            }, 60);
+        });
     </script>
 </body>
 </html>
