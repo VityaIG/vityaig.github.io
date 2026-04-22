@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jailbreak Tool</title>
+    <title>First Browser Jailbreak</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -26,7 +26,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ХОЛСТ ДЛЯ ДОЖДЯ */
         #rainCanvas {
             position: absolute;
             top: 0;
@@ -52,13 +51,15 @@
         }
 
         h1 {
-            font-size: 2.6rem;
+            font-size: 1.8rem; /* Уменьшил размер, чтобы фраза влезла в одну-две строки */
             margin: 0;
-            letter-spacing: -1.5px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
             background: linear-gradient(to bottom, #fff, #999);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
+            text-transform: uppercase;
         }
 
         .device-info {
@@ -68,7 +69,7 @@
             margin: 25px 0;
             font-family: 'SF Mono', 'Courier New', monospace;
             font-size: 13px;
-            color: #32d74b; /* Яркий Apple Green */
+            color: #32d74b;
             text-align: left;
             border: 1px solid rgba(50, 215, 75, 0.15);
         }
@@ -110,7 +111,7 @@
     <canvas id="rainCanvas"></canvas>
 
     <div class="main-card">
-        <h1>Jailbreak</h1>
+        <h1>First Browser Jailbreak</h1>
         <p style="color: #777; font-size: 14px; margin-top: 8px; font-weight: 500;">Stable Release for iOS 15 - 26.x</p>
 
         <div class="device-info">
@@ -137,23 +138,21 @@
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             drops = [];
-            
-            // Уменьшил количество лучей (делим на 12 вместо 6)
             const count = Math.floor(width / 12); 
 
             for (let i = 0; i < count; i++) {
                 drops.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    len: Math.random() * 30 + 15, // Чуть длиннее
-                    speed: Math.random() * 3 + 2, // Чуть медленнее и плавнее
-                    op: Math.random() * 0.15 + 0.05 // Более тусклые
+                    len: Math.random() * 30 + 15,
+                    speed: Math.random() * 3 + 2,
+                    op: Math.random() * 0.15 + 0.05
                 });
             }
         }
 
         function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Хвост чуть длиннее
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
             ctx.fillRect(0, 0, width, height);
 
             ctx.strokeStyle = '#1ad2dc';
