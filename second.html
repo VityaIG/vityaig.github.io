@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Exploiting...</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='11' x='3' y='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 9.9-1'/%3E%3C/svg%3E">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 0;
+            overflow: hidden;
+        }
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .ios-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 40px;
+            width: 90%;
+            max-width: 450px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 10;
+        }
+        .animate-v-gray {
+            background: linear-gradient(180deg, #444, #fff, #444);
+            background-size: auto 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: vShimmer 3s linear infinite;
+        }
+        @keyframes vShimmer { to { background-position: 50% 200%; } }
+    </style>
+</head>
+<body class="p-6">
+    <canvas id="fireworks-canvas"></canvas>
+
+    <div id="simulation" class="ios-card">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <i data-lucide="terminal" class="w-5 h-5 text-indigo-500"></i>
+                <span class="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase">Exploiting...</span>
+            </div>
+            <span id="pct" class="text-xs font-bold font-mono text-indigo-400">0%</span>
+        </div>
+
+        <div id="terminal" class="h-80 p-4 bg-black/40 rounded-2xl border border-white/5 font-mono text-[10px] overflow-y-auto space-y-2 leading-relaxed">
+        </div>
+
+        <div class="mt-6">
+            <div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                <div id="bar" class="h-full bg-indigo-500 transition-all duration-75" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ui-footer" class="w-full text-center space-y-2 pb-10 mt-12 transition-opacity duration-500">
+        <p class="text-[9px] text-white/20 tracking-widest uppercase">Original respring code by neonmodder123</p>
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase animate-v-gray pt-1">Idea by @VityaV on Telegram</p>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Fireworks Logic
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                this.velocity = { x: (Math.random() - 0.5) * 8, y: (Math.random() - 0.5) * 8 };
+                this.alpha = 1; this.friction = 0.95;
+            }
+            draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill(); ctx.restore(); }
+            update() { this.velocity.x *= this.friction; this.velocity.y *= this.friction; this.x += this.velocity.x; this.y += this.velocity.y; this.alpha -= 0.01; }
+        }
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * width; this.y = height;
+                this.targetY = Math.random() * (height * 0.5);
+                this.velocity = { x: 0, y: -Math.random() * 5 - 5 };
+                this.particles = []; this.exploded = false; this.color = 'rgba(255, 255, 255, 0.8)';
+            }
+            draw() { if (!this.exploded) { ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); } else { this.particles.forEach(p => p.draw()); } }
+            update() {
+                if (!this.exploded) { this.y += this.velocity.y; if (this.y <= this.targetY) { this.exploded = true; for (let i = 0; i < 25; i++) { this.particles.push(new Particle(this.x, this.y, this.color)); } } }
+                else { this.particles.forEach(p => p.update()); this.particles = this.particles.filter(p => p.alpha > 0); }
+            }
+        }
+
+        let fireworks = [];
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, width, height);
+            if (Math.random() < 0.05) fireworks.push(new Firework());
+            fireworks.forEach((fw, i) => { fw.update(); fw.draw(); if (fw.exploded && fw.particles.length === 0) fireworks.splice(i, 1); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        const commands = [
+            "Mounting /mnt/system-raw...", "Overriding SIP...", "Allocating kernel heap buffer...", 
+            "Modifying /var/mobile/Content...", "Executing ROP chain...", "Kernel exploit successful. Current PID: 0", 
+            "Injecting hooks...", "Patching AMFI...", "Remounting RootFS...", "Cleaning memory leaks...", "Stabilizing system..."
+        ];
+
+        let idx = 0; let p = 0;
+        const term = document.getElementById('terminal');
+        const triggerPoint = 95;
+
+        function addLine() {
+            if (idx < commands.length) {
+                const command = commands[idx++];
+                const row = document.createElement('div');
+                row.className = 'flex gap-3';
+                row.innerHTML = `<span class="text-indigo-500/40 shrink-0">sys:~$</span> <span class="text-white/80 cmd-text"></span>`;
+                term.appendChild(row);
+                const textSpan = row.querySelector('.cmd-text');
+                let charIdx = 0;
+                function typeChar() {
+                    if (charIdx < command.length) {
+                        textSpan.textContent += command.charAt(charIdx++);
+                        term.scrollTop = term.scrollHeight;
+                        setTimeout(typeChar, 15);
+                    }
+                }
+                typeChar();
+            }
+        }
+
+        const run = setInterval(() => {
+            p += Math.random() * 0.8;
+            document.getElementById('bar').style.width = p + '%';
+            document.getElementById('pct').innerText = Math.floor(p) + '%';
+            if (Math.random() > 0.85) addLine();
+            if (p >= triggerPoint) { clearInterval(run); window.location.href = 'respring.html'; }
+        }, 40);
+    </script>
+</body>
+</html>
