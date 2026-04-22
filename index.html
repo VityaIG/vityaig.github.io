@@ -66,13 +66,6 @@
             line-height: 1.2;
         }
 
-        .repo-author {
-            font-size: 1rem;
-            margin-top: 10px;
-            display: block;
-            letter-spacing: 1px;
-        }
-
         .device-info {
             background: rgba(0, 0, 0, 0.45);
             border-radius: 22px;
@@ -114,7 +107,15 @@
             font-size: 10px;
             color: #555;
             letter-spacing: 0.2px;
-            line-height: 1.4;
+            line-height: 1.6;
+        }
+
+        /* Твоя подпись внизу */
+        .repo-made-by {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -124,7 +125,6 @@
 
     <div class="main-card">
         <h1 class="gradient-text">First Browser Jailbreak</h1>
-        <span class="repo-author gradient-text">Repo made by Vitya</span>
         
         <p style="color: #777; font-size: 13px; margin-top: 15px; font-weight: 500;">Stable Release for iOS 15 - 26.x</p>
 
@@ -138,7 +138,8 @@
 
         <div class="footer">
             Original respring code developed by <b>neonmodder123</b><br>
-            All rights reserved. 2026.
+            All rights reserved. 2026.<br>
+            <span class="gradient-text repo-made-by">Repo made by Vitya</span>
         </div>
     </div>
 
