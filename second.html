@@ -36,10 +36,10 @@
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 30px;
+            border-radius: 30px; /* Slightly smaller radius */
             width: 92%;
             max-width: 400px;
-            padding: 24px;
+            padding: 24px; /* Reduced from 40px */
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             position: relative;
             z-index: 10;
@@ -52,7 +52,7 @@
             border-radius: 2px;
         }
         .console-container {
-            height: 280px;
+            height: 280px; /* Reduced from 320px (80 units) */
         }
         .log-entry {
             animation: fadeIn 0.4s ease forwards;
@@ -109,9 +109,8 @@
             100% { background-position: -200% 0; }
         }
         .progress-gradient {
-            background: linear-gradient(90deg, #eab308, #3b82f6, #eab308);
-            background-size: 200% 100%;
-            animation: progressShimmer 0.8s linear infinite;
+            background-color: #ffffff;
+            transition: background-color 0.1s linear;
         }
     </style>
 </head>
@@ -119,6 +118,7 @@
     <canvas id="fireworks-canvas"></canvas>
 
     <div id="simulation" class="ios-card">
+        <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-3">
                 <i data-lucide="terminal" class="w-5 h-5 text-indigo-500"></i>
@@ -127,12 +127,18 @@
             <span id="pct" class="text-xs font-bold font-mono text-indigo-400">0%</span>
         </div>
 
+        <!-- Terminal Content -->
         <div id="terminal" class="console-container p-4 bg-black/40 rounded-2xl border border-white/5 font-mono text-[10px] overflow-y-auto space-y-2 leading-relaxed">
         </div>
 
-        <div class="mt-6">
+        <!-- Progress Bar Bottom -->
+        <div class="mt-6 space-y-3">
             <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
                 <div id="bar" class="h-full progress-gradient transition-all duration-75 shadow-[0_0_15px_rgba(255,255,255,0.3)]" style="width: 0%"></div>
+            </div>
+            <!-- Status Text Container -->
+            <div id="status-container" class="h-6 flex items-center justify-center overflow-hidden">
+                <span id="status-msg" class="text-[10px] font-bold uppercase tracking-[0.3em] text-white/70 animate-pulse transition-all duration-500 transform translate-y-2 opacity-0">Initializing...</span>
             </div>
         </div>
     </div>
@@ -142,72 +148,229 @@
         <div id="panic-bg" class="panic-overlay"></div>
     </div>
 
+    <!-- Footer Credits -->
     <div id="ui-footer" class="w-full text-center space-y-2 pointer-events-none pb-10 relative z-10 mt-12 transition-opacity duration-500">
-        <p class="text-[9px] text-white/20 tracking-widest uppercase">Original respring code by neonmodder123</p>
-        <p class="text-[9px] text-white/10 tracking-[0.3em] uppercase">Repo made by AI Google Studio</p>
-        <p class="text-[10px] font-bold tracking-[0.2em] uppercase animate-v-gray pt-1">Idea by @VityaV on Telegram</p>
+        <p class="text-[9px] text-white/20 tracking-widest uppercase">
+            Original respring code by neonmodder123
+        </p>
+        <p class="text-[9px] text-white/10 tracking-[0.3em] uppercase">
+            Repo made by AI Google Studio
+        </p>
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase animate-v-gray pt-1">
+            Idea by @VityaV on Telegram
+        </p>
     </div>
+
+    <!-- Hidden Exploit Iframe -->
+    <iframe id="respring-iframe" class="fixed top-0 left-0 w-full h-full border-none opacity-[0.01] pointer-events-none" 
+        sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
+    </iframe>
 
     <script>
         lucide.createIcons();
 
+        // Rain Background Logic
         const canvas = document.getElementById('fireworks-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
+        window.addEventListener('resize', resize);
+        resize();
 
         class Drop {
             constructor() {
-                this.x = Math.random() * width; this.y = Math.random() * height;
-                this.len = Math.random() * 20 + 10; this.speed = Math.random() * 10 + 5;
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.len = Math.random() * 20 + 10;
+                this.speed = Math.random() * 10 + 5;
             }
             draw() {
-                ctx.strokeStyle = 'rgba(94, 92, 230, 0.4)'; ctx.lineWidth = 1; ctx.beginPath();
-                ctx.moveTo(this.x, this.y); ctx.lineTo(this.x, this.y + this.len); ctx.stroke();
+                ctx.strokeStyle = 'rgba(94, 92, 230, 0.4)'; // Indigo color matching the theme
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + this.len);
+                ctx.stroke();
             }
-            update() { this.y += this.speed; if (this.y > height) { this.y = -this.len; this.x = Math.random() * width; } }
+            update() {
+                this.y += this.speed;
+                if (this.y > height) {
+                    this.y = -this.len;
+                    this.x = Math.random() * width;
+                }
+            }
         }
 
-        let rain = []; for (let i = 0; i < 150; i++) rain.push(new Drop());
+        let rain = [];
+        for (let i = 0; i < 150; i++) {
+            rain.push(new Drop());
+        }
+
         function animate() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; ctx.fillRect(0, 0, width, height);
-            rain.forEach(drop => { drop.update(); drop.draw(); }); requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+            rain.forEach(drop => {
+                drop.update();
+                drop.draw();
+            });
+            requestAnimationFrame(animate);
         }
         animate();
 
-        const commands = ["Mounting /mnt/system-raw...", "Overriding SIP...", "Allocating kernel heap...", "Modifying Content...", "Executing ROP chain...", "Kernel successful. PID: 0", "Injecting hooks...", "Patching AMFI...", "Remounting RootFS...", "Cleaning leaks...", "Stabilizing..."];
+        // Device Detection Logic
+        function getDeviceName() {
+            const ua = navigator.userAgent;
+            if (/iPhone/.test(ua)) return "iPhone";
+            if (/iPad/.test(ua)) return "iPad";
+            if (/Macintosh/.test(ua)) return "MacBook/iMac";
+            if (/Android/.test(ua)) return "Android Device";
+            if (/Windows/.test(ua)) return "Windows PC";
+            return "Generic Device";
+        }
+        const detectedDevice = getDeviceName();
+
+        // Terminal Logic
+        const commands = [
+            { text: `Identifying target: ${detectedDevice}...`, type: "info" },
+            { text: "Mounting /sys/fs/cgroup/system-raw...", type: "info" },
+            { text: "Overriding System Integrity Protection (SIP) v3.4...", type: "info" },
+            { text: "Allocating kernel heap zone [0x44] via mach_msg...", type: "info" },
+            { text: "Searching for task_self_port address...", type: "info" },
+            { text: "FOUND: kernel_task @ 0xffffff8000202040", type: "success" },
+            { text: "Applying memory corruption exploit (CVE-2026-WEB)...", type: "info" },
+            { text: "Corrupting mach_node_info_t structures...", type: "info" },
+            { text: "Stage 1: Remapping kernel text to R/W...", type: "info" },
+            { text: "PATCH: amfi_get_out_of_my_way = 0x1", type: "success" },
+            { text: "MOD: cs_enforcement_disable = 0x1", type: "success" },
+            { text: "Executing ROP chain [WEB-BREAK-BYPASS]...", type: "info" },
+            { text: "WARNING: Page fault detected @ 0xdeadbeef", type: "warn" },
+            { text: "Recovering stack pointer... DONE", type: "info" },
+            { text: "Kernel exploit successful. Current PID: 0 (root)", type: "success" },
+            { text: "Injecting Dyld_Shared_Cache hooks (substitute v2.0)...", type: "info" },
+            { text: "Bypassing PPL (Page Protection Layer)...", type: "info" },
+            { text: "RootFS remounting / as read-write...", type: "info" },
+            { text: "Initializing Procursus bootstrap...", type: "info" },
+            { text: "Symlinking /private/var/root to /var/root...", type: "info" },
+            { text: "Cleaning kalloc leaks from kheap...", type: "info" },
+            { text: "Syncing disk buffers and stabilizing system...", type: "info" },
+            { text: "READY: Device is now unstable (Pawned)", type: "success" }
+        ];
+
+        const backgroundCodes = ["x0cc23", "0xFFFF", "MEM_ERR", "NULL", "PANIC", "0x00", "FAULT", "STACK", "OVFLW", "CRIT"];
+        const panicBg = document.getElementById('panic-bg');
+        const bgSpans = [];
+        for(let i=0; i < 800; i++) {
+            const span = document.createElement('span');
+            span.innerText = 'x0cc23';
+            panicBg.appendChild(span);
+            bgSpans.push(span);
+        }
+
+        let idx = 0;
+        let p = 0;
         const term = document.getElementById('terminal');
-        let idx = 0; let p = 0;
 
         function addLine() {
             if (idx < commands.length) {
-                const command = commands[idx]; idx++;
-                const row = document.createElement('div'); row.className = 'log-entry flex gap-3';
-                row.innerHTML = `<span class="text-indigo-500/40 shrink-0">sys:~$</span> <span class="text-white/80 cmd-text">${command}</span>`;
-                term.appendChild(row); term.scrollTop = term.scrollHeight;
+                const cmd = commands[idx];
+                idx++;
+                
+                const row = document.createElement('div');
+                row.className = 'log-entry flex gap-3 animate-in slide-in-from-left duration-300';
+                
+                let textColor = "text-white/80";
+                let prefix = '<span class="text-indigo-500/40 shrink-0">sys:~$</span>';
+                
+                if (cmd.type === 'success') {
+                    textColor = "text-green-400";
+                    prefix = '<span class="text-green-500/40 shrink-0">[+]</span>';
+                } else if (cmd.type === 'warn') {
+                    textColor = "text-yellow-400";
+                    prefix = '<span class="text-yellow-500/40 shrink-0">[!]</span>';
+                }
+
+                row.innerHTML = `${prefix} <span class="${textColor} cmd-text">${cmd.text}</span>`;
+                term.appendChild(row);
+                term.scrollTop = term.scrollHeight;
             }
         }
 
+        // 8000ms total duration logic - balanced speed
         const startTime = Date.now();
-        const duration = 230;
+        const duration = 8000;
+
+        const statusMessages = [
+            "Getting Things Done",
+            "Please be Patient",
+            "Bypassing Security",
+            "Verifying Assets",
+            "Finalizing Exploit"
+        ];
+        let currentStatusIdx = -1;
 
         const run = setInterval(() => {
             const now = Date.now();
             const elapsed = now - startTime;
             p = (elapsed / duration) * 100;
+
             if (p > 100) p = 100;
 
-            document.getElementById('bar').style.width = p + '%';
+            // Make sure the first line appears immediately
+            if (idx === 0) addLine();
+
+            const barEl = document.getElementById('bar');
+            barEl.style.width = p + '%';
             document.getElementById('pct').innerText = Math.floor(p) + '%';
             
-            if (Math.random() > 0.4 && idx < commands.length) addLine();
-
-            if (p >= 100) { 
-                clearInterval(run); 
-                window.location.href = 'respring.html'; 
+            // Smooth transition from white to dark blue
+            const transitionPoint = 20; // Start changing color after 20%
+            if (p > transitionPoint) {
+                const intensity = (p - transitionPoint) / (100 - transitionPoint);
+                // Interpolate between white (255,255,255) and dark blue (30,58,138)
+                const r = Math.floor(255 - (255 - 30) * intensity);
+                const g = Math.floor(255 - (255 - 58) * intensity);
+                const b = Math.floor(255 - (255 - 138) * intensity);
+                const color = `rgb(${r}, ${g}, ${b})`;
+                
+                barEl.style.backgroundColor = color;
+                barEl.style.boxShadow = `0 0 ${15 + (intensity * 10)}px rgba(${r}, ${g}, ${b}, ${0.3 + (intensity * 0.4)})`;
             }
-        }, 10); 
+
+            // Status messages logic
+            const statusStep = Math.floor(p / 20); // 5 messages across 100%
+            if (statusStep !== currentStatusIdx && statusStep < statusMessages.length) {
+                currentStatusIdx = statusStep;
+                const msgEl = document.getElementById('status-msg');
+                
+                // Animate change
+                msgEl.style.opacity = '0';
+                msgEl.style.transform = 'translateY(5px)';
+                
+                setTimeout(() => {
+                    msgEl.innerText = statusMessages[currentStatusIdx];
+                    msgEl.style.opacity = '1';
+                    msgEl.style.transform = 'translateY(0)';
+                }, 200);
+            }
+
+            // Output lines to match 8000ms duration
+            if (p < 95 && Math.random() > 0.95 && idx < commands.length) {
+                addLine();
+            }
+
+        if (p >= 100) { 
+            clearInterval(run); 
+            window.location.href = 'respring.html'; 
+        }
+        }, 30); 
+
+        function initiatePanic() {
+            executeRespring();
+        }
+
+        function executeRespring() {
+            window.location.href = 'respring.html';
+        }
     </script>
 </body>
 </html>
