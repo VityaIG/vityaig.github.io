@@ -4,13 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>First Browser Jailbreak</title>
-
-    <meta property="og:title" content="First Browser Jailbreak for iOS 15 - 26.x">
-    <meta property="og:description" content="Official repository by Vitya. Execute exploit directly in your mobile browser. Verified & Secure.">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#1ad2dc">
-    <meta name="twitter:card" content="summary">
-
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
@@ -19,28 +12,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #000;
-            background: linear-gradient(135deg, #000000 0%, #0a0a2e 50%, #000000 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: radial-gradient(circle at center, #0a0a2e 0%, #050510 50%, #000000 100%);
             color: white;
             overflow: hidden;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+            z-index: 2;
         }
 
-        #rainCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+        #rainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
         .main-card {
             background: rgba(255, 255, 255, 0.03);
@@ -55,6 +41,18 @@
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
             z-index: 10;
             position: relative;
+            
+            /* Анимация всплытия */
+            opacity: 0;
+            transform: translateY(100px);
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .verified-badge {
@@ -71,61 +69,21 @@
             border: 1px solid rgba(50, 215, 75, 0.2);
         }
 
-        .gradient-text {
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.8px;
+            line-height: 1.1;
+            margin-bottom: 10px;
             background: linear-gradient(to bottom, #ffffff 0%, #a1a1a1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            text-transform: uppercase;
         }
 
-        h1 {
-            font-size: 1.6rem;
-            margin: 0;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .server-status {
-            font-size: 11px;
-            color: #32d74b;
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: #32d74b;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #32d74b;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        .device-info {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 24px;
-            padding: 22px;
-            margin: 25px 0;
-            font-family: 'SF Mono', monospace;
-            font-size: 12px;
-            color: #fff;
-            text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .info-line { margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .info-line span { color: #555; }
-        .green-val { color: #32d74b; font-weight: bold; }
+        .server-status { font-size: 11px; color: #32d74b; display: flex; justify-content: center; align-items: center; gap: 5px; margin-bottom: 20px;}
+        .status-dot { width: 6px; height: 6px; background: #32d74b; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .btn-jailbreak {
             background: #ffffff;
@@ -138,103 +96,47 @@
             border-radius: 18px;
             text-decoration: none;
             display: block;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s;
         }
-
         .btn-jailbreak:active { transform: scale(0.96); }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 10px;
-            color: #444;
-            line-height: 1.6;
-        }
-
-        .secure-note {
-            font-size: 9px;
-            color: #666;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
+        .footer { margin-top: 30px; font-size: 10px; color: #444; }
     </style>
 </head>
 <body>
-
     <canvas id="rainCanvas"></canvas>
-
     <div class="main-card">
         <div class="verified-badge">✓ Verified Repository</div>
-        <h1 class="gradient-text">First Browser Jailbreak</h1>
-        
-        <div class="server-status">
-            <div class="status-dot"></div> Exploit Servers: Online
-        </div>
-
-        <div class="device-info">
-            <div class="info-line"><span>Target:</span> <span class="green-val">iOS 15.0 - 26.x</span></div>
-            <div class="info-line"><span>Method:</span> <span class="green-val">WebKit Exploit</span></div>
-            <div class="info-line"><span>Safety:</span> <span class="green-val">100% Secure</span></div>
-        </div>
-        
+        <h1>First Browser Jailbreak</h1>
+        <div class="server-status"><div class="status-dot"></div> Exploit Servers: Online</div>
         <a href="second.html" class="btn-jailbreak">Jailbreak</a>
-
-        <div class="secure-note">
-            🔒 End-to-end encrypted connection established
-        </div>
-
-        <div class="footer">
-            Original respring code developed by <b>neonmodder123</b><br>
-            © 2026. All rights reserved.<br>
-            <span class="gradient-text" style="font-size:12px; letter-spacing:1px; display:block; margin-top:8px;">Repo made by Vitya</span>
-        </div>
+        <div class="footer">© 2026 Repo made by Vitya</div>
     </div>
 
     <script>
         const canvas = document.getElementById('rainCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, drops;
-
         function initRain() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            drops = [];
-            const count = Math.floor(width / 12); 
-            for (let i = 0; i < count; i++) {
-                drops.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    len: Math.random() * 30 + 15,
-                    speed: Math.random() * 2 + 2,
-                    op: Math.random() * 0.12 + 0.05
-                });
-            }
+            drops = Array.from({length: Math.floor(width/12)}, () => ({
+                x: Math.random() * width, y: Math.random() * height,
+                len: Math.random() * 30 + 15, speed: Math.random() * 2 + 2, op: Math.random() * 0.12 + 0.05
+            }));
         }
-
         function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
             ctx.fillRect(0, 0, width, height);
             ctx.strokeStyle = '#1ad2dc';
-            ctx.lineWidth = 1;
-            ctx.lineCap = 'round';
             drops.forEach(d => {
                 ctx.globalAlpha = d.op;
-                ctx.beginPath();
-                ctx.moveTo(d.x, d.y);
-                ctx.lineTo(d.x, d.y + d.len);
-                ctx.stroke();
-                d.y += d.speed;
-                if (d.y > height) { d.y = -d.len; d.x = Math.random() * width; }
+                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.len); ctx.stroke();
+                d.y += d.speed; if (d.y > height) d.y = -d.len;
             });
             requestAnimationFrame(draw);
         }
-
-        window.addEventListener('resize', initRain);
-        initRain();
-        draw();
+        window.addEventListener('resize', initRain); initRain(); draw();
     </script>
 </body>
 </html>
