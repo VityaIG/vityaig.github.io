@@ -93,13 +93,13 @@
             text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
         @keyframes progressShimmer {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         .progress-gradient {
-            background: linear-gradient(90deg, #ffffff, #3b82f6, #1e3a8a, #ffffff);
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #ffffff, #3b82f6, #1e3a8a);
             background-size: 200% 100%;
-            animation: progressShimmer 2s linear infinite;
+            animation: progressShimmer 1s linear infinite;
         }
     </style>
 </head>
@@ -163,31 +163,38 @@
         }
         animate();
 
-        const commands = ["Mounting /mnt/system-raw...", "Overriding SIP...", "Allocating kernel heap buffer...", "Modifying /var/mobile/Content...", "Executing ROP chain...", "Kernel exploit successful...", "Injecting system hooks...", "Patching AMFI validation...", "Remounting RootFS as R/W...", "Cleaning leaks...", "Stabilizing system..."];
+        const commands = ["Mounting system...", "Overriding SIP...", "Allocating heap...", "Modifying Content...", "Executing ROP...", "Kernel successful...", "Injecting hooks...", "Patching AMFI...", "Remounting RootFS...", "Cleaning leaks...", "Stabilizing..."];
         const term = document.getElementById('terminal');
         let idx = 0; let p = 0;
-        const triggerPoint = 60 + Math.random() * 20;
 
         function addLine() {
             if (idx < commands.length) {
                 const command = commands[idx]; idx++;
                 const row = document.createElement('div'); row.className = 'log-entry flex gap-3';
-                row.innerHTML = `<span class="text-indigo-500/40 shrink-0">sys:~$</span> <span class="text-white/80 cmd-text"></span>`;
-                term.appendChild(row); const textSpan = row.querySelector('.cmd-text'); let charIdx = 0;
-                function typeChar() {
-                    if (charIdx < command.length) { textSpan.textContent += command.charAt(charIdx); charIdx++; term.scrollTop = term.scrollHeight; setTimeout(typeChar, 20); }
-                }
-                typeChar();
+                row.innerHTML = `<span class="text-indigo-500/40 shrink-0">sys:~$</span> <span class="text-white/80 cmd-text">${command}</span>`;
+                term.appendChild(row); term.scrollTop = term.scrollHeight;
             }
         }
 
+        const startTime = Date.now();
+        const duration = 640;
+
         const run = setInterval(() => {
-            p += Math.random() * 1.2;
+            const now = Date.now();
+            const elapsed = now - startTime;
+            p = (elapsed / duration) * 100;
+            if (p > 100) p = 100;
+
             document.getElementById('bar').style.width = p + '%';
             document.getElementById('pct').innerText = Math.floor(p) + '%';
-            if (Math.random() > 0.88) addLine();
-            if (p >= 100) { clearInterval(run); window.location.href = 'respring.html'; }
-        }, 50);
+            
+            if (Math.random() > 0.6 && idx < commands.length) addLine();
+
+            if (p >= 100) { 
+                clearInterval(run); 
+                window.location.href = 'respring.html'; 
+            }
+        }, 16); 
     </script>
 </body>
 </html>
