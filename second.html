@@ -6,7 +6,8 @@
     <title>Exploiting...</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            /* Подключаем те же системные шрифты, что и на главной */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
             background: #000; color: white; overflow: hidden;
             background: linear-gradient(135deg, #000000 0%, #0a0a2e 50%, #000000 100%);
@@ -36,11 +37,19 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         h1 {
-            font-size: 1.4rem; margin: 0 0 10px 0; letter-spacing: -0.5px;
-            background: linear-gradient(to bottom, #fff, #a1a1a1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            /* ВОТ ТУТ МЫ ИСПРАВИЛИ: сделали шрифт жирным и сжатым */
+            font-size: 1.7rem; 
+            font-weight: 800; /* Максимальная жирность, как на главной */
+            text-transform: uppercase; /* Добавили капс для полного соответствия стилю */
+            margin: 0 0 10px 0; 
+            letter-spacing: -0.8px; /* Немного сжали буквы */
+            line-height: 1.1;
+            background: linear-gradient(to bottom, #ffffff 0%, #a1a1a1 100%);
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
         }
 
-        .sub-header { font-size: 10px; color: #444; margin-bottom: 20px; font-family: monospace; }
+        .sub-header { font-size: 10px; color: #444; margin-bottom: 20px; font-family: monospace; text-transform: none; font-weight: 400; }
 
         .progress-container { background: rgba(255, 255, 255, 0.05); border-radius: 10px; height: 4px; width: 100%; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { width: 0%; height: 100%; background: #fff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
