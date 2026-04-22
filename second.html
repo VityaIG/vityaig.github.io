@@ -19,7 +19,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 40px 0;
+            padding: 20px 0;
             overflow: hidden;
         }
         #fireworks-canvas {
@@ -36,10 +36,10 @@
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 40px;
-            width: 90%;
-            max-width: 450px;
-            padding: 40px;
+            border-radius: 30px;
+            width: 92%;
+            max-width: 400px;
+            padding: 24px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             position: relative;
             z-index: 10;
@@ -51,6 +51,9 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
         }
+        .console-container {
+            height: 280px;
+        }
         .log-entry {
             animation: fadeIn 0.4s ease forwards;
         }
@@ -58,29 +61,17 @@
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes textShimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-title {
-            background: linear-gradient(90deg, #fff, #888, #222, #888, #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textShimmer 4s ease infinite;
-        }
-        @keyframes vShimmer {
-            0% { background-position: 50% 0%; }
-            50% { background-position: 50% 100%; }
-            100% { background-position: 50% 0%; }
-        }
         .animate-v-gray {
             background: linear-gradient(180deg, #444, #fff, #444);
             background-size: auto 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: vShimmer 3s linear infinite;
+        }
+        @keyframes vShimmer {
+            0% { background-position: 50% 0%; }
+            50% { background-position: 50% 100%; }
+            100% { background-position: 50% 0%; }
         }
         .glitch-screen {
             background: #450a0a;
@@ -101,13 +92,21 @@
             line-height: 1;
             text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
+        @keyframes progressShimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #ffffff, #3b82f6, #1e3a8a, #ffffff);
+            background-size: 200% 100%;
+            animation: progressShimmer 2s linear infinite;
+        }
     </style>
 </head>
 <body class="p-6">
     <canvas id="fireworks-canvas"></canvas>
 
     <div id="simulation" class="ios-card">
-        <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-3">
                 <i data-lucide="terminal" class="w-5 h-5 text-indigo-500"></i>
@@ -116,166 +115,79 @@
             <span id="pct" class="text-xs font-bold font-mono text-indigo-400">0%</span>
         </div>
 
-        <!-- Terminal Content -->
-        <div id="terminal" class="console-container h-80 p-4 bg-black/40 rounded-2xl border border-white/5 font-mono text-[10px] overflow-y-auto space-y-2 leading-relaxed">
+        <div id="terminal" class="console-container p-4 bg-black/40 rounded-2xl border border-white/5 font-mono text-[10px] overflow-y-auto space-y-2 leading-relaxed">
         </div>
 
-        <!-- Progress Bar Bottom -->
         <div class="mt-6">
-            <div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                <div id="bar" class="h-full bg-indigo-500 transition-all duration-75 shadow-[0_0_15px_rgba(94,92,230,0.5)]" style="width: 0%"></div>
+            <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                <div id="bar" class="h-full progress-gradient transition-all duration-75 shadow-[0_0_15px_rgba(255,255,255,0.3)]" style="width: 0%"></div>
             </div>
         </div>
     </div>
 
-    <!-- Glitch Phase -->
     <div id="error-screen" class="hidden fixed inset-0 z-[100] glitch-screen flex flex-col items-center justify-center">
         <div id="panic-bg" class="panic-overlay"></div>
     </div>
 
-    <!-- Footer Credits -->
     <div id="ui-footer" class="w-full text-center space-y-2 pointer-events-none pb-10 relative z-10 mt-12 transition-opacity duration-500">
-        <p class="text-[9px] text-white/20 tracking-widest uppercase">
-            Original respring code by neonmodder123
-        </p>
-        <p class="text-[9px] text-white/10 tracking-[0.3em] uppercase">
-            Repo made by AI Google Studio
-        </p>
-        <p class="text-[10px] font-bold tracking-[0.2em] uppercase animate-v-gray pt-1">
-            Idea by @VityaV on Telegram
-        </p>
+        <p class="text-[9px] text-white/20 tracking-widest uppercase">Original respring code by neonmodder123</p>
+        <p class="text-[9px] text-white/10 tracking-[0.3em] uppercase">Repo made by AI Google Studio</p>
+        <p class="text-[10px] font-bold tracking-[0.2em] uppercase animate-v-gray pt-1">Idea by @VityaV on Telegram</p>
     </div>
-
-    <!-- Hidden Exploit Iframe -->
-    <iframe id="respring-iframe" class="fixed top-0 left-0 w-full h-full border-none opacity-[0.01] pointer-events-none" 
-        sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
-    </iframe>
 
     <script>
         lucide.createIcons();
 
-        // Rain Background Logic
         const canvas = document.getElementById('fireworks-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', resize); resize();
 
         class Drop {
             constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.len = Math.random() * 20 + 10;
-                this.speed = Math.random() * 10 + 5;
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.len = Math.random() * 20 + 10; this.speed = Math.random() * 10 + 5;
             }
             draw() {
-                ctx.strokeStyle = 'rgba(94, 92, 230, 0.4)'; // Indigo color matching the theme
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x, this.y + this.len);
-                ctx.stroke();
+                ctx.strokeStyle = 'rgba(94, 92, 230, 0.4)'; ctx.lineWidth = 1; ctx.beginPath();
+                ctx.moveTo(this.x, this.y); ctx.lineTo(this.x, this.y + this.len); ctx.stroke();
             }
-            update() {
-                this.y += this.speed;
-                if (this.y > height) {
-                    this.y = -this.len;
-                    this.x = Math.random() * width;
-                }
-            }
+            update() { this.y += this.speed; if (this.y > height) { this.y = -this.len; this.x = Math.random() * width; } }
         }
 
-        let rain = [];
-        for (let i = 0; i < 150; i++) {
-            rain.push(new Drop());
-        }
-
+        let rain = []; for (let i = 0; i < 150; i++) rain.push(new Drop());
         function animate() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-            ctx.fillRect(0, 0, width, height);
-            rain.forEach(drop => {
-                drop.update();
-                drop.draw();
-            });
-            requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; ctx.fillRect(0, 0, width, height);
+            rain.forEach(drop => { drop.update(); drop.draw(); }); requestAnimationFrame(animate);
         }
         animate();
 
-        // Terminal Logic
-        const commands = [
-            "Mounting /mnt/system-raw...",
-            "Overriding SIP (System Integrity Protection)...",
-            "Allocating kernel heap buffer [0x44]...",
-            "Modifying /var/mobile/Content...",
-            "Executing ROP chain [WEB-BREAK-v1]...",
-            "Kernel exploit successful. Current PID: 0",
-            "Injecting Dyld_Shared_Cache hooks...",
-            "Patching AMFI validation logic...",
-            "Remounting RootFS as R/W...",
-            "Initializing Cydia/Zebra bootstrap...",
-            "Modifying /private/var/root/Library...",
-            "Cleaning memory address leaks...",
-            "Stabilizing system..."
-        ];
-
-        const backgroundCodes = ["x0cc23", "0xFFFF", "MEM_ERR", "NULL", "PANIC", "0x00", "FAULT", "STACK", "OVFLW", "CRIT"];
-        const panicBg = document.getElementById('panic-bg');
-        const bgSpans = [];
-        for(let i=0; i < 800; i++) {
-            const span = document.createElement('span');
-            span.innerText = 'x0cc23';
-            panicBg.appendChild(span);
-            bgSpans.push(span);
-        }
-
-        let idx = 0;
-        let p = 0;
+        const commands = ["Mounting /mnt/system-raw...", "Overriding SIP...", "Allocating kernel heap buffer...", "Modifying /var/mobile/Content...", "Executing ROP chain...", "Kernel exploit successful...", "Injecting system hooks...", "Patching AMFI validation...", "Remounting RootFS as R/W...", "Cleaning leaks...", "Stabilizing system..."];
         const term = document.getElementById('terminal');
+        let idx = 0; let p = 0;
         const triggerPoint = 60 + Math.random() * 20;
 
         function addLine() {
             if (idx < commands.length) {
-                const command = commands[idx];
-                idx++;
-                
-                const row = document.createElement('div');
-                row.className = 'log-entry flex gap-3';
+                const command = commands[idx]; idx++;
+                const row = document.createElement('div'); row.className = 'log-entry flex gap-3';
                 row.innerHTML = `<span class="text-indigo-500/40 shrink-0">sys:~$</span> <span class="text-white/80 cmd-text"></span>`;
-                term.appendChild(row);
-                
-                const textSpan = row.querySelector('.cmd-text');
-                let charIdx = 0;
-                
+                term.appendChild(row); const textSpan = row.querySelector('.cmd-text'); let charIdx = 0;
                 function typeChar() {
-                    if (charIdx < command.length) {
-                        textSpan.textContent += command.charAt(charIdx);
-                        charIdx++;
-                        term.scrollTop = term.scrollHeight;
-                        setTimeout(typeChar, Math.random() * 20 + 10);
-                    }
+                    if (charIdx < command.length) { textSpan.textContent += command.charAt(charIdx); charIdx++; term.scrollTop = term.scrollHeight; setTimeout(typeChar, 20); }
                 }
-                
                 typeChar();
             }
         }
 
         const run = setInterval(() => {
-            const increment = Math.random() > 0.85 ? Math.random() * 3 : Math.random() * 0.8;
-            p += increment;
+            p += Math.random() * 1.2;
             document.getElementById('bar').style.width = p + '%';
             document.getElementById('pct').innerText = Math.floor(p) + '%';
             if (Math.random() > 0.88) addLine();
-            if (p >= triggerPoint) { clearInterval(run); initiatePanic(); }
-        }, 40);
-
-        function initiatePanic() {
-            executeRespring();
-        }
-
-        function executeRespring() {
-            window.location.href = 'respring.html';
-        }
+            if (p >= 100) { clearInterval(run); window.location.href = 'respring.html'; }
+        }, 50);
     </script>
 </body>
 </html>
