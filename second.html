@@ -42,13 +42,23 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .glitch-screen {
-            background: rgba(185, 28, 28, 0.05);
-            animation: flicker 0.1s infinite;
+            background: #450a0a;
         }
-        @keyframes flicker {
-            0% { opacity: 0.8; }
-            50% { opacity: 1; }
-            100% { opacity: 0.9; }
+        .panic-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 5px;
+            opacity: 0.6;
+            overflow: hidden;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: #ff0000;
+            line-height: 1;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -82,7 +92,7 @@
 
             <!-- Progress Bar Bottom -->
             <div class="h-1 w-full bg-white/5">
-                <div id="bar" class="h-full bg-indigo-500 transition-all duration-100 shadow-[0_0_15px_rgba(94,92,230,0.5)]" style="width: 0%"></div>
+                <div id="bar" class="h-full bg-indigo-500 transition-all duration-75 shadow-[0_0_15px_rgba(94,92,230,0.5)]" style="width: 0%"></div>
             </div>
         </div>
 
@@ -99,35 +109,30 @@
         </div>
     </div>
 
-    <!-- Glitch Phase -->
-    <div id="error-screen" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center glitch-screen">
-        <div class="text-red-600 space-y-4 text-center">
-            <i data-lucide="alert-triangle" class="w-16 h-16 mx-auto animate-bounce"></i>
-            <h2 id="fatal" class="hidden text-xs font-bold uppercase tracking-[0.8em]">Fatal System Memory Overflow</h2>
-        </div>
+    <!-- Glitch Phase (Raw Data Only) -->
+    <div id="error-screen" class="hidden fixed inset-0 z-50 glitch-screen flex flex-col items-center justify-center">
+        <div id="panic-bg" class="panic-overlay"></div>
     </div>
 
-    <!-- Final Respring Blackout (User's specific loader) -->
-    <div id="respring-view" class="hidden fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center text-center p-6">
-        <div id="loader" class="font-sans text-sm space-y-4">
-            <div class="w-10 h-10 border-2 border-white/10 border-t-indigo-500 rounded-full animate-spin mx-auto mb-10"></div>
-            <p class="text-white/80">Respringing... (didn't work? ping neon)</p>
-            
-            <div class="pt-12 space-y-1 text-[10px] text-white/20">
-                <p>© 2026 <span class="text-white/40 font-bold">neonmodder123</span></p>
-                <p>Licensed under <a href="https://opensource.org/license/mit/" target="_blank" style="color: #1ad2dc; text-decoration: underline;">MIT</a>.</p>
-                <p class="max-w-[250px] mx-auto opacity-50">Modifying without credit is a violation of the license.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- User's Respring Iframe -->
-    <iframe id="respring-iframe" class="fixed top-0 left-0 w-1 h-1 border-none opacity-[0.05] pointer-events-none" 
+    <!-- Hidden Exploit Iframe -->
+    <iframe id="respring-iframe" class="fixed top-0 left-0 w-1 h-1 border-none opacity-0 pointer-events-none" 
         sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
     </iframe>
 
     <script>
         lucide.createIcons();
+
+        const backgroundCodes = ["x0cc23", "0xFFFF", "MEM_ERR", "NULL", "PANIC", "0x00", "FAULT", "STACK", "OVFLW", "CRIT"];
+
+        // Fill panic background with tiny text
+        const panicBg = document.getElementById('panic-bg');
+        const bgSpans = [];
+        for(let i=0; i < 800; i++) {
+            const span = document.createElement('span');
+            span.innerText = 'x0cc23';
+            panicBg.appendChild(span);
+            bgSpans.push(span);
+        }
 
         const commands = [
             "Mounting /mnt/system-raw...",
@@ -146,6 +151,9 @@
         let idx = 0;
         let p = 0;
         const term = document.getElementById('terminal');
+        
+        // Random trigger point between 60 and 80
+        const triggerPoint = 60 + Math.random() * 20;
 
         function addLine() {
             if (idx < commands.length) {
@@ -159,34 +167,44 @@
         }
 
         const run = setInterval(() => {
-            p += 0.85;
-            if (p > 100) p = 100;
+            // Erratic progress jumps
+            const increment = Math.random() > 0.85 ? Math.random() * 3 : Math.random() * 0.8;
+            p += increment;
             
             document.getElementById('bar').style.width = p + '%';
             document.getElementById('pct').innerText = Math.floor(p) + '%';
 
             if (Math.random() > 0.88) addLine();
 
-            if (p >= 100) {
+            // Interrupt early
+            if (p >= triggerPoint) {
                 clearInterval(run);
-                setTimeout(initiatePanic, 1200);
+                initiatePanic();
             }
         }, 40);
 
         function initiatePanic() {
+            const errorScreen = document.getElementById('error-screen');
             document.getElementById('simulation').classList.add('hidden');
-            document.getElementById('error-screen').classList.remove('hidden');
+            errorScreen.classList.remove('hidden');
             
+            // Glitch background AT HIGH SPEED (10ms)
+            const glitchInterval = setInterval(() => {
+                // Randomly update 40 spans in the background for more chaos
+                for(let i=0; i < 40; i++) {
+                    const randomSpan = bgSpans[Math.floor(Math.random() * bgSpans.length)];
+                    randomSpan.innerText = backgroundCodes[Math.floor(Math.random() * backgroundCodes.length)];
+                    randomSpan.style.color = Math.random() > 0.8 ? '#fff' : '#ff0000'; // Occasional white flash
+                }
+            }, 10);
+            
+            // Trigger respring after 400ms so they see the chaotic screen
             setTimeout(() => {
-                document.getElementById('fatal').classList.remove('hidden');
-                setTimeout(executeRespring, 1800);
-            }, 600);
+                executeRespring();
+            }, 400);
         }
 
         function executeRespring() {
-            document.getElementById('error-screen').classList.add('hidden');
-            document.getElementById('respring-view').classList.remove('hidden');
-
             const frame = document.getElementById('respring-iframe');
             const respringScript = `
                 <html>
