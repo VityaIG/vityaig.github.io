@@ -156,6 +156,53 @@
             -webkit-text-fill-color: transparent;
             animation: vShimmer 3s linear infinite;
         }
+
+        /* Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        input:checked + .slider {
+            background-color: #6366f1; /* Indigo */
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .slider.round {
+            border-radius: 24px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body class="p-6">
@@ -235,8 +282,29 @@
         </p>
     </div>
 
-    <!-- Toggle Controls -->
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-3">
+    <!-- Drawing Info Notification -->
+    <div id="drawing-info" class="fixed top-8 left-1/2 -translate-x-1/2 z-[60] py-2 px-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full pointer-events-none transition-all duration-700 transform -translate-y-[150%] opacity-0">
+        <div class="flex items-center gap-3">
+            <div id="notif-dot" class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse"></div>
+            <span id="notif-text" class="text-[10px] font-mono uppercase tracking-[0.2em] text-white/60">Auto-Fireworks disabled. Interactive mode enabled.</span>
+        </div>
+    </div>
+
+    <!-- Toggle Controls (Left) -->
+    <div class="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-4">
+        <!-- Switcher Menu (Visible when UI hidden) -->
+        <div id="switcher-menu" class="flex flex-col items-start gap-1.5 p-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl opacity-0 pointer-events-none transition-all duration-500 transform translate-y-4">
+            <span class="text-[8px] font-mono uppercase tracking-[0.3em] text-white/30 ml-0.5">Auto Fireworks</span>
+            <label class="switch">
+                <input type="checkbox" id="fireworks-toggle-checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Toggle Controls (Right) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-4">
+
         <!-- Fireworks Color Control Container -->
         <div class="relative flex items-center justify-center">
             <!-- Color Name Toast -->
@@ -354,7 +422,41 @@
         const hideIcon = document.getElementById('hide-ui-icon');
         const card = document.querySelector('.ios-card');
         const footer = document.getElementById('ui-footer');
+        const switcherMenu = document.getElementById('switcher-menu');
+        const drawingInfo = document.getElementById('drawing-info');
+        const notifText = document.getElementById('notif-text');
+        const notifDot = document.getElementById('notif-dot');
+        const fxCheckbox = document.getElementById('fireworks-toggle-checkbox');
+        
         let uiHidden = false;
+        let autoFX = true;
+        let notifTimeout;
+
+        function showNotification(msg, isError = false) {
+            clearTimeout(notifTimeout);
+            notifText.innerText = msg;
+            notifDot.classList.toggle('bg-red-500', isError);
+            notifDot.classList.toggle('bg-indigo-500', !isError);
+            
+            // Slide down
+            drawingInfo.classList.remove('-translate-y-[150%]', 'opacity-0');
+            drawingInfo.classList.add('translate-y-0', 'opacity-100');
+            
+            // Slide up after 2 seconds
+            notifTimeout = setTimeout(() => {
+                drawingInfo.classList.add('-translate-y-[150%]', 'opacity-0');
+                drawingInfo.classList.remove('translate-y-0', 'opacity-100');
+            }, 2000);
+        }
+
+        fxCheckbox.addEventListener('change', () => {
+            autoFX = fxCheckbox.checked;
+            
+            if (uiHidden) {
+                const msg = autoFX ? "Auto-Fireworks enabled." : "Auto-Fireworks disabled. Interactive mode active.";
+                showNotification(msg, !autoFX);
+            }
+        });
 
         hideBtn.addEventListener('click', () => {
             uiHidden = !uiHidden;
@@ -364,6 +466,19 @@
             card.style.transition = 'all 0.5s ease';
             footer.style.opacity = uiHidden ? '0' : '1';
             
+            // Switcher Menu logic
+            if (uiHidden) {
+                switcherMenu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                switcherMenu.classList.add('opacity-100', 'translate-y-0');
+                showNotification("UI Hidden. Master Controls active.");
+            } else {
+                switcherMenu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                switcherMenu.classList.remove('opacity-100', 'translate-y-0');
+                // Hide notification immediately if UI is restored
+                drawingInfo.classList.add('-translate-y-[150%]', 'opacity-0');
+                drawingInfo.classList.remove('translate-y-0', 'opacity-100');
+            }
+
             if (!uiHidden) colorToast.style.opacity = '0';
 
             hideIcon.setAttribute('data-lucide', uiHidden ? 'eye' : 'eye-off');
@@ -556,7 +671,7 @@
             
             ctx.globalCompositeOperation = 'source-over';
             
-            if (!uiHidden && Math.random() < 0.05) {
+            if (autoFX && Math.random() < 0.05) {
                 fireworks.push(new Firework());
             }
 
@@ -628,7 +743,7 @@
         // INITIAL LOAD: apply saved theme
         updateTheme(currentFireworkColor);
 
-        // INTERACTIVE: Launch firework on click & drag
+        // INTERACTIVE: Launch firework or draw
         let isDragging = false;
 
         window.addEventListener('mousedown', (e) => {
@@ -639,7 +754,7 @@
 
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            fireworks.push(new Firework(e.clientX, e.clientY, true, 3)); // Only 3 particles for lag reduction
+            fireworks.push(new Firework(e.clientX, e.clientY, true, 3));
         });
 
         window.addEventListener('mouseup', () => {
@@ -657,7 +772,7 @@
         window.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             const touch = e.touches[0];
-            fireworks.push(new Firework(touch.clientX, touch.clientY, true, 3)); // Only 3 particles for lag reduction
+            fireworks.push(new Firework(touch.clientX, touch.clientY, true, 3));
         });
 
         window.addEventListener('touchend', () => {
