@@ -21,29 +21,6 @@
             position: relative;
         }
 
-        /* Dynamic Red Mist */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 70%);
-            animation: mistShift 10s ease-in-out infinite alternate;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Static/Grain Overlay */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: -200%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.15;
-            pointer-events: none;
-            animation: noise 0.2s steps(2) infinite;
-            z-index: 2;
-        }
-
         @keyframes mistShift {
             0% { transform: scale(1) translate(-2%, -2%); }
             100% { transform: scale(1.2) translate(2%, 2%); }
