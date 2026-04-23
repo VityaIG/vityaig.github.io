@@ -63,7 +63,6 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background: #000;
         }
         #views-strip {
             position: absolute;
@@ -611,11 +610,18 @@
 
         hideBtn.addEventListener('click', () => {
             uiHidden = !uiHidden;
-            card.style.opacity = uiHidden ? '0' : '1';
-            card.style.pointerEvents = uiHidden ? 'none' : 'auto';
-            card.style.transform = uiHidden ? 'scale(0.95)' : 'scale(1)';
-            card.style.transition = 'all 0.5s ease';
-            footer.style.opacity = uiHidden ? '0' : '1';
+            
+            // Target the entire views system
+            const viewsWrapper = document.getElementById('views-wrapper');
+            viewsWrapper.style.opacity = uiHidden ? '0' : '1';
+            viewsWrapper.style.pointerEvents = uiHidden ? 'none' : 'auto';
+            viewsWrapper.style.transition = 'opacity 0.5s ease';
+            
+            // Also hide the credits toggle and color button
+            creditsBtn.style.opacity = uiHidden ? '0' : '1';
+            creditsBtn.style.pointerEvents = uiHidden ? 'none' : 'auto';
+            colorBtn.style.opacity = uiHidden ? '0' : '1';
+            colorBtn.style.pointerEvents = uiHidden ? 'none' : 'auto';
             
             // Switcher Menu logic
             if (uiHidden) {
