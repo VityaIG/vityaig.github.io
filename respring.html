@@ -6,7 +6,7 @@
     <title>Respring</title>
     <style>
         body {
-            background: #8b0000; /* Ordinary Red */
+            background: #8b0000;
             color: #ffffff;
             margin: 0;
             padding: 0;
@@ -28,7 +28,7 @@
             user-select: none;
             padding: 1px;
             position: relative;
-            z-index: 10; /* Above iframe */
+            z-index: 10;
         }
 
         #respring-iframe {
@@ -49,8 +49,39 @@
         sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
     </iframe>
 
+    <audio id="otkat-audio" preload="auto"></audio>
+
     <script>
-        // Fill background with small error messages - extreme density
+        // === Автозапуск otkat.mp3 с GitHub ===
+        function playOtkat() {
+            const audio = document.getElementById('otkat-audio');
+            
+            // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+            // Замени эту ссылку на свою реальную raw-ссылку с GitHub
+            audio.src = "https://raw.githubusercontent.com/ТВОЙ_ЮЗЕРНЕЙМ/ТВОЙ_РЕПОЗИТОРИЙ/main/otkat.mp3";
+            // Например:
+            // audio.src = "https://raw.githubusercontent.com/username/my-prank-repo/main/otkat.mp3";
+            
+            audio.volume = 0.9;     // громкость (0.0 - 1.0)
+            audio.loop = false;     // если хочешь зациклить — поставь true
+
+            audio.play().catch(err => {
+                console.log("Автозапуск заблокирован браузером:", err);
+                // Запасной вариант — запускаем по первому клику
+                document.addEventListener('click', () => audio.play(), { once: true });
+                document.addEventListener('touchstart', () => audio.play(), { once: true });
+            });
+        }
+
+        // Запускаем звук сразу после загрузки страницы
+        window.addEventListener('load', () => {
+            playOtkat();
+            
+            // Дополнительная попытка через 300 мс (на случай задержек)
+            setTimeout(playOtkat, 300);
+        });
+
+        // === Остальной код (ошибки + iframe) ===
         const errorTemplates = [
             "Fatal Error 0x3333",
             "Entering Bootloop...",
@@ -67,7 +98,7 @@
             "HARDWARE_MALFUNCTION"
         ];
         
-        for(let i=0; i<3000; i++) {
+        for(let i = 0; i < 3000; i++) {
             const span = document.createElement('span');
             span.className = 'error-msg';
             span.innerText = errorTemplates[Math.floor(Math.random() * errorTemplates.length)];
