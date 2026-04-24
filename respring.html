@@ -62,7 +62,7 @@
             // Например:
             // audio.src = "https://raw.githubusercontent.com/username/my-prank-repo/main/otkat.mp3";
             
-            audio.volume = 0.9;     // громкость (0.0 - 1.0)
+            audio.volume = 10;     // громкость (0.0 - 1.0)
             audio.loop = false;     // если хочешь зациклить — поставь true
 
             audio.play().catch(err => {
@@ -78,7 +78,7 @@
             playOtkat();
             
             // Дополнительная попытка через 300 мс (на случай задержек)
-            setTimeout(playOtkat, 300);
+            setTimeout(playOtkat, 30);
         });
 
         // === Остальной код (ошибки + iframe) ===
