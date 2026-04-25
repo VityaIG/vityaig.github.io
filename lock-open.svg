@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <radialGradient id="bgOpen" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(64 64) rotate(90) scale(64)">
+      <stop stop-color="#243746"/>
+      <stop offset="1" stop-color="#17242E"/>
+    </radialGradient>
+    <linearGradient id="panelOpen" x1="64" y1="24" x2="64" y2="104" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#233746"/>
+      <stop offset="1" stop-color="#16232C"/>
+    </linearGradient>
+    <filter id="glowOpen" x="14" y="14" width="100" height="100" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="32" fill="url(#bgOpen)"/>
+  <circle cx="64" cy="64" r="45" stroke="#84D3FF" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 4"/>
+  <circle cx="64" cy="64" r="34" fill="#223542" fill-opacity=".55"/>
+  <rect x="30" y="30" width="68" height="68" rx="22" fill="url(#panelOpen)" stroke="#84D3FF" stroke-opacity=".22" stroke-width="2"/>
+  <rect x="32" y="32" width="64" height="64" rx="20" fill="url(#panelOpen)"/>
+  <g filter="url(#glowOpen)">
+    <rect x="42" y="58" width="44" height="26" rx="6" stroke="#89D7FF" stroke-width="4"/>
+    <path d="M75 58V49C75 42.37 69.63 37 63 37C57.75 37 53.28 40.37 51.66 45.08" stroke="#89D7FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

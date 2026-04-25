@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB-BREAK</title>
+    <meta name="description" content="Browser jailbreak and iOS downgrader for iOS 15 - 26.x. Run it directly in your mobile browser.">
+    <meta name="theme-color" content="#081014">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="WEB-BREAK">
+    <meta property="og:url" content="https://vityaig.github.io/">
+    <meta property="og:title" content="WEB-BREAK - Browser Jailbreak / iOS Downgrader">
+    <meta property="og:description" content="Browser jailbreak and iOS downgrader for iOS 15 - 26.x. Run it directly in your mobile browser.">
+    <meta property="og:image" content="embed-index.png">
+    <meta property="og:image:alt" content="WEB-BREAK closed lock icon">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@WEBBREAK">
+    <meta name="twitter:title" content="WEB-BREAK - Browser Jailbreak / iOS Downgrader">
+    <meta name="twitter:description" content="Browser jailbreak and iOS downgrader for iOS 15 - 26.x. Run it directly in your mobile browser.">
+    <meta name="twitter:image" content="embed-index.png">
+    <link rel="icon" type="image/svg+xml" href="lock-closed.svg">
+    <link rel="shortcut icon" href="lock-closed.svg">
+    <link rel="apple-touch-icon" href="lock-closed.svg">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #081014;
+            --panel: rgba(10, 18, 24, 0.82);
+            --panel-strong: rgba(10, 18, 24, 0.92);
+            --line: rgba(189, 242, 240, 0.09);
+            --line-strong: rgba(189, 242, 240, 0.16);
+            --text: #eaf3f2;
+            --muted: rgba(226, 241, 241, 0.56);
+            --muted-2: rgba(226, 241, 241, 0.34);
+            --accent: #7df9d0;
+            --accent-rgb: 125, 249, 208;
+            --accent-2: #ffd166;
+            --success: #89ffb4;
+            --shadow: 0 24px 72px rgba(0, 0, 0, 0.34);
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --side-control-width: 110px;
+        }
+
+        * { box-sizing: border-box; }
+        html { height: 100%; color-scheme: dark; }
+
+        body {
+            min-height: 100%;
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.12), transparent 30%),
+                radial-gradient(circle at 85% 15%, rgba(255, 209, 102, 0.08), transparent 24%),
+                linear-gradient(180deg, #081116 0%, #091217 38%, #060b0f 100%);
+            overflow: hidden;
+            transition: background 720ms cubic-bezier(0.22, 1, 0.36, 1);
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: radial-gradient(circle at center, black 24%, transparent 82%);
+            pointer-events: none;
+            opacity: 0.22;
+            transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: -12%;
+            background:
+                radial-gradient(circle at 20% 18%, rgba(125, 249, 208, 0.05), transparent 24%),
+                radial-gradient(circle at 76% 18%, rgba(255, 156, 171, 0.05), transparent 22%),
+                radial-gradient(circle at 50% 78%, rgba(99, 163, 255, 0.04), transparent 28%);
+            opacity: 0.1;
+            pointer-events: none;
+            transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1), transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.credits-active::before {
+            opacity: 0.28;
+            transform: scale(1.03);
+        }
+
+        body.credits-active::after {
+            opacity: 0.14;
+            transform: translateY(-1%) scale(1.02);
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            transition:
+                transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 420ms ease;
+        }
+
+        .page-stack {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 200vh;
+            display: flex;
+            flex-direction: column;
+            transition: transform 860ms cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+        }
+
+        body.credits-active .page-stack {
+            transform: translateY(-100vh);
+        }
+
+        .page-view {
+            height: 100vh;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px 16px;
+        }
+
+        .app {
+            position: relative;
+            width: min(100%, 430px);
+            height: min(608px, calc(100vh - 34px));
+            overflow: hidden;
+            transition:
+                transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 520ms cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+            contain: layout paint style;
+        }
+
+        .credits-app {
+            height: min(536px, calc(100vh - 34px));
+        }
+
+        body.credits-active .shell { transform: translateY(0); }
+
+        body.credits-active .app { transform: translateY(0); }
+
+        .panel {
+            position: relative;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(16, 25, 31, 0.92), rgba(8, 14, 19, 0.9));
+            border: 1px solid var(--line);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            contain: paint;
+        }
+
+        .panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 18%, transparent 84%, rgba(255,255,255,0.02));
+        }
+
+        .main-panel,
+        .credits-panel {
+            position: relative;
+            z-index: 1;
+            padding: 22px;
+            padding-bottom: 70px;
+            display: grid;
+            gap: 16px;
+            align-content: start;
+            transition:
+                opacity 420ms ease,
+                transform 760ms cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .main-panel {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .app.is-running .main-panel {
+            gap: 12px;
+        }
+
+        .credits-panel {
+            opacity: 0.3;
+            transform: translateY(18px) scale(0.985);
+            padding-top: 24px;
+        }
+
+        body.credits-active .main-panel {
+            opacity: 0.9;
+            transform: translateY(-8px) scale(0.99);
+        }
+
+        body.credits-active .credits-panel {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .eyebrow,
+        .tiny-label,
+        .chip,
+        select,
+        button,
+        .toast,
+        .notification,
+        .status-log,
+        .progress-meta {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        h1, h2, p { margin: 0; }
+
+        .hero-header {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            justify-items: center;
+            text-align: center;
+            transition: grid-template-columns .36s cubic-bezier(0.22, 1, 0.36, 1), gap .28s ease, transform .28s ease;
+        }
+
+        .halo {
+            position: relative;
+            width: 88px;
+            height: 88px;
+            display: grid;
+            place-items: center;
+            transition: width .28s ease, height .28s ease;
+        }
+
+        .badge-beta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 22px;
+            padding: 0 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(var(--accent-rgb), 0.18);
+            background: rgba(var(--accent-rgb), 0.08);
+            color: var(--accent);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .cta .badge-beta {
+            min-height: 18px;
+            padding: 0 7px;
+            margin-left: 2px;
+            background: rgba(var(--accent-rgb), 0.12);
+            border-color: rgba(var(--accent-rgb), 0.24);
+            font-size: 7px;
+            letter-spacing: 0.1em;
+            flex: 0 0 auto;
+        }
+
+        .halo::before,
+        .halo::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .halo::before {
+            inset: 0;
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.1), transparent 65%);
+            filter: blur(14px);
+            animation: pulseGlow 4.2s ease-in-out infinite;
+        }
+
+        .halo::after {
+            inset: 8px;
+            border: 1px dashed rgba(var(--accent-rgb), 0.16);
+            animation: spin 18s linear infinite;
+        }
+
+        .halo-inner {
+            position: relative;
+            z-index: 1;
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            background:
+                linear-gradient(180deg, rgba(var(--accent-rgb), 0.14), rgba(var(--accent-rgb), 0.04)),
+                rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(var(--accent-rgb), 0.18);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 18px rgba(var(--accent-rgb), 0.06);
+            transition: width .28s ease, height .28s ease, border-radius .28s ease;
+        }
+
+        .halo-inner svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+            filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.24));
+        }
+
+        .title-wrap {
+            display: grid;
+            gap: 8px;
+            justify-items: center;
+            transition: gap .28s ease;
+        }
+
+        .eyebrow,
+        .chip,
+        .firmware-select,
+        .support-badge,
+        .device-grid,
+        #theme-cycle-btn {
+            max-height: 160px;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            overflow: hidden;
+            transition:
+                opacity .24s ease,
+                transform .3s cubic-bezier(0.22, 1, 0.36, 1),
+                max-height .3s cubic-bezier(0.22, 1, 0.36, 1),
+                margin .3s cubic-bezier(0.22, 1, 0.36, 1),
+                padding .3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .eyebrow {
+            margin: 0;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            font-size: 10px;
+        }
+
+        h1 {
+            font-size: clamp(1.95rem, 6vw, 2.65rem);
+            line-height: 1;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .title-gradient {
+            background: linear-gradient(90deg, #fff 0%, var(--accent) 46%, #fff1c2 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShimmer 10s ease-in-out infinite;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            background: rgba(255,255,255,.025);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .chip .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px rgba(137,255,180,.4);
+        }
+
+        .hero-copy p {
+            color: var(--muted);
+            font-size: .78rem;
+            line-height: 1.3;
+        }
+
+        .controls {
+            display: grid;
+            gap: 12px;
+            padding: 14px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.012));
+            transition: gap .28s ease, padding .28s ease;
+        }
+
+        .firmware-select {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) var(--side-control-width);
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .firmware-current,
+        .firmware-picker {
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: rgba(4, 10, 14, .72);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .firmware-current {
+            justify-content: flex-start;
+            padding: 0 12px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .firmware-picker {
+            justify-content: center;
+            padding: 0 28px 0 12px;
+            background: rgba(255,255,255,.032);
+            color: var(--text);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .firmware-picker-label {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .firmware-picker select {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            border: 0;
+            border-radius: inherit;
+            background: transparent;
+            color: transparent;
+            appearance: none;
+            cursor: pointer;
+            opacity: 0;
+            color-scheme: dark;
+            font-size: 12px;
+        }
+
+        .firmware-picker select option {
+            background: #0b1217;
+            color: var(--text);
+            font-size: 12px;
+        }
+
+        .firmware-picker svg {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .firmware-picker.haptic-target.is-pressed {
+            transform: scale(0.985);
+        }
+
+        .cta-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) var(--side-control-width);
+            gap: 10px;
+            transition: grid-template-columns .28s ease, gap .28s ease;
+        }
+
+        .app.is-running .hero-header {
+            grid-template-columns: 46px minmax(0, 1fr);
+            gap: 10px;
+            justify-items: start;
+            align-items: center;
+            text-align: left;
+        }
+
+        .app.is-running .title-wrap {
+            justify-items: start;
+            gap: 2px;
+        }
+
+        .app.is-running .halo {
+            width: 46px;
+            height: 46px;
+        }
+
+        .app.is-running .eyebrow,
+        .app.is-running .chip,
+        .app.is-running .firmware-select,
+        .app.is-running .support-badge,
+        .app.is-running .device-grid,
+        .app.is-running #theme-cycle-btn {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.96);
+            max-height: 0;
+            margin: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            pointer-events: none;
+        }
+
+        .app.is-running-collapsed .eyebrow,
+        .app.is-running-collapsed .chip,
+        .app.is-running-collapsed .firmware-select,
+        .app.is-running-collapsed .support-badge,
+        .app.is-running-collapsed .device-grid,
+        .app.is-running-collapsed #theme-cycle-btn {
+            display: none !important;
+        }
+
+        .app.is-running .halo::before,
+        .app.is-running .halo::after {
+            opacity: 0;
+            transform: scale(0.86);
+            transition: opacity .24s ease, transform .3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .app.is-running .halo-inner {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+        }
+
+        .app.is-running .halo-inner svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .app.is-running h1 {
+            font-size: 1.24rem;
+            letter-spacing: .09em;
+        }
+
+        .app.is-running .controls {
+            gap: 8px;
+            padding: 10px 12px 12px;
+        }
+
+        .app.is-running .cta-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .app.is-running .progress-block {
+            gap: 8px;
+            padding-top: 0;
+            margin-top: -2px;
+        }
+
+        .app.is-exiting {
+            transform: translateX(118%) scale(0.97);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.site-exiting::before {
+            opacity: 0.08;
+            transform: scale(1.01);
+        }
+
+        body.site-exiting::after {
+            opacity: 0.04;
+            transform: scale(1.01);
+        }
+
+        body.site-exiting .shell {
+            transform: translateX(28px);
+            opacity: 0.82;
+        }
+
+        body.site-exiting canvas {
+            opacity: 0.34;
+            transition: opacity 560ms ease;
+        }
+
+        .ghost-btn,
+        .cta {
+            appearance: none;
+            border: 0;
+            cursor: pointer;
+            transition: transform .22s cubic-bezier(0.22, 1, 0.36, 1), opacity .18s ease, box-shadow .22s ease;
+            will-change: transform;
+        }
+
+        .ghost-btn {
+            min-height: 46px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.032);
+            color: var(--text);
+            display: inline-grid;
+            place-items: center;
+        }
+
+        .ghost-btn:hover,
+        .cta:hover { transform: translateY(-1px); }
+        .ghost-btn:active,
+        .cta:active { transform: translateY(1px); }
+
+        .haptic-target {
+            transform-origin: center;
+        }
+
+        .haptic-target.is-pressed {
+            transform: translateY(1px) scale(0.975);
+        }
+
+        .haptic-target.is-released {
+            animation: hapticRelease 380ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        button:focus-visible,
+        select:focus-visible {
+            outline: 2px solid rgba(var(--accent-rgb), 0.26);
+            outline-offset: 2px;
+        }
+
+        .ghost-btn svg { width: 17px; height: 17px; }
+
+        .theme-btn {
+            width: var(--side-control-width);
+            min-width: var(--side-control-width);
+            padding: 0 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .cta {
+            min-height: 48px;
+            border-radius: 18px;
+            border: 1px solid rgba(var(--accent-rgb), .35);
+            background:
+                linear-gradient(90deg, rgba(var(--accent-rgb), .2), rgba(var(--accent-rgb), .08)),
+                rgba(255,255,255,.03);
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 14px;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 8px 18px rgba(var(--accent-rgb), .1);
+        }
+
+        .cta[disabled],
+        .ghost-btn[disabled] {
+            opacity: .45;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cta svg { width: 16px; height: 16px; }
+
+        .credits-launch {
+            min-height: 42px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(15, 19, 24, 0.88);
+            color: var(--muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 14px;
+            font-size: 9px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .credits-launch svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent);
+        }
+
+        .support-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 36px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(137,255,180,.16);
+            background: rgba(137,255,180,.06);
+            color: var(--success);
+            font-size: .65rem;
+        }
+
+        .support-badge.unsupported {
+            color: #ffb3b3;
+            border-color: rgba(255,107,107,.22);
+            background: rgba(255,107,107,.08);
+        }
+
+        .support-badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .device-card,
+        .credit-card {
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.022);
+        }
+
+        .device-card {
+            padding: 12px;
+            min-height: 62px;
+            display: grid;
+            gap: 5px;
+        }
+
+        .tiny-label {
+            color: rgba(226, 241, 241, 0.45);
+            font-size: 8px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .device-value {
+            font-size: .84rem;
+            line-height: 1.45;
+        }
+
+        .progress-block {
+            display: none;
+            gap: 10px;
+            padding-top: 2px;
+        }
+
+        .progress-block.active { display: grid; }
+
+        .runtime-warning {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            min-height: 32px;
+            padding: 7px 10px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 209, 102, 0.14);
+            background: linear-gradient(180deg, rgba(255, 209, 102, 0.05), rgba(255, 255, 255, 0.015));
+            color: rgba(255, 236, 198, 0.88);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.015);
+        }
+
+        .runtime-warning.active {
+            display: flex;
+        }
+
+        .runtime-warning svg {
+            width: 14px;
+            height: 14px;
+            color: #ffd166;
+            flex: 0 0 auto;
+        }
+
+        .runtime-warning-text {
+            display: grid;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .runtime-warning-title {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 7px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #ffe6a6;
+        }
+
+        .runtime-warning-copy {
+            font-size: 9px;
+            line-height: 1.2;
+            color: rgba(234, 243, 242, 0.66);
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 9px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .progress-shell {
+            position: relative;
+            min-height: 16px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.045);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .progress-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+            transform: translateX(-100%);
+            animation: sweep 3.8s linear infinite;
+        }
+
+        .progress-bar {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(var(--accent-rgb), .6), rgba(255,209,102,.88));
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), .2);
+            transition: width .18s ease;
+        }
+
+        .status-log {
+            margin: 0;
+            min-height: 48px;
+            padding: 11px 12px;
+            border-radius: 16px;
+            background: rgba(0,0,0,.22);
+            border: 1px solid rgba(255,255,255,.06);
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.7;
+        }
+
+        .credits-title {
+            text-align: center;
+            font-size: clamp(1.45rem, 5vw, 2rem);
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: .24em;
+            color: #ff9cab;
+            text-shadow: 0 0 10px rgba(255,156,171,.08);
+            margin-bottom: 2px;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .credit-card {
+            padding: 16px;
+            display: grid;
+            gap: 8px;
+            min-height: 110px;
+            border-radius: 26px;
+            background: linear-gradient(180deg, rgba(8, 12, 18, .98), rgba(6, 10, 16, .94));
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,.02),
+                0 8px 20px rgba(0,0,0,.14);
+        }
+
+        .credit-card.wide {
+            grid-column: 1 / -1;
+            min-height: 92px;
+        }
+
+        .credit-card.horizontal {
+            grid-template-columns: 54px minmax(0, 1fr);
+            align-items: center;
+        }
+
+        .credit-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .credit-card.featured .credit-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,209,102,.08);
+            border-color: rgba(255,209,102,.18);
+        }
+
+        .credit-card.compact {
+            min-height: 134px;
+            justify-items: start;
+            align-content: center;
+        }
+
+        .credit-card.compact .credit-body {
+            justify-items: start;
+            gap: 7px;
+        }
+
+        .credit-card.featured .credit-icon svg { color: #ffd54d; }
+        .credit-card.purple .credit-icon { background: rgba(114,96,255,.08); border-color: rgba(114,96,255,.18); }
+        .credit-card.purple .credit-icon svg { color: #8d7bff; }
+        .credit-card.blue .credit-icon { background: rgba(63,137,255,.08); border-color: rgba(63,137,255,.18); }
+        .credit-card.blue .credit-icon svg { color: #63a3ff; }
+        .credit-card.green .credit-icon { background: rgba(38,232,170,.08); border-color: rgba(38,232,170,.18); }
+        .credit-card.green .credit-icon svg { color: #28efb0; }
+
+        .credit-card svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .credit-body {
+            display: grid;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .credit-headline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .credit-name {
+            font-size: .9rem;
+            line-height: 1.3;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+        }
+
+        .credit-card.featured .credit-name {
+            color: #ffe36e;
+            font-size: 1rem;
+        }
+
+        .credit-card.purple .credit-name { color: #ba88ff; }
+        .credit-card.blue .credit-name { color: #f2f6ff; }
+        .credit-card.green .credit-name { color: #8af5cf; }
+
+        .credit-role {
+            color: var(--muted);
+            font-size: .62rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+        .credit-sparkle {
+            width: 14px;
+            height: 14px;
+            color: #d6a623;
+            opacity: 0.9;
+            flex: 0 0 auto;
+        }
+
+        .credit-badge {
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgba(114,96,255,.08);
+            color: #8d7bff;
+            flex: 0 0 auto;
+        }
+
+        .credit-badge svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .toggle-dock {
+            position: fixed;
+            left: 50%;
+            bottom: max(18px, env(safe-area-inset-bottom));
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            pointer-events: auto;
+            width: max-content;
+            max-width: calc(100vw - 28px);
+            transform: translateX(-50%);
+            transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1), opacity 720ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .toggle-dock .credits-launch {
+            min-width: 178px;
+        }
+
+        body.credits-active .toggle-dock .credits-launch {
+            background: rgba(12, 17, 22, 0.96);
+            border-color: rgba(var(--accent-rgb), .18);
+            color: var(--text);
+        }
+
+        body.credits-active .toggle-dock {
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        body.app-running .toggle-dock {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(16px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translate(-50%, -140%);
+            z-index: 3;
+            min-width: min(92vw, 320px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(9,18,24,.86);
+            color: var(--muted);
+            box-shadow: 0 14px 32px rgba(0,0,0,.28);
+            transition: transform .26s ease, opacity .26s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .notification.visible {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .notification svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent);
+        }
+
+        .toast {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 3;
+            padding: 9px 11px;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: rgba(9,18,24,.88);
+            color: var(--text);
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity .22s ease, transform .22s ease;
+            pointer-events: none;
+        }
+
+        .toast.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes sweep {
+            to { transform: translateX(100%); }
+        }
+
+        @media (max-width: 640px) {
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .shell {
+                overflow: hidden;
+            }
+
+            .app {
+                width: min(100%, 390px);
+                height: min(574px, calc(100vh - 20px));
+            }
+
+            .credits-app {
+                height: min(506px, calc(100vh - 18px));
+            }
+
+            .main-panel,
+            .credits-panel {
+                padding: 18px;
+                padding-bottom: 64px;
+            }
+
+            .controls {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-row {
+                grid-template-columns: minmax(0, 1fr) var(--side-control-width);
+            }
+
+            .firmware-select {
+                grid-template-columns: minmax(0, 1fr) var(--side-control-width);
+                gap: 6px;
+            }
+
+            h1 { font-size: 2rem; }
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.08); }
+        }
+
+        @keyframes hapticRelease {
+            0% { transform: scale(0.975); }
+            46% { transform: scale(1.015); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworks-canvas" aria-hidden="true"></canvas>
+
+    <div class="notification" id="notification" role="status" aria-live="polite">
+        <i data-lucide="sparkles"></i>
+        <span id="notification-text">Theme changed.</span>
+    </div>
+
+    <div class="toast" id="toast" aria-hidden="true">
+        <span id="toast-text">Mint</span>
+    </div>
+
+    <main class="shell">
+        <div class="page-stack">
+            <section class="page-view">
+                <section class="app" id="app-shell">
+                    <article class="panel main-panel">
+                    <header class="hero-header">
+                        <div class="halo" aria-hidden="true">
+                            <div class="halo-inner">
+                                <i data-lucide="lock"></i>
+                            </div>
+                        </div>
+                        <div class="title-wrap">
+                            <p class="eyebrow" id="hero-eyebrow">Stage One Deployment</p>
+                            <h1 class="title-gradient">WEB-BREAK</h1>
+                            <span class="chip"><span class="dot"></span><span id="chip-version">iOS 26.4.2</span></span>
+                        </div>
+                    </header>
+
+                    <div class="controls">
+                        <div class="firmware-select">
+                            <div class="firmware-current" id="firmware-current">iOS 26.4.2</div>
+                            <div class="firmware-picker">
+                                <span class="firmware-picker-label">Select</span>
+                                <select id="ios-version" aria-label="Select target firmware">
+                                    <option value="ios-26.4.2">iOS 26.4.2</option>
+                                    <option value="ios-26.0.1">iOS 26.0.1</option>
+                                    <option value="ios-18.7.2">iOS 18.7.2</option>
+                                    <option value="ios-18.6">iOS 18.6</option>
+                                    <option value="ios-18.5">iOS 18.5</option>
+                                    <option value="ios-18.3.1">iOS 18.3.1</option>
+                                    <option value="ios-18.0">iOS 18.0</option>
+                                </select>
+                                <i data-lucide="chevrons-up-down"></i>
+                            </div>
+                        </div>
+
+                        <div class="cta-row">
+                            <button class="cta" id="jailbreak-btn" type="button">
+                                <i data-lucide="zap"></i>
+                                <span id="jailbreak-btn-text">Jailbreak</span>
+                                <span class="badge-beta">Beta</span>
+                            </button>
+                            <button class="ghost-btn theme-btn" id="theme-cycle-btn" type="button" aria-label="Cycle accent theme">
+                                <i data-lucide="palette"></i>
+                                <span>Color</span>
+                            </button>
+                        </div>
+
+                        <div class="runtime-warning" id="runtime-warning" aria-live="polite">
+                            <i data-lucide="triangle-alert"></i>
+                            <div class="runtime-warning-text">
+                                <span class="runtime-warning-title" id="warning-title">Deployment Warning</span>
+                                <span class="runtime-warning-copy" id="warning-copy">DON'T CLOSE THE WEBSITE</span>
+                            </div>
+                        </div>
+
+                        <div class="support-badge" id="support-badge">
+                            <i data-lucide="badge-check"></i>
+                            <span id="support-text">Device ready.</span>
+                        </div>
+
+                        <div class="device-grid">
+                            <div class="device-card">
+                                <div class="tiny-label">System</div>
+                                <div class="device-value" id="target-os">Detecting...</div>
+                            </div>
+                            <div class="device-card">
+                                <div class="tiny-label">Hardware</div>
+                                <div class="device-value" id="target-model">Detecting...</div>
+                            </div>
+                        </div>
+
+                        <div class="progress-block" id="progress-block">
+                            <div class="progress-meta">
+                                <span id="prep-status">Initializing...</span>
+                                <span id="prep-pct">0%</span>
+                            </div>
+                            <div class="progress-shell" aria-hidden="true">
+                                <div class="progress-bar" id="prep-bar"></div>
+                            </div>
+                            <pre class="status-log" id="status-log">Waiting for deployment request.</pre>
+                        </div>
+                    </div>
+                    </article>
+                </section>
+            </section>
+
+            <section class="page-view">
+                <section class="app credits-app">
+                    <aside class="panel credits-panel">
+                    <h2 class="credits-title">Credits</h2>
+
+                    <div class="credits-grid">
+                        <div class="credit-card wide featured horizontal">
+                            <div class="credit-icon">
+                                <i data-lucide="crown"></i>
+                            </div>
+                            <div class="credit-body">
+                                <div class="credit-headline">
+                                    <strong class="credit-name">NEONMODDER123</strong>
+                                    <i data-lucide="sparkles" class="credit-sparkle"></i>
+                                </div>
+                                <span class="credit-role">Concept &amp; Respring</span>
+                            </div>
+                        </div>
+
+                        <div class="credit-card purple compact">
+                            <div class="credit-icon">
+                                <i data-lucide="palette"></i>
+                            </div>
+                            <div class="credit-body">
+                                <div class="credit-headline">
+                                    <strong class="credit-name">@VITYAV</strong>
+                                    <span class="credit-badge" aria-label="Telegram">
+                                        <i data-lucide="send"></i>
+                                    </span>
+                                </div>
+                                <span class="credit-role">Website Maker</span>
+                            </div>
+                        </div>
+
+                        <div class="credit-card blue compact">
+                            <div class="credit-icon">
+                                <i data-lucide="code-2"></i>
+                            </div>
+                            <div class="credit-body">
+                                <strong class="credit-name">Codex | Gemini</strong>
+                                <span class="credit-role">Core Logic</span>
+                            </div>
+                        </div>
+
+                        <div class="credit-card wide green horizontal">
+                            <div class="credit-icon">
+                                <i data-lucide="link-2"></i>
+                            </div>
+                            <div class="credit-body">
+                                <strong class="credit-name">ROOTED~US3R</strong>
+                                <span class="credit-role">Short Link Provision</span>
+                            </div>
+                        </div>
+                    </div>
+                    </aside>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <div class="toggle-dock">
+        <button class="ghost-btn credits-launch" id="credits-toggle" type="button" aria-label="Open credits">
+            <i data-lucide="chevron-down"></i>
+            <span id="credits-toggle-label">Open Credits</span>
+        </button>
+    </div>
+
+    <script>
+        const firmwareOptions = [
+            { value: "ios-26.4.2", label: "iOS 26.4.2", mode: "Jailbreak" },
+            { value: "ios-26.0.1", label: "iOS 26.0.1", mode: "Downgrade" },
+            { value: "ios-18.7.2", label: "iOS 18.7.2", mode: "Downgrade" },
+            { value: "ios-18.6", label: "iOS 18.6", mode: "Downgrade" },
+            { value: "ios-18.5", label: "iOS 18.5", mode: "Downgrade" },
+            { value: "ios-18.3.1", label: "iOS 18.3.1", mode: "Downgrade" },
+            { value: "ios-18.0", label: "iOS 18.0", mode: "Downgrade" }
+        ];
+
+        const firmwareProfiles = {
+            "ios-26.4.2": {
+                eyebrow: "Stage One Deployment",
+                support: "Apex route primed.",
+                warningTitle: "Exploit Window",
+                warningCopy: "KEEP THE WEBSITE OPEN UNTIL THE HANDOFF.",
+                idleLog: "Apex jailbreak route armed and waiting.",
+                prepLabel: "Negotiating apex exploit envelope",
+                logs: [
+                    "Negotiating Apex exploit window.",
+                    "Validating PAC bypass envelope.",
+                    "Inspecting AMFI and trust cache surface.",
+                    "Mounting writable staging snapshot.",
+                    "Rebuilding signature relay package.",
+                    "Deploying bootstrap payload.",
+                    "Verifying daemon hooks.",
+                    "Locking jailbreak handoff route."
+                ]
+            },
+            "ios-26.0.1": {
+                eyebrow: "Stage One Downgrade",
+                support: "Launch rollback route ready.",
+                warningTitle: "Rollback Warning",
+                warningCopy: "DON'T LEAVE THE SITE WHILE THE DOWNGRADE ROUTE IS OPEN.",
+                idleLog: "Launch build rollback path calibrated and waiting.",
+                prepLabel: "Preparing downgrade relay shell",
+                logs: [
+                    "Preparing signed rollback relay.",
+                    "Verifying launch-build recovery anchors.",
+                    "Mapping restore bridge offsets.",
+                    "Staging downgrade payload snapshot.",
+                    "Rebuilding compatibility trust cache.",
+                    "Deploying rollback bootstrap payload.",
+                    "Verifying daemon handoff hooks.",
+                    "Locking downgrade transfer route."
+                ]
+            },
+            "ios-18.7.2": {
+                eyebrow: "Stage One Downgrade",
+                support: "Long-tail route ready.",
+                warningTitle: "Legacy Route Warning",
+                warningCopy: "KEEP THIS TAB OPEN WHILE THE LEGACY DOWNGRADE ROUTE STABILIZES.",
+                idleLog: "Long-tail downgrade chain standing by.",
+                prepLabel: "Aligning legacy downgrade route",
+                logs: [
+                    "Aligning long-tail compatibility map.",
+                    "Scanning legacy restore anchors.",
+                    "Replaying signed snapshot metadata.",
+                    "Rebuilding legacy trust cache.",
+                    "Staging downgrade payload tunnel.",
+                    "Deploying persistence bridge.",
+                    "Verifying daemon rollback hooks.",
+                    "Finalizing long-tail handoff route."
+                ]
+            },
+            "ios-18.6": {
+                eyebrow: "Stage One Downgrade",
+                support: "Stable-base route ready.",
+                warningTitle: "Stable Route Warning",
+                warningCopy: "DON'T CLOSE THE WEBSITE DURING STABLE-BASE TRANSFER.",
+                idleLog: "Stable-base downgrade route armed.",
+                prepLabel: "Staging stable-base transfer",
+                logs: [
+                    "Resolving stable-base restore path.",
+                    "Replaying signing ticket envelope.",
+                    "Inspecting rootfs rollback surface.",
+                    "Staging downgrade payload tunnel.",
+                    "Rebuilding legacy trust cache.",
+                    "Deploying stable transfer bootstrap.",
+                    "Verifying daemon rollback hooks.",
+                    "Finalizing stable-base handoff."
+                ]
+            },
+            "ios-18.5": {
+                eyebrow: "Stage One Downgrade",
+                support: "Recovery route ready.",
+                warningTitle: "Recovery Warning",
+                warningCopy: "KEEP THE WEBSITE OPEN THROUGH THE RECOVERY HANDOFF.",
+                idleLog: "Recovery-route downgrade chain waiting.",
+                prepLabel: "Preparing recovery downgrade bridge",
+                logs: [
+                    "Preparing recovery rollback bridge.",
+                    "Checking restore-state anchors.",
+                    "Mapping compatible snapshot metadata.",
+                    "Rebuilding recovery trust envelope.",
+                    "Deploying fallback bootstrap tunnel.",
+                    "Verifying daemon rollback hooks.",
+                    "Aligning staged restore controls.",
+                    "Finalizing recovery handoff route."
+                ]
+            },
+            "ios-18.3.1": {
+                eyebrow: "Stage One Downgrade",
+                support: "Legacy path ready.",
+                warningTitle: "Legacy Warning",
+                warningCopy: "DON'T CLOSE THE WEBSITE DURING LEGACY PATH ALIGNMENT.",
+                idleLog: "Legacy downgrade path waiting for handoff.",
+                prepLabel: "Synchronizing legacy downgrade path",
+                logs: [
+                    "Synchronizing legacy path offsets.",
+                    "Resolving fallback restore anchors.",
+                    "Mapping archive ticket chain.",
+                    "Rebuilding compatibility trust cache.",
+                    "Staging legacy transfer payload.",
+                    "Verifying daemon fallback hooks.",
+                    "Sealing rollback operator controls.",
+                    "Finalizing legacy path handoff."
+                ]
+            },
+            "ios-18.0": {
+                eyebrow: "Stage One Downgrade",
+                support: "Archive route ready.",
+                warningTitle: "Archive Route Warning",
+                warningCopy: "KEEP THE WEBSITE OPEN WHILE THE ARCHIVE ROUTE IS SEALED.",
+                idleLog: "Archive downgrade route waiting for deployment.",
+                prepLabel: "Opening archive downgrade channel",
+                logs: [
+                    "Opening archive downgrade channel.",
+                    "Resolving earliest compatible anchors.",
+                    "Mapping restore archive envelope.",
+                    "Rebuilding archive trust cache.",
+                    "Staging downgrade relay payload.",
+                    "Verifying daemon archive hooks.",
+                    "Sealing operator rollback controls.",
+                    "Finalizing archive handoff route."
+                ]
+            }
+        };
+
+        const themes = {
+            mint: { accent: "#7df9d0", rgb: "125, 249, 208", label: "Mint" },
+            coral: { accent: "#ff8a70", rgb: "255, 138, 112", label: "Coral" },
+            gold: { accent: "#ffd166", rgb: "255, 209, 102", label: "Gold" },
+            ice: { accent: "#8bd3ff", rgb: "139, 211, 255", label: "Ice" },
+            prism: { accent: "#7df9d0", rgb: "125, 249, 208", label: "Prism" }
+        };
+
+        const storageKeys = {
+            theme: "webbreak.theme",
+            firmware: "webbreak.firmware",
+            currentView: "webbreak.currentView"
+        };
+
+        const els = {
+            appShell: document.getElementById("app-shell"),
+            iosVersion: document.getElementById("ios-version"),
+            firmwarePicker: document.querySelector(".firmware-picker"),
+            firmwareCurrent: document.getElementById("firmware-current"),
+            heroEyebrow: document.getElementById("hero-eyebrow"),
+            chipVersion: document.getElementById("chip-version"),
+            buttonText: document.getElementById("jailbreak-btn-text"),
+            jailbreakBtn: document.getElementById("jailbreak-btn"),
+            themeCycleBtn: document.getElementById("theme-cycle-btn"),
+            creditsToggle: document.getElementById("credits-toggle"),
+            supportBadge: document.getElementById("support-badge"),
+            supportText: document.getElementById("support-text"),
+            targetOs: document.getElementById("target-os"),
+            targetModel: document.getElementById("target-model"),
+            progressBlock: document.getElementById("progress-block"),
+            runtimeWarning: document.getElementById("runtime-warning"),
+            warningTitle: document.getElementById("warning-title"),
+            warningCopy: document.getElementById("warning-copy"),
+            prepBar: document.getElementById("prep-bar"),
+            prepPct: document.getElementById("prep-pct"),
+            prepStatus: document.getElementById("prep-status"),
+            statusLog: document.getElementById("status-log"),
+            notification: document.getElementById("notification"),
+            notificationText: document.getElementById("notification-text"),
+            toast: document.getElementById("toast"),
+            toastText: document.getElementById("toast-text")
+        };
+
+        const state = {
+            theme: localStorage.getItem(storageKeys.theme) || "mint",
+            running: false,
+            activeFirmware: localStorage.getItem(storageKeys.firmware) || firmwareOptions[0].value,
+            currentView: localStorage.getItem(storageKeys.currentView) || "main",
+            device: null,
+            accentColor: themes[localStorage.getItem(storageKeys.theme) || "mint"]?.accent || themes.mint.accent,
+            notificationTimer: null,
+            toastTimer: null,
+            fireworks: [],
+            pointerDrawing: false,
+            pointerLastAt: 0,
+            pointerLastX: 0,
+            pointerLastY: 0,
+            reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        };
+
+        function initIcons() {
+            lucide.createIcons();
+        }
+
+        function renderCreditsButton(isCredits) {
+            els.creditsToggle.innerHTML = `
+                <i data-lucide="${isCredits ? "chevron-up" : "chevron-down"}"></i>
+                <span>${isCredits ? "Close Credits" : "Open Credits"}</span>
+            `;
+            els.creditsToggle.setAttribute("aria-label", isCredits ? "Close credits" : "Open credits");
+            initIcons();
+        }
+
+        function getDeviceInfo() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera || "";
+            const platform = navigator.platform || "";
+            let os = "Unknown";
+            let model = "Unknown";
+            let isIOSFamily = false;
+
+            if (/iPhone/i.test(ua)) {
+                os = "iOS";
+                model = "iPhone";
+                isIOSFamily = true;
+            } else if (/iPad/i.test(ua) || (platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+                os = "iPadOS";
+                model = "iPad";
+                isIOSFamily = true;
+            } else if (/Android/i.test(ua)) {
+                os = "Android";
+                model = (ua.match(/;\s?([^)]+)\)/) || [])[1] || "Android Device";
+            } else if (/Mac/i.test(platform)) {
+                os = "macOS";
+                model = "Mac";
+            } else if (/Win/i.test(platform)) {
+                os = "Windows";
+                model = "PC";
+            } else if (/Linux/i.test(platform)) {
+                os = "Linux";
+                model = "Linux Device";
+            }
+
+            return { os, model, isIOSFamily };
+        }
+
+        function setNotification(message) {
+            clearTimeout(state.notificationTimer);
+            els.notificationText.textContent = message;
+            els.notification.classList.add("visible");
+            state.notificationTimer = setTimeout(() => {
+                els.notification.classList.remove("visible");
+            }, 1800);
+        }
+
+        function setToast(message) {
+            clearTimeout(state.toastTimer);
+            els.toastText.textContent = message;
+            els.toast.classList.add("visible");
+            state.toastTimer = setTimeout(() => {
+                els.toast.classList.remove("visible");
+            }, 1100);
+        }
+
+        function applyTheme(themeKey, announce = false) {
+            const theme = themes[themeKey] || themes.mint;
+            state.theme = themeKey;
+            state.accentColor = theme.accent;
+            localStorage.setItem(storageKeys.theme, themeKey);
+            document.documentElement.style.setProperty("--accent", theme.accent);
+            document.documentElement.style.setProperty("--accent-rgb", theme.rgb);
+            if (announce) {
+                setToast(theme.label);
+                setNotification(`Accent switched to ${theme.label}.`);
+            }
+        }
+
+        function selectedFirmware() {
+            return firmwareOptions.find((item) => item.value === els.iosVersion.value) || firmwareOptions[0];
+        }
+
+        function currentFirmwareProfile() {
+            return firmwareProfiles[selectedFirmware().value] || firmwareProfiles[firmwareOptions[0].value];
+        }
+
+        function pressHaptic(target) {
+            if (!target || state.reducedMotion) return;
+            target.classList.remove("is-released");
+            target.classList.add("haptic-target", "is-pressed");
+        }
+
+        function releaseHaptic(target) {
+            if (!target || state.reducedMotion) return;
+            target.classList.remove("is-pressed");
+            target.classList.add("is-released");
+            window.setTimeout(() => target.classList.remove("is-released"), 380);
+        }
+
+        function bindHaptic(target, childTarget = null) {
+            if (!target) return;
+            target.classList.add("haptic-target");
+            ["pointerdown", "mousedown", "touchstart"].forEach((type) => {
+                target.addEventListener(type, () => pressHaptic(target), { passive: true });
+            });
+            ["pointerup", "pointercancel", "mouseleave", "mouseup", "touchend", "touchcancel"].forEach((type) => {
+                target.addEventListener(type, () => releaseHaptic(target), { passive: true });
+            });
+            if (childTarget) {
+                childTarget.addEventListener("change", () => {
+                    pressHaptic(target);
+                    window.setTimeout(() => releaseHaptic(target), 36);
+                });
+            }
+        }
+
+        function updateFirmwareUI() {
+            const choice = selectedFirmware();
+            const profile = currentFirmwareProfile();
+            els.buttonText.textContent = choice.mode;
+            els.chipVersion.textContent = choice.label;
+            els.firmwareCurrent.textContent = choice.label;
+            els.heroEyebrow.textContent = profile.eyebrow;
+            els.warningTitle.textContent = profile.warningTitle;
+            els.warningCopy.textContent = profile.warningCopy;
+            if (!state.running) {
+                els.prepStatus.textContent = profile.prepLabel;
+                els.statusLog.textContent = profile.idleLog;
+            }
+            state.activeFirmware = choice.value;
+            localStorage.setItem(storageKeys.firmware, choice.value);
+            if (state.device) {
+                setSupportState(state.device);
+            }
+        }
+
+        function setSupportState(device) {
+            const supported = device.isIOSFamily;
+            const profile = currentFirmwareProfile();
+            els.targetOs.textContent = device.os;
+            els.targetModel.textContent = device.model;
+
+            if (supported) {
+                els.supportBadge.classList.remove("unsupported");
+                els.supportText.textContent = profile.support;
+                els.jailbreakBtn.disabled = false;
+            } else {
+                els.supportBadge.classList.add("unsupported");
+                els.supportText.textContent = "Showcase mode only.";
+            }
+        }
+
+        function setView(view) {
+            state.currentView = view;
+            localStorage.setItem(storageKeys.currentView, view);
+            els.appShell.classList.toggle("is-credits", view === "credits");
+            document.body.classList.toggle("credits-active", view === "credits");
+            renderCreditsButton(view === "credits");
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color === "prism" ? `hsl(${Math.random() * 360}, 100%, 68%)` : color;
+                this.vx = (Math.random() - 0.5) * 3.6;
+                this.vy = (Math.random() - 0.5) * 3.6;
+                this.life = 1;
+                this.size = Math.random() * 1.1 + 0.8;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.97;
+                this.vy *= 0.97;
+                this.life -= 0.016;
+            }
+
+            draw() {
+                ctx.globalAlpha = Math.max(this.life, 0);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        class Firework {
+            constructor(x, y, immediate = false, density = 20) {
+                this.x = x ?? Math.random() * viewport.width;
+                this.y = immediate ? y : viewport.height + 10;
+                this.targetY = immediate ? y : Math.random() * viewport.height * 0.42 + 96;
+                this.exploded = immediate;
+                this.vy = immediate ? 0 : -(Math.random() * 3 + 4.5);
+                this.color = state.theme === "prism" ? "prism" : state.accentColor;
+                this.particles = [];
+
+                if (immediate) this.burst(density);
+            }
+
+            burst(count) {
+                for (let i = 0; i < count; i += 1) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y += this.vy;
+                    if (this.y <= this.targetY) {
+                        this.exploded = true;
+                        this.burst(24);
+                    }
+                    return;
+                }
+
+                this.particles.forEach((particle) => particle.update());
+                this.particles = this.particles.filter((particle) => particle.life > 0);
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.fillStyle = this.color === "prism" ? "#ffffff" : this.color;
+                    ctx.fillRect(this.x, this.y, 2, 7);
+                    return;
+                }
+
+                for (let i = 0; i < this.particles.length; i += 1) {
+                    this.particles[i].draw();
+                }
+            }
+        }
+
+        const canvas = document.getElementById("fireworks-canvas");
+        const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+        const viewport = { width: window.innerWidth, height: window.innerHeight, dpr: 1 };
+
+        function resizeCanvas() {
+            viewport.width = window.innerWidth;
+            viewport.height = window.innerHeight;
+            viewport.dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+            canvas.width = Math.round(viewport.width * viewport.dpr);
+            canvas.height = Math.round(viewport.height * viewport.dpr);
+            canvas.style.width = `${viewport.width}px`;
+            canvas.style.height = `${viewport.height}px`;
+            ctx.setTransform(viewport.dpr, 0, 0, viewport.dpr, 0, 0);
+            ctx.imageSmoothingEnabled = false;
+        }
+
+        function animate() {
+            if (document.hidden) {
+                requestAnimationFrame(animate);
+                return;
+            }
+
+            ctx.clearRect(0, 0, viewport.width, viewport.height);
+            ctx.globalAlpha = 1;
+
+            if (!state.reducedMotion && Math.random() < 0.008 && state.fireworks.length < 7) {
+                state.fireworks.push(new Firework(undefined, undefined, false, 10));
+            }
+
+            for (let i = state.fireworks.length - 1; i >= 0; i -= 1) {
+                const firework = state.fireworks[i];
+                firework.update();
+                firework.draw();
+                if (firework.exploded && firework.particles.length === 0) {
+                    state.fireworks.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function getEventPoint(event) {
+            return "touches" in event ? event.touches[0] : ("changedTouches" in event ? event.changedTouches[0] : event);
+        }
+
+        function isBlockedTarget(target) {
+            return Boolean(target && (target.closest("button") || target.closest("select")));
+        }
+
+        function pointerFirework(event, density = 20) {
+            if (state.reducedMotion) return;
+            const point = getEventPoint(event);
+            if (!point) return;
+            if (isBlockedTarget(event.target)) return;
+            state.fireworks.push(new Firework(point.clientX, point.clientY, true, density));
+        }
+
+        function startPointerDrawing(event) {
+            if (state.reducedMotion || isBlockedTarget(event.target)) {
+                state.pointerDrawing = false;
+                return;
+            }
+
+            const point = getEventPoint(event);
+            if (!point) return;
+
+            state.pointerDrawing = true;
+            state.pointerLastAt = performance.now();
+            state.pointerLastX = point.clientX;
+            state.pointerLastY = point.clientY;
+            state.fireworks.push(new Firework(point.clientX, point.clientY, true, 8));
+        }
+
+        function movePointerDrawing(event) {
+            if (!state.pointerDrawing || state.reducedMotion) return;
+            const point = getEventPoint(event);
+            if (!point) return;
+
+            const now = performance.now();
+            const dx = point.clientX - state.pointerLastX;
+            const dy = point.clientY - state.pointerLastY;
+            const distance = Math.hypot(dx, dy);
+
+            if (distance < 18 || now - state.pointerLastAt < 44 || state.fireworks.length > 18) return;
+
+            state.pointerLastAt = now;
+            state.pointerLastX = point.clientX;
+            state.pointerLastY = point.clientY;
+            state.fireworks.push(new Firework(point.clientX, point.clientY, true, 3));
+        }
+
+        function stopPointerDrawing() {
+            state.pointerDrawing = false;
+        }
+
+        async function runSequence() {
+            if (state.running || els.jailbreakBtn.disabled) return;
+
+            state.running = true;
+            document.body.classList.add("app-running");
+            const choice = selectedFirmware();
+            const profile = currentFirmwareProfile();
+            els.appShell.classList.add("is-running");
+            setTimeout(() => {
+                els.appShell.classList.add("is-running-collapsed");
+            }, 220);
+            els.jailbreakBtn.disabled = true;
+            els.progressBlock.classList.add("active");
+            els.runtimeWarning.classList.add("active");
+            els.statusLog.textContent = "Sequence initiated.\n";
+            els.prepStatus.textContent = profile.prepLabel;
+            els.prepPct.textContent = "0%";
+            els.prepBar.style.width = "0%";
+
+            for (let i = 0; i < profile.logs.length; i += 1) {
+                const base = Math.round(((i + 1) / profile.logs.length) * 100);
+                const progress = Math.min(100, base + Math.round(Math.random() * 6));
+                els.prepStatus.textContent = profile.logs[i];
+                els.prepPct.textContent = `${progress}%`;
+                els.prepBar.style.width = `${progress}%`;
+                els.statusLog.textContent += `> ${profile.logs[i]}\n`;
+                if (!state.reducedMotion && state.fireworks.length < 10) {
+                    state.fireworks.push(new Firework(Math.random() * viewport.width, Math.random() * viewport.height * 0.38 + 80, true, 6));
+                }
+                await new Promise((resolve) => setTimeout(resolve, 240 + Math.random() * 160));
+            }
+
+            els.prepStatus.textContent = "Sequence complete";
+            els.prepPct.textContent = "100%";
+            els.prepBar.style.width = "100%";
+            els.statusLog.textContent += `> ${choice.mode} package ready for ${choice.label}.`;
+
+            await new Promise((resolve) => setTimeout(resolve, 260));
+            document.body.classList.add("site-exiting");
+            els.appShell.classList.add("is-exiting");
+            await new Promise((resolve) => setTimeout(resolve, 700));
+            window.location.href = "second.html";
+        }
+
+        function cycleTheme() {
+            const keys = Object.keys(themes);
+            const index = keys.indexOf(state.theme);
+            const nextKey = keys[(index + 1) % keys.length];
+            applyTheme(nextKey, true);
+        }
+
+        function boot() {
+            initIcons();
+            resizeCanvas();
+            window.addEventListener("resize", resizeCanvas);
+            requestAnimationFrame(animate);
+
+            const device = getDeviceInfo();
+            state.device = device;
+            setSupportState(device);
+
+            els.iosVersion.value = firmwareOptions.some((item) => item.value === state.activeFirmware)
+                ? state.activeFirmware
+                : firmwareOptions[0].value;
+            updateFirmwareUI();
+            applyTheme(state.theme, false);
+            setView(state.currentView === "credits" ? "credits" : "main");
+
+            els.iosVersion.addEventListener("change", updateFirmwareUI);
+            els.jailbreakBtn.addEventListener("click", runSequence);
+            els.themeCycleBtn.addEventListener("click", cycleTheme);
+            els.creditsToggle.addEventListener("click", () => {
+                setView(state.currentView === "credits" ? "main" : "credits");
+            });
+
+            bindHaptic(els.jailbreakBtn);
+            bindHaptic(els.themeCycleBtn);
+            bindHaptic(els.creditsToggle);
+            bindHaptic(els.firmwarePicker, els.iosVersion);
+
+            window.addEventListener("mousedown", startPointerDrawing);
+            window.addEventListener("mousemove", movePointerDrawing);
+            window.addEventListener("mouseup", stopPointerDrawing);
+            window.addEventListener("mouseleave", stopPointerDrawing);
+            window.addEventListener("touchstart", startPointerDrawing, { passive: true });
+            window.addEventListener("touchmove", movePointerDrawing, { passive: true });
+            window.addEventListener("touchend", stopPointerDrawing, { passive: true });
+            window.addEventListener("touchcancel", stopPointerDrawing, { passive: true });
+        }
+
+        boot();
+    </script>
+</body>
+</html>
