@@ -1,8 +1,13 @@
-Use this to troll your friend
+New **REAL** Jailbreak called "Web-Break" for iOS 26.
+Even compatible with iOS 26.7.
 
-it pretends to be a jailbreak, but actually is a respring website
+*Enjoy!*
+
+
 
 -- Full Information and credits
+
+
 
 Original respring code made by https://github.com/neonmodder123
 
