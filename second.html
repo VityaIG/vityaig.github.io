@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WEB-BREAK - Exploitation Relay</title>
+    <meta name="description" content="Stage two of WEB-BREAK: a live exploitation relay with synced firmware handoff before respring.">
+    <meta name="theme-color" content="#081014">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="WEB-BREAK">
+    <meta property="og:url" content="https://vityaig.github.io/second.html">
+    <meta property="og:title" content="WEB-BREAK - Exploitation Relay / Browser Deployment Stage for iOS 15 - 26.x">
+    <meta property="og:description" content="Stage two of WEB-BREAK: a live exploitation relay with synced firmware handoff before respring.">
+    <meta property="og:image" content="lock-open.png">
+    <meta property="og:image:alt" content="WEB-BREAK open lock icon">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@WEBBREAK">
+    <meta name="twitter:title" content="WEB-BREAK - Exploitation Relay / Browser Deployment Stage for iOS 15 - 26.x">
+    <meta name="twitter:description" content="Stage two of WEB-BREAK: a live exploitation relay with synced firmware handoff before respring.">
+    <meta name="twitter:image" content="lock-open.png">
+    <link rel="icon" type="image/svg+xml" href="lock-open.svg">
+    <link rel="shortcut icon" href="lock-open.svg">
+    <link rel="apple-touch-icon" href="lock-open.svg">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #081014;
+            --panel: rgba(10, 20, 26, 0.78);
+            --panel-strong: rgba(10, 20, 26, 0.94);
+            --line: rgba(189, 242, 240, 0.12);
+            --line-strong: rgba(189, 242, 240, 0.22);
+            --text: #f4fbfb;
+            --muted: rgba(226, 241, 241, 0.68);
+            --muted-2: rgba(226, 241, 241, 0.42);
+            --accent: #7df9d0;
+            --accent-rgb: 125, 249, 208;
+            --accent-2: #ffd166;
+            --danger: #ff6b6b;
+            --shadow: 0 30px 90px rgba(0, 0, 0, 0.46);
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            color-scheme: dark;
+        }
+
+        body {
+            min-height: 100%;
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.9s ease;
+            overflow: hidden;
+            color: var(--text);
+            font-family: "Space Grotesk", sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.18), transparent 28%),
+                radial-gradient(circle at 85% 15%, rgba(255, 209, 102, 0.14), transparent 24%),
+                linear-gradient(180deg, #071015 0%, #081014 40%, #04080b 100%);
+        }
+
+        body.ready {
+            opacity: 1;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: radial-gradient(circle at center, black 24%, transparent 82%);
+            pointer-events: none;
+            opacity: 0.42;
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px 16px;
+        }
+
+        .panel {
+            position: relative;
+            width: min(100%, 430px);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(18, 29, 36, 0.94), rgba(8, 15, 20, 0.9));
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+            transform: translateX(-120vw);
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
+        }
+
+        .panel.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.04));
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 22px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .mono,
+        button {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .header {
+            display: grid;
+            gap: 14px;
+            justify-items: center;
+            text-align: center;
+        }
+
+        .halo {
+            position: relative;
+            width: 88px;
+            height: 88px;
+            display: grid;
+            place-items: center;
+        }
+
+        .halo::before,
+        .halo::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .halo::before {
+            inset: 0;
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.18), transparent 65%);
+            filter: blur(12px);
+            animation: pulseGlow 2.5s ease-in-out infinite;
+        }
+
+        .halo::after {
+            inset: 8px;
+            border: 1px dashed rgba(var(--accent-rgb), 0.25);
+            animation: spin 10s linear infinite;
+        }
+
+        .halo-inner {
+            position: relative;
+            z-index: 1;
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            background:
+                linear-gradient(180deg, rgba(var(--accent-rgb), 0.14), rgba(var(--accent-rgb), 0.04)),
+                rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(var(--accent-rgb), 0.18);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 0 24px rgba(var(--accent-rgb), 0.1);
+        }
+
+        .halo-inner svg {
+            width: 26px;
+            height: 26px;
+            color: var(--accent);
+            filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.45));
+        }
+
+        .title-wrap {
+            display: grid;
+            gap: 8px;
+            justify-items: center;
+        }
+
+        .eyebrow {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.95rem, 6vw, 2.65rem);
+            line-height: 0.96;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            background: linear-gradient(90deg, #ffffff 0%, var(--accent) 44%, #fff1c2 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShimmer 4s ease-in-out infinite;
+        }
+
+        .device-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .device-badge svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent);
+        }
+
+        .console-shell {
+            position: relative;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.25);
+            box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+        }
+
+        .console-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 30%);
+            pointer-events: none;
+        }
+
+        .console {
+            position: relative;
+            height: 184px;
+            padding: 14px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .console::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scanline {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: scanline 2s linear infinite;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            animation: slideInConsole 0.22s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+        }
+
+        .log-time {
+            color: rgba(255, 255, 255, 0.28);
+            flex: 0 0 auto;
+            user-select: none;
+        }
+
+        .log-level {
+            width: 38px;
+            flex: 0 0 auto;
+            text-align: center;
+            user-select: none;
+        }
+
+        .log-level.info {
+            color: #8bd3ff;
+        }
+
+        .log-level.warn {
+            color: #ffd166;
+            font-weight: 700;
+        }
+
+        .log-level.success {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .log-text {
+            flex: 1;
+            min-width: 0;
+            padding-left: 2px;
+            word-break: break-word;
+        }
+
+        .log-text.info {
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .log-text.warn {
+            color: #ffe0a3;
+            font-weight: 500;
+        }
+
+        .log-text.success {
+            color: #b8ffd5;
+            font-weight: 500;
+        }
+
+        .stats {
+            display: grid;
+            gap: 14px;
+        }
+
+        .percent-block {
+            display: grid;
+            justify-items: center;
+            gap: 8px;
+        }
+
+        .percent {
+            font-size: clamp(2.8rem, 10vw, 4rem);
+            line-height: 1;
+            letter-spacing: -0.06em;
+            font-weight: 400;
+            text-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+        }
+
+        .percent.error {
+            color: var(--danger);
+            animation: pulseError 0.9s ease-in-out infinite;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 28px;
+            padding: 0 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(var(--accent-rgb), 0.18);
+            background: rgba(var(--accent-rgb), 0.08);
+            color: var(--accent);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .status-chip .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.7);
+            animation: pulseGlow 1.8s ease-in-out infinite;
+        }
+
+        .progress-shell {
+            position: relative;
+            min-height: 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.055);
+            overflow: hidden;
+        }
+
+        .progress-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: translateX(-100%);
+            animation: sweep 2.3s linear infinite;
+        }
+
+        .progress-bar {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.64), rgba(255, 209, 102, 0.92));
+            background-size: 200% auto;
+            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.35);
+            animation: textShimmer 3s linear infinite;
+            transition: width 0.1s ease-out;
+        }
+
+        .footer-note {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            color: var(--muted-2);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .panic-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: none;
+        }
+
+        @keyframes slideInConsole {
+            from {
+                opacity: 0;
+                transform: translateX(-15px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes sweep {
+            to { transform: translateX(100%); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.08); }
+        }
+
+        @keyframes pulseError {
+            0%, 100% { opacity: 1; text-shadow: 0 0 14px rgba(255, 107, 107, 0.55); }
+            50% { opacity: 0.45; text-shadow: 0 0 0 rgba(255, 107, 107, 0); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 520px) {
+            .shell {
+                padding: 14px;
+            }
+
+            .content {
+                padding: 18px;
+                gap: 14px;
+            }
+
+            .console {
+                height: 168px;
+                padding: 12px;
+                font-size: 9px;
+            }
+
+            .footer-note {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworks-canvas"></canvas>
+
+    <main class="shell">
+        <section id="simulation" class="panel">
+            <div class="content">
+                <header class="header">
+                    <div class="halo">
+                        <div class="halo-inner">
+                            <i data-lucide="unlock"></i>
+                        </div>
+                    </div>
+
+                    <div class="title-wrap">
+                        <p class="eyebrow mono" id="stage-label">Stage Two Deployment</p>
+                        <h1>Exploiting</h1>
+                        <div id="device-badge-container"></div>
+                    </div>
+                </header>
+
+                <section class="console-shell">
+                    <div class="scanline"></div>
+                    <div id="terminal" class="console mono">
+                        <div id="logs-container"></div>
+                    </div>
+                </section>
+
+                <section class="stats">
+                    <div class="percent-block">
+                        <span id="pct" class="percent">0%</span>
+                        <div class="status-chip mono">
+                            <span class="dot"></span>
+                            <span id="status-msg">Kernel Injection</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-shell">
+                        <div id="bar" class="progress-bar"></div>
+                    </div>
+
+                    <div class="footer-note mono">
+                        <span id="chain-note">Exploit Chain Active</span>
+                        <span id="time-left">ETA: CALC...</span>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <div id="error-screen" class="panic-screen"></div>
+    <div id="ui-footer" class="hidden"></div>
+
+    <iframe id="respring-iframe" class="hidden" sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+
+    <script>
+        lucide.createIcons();
+
+        const firmwareOptions = [
+            { value: "ios-26.4.2", label: "iOS 26.4.2", mode: "Jailbreak" },
+            { value: "ios-26.0.1", label: "iOS 26.0.1", mode: "Downgrade" },
+            { value: "ios-18.7.2", label: "iOS 18.7.2", mode: "Downgrade" },
+            { value: "ios-18.6", label: "iOS 18.6", mode: "Downgrade" },
+            { value: "ios-18.5", label: "iOS 18.5", mode: "Downgrade" },
+            { value: "ios-18.3.1", label: "iOS 18.3.1", mode: "Downgrade" },
+            { value: "ios-18.0", label: "iOS 18.0", mode: "Downgrade" }
+        ];
+
+        const storageKeys = {
+            theme: "webbreak.theme",
+            firmware: "webbreak.firmware"
+        };
+
+        const themes = {
+            mint: { accent: "#7df9d0", rgb: "125, 249, 208" },
+            coral: { accent: "#ff8a70", rgb: "255, 138, 112" },
+            gold: { accent: "#ffd166", rgb: "255, 209, 102" },
+            ice: { accent: "#8bd3ff", rgb: "139, 211, 255" },
+            prism: { accent: "#7df9d0", rgb: "125, 249, 208" }
+        };
+
+        const firmwareProfiles = {
+            "ios-26.4.2": {
+                stage: "Stage Two Jailbreak",
+                status: "Kernel Injection",
+                chain: "Jailbreak Chain Active",
+                commands: [
+                    "Target confirmed: {{device}} ({{firmware}}).",
+                    "Initializing apex exploit handshake for {{firmware}}.",
+                    "Scanning PAC and AMFI surfaces for live offsets.",
+                    "[WARN] Pointer authentication envelope softened.",
+                    "Heap allocation successful [0x44].",
+                    "Searching task_self_port remap lane...",
+                    "FOUND: kernel_task @ 0xfffff...40",
+                    "Triggering memory corruption exploit.",
+                    "Corrupting mach_node_info structures.",
+                    "Remapping kernel text to R/W mode.",
+                    "AMFI PATCH: ENABLED",
+                    "CODESIGN ENFORCEMENT: DISABLED",
+                    "Executing ROP chain [WEB_BREAK_APEX].",
+                    "Recovering stack pointer... DONE",
+                    "Kernel status: PAWNED",
+                    "Injecting custom binary hooks.",
+                    "Bypassing PPL layer restrictions.",
+                    "Mounting jailbreak bootstrap bridge.",
+                    "Installing Procursus bootstrap core...",
+                    "Linking system binaries to /root.",
+                    "Clearing kalloc audit logs.",
+                    "System stabilization in progress...",
+                    "JAILBREAK DEPLOYMENT READY."
+                ],
+                statusMessages: [
+                    "Priming apex exploit...",
+                    "Opening kernel route...",
+                    "Patching trust boundaries...",
+                    "Installing bootstrap...",
+                    "Finalizing jailbreak..."
+                ]
+            },
+            "ios-26.0.1": {
+                stage: "Stage Two Downgrade",
+                status: "Downgrade Relay",
+                chain: "Downgrade Chain Active",
+                commands: [
+                    "Target confirmed: {{device}} ({{firmware}}).",
+                    "Opening signed rollback relay for {{firmware}}.",
+                    "Scanning restore bridge offsets.",
+                    "[WARN] Rollback window is narrowing.",
+                    "Ticket envelope acquired [0x44].",
+                    "Searching recovery lane anchors...",
+                    "FOUND: staged restore route @ 0xfffff...40",
+                    "Triggering rollback control sequence.",
+                    "Mapping downgrade transfer structures.",
+                    "Remounting restore shell to R/W mode.",
+                    "SIGNATURE RELAY: ENABLED",
+                    "COMPATIBILITY CACHE: ALIGNED",
+                    "Executing rollback chain [WEB_BREAK_LAUNCH].",
+                    "Recovering transfer pointer... DONE",
+                    "Rollback status: LOCKED",
+                    "Injecting restore bridge hooks.",
+                    "Bypassing update gate restrictions.",
+                    "Mounting downgrade bootstrap bridge.",
+                    "Installing staged rollback core...",
+                    "Linking recovery binaries to /root.",
+                    "Clearing update audit logs.",
+                    "System stabilization in progress...",
+                    "DOWNGRADE DEPLOYMENT READY."
+                ],
+                statusMessages: [
+                    "Opening rollback relay...",
+                    "Negotiating restore window...",
+                    "Staging downgrade payload...",
+                    "Locking transfer bridge...",
+                    "Finalizing downgrade..."
+                ]
+            },
+            legacy: {
+                stage: "Stage Two Downgrade",
+                status: "Legacy Relay",
+                chain: "Legacy Route Active",
+                commands: [
+                    "Target confirmed: {{device}} ({{firmware}}).",
+                    "Aligning legacy rollback route for {{firmware}}.",
+                    "Scanning compatibility offsets.",
+                    "[WARN] Legacy path integrity bypassed.",
+                    "Snapshot envelope acquired [0x44].",
+                    "Searching fallback restore lane...",
+                    "FOUND: legacy relay @ 0xfffff...40",
+                    "Triggering compatibility rollback sequence.",
+                    "Rebuilding legacy transfer structures.",
+                    "Remapping rollback text to R/W mode.",
+                    "TRUST CACHE: RESEALED",
+                    "SIGNING RELAY: STABLE",
+                    "Executing rollback chain [WEB_BREAK_LEGACY].",
+                    "Recovering transfer pointer... DONE",
+                    "Legacy route status: LOCKED",
+                    "Injecting fallback restore hooks.",
+                    "Bypassing update guard restrictions.",
+                    "Mounting archive bootstrap bridge.",
+                    "Installing staged rollback core...",
+                    "Linking recovery binaries to /root.",
+                    "Clearing rollback audit logs.",
+                    "System stabilization in progress...",
+                    "LEGACY DEPLOYMENT READY."
+                ],
+                statusMessages: [
+                    "Aligning legacy path...",
+                    "Restoring compatible state...",
+                    "Staging archive payload...",
+                    "Locking fallback relay...",
+                    "Finalizing legacy route..."
+                ]
+            }
+        };
+
+        function selectedFirmware() {
+            const saved = localStorage.getItem(storageKeys.firmware) || firmwareOptions[0].value;
+            return firmwareOptions.find((item) => item.value === saved) || firmwareOptions[0];
+        }
+
+        function selectedProfile(choice) {
+            return firmwareProfiles[choice.value] || firmwareProfiles.legacy;
+        }
+
+        function applyThemeFromStorage() {
+            const themeKey = localStorage.getItem(storageKeys.theme) || "mint";
+            const theme = themes[themeKey] || themes.mint;
+            document.documentElement.style.setProperty("--accent", theme.accent);
+            document.documentElement.style.setProperty("--accent-rgb", theme.rgb);
+        }
+
+        applyThemeFromStorage();
+
+        setTimeout(() => {
+            document.body.classList.add("ready");
+            setTimeout(() => {
+                const sim = document.getElementById("simulation");
+                if (sim) sim.classList.add("active");
+            }, 280);
+        }, 100);
+
+        const canvas = document.getElementById("fireworks-canvas");
+        const ctx = canvas.getContext("2d");
+        let width;
+        let height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resize);
+        resize();
+
+        class Drop {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * -height;
+                this.len = Math.random() * 25 + 10;
+                this.speed = Math.random() * 10 + 6;
+                this.opacity = Math.random() * 0.35 + 0.08;
+                const colors = ["125, 249, 208", "139, 211, 255", "255, 209, 102"];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            draw() {
+                ctx.strokeStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.lineWidth = 1.4;
+                ctx.lineCap = "round";
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + this.len);
+                ctx.stroke();
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > height) {
+                    this.reset();
+                }
+            }
+        }
+
+        const rain = [];
+        for (let i = 0; i < 150; i += 1) {
+            rain.push(new Drop());
+        }
+
+        function animate() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+            ctx.fillRect(0, 0, width, height);
+            rain.forEach((drop) => {
+                drop.update();
+                drop.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        function getDeviceInfo() {
+            const ua = navigator.userAgent || "";
+            let os = "OS UNKNOWN";
+            let model = "GENERIC";
+
+            if (/iPhone|iPod/.test(ua)) {
+                os = "iOS";
+                model = /iPhone/.test(ua) ? "iPhone" : "iPod";
+            } else if (/iPad/.test(ua)) {
+                os = "iPadOS";
+                model = "iPad";
+            } else if (/Android/.test(ua)) {
+                os = "Android";
+                const match = ua.match(/Android\s([0-9\.]*)/);
+                if (match) os = "Android " + match[1];
+                const modelMatch = ua.match(/\(([^;]+);/);
+                if (modelMatch && modelMatch[1]) {
+                    model = modelMatch[1].split(";").pop().trim();
+                }
+            } else if (/Macintosh/.test(ua)) {
+                os = "macOS";
+                model = "Macintosh";
+            } else if (/Windows/.test(ua)) {
+                os = "Windows";
+                model = "PC";
+            }
+
+            return { os, model };
+        }
+
+        const info = getDeviceInfo();
+        const activeFirmware = selectedFirmware();
+        const activeProfile = selectedProfile(activeFirmware);
+        document.getElementById("stage-label").textContent = activeProfile.stage;
+        document.getElementById("status-msg").textContent = activeProfile.status;
+        document.getElementById("chain-note").textContent = activeProfile.chain;
+
+        const badgeContainer = document.getElementById("device-badge-container");
+        if (badgeContainer) {
+            badgeContainer.innerHTML = `
+                <div class="device-badge mono">
+                    <i data-lucide="cpu"></i>
+                    <span>${info.model.toUpperCase()}</span>
+                    <span style="opacity:.25">|</span>
+                    <span>${info.os.toUpperCase()}</span>
+                    <span style="opacity:.25">|</span>
+                    <span>${activeFirmware.label.toUpperCase()}</span>
+                </div>
+            `;
+        }
+        lucide.createIcons();
+
+        const commands = activeProfile.commands.map((text) => {
+            const resolved = text
+                .replaceAll("{{device}}", info.model)
+                .replaceAll("{{firmware}}", activeFirmware.label);
+            const type = resolved.includes("[WARN]") ? "warn" : (resolved.includes("READY") || resolved.includes("FOUND:") || resolved.includes("ENABLED") || resolved.includes("LOCKED") || resolved.includes("STABLE") || resolved.includes("PAWNED")) ? "success" : "info";
+            return { text: resolved, type };
+        });
+
+        let commandIdx = 0;
+        const logsContainer = document.getElementById("logs-container");
+        const terminal = document.getElementById("terminal");
+
+        function addLogLine() {
+            if (commandIdx >= commands.length || !logsContainer) {
+                return;
+            }
+
+            const cmd = commands[commandIdx++];
+            const row = document.createElement("div");
+            row.className = "log-entry mono";
+
+            const now = new Date();
+            const ms = now.getMilliseconds().toString().padStart(3, "0");
+            const s = now.getSeconds().toString().padStart(2, "0");
+            const m = now.getMinutes().toString().padStart(2, "0");
+            const h = now.getHours().toString().padStart(2, "0");
+            const ts = `${h}:${m}:${s}.${ms}`;
+
+            const levelLabel = cmd.type === "warn" ? "WARN" : cmd.type === "success" ? "OK" : "INFO";
+
+            row.innerHTML = `
+                <span class="log-time">[${ts}]</span>
+                <span class="log-level ${cmd.type}">[${levelLabel}]</span>
+                <span class="log-text ${cmd.type}"></span>
+            `;
+
+            logsContainer.appendChild(row);
+            terminal.scrollTop = terminal.scrollHeight;
+
+            const textSpan = row.querySelector(".log-text");
+            let i = 0;
+            const typing = setInterval(() => {
+                textSpan.textContent += cmd.text.charAt(i);
+                i += 1;
+                terminal.scrollTop = terminal.scrollHeight;
+                if (i >= cmd.text.length) {
+                    clearInterval(typing);
+                }
+            }, 15);
+        }
+
+        const duration = 10000;
+        const startTime = Date.now();
+        const statusMessages = activeProfile.statusMessages;
+
+        const timer = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(100, (elapsed / duration) * 100);
+
+            const bar = document.getElementById("bar");
+            const pct = document.getElementById("pct");
+            const timeLeft = document.getElementById("time-left");
+            const statusMsgEl = document.getElementById("status-msg");
+
+            if (progress >= 95 && progress < 100) {
+                if (pct && pct.innerText !== "NaN%") {
+                    pct.innerText = "NaN%";
+                    pct.classList.add("error");
+                    setTimeout(() => {
+                        window.location.href = "respring.html";
+                    }, 350);
+                }
+
+                if (bar) {
+                    bar.style.width = `${progress + Math.random() * 50}%`;
+                    bar.style.background = "linear-gradient(90deg, #ff6b6b, #9f1d1d)";
+                    bar.style.boxShadow = "0 0 30px rgba(255, 107, 107, 0.85)";
+                }
+
+                if (statusMsgEl) {
+                    statusMsgEl.innerText = `${activeFirmware.mode} Route Failure`;
+                    statusMsgEl.style.color = "#ffb3b3";
+                }
+
+                if (Math.random() > 0.3) {
+                    const panicLines = [
+                        "KERNEL PANIC: cpu 0 caller 0xffffff8012345678",
+                        "CRITICAL_STRUCTURE_CORRUPTION (0x109)",
+                        "PAGE_FAULT_IN_NONPAGED_AREA",
+                        "SYSTEM_SERVICE_EXCEPTION",
+                        "Dumping stack trace: 0x00000000 00000000",
+                        "Core dump initiated..."
+                    ];
+                    const msg = panicLines[Math.floor(Math.random() * panicLines.length)];
+                    const row = document.createElement("div");
+                    row.className = "log-entry mono";
+
+                    const now = new Date();
+                    const ms = now.getMilliseconds().toString().padStart(3, "0");
+                    const s = now.getSeconds().toString().padStart(2, "0");
+                    const m = now.getMinutes().toString().padStart(2, "0");
+                    const h = now.getHours().toString().padStart(2, "0");
+                    const ts = `${h}:${m}:${s}.${ms}`;
+
+                    row.innerHTML = `
+                        <span class="log-time" style="color:rgba(255,107,107,.55)">[${ts}]</span>
+                        <span class="log-level" style="color:#ff6b6b;font-weight:700">[FAIL]</span>
+                        <span class="log-text" style="color:#ffb3b3;font-weight:700;text-shadow:0 0 8px rgba(255,107,107,.6)">${msg}</span>
+                    `;
+                    logsContainer.appendChild(row);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+            } else if (progress < 95) {
+                if (bar) bar.style.width = `${progress}%`;
+                if (pct) pct.innerText = `${Math.floor(progress)}%`;
+            }
+
+            const remaining = Math.max(0, (duration - elapsed) / 1000).toFixed(1);
+            if (timeLeft) timeLeft.innerText = `ETA: ${remaining}s`;
+
+            const statusIdx = Math.floor((progress / 100) * statusMessages.length);
+            if (statusMsgEl && statusIdx < statusMessages.length && statusMsgEl.innerText !== statusMessages[statusIdx]) {
+                statusMsgEl.innerText = statusMessages[statusIdx];
+            }
+
+            const targetCommandIdx = Math.floor((progress / 95) * commands.length);
+            while (commandIdx < targetCommandIdx && commandIdx < commands.length) {
+                addLogLine();
+            }
+        }, 50);
+    </script>
+</body>
+</html>
