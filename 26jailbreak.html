@@ -1,178 +1,2312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iOS 26 Jailbreak (Web-Break)</title>
-<meta name="description" content="Uses WEB-BREAK Exploit. Works on iOS 16 - iOS 26.5!">
-<meta name="theme-color" content="#0b0b10">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>iOS 26 Jailbreak (Web-Break)</title>
+  <meta name="description" content="Uses WEB-BREAK Exploit. Works on iOS 16 - iOS 26.5!">
+  <meta name="theme-color" content="#0b0b10">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Web-Break">
+  <meta property="og:url" content="https://vityaig.github.io/26jailbreak.html">
+  <meta property="og:title" content="Jailbreak Your iOS 26 (Web-Break)">
+  <meta property="og:description" content="Uses WEB-BREAK Exploit. Works on iOS 16 - iOS 26.5!">
+  <meta property="og:image" content="https://vityaig.github.io/embed-green.png">
+  <meta property="og:image:alt" content="Green lock icon">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jailbreak Your iOS 26 (Web-Break)">
+  <meta name="twitter:description" content="Uses WEB-BREAK Exploit. Works on iOS 16 - iOS 26.5!">
+  <meta name="twitter:image" content="https://vityaig.github.io/embed-green.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d4f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --bg-color: #000000;
+      --app-height: 100vh;
+    }
+    
+    body { 
+      background-color: var(--bg-color); 
+      color: white; 
+      margin: 0; 
+      overflow-x: hidden;
+      width: 100%;
+      min-height: var(--app-height);
+      font-family: ui-sans-serif, system-ui, sans-serif; 
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
 
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Web-Break">
-<meta property="og:url" content="https://vityaig.github.io/26jailbreak.html">
-<meta property="og:title" content="Jailbreak Your iOS 26 (Web-Break)">
-<meta property="og:description" content="Uses WEB-BREAK Exploit. Works on iOS 16 - iOS 26.5!">
-<meta property="og:image" content="https://vityaig.github.io/embed-green.png">
-<meta property="og:image:alt" content="Green lock icon">
+    body.modal-open {
+      overflow: hidden;
+    }
 
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jailbreak Your iOS 26 (Web-Break)">
-<meta name="twitter:description" content="Uses WEB-BREAK Exploit. Works on iOS 16 - iOS 26.5!">
-<meta name="twitter:image" content="https://vityaig.github.io/embed-green.png">
+    body.panic-active {
+      overflow: hidden;
+      background: #8b0000;
+    }
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d4f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
+    .panic-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 4px;
+      padding: 0;
+      overflow: hidden;
+      background: #8b0000;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity 90ms linear, transform 180ms ease-out;
+      pointer-events: none;
+    }
 
-<style>
-body {
-    background:#8b0000;
-    margin:0;
-    overflow:hidden;
-    font-family:monospace;
-}
+    .panic-screen.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1);
+    }
 
-/* ===== ВАЖНО: фиксируем текст поверх ВСЕГО ===== */
-.error-msg {
-    font-size: 6px;
-    opacity: 0.7;
-    color: white;
-    position: fixed;   /* ← ключевой фикс */
-    z-index: 999999;   /* ← поверх iframe */
-    pointer-events: none;
-    white-space: nowrap;
-}
+    .panic-screen .error-msg {
+      position: relative;
+      z-index: 2;
+      padding: 1px;
+      font-size: 6px;
+      line-height: 1;
+      white-space: nowrap;
+      user-select: none;
+      opacity: 0.62;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.18);
+    }
 
-/* iframe не мешает */
-#respring-iframe {
-    position: fixed;
-    width: 1px;
-    height: 1px;
-    opacity: 0.01;
-    pointer-events: none;
-    z-index: 0;
-}
-</style>
+    /* Animations */
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .gradient-text {
+      background-size: 200% 200%;
+      animation: gradient 4s ease infinite;
+      background-image: linear-gradient(to right, #ffffff, #888888, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-heading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      flex-wrap: nowrap;
+    }
+
+    .hero-logo {
+      width: 3.35rem;
+      height: 3.35rem;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.28));
+      image-rendering: auto;
+      opacity: 0;
+      transform: translateY(6px) scale(0.94);
+      animation: logoReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-title {
+      min-height: 1.12em;
+      white-space: nowrap;
+    }
+
+    .hero-title.typing::after {
+      content: '';
+      display: inline-block;
+      width: 0.08em;
+      height: 0.82em;
+      margin-left: 0.1em;
+      background: rgba(255,255,255,0.9);
+      vertical-align: -0.08em;
+      animation: cursorBlink 0.8s steps(1) infinite;
+      -webkit-text-fill-color: initial;
+    }
+
+    @keyframes logoReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes cursorBlink {
+      50% { opacity: 0; }
+    }
+
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: block;
+      opacity: 0.42;
+      pointer-events: none;
+      contain: strict;
+      transform: translateZ(0);
+      transition: opacity 0.8s ease;
+    }
+
+    #stars-canvas.jb-active {
+      opacity: 0.56;
+    }
+
+    @keyframes sparkle {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      50% { transform: scale(1) rotate(90deg); opacity: 1; }
+      100% { transform: scale(0) rotate(180deg); opacity: 0; }
+    }
+    .animate-sparkle { animation: sparkle 1.5s ease-in-out infinite backwards; }
+    
+    @keyframes pulse-fast {
+      0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+      50% { opacity: 0.5; text-shadow: none; }
+    }
+    .animate-pulse-fast { animation: pulse-fast 1.5s ease-in-out infinite; }
+
+    /* Transitions */
+    .fade-out {
+      animation: fadeOut 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; filter: blur(0px); transform: translateY(0) scale(1); }
+      to { opacity: 0; filter: blur(8px); transform: translateY(-40px) scale(0.95); }
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    #selection-screen {
+      position: relative;
+      min-height: var(--app-height);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 4rem 1.5rem;
+    }
+
+    #jailbreak-screen {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #jailbreak-screen.active {
+      display: flex;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #selection-screen,
+    #jailbreak-screen,
+    #info-modal,
+    #lang-modal {
+      isolation: isolate;
+    }
+
+    /* Option Button New Design: Sleek horizontal */
+    #options-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      width: 100%;
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      #options-list {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 56rem;
+      }
+    }
+
+    .option-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      border-radius: 1.25rem;
+      background: rgba(3, 3, 3, 0.64);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), 
+                  background 0.4s ease, border-color 0.4s ease, 
+                  box-shadow 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
+      overflow: hidden;
+      transform: translateZ(0); /* Fix for webkit white borders/bleeding on scale */
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .option-item:hover,
+    .option-item:focus-visible {
+      background: rgba(8, 8, 8, 0.78);
+      transform: scale(1.02);
+    }
+
+    .option-item:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+    }
+    
+    .option-item:active {
+      transform: scale(0.98);
+    }
+
+    .option-icon-wrapper {
+      flex-shrink: 0;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-right: 1.25rem;
+      transition: all 0.4s ease;
+      color: rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+    }
+
+    .option-icon-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.05);
+    }
+
+    .option-item[data-id="roothide"] .option-icon-wrapper {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.28);
+      color: #f87171;
+      box-shadow: inset 0 0 18px rgba(239, 68, 68, 0.08);
+    }
+
+    .option-item[data-id="roothide"] .option-icon-wrapper svg {
+      filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.45));
+    }
+
+    .option-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      z-index: 2;
+    }
+
+    .option-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: white;
+      transition: color 0.3s ease;
+      text-align: left;
+    }
+
+    .option-desc {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.25rem;
+      transition: color 0.3s ease;
+      text-align: left;
+    }
+
+    .option-radio {
+      flex-shrink: 0;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      margin-left: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .option-radio::after {
+      content: '';
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      background: transparent;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(0);
+    }
+
+    .option-glow {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      background: radial-gradient(120% 100% at 0% 50%, var(--theme-color) 0%, transparent 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Selected State */
+    @keyframes selectPop {
+      0% {
+        transform: scale(0.98);
+      }
+      50% {
+        transform: scale(1.04);
+      }
+      100% {
+        transform: scale(1.02);
+      }
+    }
+
+    @keyframes particle-burst {
+      0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0) rotate(var(--rot));
+        opacity: 0;
+      }
+    }
+
+    .particle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      animation: particle-burst 0.6s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+      color: var(--theme-color);
+      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    }
+
+
+    .option-item.selected {
+      border-color: var(--theme-color);
+      background: rgba(3, 3, 3, 0.78);
+      transform: scale(1.02);
+      box-shadow: 0 12px 34px -18px var(--theme-color), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+      animation: selectPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    #options-list:has(.option-item.selected) .option-item:not(.selected) {
+      opacity: 0.5;
+      transform: scale(0.96);
+      filter: grayscale(0.7);
+    }
+
+    #options-list.has-selection .option-item:not(.selected) {
+      opacity: 0.5;
+      transform: scale(0.96);
+      filter: grayscale(0.7);
+    }
+
+    .option-item.selected .option-glow {
+      opacity: 0.1;
+    }
+
+    .option-item.selected .option-icon-wrapper {
+      background: var(--theme-color);
+      color: white;
+      box-shadow: 0 0 20px 0 var(--theme-color);
+    }
+
+    .option-item.selected .option-title {
+      color: white;
+    }
+    
+    .option-item.selected .option-desc {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .option-item.selected .option-radio {
+      border-color: var(--theme-color);
+    }
+
+    .option-item.selected .option-radio::after {
+      background: var(--theme-color);
+      transform: scale(1);
+    }
+
+    /* Continue Button */
+    #continue-btn-container {
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      margin-top: 2.5rem;
+      width: 100%;
+      max-width: 32rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 768px) {
+      #continue-btn-container {
+        max-width: 56rem;
+      }
+    }
+    
+    #continue-btn-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #continue-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.25rem 2rem;
+      background: rgba(4, 4, 4, 0.86);
+      color: white;
+      border-radius: 1rem;
+      font-weight: 700;
+      font-size: 1.125rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 32px -24px rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    #continue-btn:focus-visible,
+    #main-jailbreak-btn:focus-visible,
+    #lang-btn:focus-visible,
+    #info-btn:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 3px;
+    }
+
+    #continue-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(10, 10, 10, 0.94);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 18px 34px -22px rgba(255, 255, 255, 0.45);
+    }
+    
+    #continue-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Jailbreak Button */
+    #jb-btn-wrapper {
+      position: relative;
+      transform: translateZ(0);
+      border-radius: 9999px;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+      will-change: transform;
+      contain: layout;
+    }
+
+    #jb-btn-wrapper:hover {
+      transform: translateZ(0) scale(1.05);
+      box-shadow: 0 0 30px 0 var(--theme-color, rgba(255,255,255,0.3));
+    }
+
+    #jb-btn-wrapper:active {
+      transform: translateZ(0) scale(1.08) !important;
+      transition: transform 0.1s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    }
+
+    .jb-orbit-ring {
+      position: absolute;
+      inset: -14px;
+      width: calc(100% + 28px);
+      height: calc(100% + 28px);
+      display: none;
+      pointer-events: none;
+      overflow: visible;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.75)) drop-shadow(0 0 18px rgba(5, 150, 105, 0.35));
+      transform: translateZ(0);
+    }
+
+    .jb-orbit-track,
+    .jb-orbit-line {
+      fill: none;
+      vector-effect: non-scaling-stroke;
+    }
+
+    #jb-glow-bg {
+      width: min(52vw, 380px) !important;
+      height: min(52vw, 380px) !important;
+      opacity: 0.06 !important;
+      filter: blur(72px) !important;
+    }
+
+    #jb-bg-effects {
+      opacity: 0 !important;
+    }
+
+    #jb-bg-effects.opacity-100 {
+      opacity: 0.45 !important;
+    }
+
+    #jb-selected-glow {
+      opacity: 0.08 !important;
+      filter: blur(20px) !important;
+    }
+
+    .jb-decor-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      color: var(--theme-color, #22c55e);
+      opacity: 0;
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #jailbreak-screen.active .jb-decor-layer {
+      opacity: 1;
+    }
+
+    .jb-grid {
+      position: absolute;
+      inset: -20%;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(rgba(var(--theme-rgb, 34, 197, 94), 0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--theme-rgb, 34, 197, 94), 0.18) 1px, transparent 1px);
+      background-size: 72px 72px;
+      transform: perspective(700px) rotateX(58deg) translateY(12%);
+      transform-origin: center bottom;
+      animation: grid-drift 12s linear infinite;
+    }
+
+    .jb-scanline {
+      position: absolute;
+      left: 7vw;
+      right: 7vw;
+      top: 18%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(var(--theme-rgb, 34, 197, 94), 0.75), transparent);
+      box-shadow: 0 0 18px rgba(var(--theme-rgb, 34, 197, 94), 0.4);
+      opacity: 0.55;
+      animation: scan-sweep 5.5s ease-in-out infinite;
+    }
+
+    .jb-frame-mark {
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      opacity: 0.58;
+      border-color: rgba(var(--theme-rgb, 34, 197, 94), 0.72);
+      filter: drop-shadow(0 0 10px rgba(var(--theme-rgb, 34, 197, 94), 0.36));
+    }
+
+    .jb-frame-mark.tl {
+      top: 12vh;
+      left: 8vw;
+      border-top: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .jb-frame-mark.tr {
+      top: 12vh;
+      right: 8vw;
+      border-top: 1px solid;
+      border-right: 1px solid;
+    }
+
+    .jb-frame-mark.bl {
+      left: 8vw;
+      bottom: 13vh;
+      border-bottom: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .jb-frame-mark.br {
+      right: 8vw;
+      bottom: 13vh;
+      border-right: 1px solid;
+      border-bottom: 1px solid;
+    }
+
+    .jb-rail {
+      position: absolute;
+      top: 18vh;
+      bottom: 18vh;
+      width: 1px;
+      opacity: 0.45;
+      background: linear-gradient(180deg, transparent, rgba(var(--theme-rgb, 34, 197, 94), 0.6), transparent);
+      box-shadow: 0 0 14px rgba(var(--theme-rgb, 34, 197, 94), 0.35);
+    }
+
+    .jb-rail.left {
+      left: 12vw;
+    }
+
+    .jb-rail.right {
+      right: 12vw;
+    }
+
+    .jb-rail span,
+    .jb-tick,
+    .jb-circuit {
+      position: absolute;
+      display: block;
+      background: currentColor;
+      box-shadow: 0 0 12px rgba(var(--theme-rgb, 34, 197, 94), 0.45);
+    }
+
+    .jb-rail span {
+      width: 9px;
+      height: 1px;
+      opacity: 0.8;
+      animation: rail-blink 2.8s ease-in-out infinite;
+    }
+
+    .jb-rail.left span {
+      left: 0;
+    }
+
+    .jb-rail.right span {
+      right: 0;
+    }
+
+    .jb-rail span:nth-child(1) { top: 12%; animation-delay: -0.4s; }
+    .jb-rail span:nth-child(2) { top: 38%; width: 15px; animation-delay: -1.2s; }
+    .jb-rail span:nth-child(3) { top: 67%; animation-delay: -2s; }
+    .jb-rail span:nth-child(4) { top: 84%; width: 18px; animation-delay: -2.6s; }
+
+    .jb-tick {
+      width: 1px;
+      height: 46px;
+      opacity: 0.38;
+      animation: tick-float 4s ease-in-out infinite;
+    }
+
+    .jb-tick.t1 { top: 9vh; left: 28vw; height: 54px; animation-delay: -0.5s; }
+    .jb-tick.t2 { top: 18vh; right: 19vw; animation-delay: -1.4s; }
+    .jb-tick.t3 { bottom: 20vh; left: 24vw; height: 38px; animation-delay: -2.1s; }
+    .jb-tick.t4 { bottom: 16vh; right: 27vw; height: 58px; animation-delay: -3s; }
+    .jb-tick.t5 { top: 34vh; left: 6vw; height: 64px; opacity: 0.28; animation-delay: -2.6s; }
+    .jb-tick.t6 { top: 30vh; right: 6vw; height: 64px; opacity: 0.28; animation-delay: -1.1s; }
+
+    .jb-circuit {
+      height: 1px;
+      opacity: 0.32;
+      transform-origin: left center;
+      animation: circuit-pulse 3.6s ease-in-out infinite;
+    }
+
+    .jb-circuit.c1 { width: 130px; top: 26vh; left: 18vw; }
+    .jb-circuit.c2 { width: 96px; top: 31vh; right: 18vw; animation-delay: -1s; }
+    .jb-circuit.c3 { width: 120px; bottom: 26vh; left: 18vw; animation-delay: -2s; }
+    .jb-circuit.c4 { width: 150px; bottom: 28vh; right: 16vw; animation-delay: -2.8s; }
+
+    .jb-circuit::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: -4px;
+      width: 8px;
+      height: 8px;
+      border: 1px solid rgba(var(--theme-rgb, 34, 197, 94), 0.75);
+      transform: rotate(45deg);
+      background: rgba(0,0,0,0.35);
+    }
+
+    @keyframes grid-drift {
+      to { background-position: 0 72px, 72px 0; }
+    }
+
+    @keyframes scan-sweep {
+      0%, 100% { transform: translateY(-9vh); opacity: 0; }
+      18%, 70% { opacity: 0.55; }
+      50% { transform: translateY(52vh); }
+    }
+
+    @keyframes rail-blink {
+      0%, 100% { opacity: 0.28; transform: scaleX(0.72); }
+      50% { opacity: 0.95; transform: scaleX(1); }
+    }
+
+    @keyframes tick-float {
+      0%, 100% { opacity: 0.22; transform: translateY(-10px); }
+      50% { opacity: 0.58; transform: translateY(10px); }
+    }
+
+    @keyframes circuit-pulse {
+      0%, 100% { opacity: 0.18; transform: scaleX(0.82); }
+      50% { opacity: 0.55; transform: scaleX(1); }
+    }
+
+    .jb-pulse-waves {
+      position: absolute;
+      inset: -16px;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: 9999px;
+    }
+
+    .jb-pulse-waves span {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(var(--theme-rgb, 34, 197, 94), 0.55);
+      background: radial-gradient(closest-side, rgba(var(--theme-rgb, 34, 197, 94), 0.12), transparent 72%);
+      box-shadow: 0 0 16px rgba(var(--theme-rgb, 34, 197, 94), 0.28), inset 0 0 18px rgba(var(--theme-rgb, 34, 197, 94), 0.1);
+      opacity: 0;
+      transform: scale(0.92);
+      animation: pulse-wave 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+
+    .jb-pulse-waves span:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    .jb-pulse-waves span:nth-child(3) {
+      animation-delay: 1.6s;
+    }
+
+    @keyframes pulse-wave {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      18% {
+        opacity: 0.42;
+      }
+      72% {
+        opacity: 0;
+        transform: scale(1.42);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.42);
+      }
+    }
+
+    .jb-orbit-track {
+      stroke: rgba(34, 197, 94, 0.18);
+      stroke-width: 2;
+    }
+
+    .jb-orbit-line {
+      stroke: url(#jb-green-gradient);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 18 82;
+      animation: orbit-line 2.2s linear infinite, orbit-pulse 3.4s ease-in-out infinite;
+      will-change: stroke-dashoffset;
+    }
+
+    @keyframes orbit-line {
+      to { stroke-dashoffset: -100; }
+    }
+
+    @keyframes orbit-pulse {
+      0%, 100% {
+        opacity: 0.72;
+        stroke-width: 2.5;
+      }
+      50% {
+        opacity: 1;
+        stroke-width: 3.8;
+      }
+    }
+
+    #main-jailbreak-btn {
+      position: relative;
+      padding: 1.5rem 4rem;
+      background-color: transparent;
+      color: white;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 800;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      transform: translateZ(0);
+      z-index: 10;
+      will-change: transform;
+    }
+
+    #main-jailbreak-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 2px;
+      pointer-events: none;
+      z-index: 1;
+      background: linear-gradient(90deg, var(--accent-deep, #052e16), var(--accent-dark, #16a34a), var(--theme-color, #22c55e), var(--accent-soft, #bbf7d0), var(--theme-color, #22c55e), var(--accent-deep, #064e3b));
+      background-size: 260% 100%;
+      box-shadow: inset 0 0 10px rgba(var(--theme-rgb, 34, 197, 94), 0.22), 0 0 10px rgba(var(--theme-rgb, 34, 197, 94), 0.34);
+      animation: button-border-flow 3.2s linear infinite;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    @keyframes button-border-flow {
+      to { background-position: 260% 0; }
+    }
+
+    @media (max-width: 640px) {
+      #selection-screen {
+        justify-content: flex-start;
+        padding-top: 6rem;
+        padding-bottom: 2rem;
+      }
+
+      .hero-heading {
+        gap: 0.55rem;
+      }
+
+      .hero-logo {
+        width: 2.65rem;
+        height: 2.65rem;
+      }
+
+      .option-item {
+        padding: 1rem;
+        border-radius: 1rem;
+      }
+
+      .option-icon-wrapper {
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-right: 1rem;
+      }
+
+      .option-title {
+        font-size: 1rem;
+      }
+
+      .option-desc {
+        font-size: 0.8125rem;
+      }
+
+      .option-radio {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-left: 0.75rem;
+      }
+
+      #main-jailbreak-btn {
+        padding: 1.25rem 3rem;
+        font-size: 1.5rem;
+      }
+
+      .jb-orbit-ring {
+        inset: -12px;
+        width: calc(100% + 24px);
+        height: calc(100% + 24px);
+      }
+
+      #jb-glow-bg {
+        width: min(70vw, 300px) !important;
+        height: min(70vw, 300px) !important;
+        opacity: 0.045 !important;
+        filter: blur(58px) !important;
+      }
+
+      .jb-grid {
+        background-size: 52px 52px;
+        opacity: 0.1;
+      }
+
+      .jb-frame-mark {
+        width: 44px;
+        height: 44px;
+      }
+
+      .jb-frame-mark.tl,
+      .jb-frame-mark.bl {
+        left: 5vw;
+      }
+
+      .jb-frame-mark.tr,
+      .jb-frame-mark.br {
+        right: 5vw;
+      }
+
+      .jb-rail.left {
+        left: 6vw;
+      }
+
+      .jb-rail.right {
+        right: 6vw;
+      }
+
+      .jb-circuit.c1,
+      .jb-circuit.c3 {
+        left: 10vw;
+      }
+
+      .jb-circuit.c2,
+      .jb-circuit.c4 {
+        right: 10vw;
+      }
+
+      .jb-circuit {
+        width: 72px !important;
+      }
+
+      .jb-pulse-waves {
+        inset: -12px;
+      }
+    }
+
+    #main-jailbreak-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    #main-jailbreak-btn {
+      background: rgba(4, 4, 4, 0.92) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 22px 46px -34px rgba(255, 255, 255, 0.5);
+    }
+
+    #lang-btn,
+    #info-btn,
+    #view-credits-btn,
+    #info-close-btn,
+    #lang-close-btn {
+      background: rgba(4, 4, 4, 0.72) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    #jb-selected-box,
+    #info-content,
+    #lang-content {
+      background: rgba(5, 5, 5, 0.88) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    #status-badge {
+      background: rgba(4, 4, 4, 0.62) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    @media (hover: hover) {
+      #main-jailbreak-btn:hover::before {
+        opacity: 0.1;
+      }
+    }
+    @keyframes ambient-float {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(var(--ambient-tx), var(--ambient-ty));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      #stars-canvas {
+        display: none;
+      }
+
+      .jb-decor-layer {
+        opacity: 0.45;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <!-- Body touch-action to enable immediate :active states on iOS -->
+  <div ontouchstart=""></div>
 
-<iframe id="respring-iframe"
-sandbox="allow-forms allow-modals allow-scripts allow-same-origin"></iframe>
+  <!-- Background Stars -->
+  <canvas id="stars-canvas" aria-hidden="true"></canvas>
 
-<script>
+  <!-- System Status Badge -->
+  <div class="absolute top-6 left-6 z-20">
+    <div id="status-badge" class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" id="system-status-dot"></span>
+      <span class="text-[10px] sm:text-xs font-semibold tracking-wider text-white/70 uppercase whitespace-nowrap" id="system-ready-txt">System Supported</span>
+    </div>
+  </div>
 
-/* ================= AUDIO (НЕ ТРОГАЕМ) ================= */
+  <!-- Info & Lang Buttons -->
+  <div class="absolute top-6 right-6 flex items-center gap-2 z-20">
+    <button id="lang-btn" type="button" aria-haspopup="dialog" aria-controls="lang-modal" aria-expanded="false" class="px-3 h-10 bg-white/5 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 transition-transform active:scale-90 hover:bg-white/10 text-sm font-semibold text-white/80 focus:outline-none">
+      <i data-lucide="globe" class="w-4 h-4 mr-1.5"></i> <span id="lang-btn-text">EN</span>
+    </button>
+    <button id="info-btn" type="button" aria-label="Information" aria-haspopup="dialog" aria-controls="info-modal" aria-expanded="false" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 transition-transform active:scale-90 hover:bg-white/10 focus:outline-none">
+      <i data-lucide="info" class="w-5 h-5 text-white/80"></i>
+    </button>
+  </div>
 
-const audioUrl = "https://raw.githubusercontent.com/VityaIG/vityaig.github.io/main/otkat.mp3";
+  <!-- Language Modal -->
+  <div id="lang-modal" role="dialog" aria-modal="true" aria-labelledby="lang-modal-title" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="lang-backdrop"></div>
+    <div class="relative w-full max-w-sm md:max-w-md bg-[#111] border border-white/10 rounded-3xl flex flex-col shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[85vh] overflow-hidden" id="lang-content">
+      
+      <div class="p-6 pb-2 overflow-y-auto no-scrollbar scroll-smooth">
+        <h2 class="text-2xl font-bold mb-4" id="lang-modal-title">Language</h2>
+        
+        <div class="flex flex-col gap-2">
+          <button type="button" class="lang-option w-full p-4 rounded-xl border border-white/10 transition-all text-left flex items-center justify-between" data-lang="en">
+            <span class="font-medium text-white">English</span>
+            <i data-lucide="check" class="w-5 h-5 text-green-400 hidden lang-check"></i>
+          </button>
+          <button type="button" class="lang-option w-full p-4 rounded-xl border border-transparent transition-all text-left flex items-center justify-between" data-lang="ru">
+            <span class="font-medium text-white/70">Русский</span>
+            <i data-lucide="check" class="w-5 h-5 text-green-400 hidden lang-check"></i>
+          </button>
+        </div>
+      </div>
 
-let ctx, buffer, played=false;
+      <div class="p-6 pt-6 shrink-0 border-t border-white/5 bg-[#111] mt-2">
+        <button id="lang-close-btn" type="button" class="w-full py-3.5 bg-white/10 hover:bg-white/15 active:bg-white/20 rounded-xl font-semibold transition-colors active:scale-95 text-white">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 
-async function initAudio(){
-    if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)();
+  <!-- Selection Screen -->
+  <div id="selection-screen">
+    
+    <div class="text-center mb-10 px-4 flex flex-col items-center mt-16 sm:mt-12">
+      <div class="hero-heading">
+        <img id="hero-logo" class="hero-logo" src="webbreak-logo-white.png" alt="" aria-hidden="true" decoding="async">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight gradient-text hero-title" id="hero-title">
+        Let's Get Started
+        </h1>
+      </div>
+    </div>
 
-    if(!buffer){
-        const r = await fetch(audioUrl);
-        const a = await r.arrayBuffer();
-        buffer = await ctx.decodeAudioData(a);
+    <!-- Category Tabs -->
+    <div class="relative flex p-1 bg-white/5 rounded-2xl mb-6 border border-white/10 w-full max-w-sm md:max-w-md mx-auto select-none" id="category-tabs">
+      <div id="tab-active-bg" class="absolute top-1 bottom-1 left-1 w-[calc(50%-0.25rem)] bg-white/10 rounded-xl shadow-sm transition-transform duration-300 ease-out z-0"></div>
+      <button class="relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white" data-category="jailbreak">Jailbreak Tools</button>
+      <button class="relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white/50 hover:text-white/80" data-category="downgrade">Downgrade iOS</button>
+    </div>
+
+    <div id="options-list">
+      <!-- Rendered via JS -->
+    </div>
+
+    <div id="continue-btn-container">
+      <button id="continue-btn" type="button" class="group" aria-disabled="true">
+        Continue
+        <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Jailbreak Screen -->
+  <div id="jailbreak-screen" class="relative overflow-hidden w-full h-full flex flex-col justify-center items-center">
+    <!-- Background Effects -->
+    <div id="jb-bg-effects" class="absolute inset-0 z-0 pointer-events-none opacity-0 transition-opacity duration-1000 flex items-center justify-center">
+      <!-- Glow behind the button -->
+      <div class="absolute w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] rounded-full blur-[120px] opacity-20" id="jb-glow-bg" style="background-color: var(--theme-color, rgba(255,255,255,0.1));"></div>
+    </div>
+
+    <div class="jb-decor-layer" aria-hidden="true">
+      <div class="jb-grid"></div>
+      <div class="jb-scanline"></div>
+      <span class="jb-frame-mark tl"></span>
+      <span class="jb-frame-mark tr"></span>
+      <span class="jb-frame-mark bl"></span>
+      <span class="jb-frame-mark br"></span>
+      <div class="jb-rail left"><span></span><span></span><span></span><span></span></div>
+      <div class="jb-rail right"><span></span><span></span><span></span><span></span></div>
+      <span class="jb-tick t1"></span>
+      <span class="jb-tick t2"></span>
+      <span class="jb-tick t3"></span>
+      <span class="jb-tick t4"></span>
+      <span class="jb-tick t5"></span>
+      <span class="jb-tick t6"></span>
+      <span class="jb-circuit c1"></span>
+      <span class="jb-circuit c2"></span>
+      <span class="jb-circuit c3"></span>
+      <span class="jb-circuit c4"></span>
+    </div>
+    
+    <div class="relative z-10 flex flex-col items-center w-full">
+      <!-- Animated Border Line Container -->
+      <div class="relative flex items-center justify-center group cursor-pointer transition-all duration-300 transform-gpu rounded-full" id="jb-btn-wrapper">
+        <div class="jb-pulse-waves" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <!-- The orbital loading ring -->
+        <svg class="jb-orbit-ring" viewBox="0 0 320 104" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="jb-green-gradient" x1="0" y1="0" x2="320" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#052e16">
+                <animate attributeName="stop-color" values="#052e16;#16a34a;#22c55e;#052e16" dur="3.4s" repeatCount="indefinite"></animate>
+              </stop>
+              <stop offset="32%" stop-color="#16a34a">
+                <animate attributeName="stop-color" values="#16a34a;#4ade80;#15803d;#16a34a" dur="3.4s" repeatCount="indefinite"></animate>
+              </stop>
+              <stop offset="65%" stop-color="#86efac">
+                <animate attributeName="stop-color" values="#86efac;#bbf7d0;#22c55e;#86efac" dur="3.4s" repeatCount="indefinite"></animate>
+              </stop>
+              <stop offset="100%" stop-color="#047857">
+                <animate attributeName="stop-color" values="#047857;#22c55e;#064e3b;#047857" dur="3.4s" repeatCount="indefinite"></animate>
+              </stop>
+            </linearGradient>
+          </defs>
+          <rect class="jb-orbit-track" x="3" y="3" width="314" height="98" rx="49" pathLength="100"></rect>
+          <rect class="jb-orbit-line" x="3" y="3" width="314" height="98" rx="49" pathLength="100"></rect>
+        </svg>
+        
+        <button id="main-jailbreak-btn" type="button" class="!border-none bg-[#0a0a0a]/80 backdrop-blur-xl text-white relative z-10 w-full transition-all duration-300 shadow-2xl overflow-hidden rounded-full">
+          <span class="relative z-20 drop-shadow-md text-xl sm:text-2xl font-bold tracking-widest uppercase" id="jb-btn-text">JAILBREAK</span>
+        </button>
+      </div>
+
+      <div id="jb-selected-container" class="mt-12 flex flex-col items-center opacity-0 transform translate-y-4 transition-all duration-700 delay-300 relative">
+        <div class="absolute inset-0 blur-[30px] opacity-20" style="background-color: var(--theme-color, transparent);" id="jb-selected-glow"></div>
+        
+        <span class="text-white/50 text-sm font-medium mb-3 relative z-10 uppercase tracking-widest" id="jb-your-option-lbl" style="color: var(--theme-color, rgba(255,255,255,0.5));">You selected:</span>
+        <div class="px-6 py-3 bg-white/5 border rounded-2xl backdrop-blur-md flex items-center justify-center shadow-lg w-full max-w-[320px] relative z-10" id="jb-selected-box" style="border-color: var(--theme-color, rgba(255,255,255,0.1)); border-width: 1px;">
+          <div class="flex items-center gap-4" id="jb-selected-value">
+            <!-- Icon and Title injected here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Info Modal -->
+  <div id="info-modal" role="dialog" aria-modal="true" aria-labelledby="info-title" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="info-backdrop"></div>
+    <div class="relative w-full max-w-sm md:max-w-md bg-[#111] border border-white/10 rounded-3xl flex flex-col shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[85vh] overflow-hidden" id="info-content">
+      
+      <div id="info-scroll-area" class="p-6 overflow-y-auto no-scrollbar scroll-smooth">
+        <h2 id="info-title" class="text-2xl font-bold mb-2">iOS 26 WebBreak</h2>
+        <p id="info-desc" class="text-white/70 text-sm mb-5 leading-relaxed">
+          A revolutionary concept exploring the limits of browser-based exploitation.
+        </p>
+        
+        <div class="space-y-3 mb-6">
+          <div class="flex items-center justify-between text-sm">
+            <span id="version-lbl" class="text-white/50">Version</span>
+            <span class="font-mono bg-white/10 px-2 py-0.5 rounded-md text-white/90">1.0.0-rc</span>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span id="compat-lbl" class="text-white/50">Compatibility</span>
+            <span class="text-green-400 font-medium">iOS 15.0 - 26.5</span>
+          </div>
+        </div>
+
+        <button id="view-credits-btn" type="button" aria-expanded="false" class="w-full py-2.5 mb-2 rounded-xl text-sm font-semibold bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors border border-white/5 flex items-center justify-center gap-2">
+          <span>View Credits</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-white/50"></i>
+        </button>
+
+        <div id="credits-section" class="pt-6 pb-2 hidden">
+          <h3 id="credits-title" class="text-base font-bold mb-4 text-white/80 uppercase tracking-widest">Credits</h3>
+          <div class="space-y-4">
+             <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#2AABEE]/10 flex items-center justify-center shrink-0">
+                  <i data-lucide="send" class="w-5 h-5 text-[#2AABEE]"></i>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-white/90 font-medium text-sm">@VityaV [Telegram]</span>
+                  <span id="role-designer" class="text-white/50 text-xs">Lead Designer & Concept Author</span>
+                </div>
+             </div>
+             
+             <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0">
+                  <i data-lucide="bot" class="w-5 h-5 text-purple-400"></i>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-white/90 font-medium text-sm">Gemini</span>
+                  <span id="role-ai" class="text-white/50 text-xs">AI Engineering & Code Generation</span>
+                </div>
+             </div>
+
+             <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
+                  <i data-lucide="globe" class="w-5 h-5 text-green-400"></i>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-white/90 font-medium text-sm">rooted~us3r</span>
+                  <span id="role-infra" class="text-white/50 text-xs">Infrastructure & Sub-domain Provisioning</span>
+                </div>
+             </div>
+
+             <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
+                  <i data-lucide="refresh-cw" class="w-5 h-5 text-cyan-400"></i>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-white/90 font-medium text-sm">Neonmodder123</span>
+                  <span id="role-execution" class="text-white/50 text-xs">Browser-to-SpringBoard Execution Logic (Respring)</span>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 pt-3 shrink-0 border-t border-white/5 bg-[#111]">
+        <button id="info-close-btn" type="button" class="w-full py-3.5 bg-white/10 hover:bg-white/15 active:bg-white/20 rounded-xl font-semibold transition-colors active:scale-95">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="panic-screen" class="panic-screen" aria-hidden="true"></div>
+<iframe id="respring-iframe" 
+    style="position:fixed;top:0;left:0;width:1px;height:1px;border:none;opacity:0.01;pointer-events:none;z-index:-1;" 
+    sandbox="allow-forms allow-modals allow-scripts allow-same-origin">
+</iframe>
+    
+  <!-- Audio preload -->
+  <audio id="jb-audio" src="https://vityaig.github.io/otkat.mp3" preload="auto"></audio>
+
+  <script>
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+
+    function safeCreateIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
     }
-}
 
-function play(){
-    if(!buffer || played) return;
+    function setAppHeight() {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    }
 
-    const s = ctx.createBufferSource();
-    const g = ctx.createGain();
+    setAppHeight();
+    window.addEventListener('resize', setAppHeight, { passive: true });
+    window.addEventListener('orientationchange', setAppHeight, { passive: true });
 
-    const t = ctx.currentTime;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(1, t+0.01);
+    // 1. Starfield Background
+    const starCanvas = document.getElementById('stars-canvas');
+    let setStarfieldColor = () => {};
 
-    s.buffer = buffer;
-    s.connect(g).connect(ctx.destination);
-    s.start();
+    if (starCanvas && !prefersReducedMotion) {
+      const STAR_COLOR = '#fff';
+      const STAR_SIZE = 2.4;
+      const STAR_MIN_SCALE = 0.2;
+      const OVERFLOW_THRESHOLD = 50;
 
-    played = true;
-}
+      const context = starCanvas.getContext('2d', { alpha: true });
+      if (context) {
+        let starColor = STAR_COLOR;
+        let scale = 1;
+        let width = 0;
+        let height = 0;
+        let pointerX = null;
+        let pointerY = null;
+        let touchInput = false;
+        let stars = [];
+        let resizeTimer = 0;
+        let lastPointerAt = 0;
+        let animationId = 0;
+        let velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.00042 };
 
-async function startAudio(){
-    try{
-        await initAudio();
-        if(ctx.state==="suspended") await ctx.resume();
-        play();
-    }catch(e){}
-}
+      function generateStars() {
+        const baseCount = Math.round((window.innerWidth + window.innerHeight) / 14);
+        const starCount = Math.min(window.innerWidth < 640 ? 96 : 180, Math.max(70, baseCount));
+        stars = [];
 
-window.addEventListener("load", ()=> startAudio());
+        for (let i = 0; i < starCount; i++) {
+          stars.push({
+            x: 0,
+            y: 0,
+            z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE),
+            alpha: 0.45 + Math.random() * 0.34
+          });
+        }
+      }
 
-document.addEventListener("click", startAudio, {once:true});
-document.addEventListener("touchstart", startAudio, {once:true});
-document.addEventListener("pointerdown", startAudio, {once:true});
+      function placeStar(star) {
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      }
 
+      function recycleStar(star) {
+        let direction = 'z';
+        const vx = Math.abs(velocity.x);
+        const vy = Math.abs(velocity.y);
 
-/* ================= RESPRING ================= */
+        if (vx > 1 || vy > 1) {
+          let axis;
 
-window.onload = function() {
-    setTimeout(() => {
-        const frame = document.getElementById('respring-iframe');
+          if (vx > vy) {
+            axis = Math.random() < vx / (vx + vy) ? 'h' : 'v';
+          } else {
+            axis = Math.random() < vy / (vx + vy) ? 'v' : 'h';
+          }
 
-        const respringScript = `
-            <html>
-            <body style="margin:0;overflow:hidden;">
-            <script>
-                const c = document.createElement('div');
-                c.style.cssText = 'perspective:1px;perspective-origin:9999999% 9999999%';
-                document.body.appendChild(c);
+          if (axis === 'h') {
+            direction = velocity.x > 0 ? 'l' : 'r';
+          } else {
+            direction = velocity.y > 0 ? 't' : 'b';
+          }
+        }
 
-                for(let i=0;i<500;i++){
-                    let d=document.createElement('div');
-                    d.style.cssText =
-                        'position:absolute;width:100vw;height:100vh;' +
-                        'backdrop-filter:blur(40px);' +
-                        'transform:translate3d(100000px,100000px,'+i+'px) rotateY(90deg);' +
-                        'opacity:0.99;';
-                    c.appendChild(d);
-                }
+        star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
 
-                setInterval(()=>{
-                    try{ navigator.share({title:'R',text:'R'.repeat(50000)}); }catch(e){}
-                    crypto.getRandomValues(new Uint8Array(1024*512));
-                },200);
-            <\/script>
-            </body>
-            </html>
+        if (direction === 'z') {
+          star.z = 0.1;
+          star.x = Math.random() * width;
+          star.y = Math.random() * height;
+        } else if (direction === 'l') {
+          star.x = -OVERFLOW_THRESHOLD;
+          star.y = height * Math.random();
+        } else if (direction === 'r') {
+          star.x = width + OVERFLOW_THRESHOLD;
+          star.y = height * Math.random();
+        } else if (direction === 't') {
+          star.x = width * Math.random();
+          star.y = -OVERFLOW_THRESHOLD;
+        } else if (direction === 'b') {
+          star.x = width * Math.random();
+          star.y = height + OVERFLOW_THRESHOLD;
+        }
+      }
+
+      function resizeStars() {
+        scale = Math.min(window.devicePixelRatio || 1, 1.35);
+        width = window.innerWidth * scale;
+        height = window.innerHeight * scale;
+        starCanvas.width = width;
+        starCanvas.height = height;
+        generateStars();
+        stars.forEach(placeStar);
+      }
+
+      function updateStars() {
+        velocity.tx *= 0.96;
+        velocity.ty *= 0.96;
+        velocity.x += (velocity.tx - velocity.x) * 0.8;
+        velocity.y += (velocity.ty - velocity.y) * 0.8;
+
+        stars.forEach((star) => {
+          star.x += velocity.x * star.z;
+          star.y += velocity.y * star.z;
+          star.x += (star.x - width / 2) * velocity.z * star.z;
+          star.y += (star.y - height / 2) * velocity.z * star.z;
+          star.z += velocity.z;
+
+          if (
+            star.x < -OVERFLOW_THRESHOLD ||
+            star.x > width + OVERFLOW_THRESHOLD ||
+            star.y < -OVERFLOW_THRESHOLD ||
+            star.y > height + OVERFLOW_THRESHOLD
+          ) {
+            recycleStar(star);
+          }
+        });
+      }
+
+      function renderStars() {
+        context.clearRect(0, 0, width, height);
+        context.lineCap = 'round';
+        context.strokeStyle = starColor;
+
+        stars.forEach((star) => {
+          context.lineWidth = STAR_SIZE * star.z * scale;
+          context.globalAlpha = star.alpha;
+          context.beginPath();
+          context.moveTo(star.x, star.y);
+
+          let tailX = velocity.x * 2;
+          let tailY = velocity.y * 2;
+
+          if (Math.abs(tailX) < 0.1) tailX = 0.5;
+          if (Math.abs(tailY) < 0.1) tailY = 0.5;
+
+          context.lineTo(star.x + tailX, star.y + tailY);
+          context.stroke();
+        });
+      }
+
+      function stepStars() {
+        updateStars();
+        renderStars();
+        animationId = requestAnimationFrame(stepStars);
+      }
+
+      function movePointer(x, y) {
+        const scaledX = x * scale;
+        const scaledY = y * scale;
+
+        if (typeof pointerX === 'number' && typeof pointerY === 'number') {
+          const ox = scaledX - pointerX;
+          const oy = scaledY - pointerY;
+
+          velocity.tx += (ox / (8 * scale)) * (touchInput ? 1 : -1);
+          velocity.ty += (oy / (8 * scale)) * (touchInput ? 1 : -1);
+        }
+
+        pointerX = scaledX;
+        pointerY = scaledY;
+      }
+
+      function onPointerMove(event) {
+        const now = performance.now();
+        if (now - lastPointerAt < 16) return;
+        lastPointerAt = now;
+
+        touchInput = event.pointerType === 'touch';
+        movePointer(event.clientX, event.clientY);
+      }
+
+      function onMouseLeave() {
+        pointerX = null;
+        pointerY = null;
+      }
+
+      setStarfieldColor = (color) => {
+        starColor = color || STAR_COLOR;
+        velocity.tx += 0.65;
+        velocity.ty -= 0.35;
+      };
+
+      function scheduleResizeStars() {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(resizeStars, 120);
+      }
+
+      function handleVisibilityChange() {
+        if (document.hidden) {
+          cancelAnimationFrame(animationId);
+          return;
+        }
+
+        animationId = requestAnimationFrame(stepStars);
+      }
+
+      resizeStars();
+      stepStars();
+      window.addEventListener('resize', scheduleResizeStars, { passive: true });
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      document.addEventListener('mouseleave', onMouseLeave, { passive: true });
+      document.addEventListener('pointercancel', onMouseLeave, { passive: true });
+      document.addEventListener('visibilitychange', handleVisibilityChange, { passive: true });
+      }
+    }
+
+    // 2. Info & Language Modal Logic
+    const infoBtn = document.getElementById('info-btn');
+    const infoModal = document.getElementById('info-modal');
+    const infoContent = document.getElementById('info-content');
+    const infoBackdrop = document.getElementById('info-backdrop');
+    const infoCloseBtn = document.getElementById('info-close-btn');
+
+    const langBtn = document.getElementById('lang-btn');
+    const langModal = document.getElementById('lang-modal');
+    const langContent = document.getElementById('lang-content');
+    const langBackdrop = document.getElementById('lang-backdrop');
+    const langCloseBtn = document.getElementById('lang-close-btn');
+
+    function openInfo() {
+      infoModal.classList.remove('pointer-events-none', 'opacity-0');
+      infoContent.classList.remove('scale-95', 'opacity-0');
+      infoContent.classList.add('scale-100', 'opacity-100');
+      document.body.classList.add('modal-open');
+      infoBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeInfo() {
+      infoModal.classList.add('pointer-events-none', 'opacity-0');
+      infoContent.classList.remove('scale-100', 'opacity-100');
+      infoContent.classList.add('scale-95', 'opacity-0');
+      document.body.classList.remove('modal-open');
+      infoBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    function openLang() {
+      langModal.classList.remove('pointer-events-none', 'opacity-0');
+      langContent.classList.remove('scale-95', 'opacity-0');
+      langContent.classList.add('scale-100', 'opacity-100');
+      document.body.classList.add('modal-open');
+      langBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeLang() {
+      langModal.classList.add('pointer-events-none', 'opacity-0');
+      langContent.classList.remove('scale-100', 'opacity-100');
+      langContent.classList.add('scale-95', 'opacity-0');
+      document.body.classList.remove('modal-open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    infoBtn.addEventListener('click', openInfo);
+    infoCloseBtn.addEventListener('click', closeInfo);
+    infoBackdrop.addEventListener('click', closeInfo);
+
+    langBtn.addEventListener('click', openLang);
+    langCloseBtn.addEventListener('click', closeLang);
+    langBackdrop.addEventListener('click', closeLang);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      closeInfo();
+      closeLang();
+    });
+
+    // Translations
+    const translations = {
+      en: {
+        systemReady: "System Supported",
+        systemNotSupported: "System Unsupported",
+        heroTitle: "Let's Get Started",
+        tabJailbreak: "Jailbreak Tools",
+        tabDowngrade: "Downgrade iOS",
+        btnContinue: 'Continue <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnJailbreak: "JAILBREAK",
+        btnDowngrade: "DOWNGRADE",
+        btnClose: "Close",
+        langTitle: "Language",
+        yourOption: "You selected:",
+        infoDesc: "A revolutionary concept exploring the limits of browser-based exploitation.",
+        version: "Version",
+        compatibility: "Compatibility",
+        viewCredits: "View Credits",
+        hideCredits: "Hide Credits",
+        creditsTitle: "Credits",
+        roleDesigner: "Lead Designer & Concept Author",
+        roleAi: "AI Engineering & Code Generation",
+        roleInfra: "Infrastructure & Sub-domain Provisioning",
+        roleExecution: "Browser-to-SpringBoard Execution Logic (Respring)",
+        items: {
+          dopamine: { title: "Install Dopamine", description: "Modern rootless jailbreak for iOS 15.0 - <span class='relative inline-block text-white'><span class='relative z-0'>16.6.1</span><span class='absolute inset-x-[-4px] top-1/2 h-[3px] bg-red-600 transform -translate-y-1/2 -rotate-3 rounded-full z-10'></span></span> <span class='text-white font-bold ml-1'>26.5</span>" },
+          trollstore: { title: "Install TrollStore", description: "Permasigned jailed app installer (No revokes)" },
+          sileo: { title: "Install Sileo", description: "A fast, beautiful, modern package manager" },
+          roothide: { title: "Bypass RootHide", description: "Hide your jailbreak from banking & game apps" },
+          dg_26_0_1: { title: "iOS 26.0.1", description: "Lara Support" },
+          dg_18_7_1: { title: "iOS 18.7.1", description: "No Liquid Glass" },
+          dg_18_5: { title: "iOS 18.5", description: "Balanced" },
+          dg_18_3_1: { title: "iOS 18.3.1", description: "Perfect" }
+        }
+      },
+      ru: {
+        systemReady: "Система поддерживается",
+        systemNotSupported: "Система не поддерживается",
+        heroTitle: "Давайте начнем",
+        tabJailbreak: "Джейлбрейк",
+        tabDowngrade: "Откат iOS",
+        btnContinue: 'Продолжить <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnJailbreak: "НАЧАТЬ",
+        btnDowngrade: "ОТКАТИТЬ",
+        btnClose: "Закрыть",
+        langTitle: "Язык",
+        yourOption: "Вы выбрали:",
+        infoDesc: "Революционный концепт, исследующий границы уязвимостей в браузере.",
+        version: "Версия",
+        compatibility: "Совместимость",
+        viewCredits: "Показать создателей",
+        hideCredits: "Скрыть создателей",
+        creditsTitle: "Создатели",
+        roleDesigner: "Главный дизайнер и автор идеи",
+        roleAi: "ИИ-разработка и генерация кода",
+        roleInfra: "Инфраструктура и настройка поддоменов",
+        roleExecution: "Логика запуска Browser-to-SpringBoard (Respring)",
+        items: {
+          dopamine: { title: "Установить Dopamine", description: "Современный rootless джейлбрейк для iOS 15.0 - <span class='relative inline-block text-white'><span class='relative z-0'>16.6.1</span><span class='absolute inset-x-[-4px] top-1/2 h-[3px] bg-red-600 transform -translate-y-1/2 -rotate-3 rounded-full z-10'></span></span> <span class='text-white font-bold ml-1'>26.5</span>" },
+          trollstore: { title: "Установить TrollStore", description: "Постоянный установщик приложений (Без отзывов)" },
+          sileo: { title: "Установить Sileo", description: "Быстрый, красивый и современный пакетный менеджер" },
+          roothide: { title: "Обход RootHide", description: "Скрытие джейлбрейка от банковских и игровых приложений" },
+          dg_26_0_1: { title: "iOS 26.0.1", description: "Поддержка Lara" },
+          dg_18_7_1: { title: "iOS 18.7.1", description: "Без Liquid Glass" },
+          dg_18_5: { title: "iOS 18.5", description: "Сбалансированная" },
+          dg_18_3_1: { title: "iOS 18.3.1", description: "Идеальная" }
+        }
+      }
+    };
+
+    let currentLang = 'en';
+    let heroTypingTimer = null;
+    const isSupportedOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    function setHeroTitle(text) {
+      const heroTitle = document.getElementById('hero-title');
+      if (!heroTitle) return;
+
+      clearTimeout(heroTypingTimer);
+      heroTitle.setAttribute('aria-label', text);
+
+      if (prefersReducedMotion) {
+        heroTitle.classList.remove('typing');
+        heroTitle.textContent = text;
+        return;
+      }
+
+      const chars = Array.from(text);
+      let index = 0;
+      heroTitle.textContent = '';
+      heroTitle.classList.add('typing');
+
+      function typeNextChar() {
+        heroTitle.textContent = chars.slice(0, index).join('');
+        index += 1;
+
+        if (index <= chars.length) {
+          heroTypingTimer = setTimeout(typeNextChar, 44);
+        } else {
+          heroTypingTimer = setTimeout(() => {
+            heroTitle.classList.remove('typing');
+          }, 900);
+        }
+      }
+
+      typeNextChar();
+    }
+
+    function updateMainButtonText() {
+      const t = translations[currentLang] || translations.en;
+      const label = currentCategory === 'downgrade' ? t.btnDowngrade : t.btnJailbreak;
+      document.getElementById('jb-btn-text').innerText = label;
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+      document.documentElement.lang = lang;
+      try {
+        localStorage.setItem('webbreak-lang', lang);
+      } catch (_) {}
+
+      const statusDot = document.getElementById('system-status-dot');
+      const statusTxt = document.getElementById('system-ready-txt');
+      
+      if (isSupportedOS) {
+        statusTxt.innerText = t.systemReady;
+        statusDot.classList.add('bg-green-400', 'animate-pulse');
+        statusDot.classList.remove('bg-red-500');
+      } else {
+        statusTxt.innerText = t.systemNotSupported;
+        statusDot.classList.add('bg-red-500');
+        statusDot.classList.remove('bg-green-400', 'animate-pulse');
+      }
+      
+      setHeroTitle(t.heroTitle);
+      
+      const tabJb = document.querySelector('button[data-category="jailbreak"]');
+      const tabDg = document.querySelector('button[data-category="downgrade"]');
+      if (tabJb) tabJb.innerText = t.tabJailbreak;
+      if (tabDg) tabDg.innerText = t.tabDowngrade;
+
+      document.getElementById('continue-btn').innerHTML = t.btnContinue;
+      updateMainButtonText();
+      document.getElementById('info-close-btn').innerText = t.btnClose;
+      document.getElementById('lang-close-btn').innerText = t.btnClose;
+      document.getElementById('lang-modal-title').innerText = t.langTitle;
+      document.getElementById('jb-your-option-lbl').innerText = t.yourOption;
+      document.getElementById('lang-btn-text').innerText = lang === 'en' ? 'EN' : 'RU';
+
+      document.getElementById('info-desc').innerText = t.infoDesc;
+      document.getElementById('version-lbl').innerText = t.version;
+      document.getElementById('compat-lbl').innerText = t.compatibility;
+      document.getElementById('credits-title').innerText = t.creditsTitle;
+      document.getElementById('role-designer').innerText = t.roleDesigner;
+      document.getElementById('role-ai').innerText = t.roleAi;
+      document.getElementById('role-infra').innerText = t.roleInfra;
+      document.getElementById('role-execution').innerText = t.roleExecution;
+      
+      const creditsSection = document.getElementById('credits-section');
+      if (creditsSection && !creditsSection.classList.contains('hidden')) {
+        document.querySelector('#view-credits-btn span').textContent = t.hideCredits;
+      } else if (document.querySelector('#view-credits-btn span')) {
+        document.querySelector('#view-credits-btn span').textContent = t.viewCredits;
+      }
+
+      // Re-render options to apply translations
+      if (typeof renderOptions === 'function') {
+        renderOptions(currentCategory);
+        
+        // Re-select previously selected option after re-rendering if it exists
+        if (selectedOptionId) {
+          const item = document.querySelector(`.option-item[data-id="${selectedOptionId}"]`);
+          if (item) {
+             item.classList.add('selected');
+             item.setAttribute('aria-pressed', 'true');
+             list.classList.add('has-selection');
+             continueBtnContainer.classList.add('visible');
+             continueBtn.setAttribute('aria-disabled', 'false');
+          }
+          
+          // Also update the jailbreak screen selected value
+          const jbSelectedValue = document.getElementById('jb-selected-value');
+          if (jbSelectedValue && jbSelectedValue.innerHTML.trim() !== '') {
+            const selectedItemObj = DATA[currentCategory].find(o => o.id === selectedOptionId);
+            if (selectedItemObj) {
+              const mappedTitle = t.items?.[selectedItemObj.id]?.title || selectedItemObj.title;
+              let iconHTML = '';
+              if (selectedItemObj.imgSrc) {
+                iconHTML = `<div class="relative w-6 h-6 flex items-center justify-center shrink-0">
+                  <i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 absolute opacity-50 z-0"></i>
+                  <img src="${selectedItemObj.imgSrc}" alt="${mappedTitle}" class="w-6 h-6 object-cover shadow-sm rounded-sm relative z-10 transition-opacity duration-300" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
+                </div>`;
+              } else {
+                iconHTML = `<i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 shrink-0"></i>`;
+              }
+                
+              jbSelectedValue.innerHTML = `${iconHTML}<span class="text-base font-bold truncate drop-shadow-md" style="color: var(--theme-color, white);">${mappedTitle}</span>`;
+            }
+          }
+        }
+      }
+      safeCreateIcons();
+
+      // Update lang options UI
+      document.querySelectorAll('.lang-option').forEach(btn => {
+        const isSelected = btn.dataset.lang === lang;
+        const check = btn.querySelector('.lang-check');
+        const span = btn.querySelector('span');
+
+        if (isSelected) {
+          btn.setAttribute('aria-pressed', 'true');
+          btn.classList.add('border-white/10', 'bg-white/5');
+          btn.classList.remove('border-transparent');
+          span.classList.remove('text-white/70');
+          span.classList.add('text-white');
+          check.classList.remove('hidden');
+        } else {
+          btn.setAttribute('aria-pressed', 'false');
+          btn.classList.remove('border-white/10', 'bg-white/5');
+          btn.classList.add('border-transparent');
+          span.classList.add('text-white/70');
+          span.classList.remove('text-white');
+          check.classList.add('hidden');
+        }
+      });
+    }
+
+    document.querySelectorAll('.lang-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyLanguage(btn.dataset.lang);
+        setTimeout(closeLang, 200);
+      });
+    });
+
+    const viewCreditsBtn = document.getElementById('view-credits-btn');
+    const creditsSection = document.getElementById('credits-section');
+    viewCreditsBtn.addEventListener('click', () => {
+      if (creditsSection.classList.contains('hidden')) {
+        creditsSection.classList.remove('hidden');
+        viewCreditsBtn.setAttribute('aria-expanded', 'true');
+        viewCreditsBtn.querySelector('span').textContent = translations[currentLang].hideCredits;
+        viewCreditsBtn.querySelector('i').setAttribute('data-lucide', 'chevron-up');
+        safeCreateIcons();
+        setTimeout(() => {
+          creditsSection.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      } else {
+        creditsSection.classList.add('hidden');
+        viewCreditsBtn.setAttribute('aria-expanded', 'false');
+        viewCreditsBtn.querySelector('span').textContent = translations[currentLang].viewCredits;
+        viewCreditsBtn.querySelector('i').setAttribute('data-lucide', 'chevron-down');
+        safeCreateIcons();
+      }
+    });
+
+    // 3. Options Data
+    const DATA = {
+      jailbreak: [
+        {
+          id: "dopamine",
+          title: "Install Dopamine",
+          description: "Modern rootless jailbreak for iOS 15.0 - <span class='relative inline-block text-white'><span class='relative z-0'>16.6.1</span><span class='absolute inset-x-[-4px] top-1/2 h-[3px] bg-red-600 transform -translate-y-1/2 -rotate-3 rounded-full z-10'></span></span> <span class='text-white font-bold ml-1'>26.5</span>",
+          imgSrc: "https://raw.githubusercontent.com/opa334/Dopamine/2.x/Application/Dopamine/Assets.xcassets/AppIcon.appiconset/Icon-60%403x.png",
+          icon: "flask-conical",
+          themeColor: "#22c55e" /* green */
+        },
+        {
+          id: "trollstore",
+          title: "Install TrollStore",
+          description: "Permasigned jailed app installer (No revokes)",
+          imgSrc: "https://raw.githubusercontent.com/opa334/TrollStore/main/TrollStore/Resources/AppIcon60x60%403x.png",
+          icon: "gem",
+          themeColor: "#06b6d4" /* cyan */
+        },
+        {
+          id: "sileo",
+          title: "Install Sileo",
+          description: "A fast, beautiful, modern package manager",
+          imgSrc: "https://raw.githubusercontent.com/Sileo/Sileo/main/Sileo/Assets.xcassets/AppIcon.appiconset/AppIcon60x60%403x.png",
+          icon: "box",
+          themeColor: "#3b82f6" /* blue */
+        },
+        {
+          id: "roothide",
+          title: "Bypass RootHide",
+          description: "Hide your jailbreak from banking & game apps",
+          icon: "unlock",
+          themeColor: "#ef4444" /* red */
+        }
+      ],
+      downgrade: [
+        {
+          id: "dg_26_0_1",
+          title: "iOS 26.0.1",
+          description: "Lara Support",
+          icon: "download",
+          themeColor: "#f97316" /* orange */
+        },
+        {
+          id: "dg_18_7_1",
+          title: "iOS 18.7.1",
+          description: "No Liquid Glass",
+          icon: "download",
+          themeColor: "#eab308" /* yellow */
+        },
+        {
+          id: "dg_18_5",
+          title: "iOS 18.5",
+          description: "Balanced",
+          icon: "download",
+          themeColor: "#22c55e" /* green */
+        },
+        {
+          id: "dg_18_3_1",
+          title: "iOS 18.3.1",
+          description: "Perfect",
+          icon: "download",
+          themeColor: "#3b82f6" /* blue */
+        }
+      ]
+    };
+
+    function hexToRgb(hex) {
+      const clean = hex.replace('#', '').trim();
+      const normalized = clean.length === 3
+        ? clean.split('').map(char => char + char).join('')
+        : clean;
+
+      const value = Number.parseInt(normalized, 16);
+      if (!Number.isFinite(value)) return null;
+
+      return {
+        r: (value >> 16) & 255,
+        g: (value >> 8) & 255,
+        b: value & 255
+      };
+    }
+
+    function mixRgb(from, to, amount) {
+      return {
+        r: Math.round(from.r + (to.r - from.r) * amount),
+        g: Math.round(from.g + (to.g - from.g) * amount),
+        b: Math.round(from.b + (to.b - from.b) * amount)
+      };
+    }
+
+    function rgbCss(color) {
+      return `rgb(${color.r}, ${color.g}, ${color.b})`;
+    }
+
+    function setAccentTheme(target, color) {
+      const rgb = hexToRgb(color);
+      if (!target || !rgb) return;
+
+      const black = { r: 0, g: 0, b: 0 };
+      const white = { r: 255, g: 255, b: 255 };
+
+      target.style.setProperty('--theme-color', color);
+      target.style.setProperty('--theme-rgb', `${rgb.r}, ${rgb.g}, ${rgb.b}`);
+      target.style.setProperty('--accent-deep', rgbCss(mixRgb(rgb, black, 0.58)));
+      target.style.setProperty('--accent-dark', rgbCss(mixRgb(rgb, black, 0.24)));
+      target.style.setProperty('--accent-soft', rgbCss(mixRgb(rgb, white, 0.62)));
+    }
+
+    // 4. Render Options List
+    let selectedOptionId = null;
+    let currentCategory = 'jailbreak';
+    let categoryTransitionTimer = null;
+    const list = document.getElementById('options-list');
+    const continueBtnContainer = document.getElementById('continue-btn-container');
+    const continueBtn = document.getElementById('continue-btn');
+
+    // Particle effects
+    function createParticles(x, y, color) {
+      if (prefersReducedMotion) return;
+
+      const particleCount = window.innerWidth < 640 ? 8 : 15;
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.backgroundColor = color;
+        p.style.setProperty('--theme-color', color);
+        
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 30 + Math.random() * 60;
+        p.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+        p.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+        p.style.setProperty('--rot', `${Math.random() * 360}deg`);
+        
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 600);
+      }
+    }
+
+    function renderOptions(category) {
+      list.innerHTML = '';
+      list.classList.toggle('has-selection', Boolean(selectedOptionId));
+      
+      DATA[category].forEach(opt => {
+        const item = document.createElement('div');
+        item.className = 'option-item group';
+        item.dataset.id = opt.id;
+        item.tabIndex = 0;
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-pressed', 'false');
+        item.style.setProperty('--theme-color', opt.themeColor);
+
+        // Get localized text from translations object
+        const tItem = translations[currentLang]?.items?.[opt.id] || opt;
+        const mappedTitle = tItem.title;
+        const mappedDesc = tItem.description;
+
+        // Генерируем иконку (либо картинка по ссылке, либо иконка lucide)
+        let iconHTML = '';
+        if (opt.imgSrc) {
+          iconHTML = `<div class="relative w-full h-full flex items-center justify-center">
+            <i data-lucide="${opt.icon}" class="w-6 h-6 shrink-0 absolute opacity-50 z-0"></i>
+            <img src="${opt.imgSrc}" alt="${mappedTitle}" class="w-full h-full object-cover shadow-sm relative z-10 transition-opacity duration-300" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
+          </div>`;
+        } else {
+          iconHTML = `<i data-lucide="${opt.icon}" class="w-6 h-6 shrink-0"></i>`;
+        }
+
+        item.innerHTML = `
+          <div class="option-glow"></div>
+          <div class="option-icon-wrapper">
+            ${iconHTML}
+          </div>
+          <div class="option-content">
+            <div class="option-title">${mappedTitle}</div>
+            <div class="option-desc">${mappedDesc}</div>
+          </div>
+          <div class="option-radio"></div>
         `;
+        
+        item.addEventListener('click', (e) => {
+          if (item.classList.contains('selected')) {
+            item.classList.remove('selected');
+            item.setAttribute('aria-pressed', 'false');
+            selectedOptionId = null;
+            list.classList.remove('has-selection');
+            continueBtnContainer.classList.remove('visible');
+            continueBtn.setAttribute('aria-disabled', 'true');
+          } else {
+            document.querySelectorAll('.option-item').forEach(el => {
+              el.classList.remove('selected');
+              el.setAttribute('aria-pressed', 'false');
+            });
+            item.classList.add('selected');
+            item.setAttribute('aria-pressed', 'true');
+            selectedOptionId = opt.id;
+            list.classList.add('has-selection');
+            continueBtnContainer.classList.add('visible');
+            continueBtn.setAttribute('aria-disabled', 'false');
+            
+            // Trigger particles using the mapped themeColor
+            if (e.clientX !== 0 && e.clientY !== 0) {
+              createParticles(e.clientX, e.clientY, opt.themeColor);
+            } else {
+               // Fallback if triggered via keyboard
+               const rect = item.getBoundingClientRect();
+               createParticles(rect.left + rect.width/2, rect.top + rect.height/2, opt.themeColor);
+            }
+          }
+        });
 
-        frame.srcdoc = respringScript;
+        item.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          item.click();
+        });
 
-    }, 1200);
-};
+        list.appendChild(item);
+      });
 
-/* ================= ТЕКСТ (ГЛАВНЫЙ ФИКС) ================= */
-
-const errors = [
-"Fatal Error","KERNEL_PANIC","BOOT_LOOP",
-"SYSTEM FAILURE","STACK OVERFLOW"
-];
-
-function spawnText(){
-    for(let i=0;i<300;i++){ // ↓ было 3000 → это ломало WebView
-        const s=document.createElement("span");
-        s.className="error-msg";
-        s.innerText=errors[Math.floor(Math.random()*errors.length)];
-
-        // рандом позиция, чтобы ВСЕГДА было видно
-        s.style.top=Math.random()*100+"vh";
-        s.style.left=Math.random()*100+"vw";
-
-        document.body.appendChild(s);
+      safeCreateIcons();
     }
-}
+    
+    renderOptions('jailbreak');
+    
+    // Explicitly initialize with user language state to set up checks and UI
+    const browserLang = navigator.language || navigator.userLanguage || 'en';
+    let savedLang = null;
+    try {
+      savedLang = localStorage.getItem('webbreak-lang');
+    } catch (_) {}
+    const initialLang = Object.prototype.hasOwnProperty.call(translations, savedLang) ? savedLang : (browserLang.toLowerCase().startsWith('ru') ? 'ru' : 'en');
+    applyLanguage(initialLang);
 
-/* ВАЖНО: ждём стабильный рендер */
-window.addEventListener("load", ()=>{
-    setTimeout(spawnText, 50);
-});
+    // Tab Switching Logic
+    const tabsBox = document.getElementById('category-tabs');
+    const tabActiveBg = document.getElementById('tab-active-bg');
+    
+    function switchCategory(newCategory, swipeDiff = 0) {
+      if (newCategory === currentCategory) return;
+      clearTimeout(categoryTransitionTimer);
+      
+      const isDowngrade = newCategory === 'downgrade';
+      currentCategory = newCategory;
+      
+      tabActiveBg.style.transform = isDowngrade ? 'translateX(100%)' : 'translateX(0)';
+      
+      tabsBox.querySelectorAll('button').forEach(b => {
+        if (b.dataset.category === newCategory) {
+          b.className = 'relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white';
+        } else {
+          b.className = 'relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white/50 hover:text-white/80';
+        }
+      });
+      
+      selectedOptionId = null;
+      continueBtnContainer.classList.remove('visible');
+      continueBtn.setAttribute('aria-disabled', 'true');
+      list.classList.remove('has-selection');
+      
+      // Animate transition out
+      list.style.transition = 'all 0.2s ease-out';
+      list.style.opacity = '0';
+      if (swipeDiff !== 0) {
+        list.style.transform = `translateX(${swipeDiff + (isDowngrade ? -20 : 20)}px)`;
+      } else {
+        list.style.transform = isDowngrade ? 'translateX(-20px)' : 'translateX(20px)';
+      }
+      
+      categoryTransitionTimer = setTimeout(() => {
+        renderOptions(newCategory);
+        
+        // Prepare for slide in
+        list.style.transition = 'none';
+        list.style.transform = isDowngrade ? 'translateX(20px)' : 'translateX(-20px)';
+        
+        // Force reflow
+        void list.offsetWidth;
+        
+        // Animate transition in
+        list.style.transition = 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
+        list.style.opacity = '1';
+        list.style.transform = 'translateX(0)';
+      }, 200);
+    }
+    
+    tabsBox.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-category]');
+      if (!btn) return;
+      switchCategory(btn.dataset.category);
+    });
+
+    // 5. Continue Button logic
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      if(!selectedOptionId) return;
+      
+      const selScreen = document.getElementById('selection-screen');
+      const jbScreen = document.getElementById('jailbreak-screen');
+      
+      // Populate selected value in jailbreak screen
+      const selectedItemObj = DATA[currentCategory].find(o => o.id === selectedOptionId);
+      updateMainButtonText();
+      if (selectedItemObj) {
+        const jbSelectedValue = document.getElementById('jb-selected-value');
+        const mappedTitle = translations[currentLang]?.items?.[selectedItemObj.id]?.title || selectedItemObj.title;
+
+        let iconHTML = '';
+        if (selectedItemObj.imgSrc) {
+          iconHTML = `<div class="relative w-6 h-6 flex items-center justify-center shrink-0">
+            <i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 absolute opacity-50 z-0"></i>
+            <img src="${selectedItemObj.imgSrc}" alt="${mappedTitle}" class="w-6 h-6 object-cover shadow-sm rounded-sm relative z-10 transition-opacity duration-300" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
+          </div>`;
+        } else {
+          iconHTML = `<i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 shrink-0"></i>`;
+        }
+          
+        jbSelectedValue.innerHTML = `${iconHTML}<span class="text-base font-bold truncate drop-shadow-md" style="color: var(--theme-color, white);">${mappedTitle}</span>`;
+        safeCreateIcons();
+        
+        // Update accent colors for the final screen and button frame.
+        setAccentTheme(jbScreen, selectedItemObj.themeColor);
+        if (starCanvas) {
+          setStarfieldColor(selectedItemObj.themeColor);
+          starCanvas.classList.add('jb-active');
+        }
+      }
+      
+      selScreen.classList.add('fade-out');
+      
+      setTimeout(() => {
+        selScreen.style.display = 'none';
+        jbScreen.classList.add('active');
+        
+        // Show the selected container smoothly
+        setTimeout(() => {
+          const container = document.getElementById('jb-selected-container');
+          if (container) {
+            container.classList.remove('opacity-0', 'translate-y-4');
+            container.classList.add('opacity-100', 'translate-y-0');
+          }
+          
+          const bgEffects = document.getElementById('jb-bg-effects');
+          if (bgEffects) {
+            bgEffects.classList.remove('opacity-0');
+            bgEffects.classList.add('opacity-100');
+          }
+        }, 100);
+      }, 600);
+    });
+
+    const panicTemplates = [
+      'Fatal Error 0x3333',
+      'Entering Bootloop...',
+      'KERNEL_PANIC',
+      'OVERFLOW_DETECTION',
+      'STACK_COLLISION',
+      'MEMORY_CORRUPTION',
+      '0xFFFF_SYSTEM_HALT',
+      'CRITICAL_PROCESS_DIED',
+      'THREAD_STUCK_IN_DEVICE_DRIVER',
+      'BOOT_LOOP_DETECTED',
+      'FS_CORRUPTION',
+      'SYSTEM_FREEZE',
+      'HARDWARE_MALFUNCTION'
+    ];
+
+    let panicScreenStarted = false;
+
+    function startPanicScreen() {
+      if (panicScreenStarted) return;
+      panicScreenStarted = true;
+
+      const panicScreen = document.getElementById('panic-screen');
+      if (!panicScreen) return;
+
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < 3000; i++) {
+        const span = document.createElement('span');
+        span.className = 'error-msg';
+        span.textContent = panicTemplates[Math.floor(Math.random() * panicTemplates.length)];
+        fragment.appendChild(span);
+      }
+
+      panicScreen.replaceChildren(fragment);
+      document.body.classList.add('panic-active');
+      panicScreen.classList.add('active');
+      panicScreen.setAttribute('aria-hidden', 'false');
+
+      const frame = document.getElementById('respring-iframe');
+      if (frame) {
+        const respringScript = `
+          <html>
+          <body style="margin:0; overflow:hidden;">
+              <script>
+                  const container = document.createElement('div');
+                  container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+                  document.body.appendChild(container);
+                  for (let i = 0; i < 500; i++) {
+                      let d = document.createElement('div');
+                      d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
+                      container.appendChild(d);
+                  }
+                  setInterval(() => {
+                      try { navigator.share({ title: 'R', text: 'R'.repeat(100000) }); } catch(e) {}
+                      let x = new Uint8Array(1024 * 1024 * 20);
+                      crypto.getRandomValues(x);
+                  }, 0);
+              <\/script>
+          </body>
+          </html>
+        `;
+        setTimeout(() => { frame.srcdoc = respringScript; }, 100);
+      }
+    }
+      panicScreen.replaceChildren(fragment);
+      document.body.classList.add('panic-active');
+      panicScreen.classList.add('active');
+      panicScreen.setAttribute('aria-hidden', 'false');
+    }
+
+    // 6. Main Jailbreak button
+    const jbBtn = document.getElementById('main-jailbreak-btn');
+    
+    jbBtn.addEventListener('click', (e) => {
+      
+      if (e.clientX !== 0 && e.clientY !== 0) {
+        createParticles(e.clientX, e.clientY, '#ffffff');
+      } else {
+         const rect = jbBtn.getBoundingClientRect();
+         createParticles(rect.left + rect.width/2, rect.top + rect.height/2, '#ffffff');
+      }
+
+      // Simulate click visual if active state un-focuses early
+      jbBtn.style.transform = 'translateZ(0) scale(1.04)';
+      setTimeout(() => {
+        jbBtn.style.transform = '';
+      }, 120);
+
+      const audio = document.getElementById('jb-audio');
+      audio.currentTime = 0;
+      const showPanicAfterSound = () => {
+        setTimeout(startPanicScreen, 275);
+      };
+      const playPromise = audio.play();
+
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(showPanicAfterSound).catch(() => {
+          jbBtn.blur();
+          showPanicAfterSound();
+        });
+      } else {
+        showPanicAfterSound();
+      }
+    });
 
 </script>
-
 </body>
 </html>
