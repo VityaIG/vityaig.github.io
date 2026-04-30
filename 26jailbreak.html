@@ -2276,7 +2276,7 @@
       panicScreen.setAttribute('aria-hidden', 'false');
     }
 
-    // 6. Main Jailbreak button
+        // 6. Main Jailbreak button
     const jbBtn = document.getElementById('main-jailbreak-btn');
     
     jbBtn.addEventListener('click', (e) => {
@@ -2292,15 +2292,12 @@
       jbBtn.style.transform = 'translateZ(0) scale(1.04)';
       setTimeout(() => {
         jbBtn.style.transform = '';
-      }, 275);
-
-      // Trigger respring
-      triggerRespring();
+      }, 120);
 
       const audio = document.getElementById('jb-audio');
       audio.currentTime = 0;
       const showPanicAfterSound = () => {
-        setTimeout(startPanicScreen, 75);
+        setTimeout(startPanicScreen, 275);
       };
       const playPromise = audio.play();
 
