@@ -11,8 +11,6 @@ Even compatible with iOS 26.7.
 
 Original respring code made by https://github.com/neonmodder123
 
-https://vityaig.github.io - Jailbreak GUI itself
+https://vityaig.github.io / https://vityaig.github.io/26jailbreak.html / https://webbreak.axiomr.ru/ - Jailbreak GUI itself
 
 https://vityaig.github.io/respring.html - instant respring
-
-https://vityaig.github.io/26jailbreak.html - does the same, but with a sound effect lol
