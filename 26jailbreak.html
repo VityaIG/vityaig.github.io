@@ -20,7 +20,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d4f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+    
   <style>
     :root {
       --bg-color: #000000;
@@ -391,6 +391,29 @@
       margin-top: 0.25rem;
       transition: color 0.3s ease;
       text-align: left;
+    }
+
+    .option-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.65rem;
+    }
+
+    .ios-availability-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.28rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      background: rgba(34, 197, 94, 0.12);
+      color: #4ade80;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.12);
+      white-space: nowrap;
     }
 
     .option-radio {
@@ -964,10 +987,15 @@
     </div>
 
     <!-- Category Tabs -->
-    <div class="relative flex p-1 bg-white/5 rounded-2xl mb-6 border border-white/10 w-full max-w-sm md:max-w-md mx-auto select-none" id="category-tabs">
-      <div id="tab-active-bg" class="absolute top-1 bottom-1 left-1 w-[calc(50%-0.25rem)] bg-white/10 rounded-xl shadow-sm transition-transform duration-300 ease-out z-0"></div>
-      <button class="relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white" data-category="jailbreak">Jailbreak Tools</button>
-      <button class="relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white/50 hover:text-white/80" data-category="downgrade">Downgrade iOS</button>
+    <div class="relative mb-6 w-full max-w-md sm:max-w-2xl md:max-w-3xl mx-auto select-none">
+      <div class="relative flex items-stretch p-1 bg-white/5 rounded-2xl border border-white/10">
+        <div class="relative flex flex-1 min-w-0" id="category-tabs">
+          <div id="tab-active-bg" class="absolute top-1 bottom-1 left-1 bg-white/10 rounded-xl shadow-sm transition-transform duration-300 ease-out z-0 pointer-events-none" style="width: calc((100% - 0.5rem) / 3);"></div>
+          <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white pointer-events-auto" data-category="jailbreak">Jailbreak Tools</button>
+          <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80 pointer-events-auto" data-category="downgrade">Downgrade iOS</button>
+          <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80 pointer-events-auto" data-category="pcgames">PC Games / Apps</button>
+        </div>
+      </div>
     </div>
 
     <div id="options-list">
@@ -1485,12 +1513,14 @@
         heroTitle: "Let's Get Started",
         tabJailbreak: "Jailbreak Tools",
         tabDowngrade: "Downgrade iOS",
+        tabPcGames: "PC Games / Apps",
         btnContinue: 'Continue <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnJailbreak: "JAILBREAK",
         btnDowngrade: "DOWNGRADE",
         btnClose: "Close",
         langTitle: "Language",
         yourOption: "You selected:",
+        iosAvailable: "Available for iOS",
         infoDesc: "A revolutionary concept exploring the limits of browser-based exploitation.",
         version: "Version",
         compatibility: "Compatibility",
@@ -1509,7 +1539,11 @@
           dg_26_0_1: { title: "iOS 26.0.1", description: "Lara Support" },
           dg_18_7_1: { title: "iOS 18.7.1", description: "No Liquid Glass" },
           dg_18_5: { title: "iOS 18.5", description: "Balanced" },
-          dg_18_3_1: { title: "iOS 18.3.1", description: "Perfect" }
+          dg_18_3_1: { title: "iOS 18.3.1", description: "Perfect" },
+          pc_gta5: { title: "Grand Theft Auto V", description: "Open-world crime action game" },
+          pc_minecraft: { title: "Minecraft", description: "Sandbox game about building and survival" },
+          pc_rdr2: { title: "Red Dead Redemption 2", description: "Cinematic Wild West adventure" },
+          pc_rave: { title: "Rave", description: "Watch parties with friends on iOS" }
         }
       },
       ru: {
@@ -1518,12 +1552,14 @@
         heroTitle: "Давайте начнем",
         tabJailbreak: "Джейлбрейк",
         tabDowngrade: "Откат iOS",
+        tabPcGames: "ПК Игры / Приложения",
         btnContinue: 'Продолжить <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnJailbreak: "НАЧАТЬ",
         btnDowngrade: "ОТКАТИТЬ",
         btnClose: "Закрыть",
         langTitle: "Язык",
         yourOption: "Вы выбрали:",
+        iosAvailable: "Доступно для iOS",
         infoDesc: "Революционный концепт, исследующий границы уязвимостей в браузере.",
         version: "Версия",
         compatibility: "Совместимость",
@@ -1542,7 +1578,11 @@
           dg_26_0_1: { title: "iOS 26.0.1", description: "Поддержка Lara" },
           dg_18_7_1: { title: "iOS 18.7.1", description: "Без Liquid Glass" },
           dg_18_5: { title: "iOS 18.5", description: "Сбалансированная" },
-          dg_18_3_1: { title: "iOS 18.3.1", description: "Идеальная" }
+          dg_18_3_1: { title: "iOS 18.3.1", description: "Идеальная" },
+          pc_gta5: { title: "Grand Theft Auto V", description: "Криминальный экшен с открытым миром" },
+          pc_minecraft: { title: "Minecraft", description: "Песочница про строительство и выживание" },
+          pc_rdr2: { title: "Red Dead Redemption 2", description: "Кинематографичное приключение на Диком Западе" },
+          pc_rave: { title: "Rave", description: "Совместный просмотр с друзьями на iOS" }
         }
       }
     };
@@ -1619,8 +1659,10 @@
       
       const tabJb = document.querySelector('button[data-category="jailbreak"]');
       const tabDg = document.querySelector('button[data-category="downgrade"]');
+      const tabPc = document.querySelector('button[data-category="pcgames"]');
       if (tabJb) tabJb.innerText = t.tabJailbreak;
       if (tabDg) tabDg.innerText = t.tabDowngrade;
+      if (tabPc) tabPc.innerText = t.tabPcGames || translations.en.tabPcGames;
 
       setNodeHTML('continue-btn', t.btnContinue);
       updateMainButtonText();
@@ -1780,7 +1822,7 @@
           id: "roothide",
           title: "Bypass RootHide",
           description: "Hide your jailbreak from banking & game apps",
-          icon: "unlock",
+          icon: "lock-open",
           themeColor: "#ef4444" /* red */
         }
       ],
@@ -1812,6 +1854,40 @@
           description: "Perfect",
           icon: "download",
           themeColor: "#3b82f6" /* blue */
+        }
+      ],
+      pcgames: [
+        {
+          id: "pc_gta5",
+          title: "Grand Theft Auto V",
+          description: "Open-world crime action game",
+          imgSrc: "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900.jpg",
+          icon: "car-front",
+          themeColor: "#22c55e" /* green */
+        },
+        {
+          id: "pc_minecraft",
+          title: "Minecraft",
+          description: "Sandbox game about building and survival",
+          imgSrc: "https://minecraft.wiki/images/Java_Edition_icon_3.png",
+          icon: "pickaxe",
+          themeColor: "#84cc16" /* lime */
+        },
+        {
+          id: "pc_rdr2",
+          title: "Red Dead Redemption 2",
+          description: "Cinematic Wild West adventure",
+          imgSrc: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/library_600x900.jpg",
+          icon: "crosshair",
+          themeColor: "#ef4444" /* red */
+        },
+        {
+          id: "pc_rave",
+          title: "Rave",
+          description: "Watch parties with friends on iOS",
+          imgSrc: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/9e/14/9e9e1486-46e1-e1ed-ba47-5f619aca8318/AppIcon-0-0-1x_U007emarketing-0-0-0-8-0-0-85-220.png/512x512bb.jpg",
+          icon: "square-play",
+          themeColor: "#ffffff" /* white */
         }
       ]
     };
@@ -1867,6 +1943,7 @@
 
 
     // 4. Render Options List
+    const CATEGORY_ORDER = ['jailbreak', 'downgrade', 'pcgames'];
     let selectedOptionId = null;
     let currentCategory = 'jailbreak';
     let categoryTransitionTimer = null;
@@ -1929,6 +2006,10 @@
         const tItem = getLocalizedItem(currentLang, opt);
         const mappedTitle = tItem.title;
         const mappedDesc = tItem.description;
+        const iosAvailableLabel = (translations[currentLang] && translations[currentLang].iosAvailable) || translations.en.iosAvailable || 'Доступно для iOS';
+        const iosBadgeHTML = category === 'pcgames'
+          ? `<div class="option-badge-row"><span class="ios-availability-badge">${iosAvailableLabel}</span></div>`
+          : '';
 
         // Генерируем иконку (либо картинка по ссылке, либо иконка lucide)
         let iconHTML = '';
@@ -1949,6 +2030,7 @@
           <div class="option-content">
             <div class="option-title">${mappedTitle}</div>
             <div class="option-desc">${mappedDesc}</div>
+            ${iosBadgeHTML}
           </div>
           <div class="option-radio"></div>
         `;
@@ -2000,35 +2082,43 @@
     
     renderOptions('jailbreak');
     
-    // Explicitly initialize with user language state to set up checks and UI
-    const browserLang = navigator.language || navigator.userLanguage || 'en';
-    let savedLang = null;
-    try {
-      savedLang = localStorage.getItem('webbreak-lang');
-    } catch (_) {}
-    const initialLang = Object.prototype.hasOwnProperty.call(translations, savedLang) ? savedLang : (browserLang.toLowerCase().startsWith('ru') ? 'ru' : 'en');
-    applyLanguage(initialLang);
-
     // Tab Switching Logic
     const tabsBox = document.getElementById('category-tabs');
     const tabActiveBg = document.getElementById('tab-active-bg');
+    const categoryButtons = tabsBox ? Array.from(tabsBox.querySelectorAll('button[data-category]')) : [];
+
+    function getCategoryIndex(category) {
+      const index = CATEGORY_ORDER.indexOf(category);
+      return index === -1 ? 0 : index;
+    }
+
+    function updateCategoryTabsUI() {
+      if (!tabsBox || !tabActiveBg) return;
+
+      const buttons = categoryButtons;
+      const activeIndex = getCategoryIndex(currentCategory);
+
+      buttons.forEach((button) => {
+        if (button.dataset.category === currentCategory) {
+          button.className = 'relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white';
+        } else {
+          button.className = 'relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80';
+        }
+      });
+
+      tabActiveBg.style.transform = `translateX(${activeIndex * 100}%)`;
+    }
     
     function switchCategory(newCategory) {
       if (newCategory === currentCategory) return;
       clearTimeout(categoryTransitionTimer);
       
-      const isDowngrade = newCategory === 'downgrade';
+      const previousIndex = getCategoryIndex(currentCategory);
+      const nextIndex = getCategoryIndex(newCategory);
+      const isForward = nextIndex > previousIndex;
       currentCategory = newCategory;
       
-      tabActiveBg.style.transform = isDowngrade ? 'translateX(100%)' : 'translateX(0)';
-      
-      tabsBox.querySelectorAll('button').forEach(b => {
-        if (b.dataset.category === newCategory) {
-          b.className = 'relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white';
-        } else {
-          b.className = 'relative z-10 flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all text-white/50 hover:text-white/80';
-        }
-      });
+      updateCategoryTabsUI();
       
       selectedOptionId = null;
       continueBtnContainer.classList.remove('visible');
@@ -2039,14 +2129,14 @@
       // Animate transition out
       list.style.transition = 'all 0.2s ease-out';
       list.style.opacity = '0';
-      list.style.transform = isDowngrade ? 'translateX(-20px)' : 'translateX(20px)';
+      list.style.transform = isForward ? 'translateX(-20px)' : 'translateX(20px)';
       
       categoryTransitionTimer = setTimeout(() => {
         renderOptions(newCategory);
         
         // Prepare for slide in
         list.style.transition = 'none';
-        list.style.transform = isDowngrade ? 'translateX(20px)' : 'translateX(-20px)';
+        list.style.transform = isForward ? 'translateX(20px)' : 'translateX(-20px)';
         
         // Force reflow
         void list.offsetWidth;
@@ -2059,12 +2149,31 @@
     }
     
     if (tabsBox && tabActiveBg) {
-      tabsBox.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-category]');
-        if (!btn) return;
-        switchCategory(btn.dataset.category);
+      categoryButtons.forEach((button) => {
+        const handleSwitch = (event) => {
+          if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          switchCategory(button.dataset.category);
+        };
+
+        button.addEventListener('click', handleSwitch);
+        button.addEventListener('pointerup', handleSwitch);
+        button.addEventListener('touchend', handleSwitch, { passive: false });
       });
     }
+
+    // Explicitly initialize with user language state to set up checks and UI
+    const browserLang = navigator.language || navigator.userLanguage || 'en';
+    let savedLang = null;
+    try {
+      savedLang = localStorage.getItem('webbreak-lang');
+    } catch (_) {}
+    const initialLang = Object.prototype.hasOwnProperty.call(translations, savedLang) ? savedLang : (browserLang.toLowerCase().startsWith('ru') ? 'ru' : 'en');
+    applyLanguage(initialLang);
+    updateCategoryTabsUI();
+    window.addEventListener('resize', updateCategoryTabsUI, { passive: true });
 
     // 5. Continue Button logic
     if (continueBtn) {
