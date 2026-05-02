@@ -358,9 +358,8 @@
       width: 3rem;
       height: 3rem;
       border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       background: rgba(0, 0, 0, 0.38);
       border: 1px solid rgba(255, 255, 255, 0.08);
       margin-right: 1.25rem;
@@ -369,11 +368,32 @@
       overflow: hidden;
     }
 
+    .option-icon-asset {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+
     .option-icon-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scale(1.05);
+      object-position: center;
+      display: block;
+      transform: none;
+    }
+
+    .option-icon-wrapper img.is-contained {
+      object-fit: contain;
+      padding: 0.18rem;
+      background: rgba(0, 0, 0, 0.16);
+      border-radius: 0.68rem;
+    }
+
+    .option-icon-wrapper img.is-contained.is-tight {
+      padding: 0.12rem;
     }
 
     .option-item[data-id="roothide"] .option-icon-wrapper {
@@ -389,6 +409,7 @@
 
     .option-content {
       flex-grow: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       z-index: 2;
@@ -713,6 +734,7 @@
 
     #continue-btn {
       width: 100%;
+      min-height: 4rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -723,6 +745,8 @@
       border-radius: 1rem;
       font-weight: 700;
       font-size: 1.125rem;
+      line-height: 1.1;
+      text-align: center;
       transition: all 0.3s ease;
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -752,11 +776,23 @@
     /* Jailbreak Button */
     #jb-btn-wrapper {
       position: relative;
+      width: min(100%, 22rem);
       transform: translateZ(0);
       border-radius: 9999px;
       transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
       will-change: transform;
       contain: layout;
+    }
+
+    #lang-btn,
+    #info-btn {
+      flex-shrink: 0;
+    }
+
+    #jb-selected-value {
+      width: 100%;
+      min-width: 0;
+      justify-content: center;
     }
 
     #jb-btn-wrapper:hover {
@@ -890,6 +926,11 @@
 
     #main-jailbreak-btn {
       position: relative;
+      min-height: 5.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
       padding: 1.5rem 4rem;
       background-color: transparent;
       color: white;
@@ -898,6 +939,8 @@
       font-weight: 800;
       font-size: 2rem;
       letter-spacing: 0.1em;
+      line-height: 1.1;
+      text-align: center;
       transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       cursor: pointer;
       overflow: hidden;
@@ -1563,7 +1606,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5">
           <div class="about-stat rounded-2xl p-3 text-sm">
             <span id="version-lbl" class="text-white/50">Version</span>
-            <div class="font-mono mt-1 text-white/90">1.0.0-rc</div>
+            <div class="font-mono mt-1 text-white/90">1.2.5</div>
           </div>
           <div class="about-stat rounded-2xl p-3 text-sm">
             <span id="compat-lbl" class="text-white/50">Compatibility</span>
@@ -2050,8 +2093,8 @@
           },
           downgrade: {
             title: "Downgrade Library",
-            description: "Pick the rollback branch that matches your device, stability target, and preferred iOS generation.",
-            tags: ["Stable builds", "Recommended target", "Exclusive archive"]
+            description: "Choose the rollback version that best fits your device, preferred stability, and iOS generation.",
+            tags: ["Stable builds", "Recommended version", "Exclusive archive"]
           },
           pcgames: {
             title: "PC Games / Apps",
@@ -2088,15 +2131,17 @@
           sileo: { title: "Install Sileo", description: "Clean package manager for tweaks, repos, and essentials." },
           roothide: { title: "Enable RootHide", description: "Reduce jailbreak detection in banking and game apps." },
           dg_26_0_1: { title: "Downgrade to iOS 26.0.1", description: "Newest branch with Lara-based rollback support." },
-          dg_17_0: { title: "Downgrade to iOS 17.0", description: "Exclusive archive target for early iOS 17 compatibility testing." },
-          dg_16_5_1: { title: "Downgrade to iOS 16.5.1", description: "Exclusive legacy target for older rootless workflows and app support." },
-          dg_18_7_1: { title: "Downgrade to iOS 18.7.1", description: "Clean iOS 18 target for users who want a familiar stable build." },
-          dg_18_5: { title: "Downgrade to iOS 18.5", description: "Best all-around rollback target for stability and tweak support." },
+          dg_17_0: { title: "Downgrade to iOS 17.0", description: "Exclusive archive build for early iOS 17 compatibility testing." },
+          dg_16_5_1: { title: "Downgrade to iOS 16.5.1", description: "Exclusive legacy build for older rootless workflows and app support." },
+          dg_18_7_1: { title: "Downgrade to iOS 18.7.1", description: "Clean iOS 18 build for users who want a familiar stable release." },
+          dg_18_5: { title: "Downgrade to iOS 18.5", description: "Best all-around rollback version for stability and tweak support." },
           dg_18_3_1: { title: "Downgrade to iOS 18.3.1", description: "Older iOS 18 build with broad compatibility and lighter visuals." },
           pc_gta5: { title: "Grand Theft Auto V", description: "Open-world action with story missions and online play." },
           pc_minecraft: { title: "Minecraft", description: "Build, craft, survive, and play with friends." },
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Story-driven western adventure in a huge open world." },
-          pc_rave: { title: "Rave", description: "Watch videos and streams together with friends." }
+          pc_rave: { title: "Rave", description: "Watch videos and streams together with friends." },
+          pc_ayugram: { title: "AyuGram", description: "Telegram mod with extra privacy tools, UI customization, recall history, and flexible chat controls." },
+          pc_nugget: { title: "Nugget Mobile", description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options." }
         }
       },
       ru: {
@@ -2127,8 +2172,8 @@
           },
           downgrade: {
             title: "Каталог отката iOS",
-            description: "Подберите ветку отката под своё устройство, желаемую стабильность и нужное поколение iOS.",
-            tags: ["Стабильные сборки", "Рекомендуемая цель", "Эксклюзивный архив"]
+            description: "Выберите версию отката под своё устройство, нужную стабильность и поколение iOS.",
+            tags: ["Стабильные сборки", "Рекомендуемая версия", "Эксклюзивный архив"]
           },
           pcgames: {
             title: "ПК Игры / Приложения",
@@ -2165,15 +2210,17 @@
           sileo: { title: "Установить Sileo", description: "Аккуратный менеджер пакетов для твиков, репозиториев и базовых инструментов." },
           roothide: { title: "Включить RootHide", description: "Снижает обнаружение джейлбрейка в банковских и игровых приложениях." },
           dg_26_0_1: { title: "Откат на iOS 26.0.1", description: "Самая новая ветка с Lara-поддержкой для отката." },
-          dg_17_0: { title: "Откат на iOS 17.0", description: "Эксклюзивная архивная цель для ранней совместимости с iOS 17." },
-          dg_16_5_1: { title: "Откат на iOS 16.5.1", description: "Эксклюзивная legacy-цель для старых rootless-сценариев и приложений." },
-          dg_18_7_1: { title: "Откат на iOS 18.7.1", description: "Чистая цель iOS 18 для тех, кому нужна привычная стабильная сборка." },
-          dg_18_5: { title: "Откат на iOS 18.5", description: "Самая универсальная цель отката по стабильности и поддержке твиков." },
+          dg_17_0: { title: "Откат на iOS 17.0", description: "Эксклюзивная архивная сборка для ранней совместимости с iOS 17." },
+          dg_16_5_1: { title: "Откат на iOS 16.5.1", description: "Эксклюзивная legacy-сборка для старых rootless-сценариев и приложений." },
+          dg_18_7_1: { title: "Откат на iOS 18.7.1", description: "Чистая сборка iOS 18 для тех, кому нужна привычная стабильная версия." },
+          dg_18_5: { title: "Откат на iOS 18.5", description: "Самая универсальная версия отката по стабильности и поддержке твиков." },
           dg_18_3_1: { title: "Откат на iOS 18.3.1", description: "Более ранняя сборка iOS 18 с широкой совместимостью и лёгкой визуальной нагрузкой." },
           pc_gta5: { title: "Grand Theft Auto V", description: "Экшен с открытым миром, сюжетом и онлайн-режимом." },
           pc_minecraft: { title: "Minecraft", description: "Песочница с выживанием, строительством и крафтом." },
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Вестерн-приключение с сюжетом и открытым миром." },
-          pc_rave: { title: "Rave", description: "Совместный просмотр видео и стримов с друзьями." }
+          pc_rave: { title: "Rave", description: "Совместный просмотр видео и стримов с друзьями." },
+          pc_ayugram: { title: "AyuGram", description: "Модификация Telegram с расширенными настройками приватности, внешнего вида, историей удалений и гибким управлением чатами." },
+          pc_nugget: { title: "Nugget Mobile", description: "Набор твиков для iOS 26.4.2 и ниже с Dynamic Island, скрытыми флагами и дополнительными системными настройками." }
         }
       }
     };
@@ -2358,15 +2405,7 @@
             const selectedItemObj = DATA[currentCategory].find(o => o.id === selectedOptionId);
             if (selectedItemObj) {
               const mappedTitle = getLocalizedItem(currentLang, selectedItemObj).title;
-              let iconHTML = '';
-              if (selectedItemObj.imgSrc) {
-                iconHTML = `<div class="relative w-6 h-6 flex items-center justify-center shrink-0">
-                  <i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 absolute opacity-50 z-0"></i>
-                  <img src="${selectedItemObj.imgSrc}" alt="${mappedTitle}" class="w-6 h-6 object-cover shadow-sm rounded-sm relative z-10 transition-opacity duration-300" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
-                </div>`;
-              } else {
-                iconHTML = `<i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 shrink-0"></i>`;
-              }
+              const iconHTML = buildOptionIconHTML(selectedItemObj, mappedTitle, 'w-6 h-6', 'w-5 h-5');
                 
               jbSelectedValue.innerHTML = `${iconHTML}<span class="text-base font-bold truncate drop-shadow-md" style="color: var(--theme-color, white);">${mappedTitle}</span>`;
             }
@@ -2488,7 +2527,7 @@
         {
           id: "dg_18_7_1",
           title: "Downgrade to iOS 18.7.1",
-          description: "Clean iOS 18 target for users who want a familiar stable build.",
+          description: "Clean iOS 18 build for users who want a familiar stable release.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
           trackKey: "stable",
@@ -2497,7 +2536,7 @@
         {
           id: "dg_18_5",
           title: "Downgrade to iOS 18.5",
-          description: "Best all-around rollback target for stability and tweak support.",
+          description: "Best all-around rollback version for stability and tweak support.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
           recommended: true,
@@ -2516,7 +2555,7 @@
         {
           id: "dg_17_0",
           title: "Downgrade to iOS 17.0",
-          description: "Exclusive archive target for early iOS 17 compatibility testing.",
+          description: "Exclusive archive build for early iOS 17 compatibility testing.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
           exclusive: true,
@@ -2526,7 +2565,7 @@
         {
           id: "dg_16_5_1",
           title: "Downgrade to iOS 16.5.1",
-          description: "Exclusive legacy target for older rootless workflows and app support.",
+          description: "Exclusive legacy build for older rootless workflows and app support.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
           exclusive: true,
@@ -2549,6 +2588,7 @@
           description: "Build, craft, survive, and play with friends.",
           imgSrc: "https://minecraft.wiki/images/Java_Edition_icon_3.png",
           icon: "pickaxe",
+          imageFit: "contain",
           themeColor: "#16a34a" /* emerald */
         },
         {
@@ -2565,8 +2605,27 @@
           description: "Watch videos and streams together with friends.",
           imgSrc: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/9e/14/9e9e1486-46e1-e1ed-ba47-5f619aca8318/AppIcon-0-0-1x_U007emarketing-0-0-0-8-0-0-85-220.png/512x512bb.jpg",
           icon: "square-play",
+          imageFit: "contain",
           recommended: true,
           themeColor: "#ffffff" /* white */
+        },
+        {
+          id: "pc_ayugram",
+          title: "AyuGram",
+          description: "Telegram mod with extra privacy tools, UI customization, recall history, and flexible chat controls.",
+          imgSrc: "https://avatars.githubusercontent.com/u/131606289?v=4",
+          icon: "message-circle-more",
+          imageFit: "contain-tight",
+          themeColor: "#60a5fa" /* telegram blue */
+        },
+        {
+          id: "pc_nugget",
+          title: "Nugget Mobile",
+          description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options.",
+          imgSrc: "https://raw.githubusercontent.com/leminlimez/Nugget-Mobile/1881fdc2b721fd2675a2909e7fbc24769d11bb53/readme-images/icon.png",
+          icon: "sliders-horizontal",
+          imageFit: "contain",
+          themeColor: "#8b5cf6" /* violet */
         }
       ]
     };
@@ -2576,6 +2635,27 @@
       const itemsMap = langMap && langMap.items;
       const localized = itemsMap && itemsMap[option.id];
       return localized || option;
+    }
+
+    const DOWNLOAD_BADGE_IDS = new Set(['pc_rave', 'pc_minecraft', 'pc_ayugram', 'pc_nugget']);
+
+    function getIconFitClass(option) {
+      if (option.imageFit === 'contain-tight') return 'is-contained is-tight';
+      if (option.imageFit === 'contain') return 'is-contained';
+      return '';
+    }
+
+    function buildOptionIconHTML(option, title, sizeClass = 'w-full h-full', iconSizeClass = 'w-6 h-6') {
+      if (option.imgSrc) {
+        const fitClass = getIconFitClass(option);
+        const imageClass = ['option-icon-asset', sizeClass, fitClass].filter(Boolean).join(' ');
+        return `<div class="relative ${sizeClass} flex items-center justify-center">
+          <i data-lucide="${option.icon}" class="${iconSizeClass} shrink-0 absolute opacity-50 z-0"></i>
+          <img src="${option.imgSrc}" alt="${title}" class="${imageClass}" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
+        </div>`;
+      }
+
+      return `<i data-lucide="${option.icon}" class="${iconSizeClass} shrink-0"></i>`;
     }
 
     function hexToRgb(hex) {
@@ -2700,6 +2780,9 @@
       }
 
       const options = DATA[category] || [];
+      const activeTranslations = translations[currentLang] || translations.en;
+      const recommendationLabel = activeTranslations.recommendedLabel || translations.en.recommendedLabel || 'Recommended';
+      const exclusiveLabel = activeTranslations.exclusiveLabel || translations.en.exclusiveLabel || 'Exclusive';
 
       options.forEach(opt => {
         const item = document.createElement('div');
@@ -2714,10 +2797,7 @@
         const tItem = getLocalizedItem(currentLang, opt);
         const mappedTitle = tItem.title;
         const mappedDesc = tItem.description;
-        const activeTranslations = translations[currentLang] || translations.en;
-        const recommendationLabel = activeTranslations.recommendedLabel || translations.en.recommendedLabel || 'Recommended';
-        const exclusiveLabel = activeTranslations.exclusiveLabel || translations.en.exclusiveLabel || 'Exclusive';
-        const iosAvailableLabel = opt.id === 'pc_rave'
+        const iosAvailableLabel = DOWNLOAD_BADGE_IDS.has(opt.id)
           ? (activeTranslations.raveDownloadAvailable || translations.en.raveDownloadAvailable || 'Доступно к скачиванию')
           : (activeTranslations.iosAvailable || translations.en.iosAvailable || 'Доступно для iOS');
         const badges = [];
@@ -2740,15 +2820,7 @@
         const badgesHTML = badges.length ? `<div class="option-badge-row">${badges.join('')}</div>` : '';
 
         // Генерируем иконку (либо картинка по ссылке, либо иконка lucide)
-        let iconHTML = '';
-        if (opt.imgSrc) {
-          iconHTML = `<div class="relative w-full h-full flex items-center justify-center">
-            <i data-lucide="${opt.icon}" class="w-6 h-6 shrink-0 absolute opacity-50 z-0"></i>
-            <img src="${opt.imgSrc}" alt="${mappedTitle}" class="w-full h-full object-cover shadow-sm relative z-10 transition-opacity duration-300" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
-          </div>`;
-        } else {
-          iconHTML = `<i data-lucide="${opt.icon}" class="w-6 h-6 shrink-0"></i>`;
-        }
+        const iconHTML = buildOptionIconHTML(opt, mappedTitle);
 
         item.innerHTML = `
           <div class="option-glow"></div>
@@ -2928,16 +3000,7 @@
         if (selectedItemObj) {
           const jbSelectedValue = document.getElementById('jb-selected-value');
           const mappedTitle = getLocalizedItem(currentLang, selectedItemObj).title;
-
-          let iconHTML = '';
-          if (selectedItemObj.imgSrc) {
-            iconHTML = `<div class="relative w-6 h-6 flex items-center justify-center shrink-0">
-              <i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 absolute opacity-50 z-0"></i>
-              <img src="${selectedItemObj.imgSrc}" alt="${mappedTitle}" class="w-6 h-6 object-cover shadow-sm rounded-sm relative z-10 transition-opacity duration-300" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
-            </div>`;
-          } else {
-            iconHTML = `<i data-lucide="${selectedItemObj.icon}" class="w-5 h-5 shrink-0"></i>`;
-          }
+          const iconHTML = buildOptionIconHTML(selectedItemObj, mappedTitle, 'w-6 h-6', 'w-5 h-5');
 
           if (jbSelectedValue) {
             jbSelectedValue.innerHTML = `${iconHTML}<span class="text-base font-bold truncate drop-shadow-md" style="color: var(--theme-color, white);">${mappedTitle}</span>`;
