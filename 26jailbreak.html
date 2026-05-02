@@ -12,12 +12,12 @@
   <meta property="og:title" content="Jailbreak for iOS 26">
   <meta property="og:description" content="Web-Break is a polished jailbreak experience for iOS 16 - iOS 26.5 with clear options and trusted tools. Made by @VityaV on Telegram">
   <meta property="og:image" content="https://vityaig.github.io/embed-index.png">
-  <meta property="og:image:alt" content="White Web-Break logo on a black background">
+  <meta property="og:image:alt" content="Web-Break preview image">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Jailbreak for iOS 26">
   <meta name="twitter:description" content="Web-Break is a polished jailbreak experience for iOS 16 - iOS 26.5 with clear options and trusted tools. Made by @VityaV on Telegram">
   <meta name="twitter:image" content="https://vityaig.github.io/embed-index.png">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d4f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -37,7 +37,7 @@
       overflow-x: hidden;
       width: 100%;
       min-height: var(--app-height);
-      font-family: ui-sans-serif, system-ui, sans-serif; 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif; 
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -457,6 +457,54 @@
       margin-right: 0.38rem;
       background: var(--theme-color, #ffffff);
       box-shadow: 0 0 12px var(--theme-color, #ffffff);
+    }
+
+    .exclusive-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.28rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(251, 191, 36, 0.28);
+      background: rgba(251, 191, 36, 0.12);
+      color: #fcd34d;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 12px rgba(251, 191, 36, 0.08);
+    }
+
+    .exclusive-badge::before {
+      content: '';
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 9999px;
+      margin-right: 0.38rem;
+      background: #fcd34d;
+      box-shadow: 0 0 12px rgba(252, 211, 77, 0.7);
+    }
+
+    .option-item[data-id="dg_17_0"],
+    .option-item[data-id="dg_16_5_1"] {
+      border-color: rgba(251, 191, 36, 0.16);
+      background:
+        linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.04) 36%, rgba(120, 53, 15, 0.04) 100%),
+        rgba(3, 3, 3, 0.72);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .option-item[data-id="dg_17_0"] .option-icon-wrapper,
+    .option-item[data-id="dg_16_5_1"] .option-icon-wrapper {
+      background: linear-gradient(145deg, rgba(251, 191, 36, 0.18), rgba(217, 119, 6, 0.08));
+      border-color: rgba(251, 191, 36, 0.24);
+      color: #fcd34d;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 18px rgba(251, 191, 36, 0.08);
+    }
+
+    .option-item[data-id="dg_17_0"] .option-glow,
+    .option-item[data-id="dg_16_5_1"] .option-glow {
+      background: radial-gradient(120% 100% at 0% 50%, rgba(251, 191, 36, 0.22) 0%, transparent 100%);
     }
 
     .option-radio {
@@ -1112,6 +1160,132 @@
       border-radius: 1rem;
     }
 
+    #category-spotlight {
+      position: relative;
+      width: 100%;
+      max-width: 32rem;
+      margin: 0 auto 1.1rem;
+      padding: 1rem 1rem 0.95rem;
+      border-radius: 1.15rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
+        rgba(5, 5, 5, 0.58);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    #category-spotlight::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,0.06) 0%, transparent 55%);
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .category-spotlight-title {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.25;
+    }
+
+    .category-spotlight-title-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 9999px;
+      background: var(--category-glow-dot, rgba(255,255,255,0.88));
+      box-shadow: 0 0 14px var(--category-glow-dot, rgba(255,255,255,0.45));
+      flex-shrink: 0;
+    }
+
+    .category-spotlight-desc {
+      position: relative;
+      z-index: 1;
+      margin-top: 0.45rem;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.62);
+      text-align: left;
+    }
+
+    .category-spotlight-tags {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.8rem;
+    }
+
+    .category-spotlight-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      padding: 0.34rem 0.62rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .category-spotlight-tag::before {
+      content: '';
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 9999px;
+      background: currentColor;
+      opacity: 0.95;
+      box-shadow: 0 0 10px currentColor;
+      flex-shrink: 0;
+    }
+
+    .category-spotlight-tag.is-gold {
+      border-color: rgba(251, 191, 36, 0.28);
+      background: rgba(251, 191, 36, 0.12);
+      color: #fcd34d;
+    }
+
+    .downgrade-track-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.28rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      background: rgba(96, 165, 250, 0.1);
+      color: #bfdbfe;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .downgrade-track-badge.is-gold {
+      border-color: rgba(251, 191, 36, 0.28);
+      background: rgba(251, 191, 36, 0.12);
+      color: #fcd34d;
+    }
+
+    body[data-category="jailbreak"] {
+      --category-glow-dot: rgba(74, 222, 128, 0.95);
+    }
+
     #options-list[data-category="pcgames"] .option-item {
       background:
         linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02) 34%, rgba(255,255,255,0.035) 100%),
@@ -1122,6 +1296,41 @@
     #options-list[data-category="pcgames"] .option-icon-wrapper {
       border-radius: 0.9rem;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    body[data-category="downgrade"] {
+      --category-glow-dot: rgba(147, 197, 253, 0.95);
+    }
+
+    body[data-category="downgrade"] #category-spotlight {
+      background:
+        linear-gradient(140deg, rgba(59,130,246,0.1), rgba(37,99,235,0.04) 34%, rgba(15,23,42,0.08) 100%),
+        rgba(5, 5, 5, 0.64);
+      border-color: rgba(96, 165, 250, 0.16);
+    }
+
+    #options-list[data-category="downgrade"] .option-item {
+      background:
+        linear-gradient(145deg, rgba(96,165,250,0.06), rgba(59,130,246,0.025) 32%, rgba(3,3,3,0.02) 100%),
+        rgba(3, 3, 3, 0.68);
+      border-color: rgba(96, 165, 250, 0.11);
+    }
+
+    #options-list[data-category="downgrade"] .option-item:not(.selected):hover,
+    #options-list[data-category="downgrade"] .option-item:not(.selected):focus-visible {
+      border-color: rgba(125, 211, 252, 0.18);
+      box-shadow: 0 12px 34px -24px rgba(96, 165, 250, 0.25);
+    }
+
+    body[data-category="pcgames"] {
+      --category-glow-dot: rgba(255, 255, 255, 0.9);
+    }
+
+    @media (min-width: 768px) {
+      #category-spotlight {
+        max-width: 56rem;
+        padding: 1rem 1.1rem;
+      }
     }
 
     @media (hover: hover) {
@@ -1246,6 +1455,15 @@
           <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80 pointer-events-auto" data-category="pcgames">PC Games / Apps</button>
         </div>
       </div>
+    </div>
+
+    <div id="category-spotlight" aria-live="polite">
+      <div class="category-spotlight-title" id="category-spotlight-title">
+        <span class="category-spotlight-title-dot" aria-hidden="true"></span>
+        <span id="category-spotlight-title-text">Jailbreak Tools</span>
+      </div>
+      <div class="category-spotlight-desc" id="category-spotlight-desc">Choose a tool and continue to the installation step.</div>
+      <div class="category-spotlight-tags" id="category-spotlight-tags"></div>
     </div>
 
     <div id="options-list">
@@ -1823,6 +2041,30 @@
         iosAvailable: "Available for iOS",
         raveDownloadAvailable: "Available for download",
         recommendedLabel: "Recommended",
+        exclusiveLabel: "Exclusive",
+        categorySpotlight: {
+          jailbreak: {
+            title: "Jailbreak Tools",
+            description: "Choose the toolset you want to launch, then continue to the installation step.",
+            tags: ["Rootless", "Signing", "Tweaks"]
+          },
+          downgrade: {
+            title: "Downgrade Library",
+            description: "Pick the rollback branch that matches your device, stability target, and preferred iOS generation.",
+            tags: ["Stable builds", "Recommended target", "Exclusive archive"]
+          },
+          pcgames: {
+            title: "PC Games / Apps",
+            description: "Browse desktop titles and apps with a matching visual setup and direct install flow.",
+            tags: ["Catalog", "Popular picks", "iOS-ready"]
+          }
+        },
+        downgradeTrack: {
+          latest: "Current Branch",
+          stable: "Stable",
+          balanced: "Balanced",
+          exclusive: "Archive"
+        },
         stepSelect: "Step 1 - Select",
         stepLaunch: "Step 2 - Launch",
         infoPill: "Concept Build",
@@ -1845,10 +2087,12 @@
           trollstore: { title: "Install TrollStore", description: "Permanent app signing for sideloaded apps without regular certificate revokes." },
           sileo: { title: "Install Sileo", description: "Clean package manager for tweaks, repos, and essentials." },
           roothide: { title: "Enable RootHide", description: "Reduce jailbreak detection in banking and game apps." },
-          dg_26_0_1: { title: "Downgrade to iOS 26.0.1", description: "iOS 26 branch with Lara support" },
-          dg_18_7_1: { title: "Downgrade to iOS 18.7.1", description: "Stable iOS 18 release without Liquid Glass" },
-          dg_18_5: { title: "Downgrade to iOS 18.5", description: "Recommended stable rollback target" },
-          dg_18_3_1: { title: "Downgrade to iOS 18.3.1", description: "Balanced iOS 18 build for compatibility" },
+          dg_26_0_1: { title: "Downgrade to iOS 26.0.1", description: "Newest branch with Lara-based rollback support." },
+          dg_17_0: { title: "Downgrade to iOS 17.0", description: "Exclusive archive target for early iOS 17 compatibility testing." },
+          dg_16_5_1: { title: "Downgrade to iOS 16.5.1", description: "Exclusive legacy target for older rootless workflows and app support." },
+          dg_18_7_1: { title: "Downgrade to iOS 18.7.1", description: "Clean iOS 18 target for users who want a familiar stable build." },
+          dg_18_5: { title: "Downgrade to iOS 18.5", description: "Best all-around rollback target for stability and tweak support." },
+          dg_18_3_1: { title: "Downgrade to iOS 18.3.1", description: "Older iOS 18 build with broad compatibility and lighter visuals." },
           pc_gta5: { title: "Grand Theft Auto V", description: "Open-world action with story missions and online play." },
           pc_minecraft: { title: "Minecraft", description: "Build, craft, survive, and play with friends." },
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Story-driven western adventure in a huge open world." },
@@ -1874,6 +2118,30 @@
         iosAvailable: "Доступно для iOS",
         raveDownloadAvailable: "Доступно к скачиванию",
         recommendedLabel: "Рекомендуется",
+        exclusiveLabel: "Эксклюзив",
+        categorySpotlight: {
+          jailbreak: {
+            title: "Инструменты джейлбрейка",
+            description: "Выберите нужный инструмент и перейдите к шагу установки.",
+            tags: ["Rootless", "Подпись", "Твики"]
+          },
+          downgrade: {
+            title: "Каталог отката iOS",
+            description: "Подберите ветку отката под своё устройство, желаемую стабильность и нужное поколение iOS.",
+            tags: ["Стабильные сборки", "Рекомендуемая цель", "Эксклюзивный архив"]
+          },
+          pcgames: {
+            title: "ПК Игры / Приложения",
+            description: "Каталог настольных игр и приложений с отдельным визуальным стилем и прямым сценарием установки.",
+            tags: ["Каталог", "Популярные позиции", "Готово для iOS"]
+          }
+        },
+        downgradeTrack: {
+          latest: "Текущая ветка",
+          stable: "Стабильная",
+          balanced: "Сбалансированная",
+          exclusive: "Архивная"
+        },
         stepSelect: "Шаг 1 - Выбор",
         stepLaunch: "Шаг 2 - Запуск",
         infoPill: "Концепт-сборка",
@@ -1896,10 +2164,12 @@
           trollstore: { title: "Установить TrollStore", description: "Постоянная подпись sideload-приложений без регулярных отзывов сертификата." },
           sileo: { title: "Установить Sileo", description: "Аккуратный менеджер пакетов для твиков, репозиториев и базовых инструментов." },
           roothide: { title: "Включить RootHide", description: "Снижает обнаружение джейлбрейка в банковских и игровых приложениях." },
-          dg_26_0_1: { title: "Откат на iOS 26.0.1", description: "Ветка iOS 26 с поддержкой Lara" },
-          dg_18_7_1: { title: "Откат на iOS 18.7.1", description: "Стабильный релиз iOS 18 без Liquid Glass" },
-          dg_18_5: { title: "Откат на iOS 18.5", description: "Рекомендуемая стабильная версия для отката" },
-          dg_18_3_1: { title: "Откат на iOS 18.3.1", description: "Сбалансированная версия для совместимости" },
+          dg_26_0_1: { title: "Откат на iOS 26.0.1", description: "Самая новая ветка с Lara-поддержкой для отката." },
+          dg_17_0: { title: "Откат на iOS 17.0", description: "Эксклюзивная архивная цель для ранней совместимости с iOS 17." },
+          dg_16_5_1: { title: "Откат на iOS 16.5.1", description: "Эксклюзивная legacy-цель для старых rootless-сценариев и приложений." },
+          dg_18_7_1: { title: "Откат на iOS 18.7.1", description: "Чистая цель iOS 18 для тех, кому нужна привычная стабильная сборка." },
+          dg_18_5: { title: "Откат на iOS 18.5", description: "Самая универсальная цель отката по стабильности и поддержке твиков." },
+          dg_18_3_1: { title: "Откат на iOS 18.3.1", description: "Более ранняя сборка iOS 18 с широкой совместимостью и лёгкой визуальной нагрузкой." },
           pc_gta5: { title: "Grand Theft Auto V", description: "Экшен с открытым миром, сюжетом и онлайн-режимом." },
           pc_minecraft: { title: "Minecraft", description: "Песочница с выживанием, строительством и крафтом." },
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Вестерн-приключение с сюжетом и открытым миром." },
@@ -1964,6 +2234,25 @@
       safeCreateIcons();
     }
 
+    function updateCategorySpotlight() {
+      const t = translations[currentLang] || translations.en;
+      const fallback = translations.en.categorySpotlight || {};
+      const section = (t.categorySpotlight && t.categorySpotlight[currentCategory]) || fallback[currentCategory];
+      if (!section) return;
+
+      setNodeText('category-spotlight-title-text', section.title || '');
+      setNodeText('category-spotlight-desc', section.description || '');
+
+      const tagsEl = document.getElementById('category-spotlight-tags');
+      if (!tagsEl) return;
+
+      const tags = Array.isArray(section.tags) ? section.tags : [];
+      tagsEl.innerHTML = tags.map((tag, index) => {
+        const extraClass = currentCategory === 'downgrade' && index === tags.length - 1 ? ' is-gold' : '';
+        return `<span class="category-spotlight-tag${extraClass}">${tag}</span>`;
+      }).join('');
+    }
+
     function applyLanguageAnimated(lang) {
       if (prefersReducedMotion) {
         applyLanguage(lang);
@@ -2014,6 +2303,7 @@
 
       updateContinueButtonText();
       updateMainButtonText();
+      updateCategorySpotlight();
       setNodeText('info-close-btn', t.btnClose);
       setNodeText('lang-close-btn', t.btnClose);
       setNodeText('lang-modal-title', t.langTitle);
@@ -2189,35 +2479,59 @@
         {
           id: "dg_26_0_1",
           title: "Downgrade to iOS 26.0.1",
-          description: "iOS 26 branch with Lara support",
+          description: "Newest branch with Lara-based rollback support.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
+          trackKey: "latest",
           themeColor: "#60a5fa" /* iOS blue */
         },
         {
           id: "dg_18_7_1",
           title: "Downgrade to iOS 18.7.1",
-          description: "Stable iOS 18 release without Liquid Glass",
+          description: "Clean iOS 18 target for users who want a familiar stable build.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
+          trackKey: "stable",
           themeColor: "#38bdf8" /* sky */
         },
         {
           id: "dg_18_5",
           title: "Downgrade to iOS 18.5",
-          description: "Recommended stable rollback target",
+          description: "Best all-around rollback target for stability and tweak support.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
           recommended: true,
+          trackKey: "stable",
           themeColor: "#818cf8" /* indigo */
         },
         {
           id: "dg_18_3_1",
           title: "Downgrade to iOS 18.3.1",
-          description: "Balanced iOS 18 build for compatibility",
+          description: "Older iOS 18 build with broad compatibility and lighter visuals.",
           imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
+          trackKey: "balanced",
           themeColor: "#a78bfa" /* violet */
+        },
+        {
+          id: "dg_17_0",
+          title: "Downgrade to iOS 17.0",
+          description: "Exclusive archive target for early iOS 17 compatibility testing.",
+          imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
+          icon: "download",
+          exclusive: true,
+          trackKey: "exclusive",
+          themeColor: "#fbbf24" /* gold */
+        },
+        {
+          id: "dg_16_5_1",
+          title: "Downgrade to iOS 16.5.1",
+          description: "Exclusive legacy target for older rootless workflows and app support.",
+          imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
+          icon: "download",
+          exclusive: true,
+          trackKey: "exclusive",
+          themeColor: "#f59e0b" /* amber */
         }
       ],
       pcgames: [
@@ -2402,12 +2716,23 @@
         const mappedDesc = tItem.description;
         const activeTranslations = translations[currentLang] || translations.en;
         const recommendationLabel = activeTranslations.recommendedLabel || translations.en.recommendedLabel || 'Recommended';
+        const exclusiveLabel = activeTranslations.exclusiveLabel || translations.en.exclusiveLabel || 'Exclusive';
         const iosAvailableLabel = opt.id === 'pc_rave'
           ? (activeTranslations.raveDownloadAvailable || translations.en.raveDownloadAvailable || 'Доступно к скачиванию')
           : (activeTranslations.iosAvailable || translations.en.iosAvailable || 'Доступно для iOS');
         const badges = [];
         if (opt.recommended && category !== 'pcgames') {
           badges.push(`<span class="recommendation-badge">${recommendationLabel}</span>`);
+        }
+        if (opt.exclusive) {
+          badges.push(`<span class="exclusive-badge">${exclusiveLabel}</span>`);
+        }
+        if (category === 'downgrade' && opt.trackKey) {
+          const trackLabel = (activeTranslations.downgradeTrack && activeTranslations.downgradeTrack[opt.trackKey])
+            || (translations.en.downgradeTrack && translations.en.downgradeTrack[opt.trackKey])
+            || opt.trackKey;
+          const trackClass = opt.exclusive ? 'downgrade-track-badge is-gold' : 'downgrade-track-badge';
+          badges.unshift(`<span class="${trackClass}">${trackLabel}</span>`);
         }
         if (category === 'pcgames') {
           badges.push(`<span class="ios-availability-badge">${iosAvailableLabel}</span>`);
@@ -2525,6 +2850,7 @@
       applyCategoryTheme(newCategory);
       updateCategoryTabsUI();
       updateMainButtonText();
+      updateCategorySpotlight();
       
       selectedOptionId = null;
       continueBtnContainer.classList.remove('visible');
@@ -2692,7 +3018,7 @@
       panicScreen.classList.add('active');
       panicScreen.setAttribute('aria-hidden', 'false');
     }
-
+    
        // 6. Main Jailbreak button
     const jbBtn = document.getElementById('main-jailbreak-btn');
     
