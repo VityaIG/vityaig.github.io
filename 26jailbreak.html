@@ -20,11 +20,14 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4d4f' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-    
+  
   <style>
     :root {
       --bg-color: #000000;
       --app-height: 100vh;
+      --category-sheen: rgba(255, 255, 255, 0.08);
+      --category-glow: rgba(34, 197, 94, 0.14);
+      --category-glow-soft: rgba(34, 197, 94, 0.05);
     }
     
     body { 
@@ -258,6 +261,20 @@
       padding: 4rem 1.5rem;
     }
 
+    #selection-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(60% 45% at 50% 14%, var(--category-glow) 0%, transparent 72%),
+        radial-gradient(42% 34% at 16% 72%, var(--category-glow-soft) 0%, transparent 78%),
+        radial-gradient(36% 30% at 84% 30%, var(--category-glow-soft) 0%, transparent 74%);
+      opacity: 1;
+      transition: opacity 0.45s ease, background 0.45s ease;
+      z-index: 0;
+    }
+
     #jailbreak-screen {
       position: fixed;
       inset: 0;
@@ -416,6 +433,32 @@
       white-space: nowrap;
     }
 
+    .recommendation-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.28rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .recommendation-badge::before {
+      content: '';
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 9999px;
+      margin-right: 0.38rem;
+      background: var(--theme-color, #ffffff);
+      box-shadow: 0 0 12px var(--theme-color, #ffffff);
+    }
+
     .option-radio {
       flex-shrink: 0;
       width: 1.5rem;
@@ -556,6 +599,68 @@
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
+    }
+
+    .step-indicator {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.45rem 0.65rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .step-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 2rem;
+      padding: 0.38rem 0.85rem;
+      border-radius: 9999px;
+      color: rgba(255, 255, 255, 0.56);
+      transition: background 0.28s ease, color 0.28s ease, transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .step-chip.is-active {
+      color: rgba(255, 255, 255, 0.98);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 24px -20px rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .step-dot {
+      width: 0.52rem;
+      height: 0.52rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+      transition: background 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+    }
+
+    .step-chip.is-active .step-dot {
+      background: var(--theme-color, #ffffff);
+      box-shadow: 0 0 14px var(--theme-color, #ffffff);
+      transform: scale(1.08);
+    }
+
+    .step-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .step-divider {
+      width: 1.15rem;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.14);
     }
 
     #continue-btn {
@@ -871,6 +976,31 @@
       position: relative;
       overflow: hidden;
       isolation: isolate;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 36px -28px rgba(255, 255, 255, 0.55);
+    }
+
+    #lang-btn::before,
+    #info-btn::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.14) 48%, transparent 76%);
+      transform: translateX(-135%);
+      transition: transform 0.65s ease;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #lang-btn > *,
+    #info-btn > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    #lang-btn:hover::before,
+    #info-btn:hover::before {
+      transform: translateX(135%);
     }
 
     #jb-selected-box,
@@ -883,6 +1013,115 @@
     #status-badge {
       background: rgba(4, 4, 4, 0.62) !important;
       border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    body.language-swapping #hero-title,
+    body.language-swapping #category-tabs,
+    body.language-swapping #options-list,
+    body.language-swapping #continue-btn-container,
+    body.language-swapping #info-content {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(4px);
+    }
+
+    #hero-title,
+    #category-tabs,
+    #options-list,
+    #continue-btn-container,
+    #info-content {
+      transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
+    }
+
+    .about-logo-wrap {
+      position: relative;
+      width: 4rem;
+      height: 4rem;
+      display: grid;
+      place-items: center;
+      border-radius: 1.25rem;
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 40px -28px rgba(255,255,255,0.9);
+    }
+
+    .about-logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 64%);
+      animation: logoGlowBreath 5.5s ease-in-out infinite;
+    }
+
+    .about-logo-wrap img {
+      position: relative;
+      width: 2.8rem;
+      height: 2.8rem;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.22));
+    }
+
+    .about-stat,
+    .about-feature {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .about-feature {
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .about-feature:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.13);
+    }
+
+    html[lang="en"] .hero-title {
+      letter-spacing: -0.045em;
+      font-weight: 800;
+    }
+
+    html[lang="en"] .step-label,
+    html[lang="en"] #category-tabs button,
+    html[lang="en"] .option-title,
+    html[lang="en"] #continue-btn,
+    html[lang="en"] #jb-btn-text {
+      letter-spacing: 0;
+    }
+
+    body[data-category="jailbreak"] {
+      --category-glow: rgba(34, 197, 94, 0.16);
+      --category-glow-soft: rgba(16, 185, 129, 0.06);
+    }
+
+    body[data-category="downgrade"] {
+      --category-glow: rgba(96, 165, 250, 0.16);
+      --category-glow-soft: rgba(59, 130, 246, 0.06);
+    }
+
+    body[data-category="pcgames"] {
+      --category-glow: rgba(255, 255, 255, 0.12);
+      --category-glow-soft: rgba(139, 92, 246, 0.05);
+    }
+
+    body[data-category="pcgames"] #category-tabs {
+      background: linear-gradient(90deg, rgba(255,255,255,0.025), rgba(255,255,255,0.05), rgba(255,255,255,0.025));
+      border-radius: 1rem;
+    }
+
+    #options-list[data-category="pcgames"] .option-item {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02) 34%, rgba(255,255,255,0.035) 100%),
+        rgba(3, 3, 3, 0.72);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    #options-list[data-category="pcgames"] .option-icon-wrapper {
+      border-radius: 0.9rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
     }
 
     @media (hover: hover) {
@@ -975,6 +1214,17 @@
   <div id="selection-screen">
     
     <div class="text-center mb-10 px-4 flex flex-col items-center mt-16 sm:mt-12">
+      <div class="step-indicator mb-5" id="step-indicator" aria-label="Progress">
+        <div class="step-chip is-active" id="step-chip-1">
+          <span class="step-dot"></span>
+          <span class="step-label" id="step-label-1">Step 1 - Select</span>
+        </div>
+        <span class="step-divider" aria-hidden="true"></span>
+        <div class="step-chip" id="step-chip-2">
+          <span class="step-dot"></span>
+          <span class="step-label" id="step-label-2">Step 2 - Launch</span>
+        </div>
+      </div>
       <div class="hero-heading">
         <div class="hero-logo-shell" aria-hidden="true">
           <span class="hero-logo-glow"></span>
@@ -1013,6 +1263,17 @@
   <!-- Jailbreak Screen -->
   <div id="jailbreak-screen" class="relative overflow-hidden w-full h-full flex flex-col justify-center items-center">
     <div class="relative z-10 flex flex-col items-center w-full">
+      <div class="step-indicator mb-10" id="jb-step-indicator" aria-label="Progress">
+        <div class="step-chip" id="jb-step-chip-1">
+          <span class="step-dot"></span>
+          <span class="step-label" id="jb-step-label-1">Step 1 - Select</span>
+        </div>
+        <span class="step-divider" aria-hidden="true"></span>
+        <div class="step-chip is-active" id="jb-step-chip-2">
+          <span class="step-dot"></span>
+          <span class="step-label" id="jb-step-label-2">Step 2 - Launch</span>
+        </div>
+      </div>
       <!-- Animated Border Line Container -->
       <div class="relative flex items-center justify-center group cursor-pointer transition-all duration-300 transform-gpu rounded-full" id="jb-btn-wrapper">
         <div class="jb-button-halo" aria-hidden="true"></div>
@@ -1044,7 +1305,7 @@
         </svg>
         
         <button id="main-jailbreak-btn" type="button" class="!border-none bg-[#0a0a0a]/80 backdrop-blur-xl text-white relative z-10 w-full transition-all duration-300 shadow-2xl overflow-hidden rounded-full">
-          <span class="relative z-20 drop-shadow-md text-xl sm:text-2xl font-bold tracking-widest uppercase" id="jb-btn-text">JAILBREAK</span>
+          <span class="relative z-20 drop-shadow-md text-xl sm:text-2xl font-bold tracking-wide" id="jb-btn-text">Start Installation</span>
         </button>
       </div>
 
@@ -1062,22 +1323,58 @@
     <!-- Info Modal -->
   <div id="info-modal" role="dialog" aria-modal="true" aria-labelledby="info-title" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="info-backdrop"></div>
-    <div class="relative w-full max-w-sm md:max-w-md bg-[#111] border border-white/10 rounded-3xl flex flex-col shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[85vh] overflow-hidden" id="info-content">
+    <div class="relative w-full max-w-sm md:max-w-lg bg-[#111] border border-white/10 rounded-3xl flex flex-col shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[85vh] overflow-hidden" id="info-content">
       
       <div id="info-scroll-area" class="p-6 overflow-y-auto no-scrollbar scroll-smooth">
-        <h2 id="info-title" class="text-2xl font-bold mb-2">iOS 26 WebBreak</h2>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="about-logo-wrap" aria-hidden="true">
+            <img src="webbreak-logo-white.png" alt="" decoding="async">
+          </div>
+          <div class="min-w-0">
+            <div id="info-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-400/10 text-green-300 border border-green-400/20 text-[11px] font-bold uppercase tracking-wide mb-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+              Concept Build
+            </div>
+            <h2 id="info-title" class="text-2xl font-black tracking-tight">iOS 26 WebBreak</h2>
+          </div>
+        </div>
         <p id="info-desc" class="text-white/70 text-sm mb-5 leading-relaxed">
-          A revolutionary concept exploring the limits of browser-based exploitation.
+          A polished Web-Break interface with guided choices, adaptive visuals, and a clean launch flow.
         </p>
         
-        <div class="space-y-3 mb-6">
-          <div class="flex items-center justify-between text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5">
+          <div class="about-stat rounded-2xl p-3 text-sm">
             <span id="version-lbl" class="text-white/50">Version</span>
-            <span class="font-mono bg-white/10 px-2 py-0.5 rounded-md text-white/90">1.0.0-rc</span>
+            <div class="font-mono mt-1 text-white/90">1.0.0-rc</div>
           </div>
-          <div class="flex items-center justify-between text-sm">
+          <div class="about-stat rounded-2xl p-3 text-sm">
             <span id="compat-lbl" class="text-white/50">Compatibility</span>
-            <span class="text-green-400 font-medium">iOS 15.0 - 26.5</span>
+            <div class="text-green-400 font-semibold mt-1">iOS 15.0 - 26.5</div>
+          </div>
+          <div class="about-stat rounded-2xl p-3 text-sm">
+            <span id="build-lbl" class="text-white/50">Interface</span>
+            <div class="text-white/90 font-semibold mt-1">Web-Break</div>
+          </div>
+        </div>
+
+        <div class="space-y-2 mb-6">
+          <div class="about-feature flex items-center gap-3 rounded-2xl p-3">
+            <div class="w-9 h-9 rounded-xl bg-green-400/10 flex items-center justify-center shrink-0">
+              <i data-lucide="sparkles" class="w-4 h-4 text-green-300"></i>
+            </div>
+            <span id="about-feature-flow" class="text-sm text-white/75">Guided flow for tools, rollback, and apps.</span>
+          </div>
+          <div class="about-feature flex items-center gap-3 rounded-2xl p-3">
+            <div class="w-9 h-9 rounded-xl bg-cyan-400/10 flex items-center justify-center shrink-0">
+              <i data-lucide="palette" class="w-4 h-4 text-cyan-300"></i>
+            </div>
+            <span id="about-feature-theme" class="text-sm text-white/75">Theme color adapts to the selected option.</span>
+          </div>
+          <div class="about-feature flex items-center gap-3 rounded-2xl p-3">
+            <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+              <i data-lucide="image" class="w-4 h-4 text-white/80"></i>
+            </div>
+            <span id="about-feature-icons" class="text-sm text-white/75">Real icons are used where reliable sources exist.</span>
           </div>
         </div>
 
@@ -1508,22 +1805,34 @@
     // Translations
     const translations = {
       en: {
-        systemReady: "System Supported",
-        systemNotSupported: "System Unsupported",
+        systemReady: "Device Compatible",
+        systemNotSupported: "Device Not Compatible",
         heroTitle: "Let's Get Started",
-        tabJailbreak: "Jailbreak Tools",
-        tabDowngrade: "Downgrade iOS",
+        tabJailbreak: "Jailbreak",
+        tabDowngrade: "iOS Downgrade",
         tabPcGames: "PC Games / Apps",
         btnContinue: 'Continue <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnJailbreak: "START INSTALLING",
-        btnDowngrade: "DOWNGRADE",
+        btnContinueJailbreak: 'Continue to Installation <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinueDowngrade: 'Continue to Downgrade <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinuePcGames: 'Continue to App Setup <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnJailbreak: "Start Installation",
+        btnDowngrade: "Start Downgrade",
         btnClose: "Close",
         langTitle: "Language",
         yourOption: "You selected:",
         iosAvailable: "Available for iOS",
-        infoDesc: "A revolutionary concept exploring the limits of browser-based exploitation.",
+        raveDownloadAvailable: "Available for download",
+        recommendedLabel: "Recommended",
+        stepSelect: "Step 1 - Select",
+        stepLaunch: "Step 2 - Launch",
+        infoPill: "Concept Build",
+        infoDesc: "A polished Web-Break interface with guided choices, adaptive visuals, and a clean launch flow.",
         version: "Version",
         compatibility: "Compatibility",
+        interfaceLabel: "Interface",
+        aboutFeatureFlow: "Guided flow for tools, rollback, and apps.",
+        aboutFeatureTheme: "Theme color adapts to the selected option.",
+        aboutFeatureIcons: "Real icons are used where reliable sources exist.",
         viewCredits: "View Credits",
         hideCredits: "Hide Credits",
         creditsTitle: "Credits",
@@ -1532,18 +1841,18 @@
         roleInfra: "Infrastructure & Sub-domain Provisioning",
         roleExecution: "Browser-to-SpringBoard Execution Logic (Respring)",
         items: {
-          dopamine: { title: "Install Dopamine", description: "Modern rootless jailbreak for iOS 15.0 - <span class='relative inline-block text-white'><span class='relative z-0'>16.6.1</span><span class='absolute inset-x-[-4px] top-1/2 h-[3px] bg-red-600 transform -translate-y-1/2 -rotate-3 rounded-full z-10'></span></span> <span class='text-white font-bold ml-1'>26.5</span>" },
-          trollstore: { title: "Install TrollStore", description: "Permasigned jailed app installer (No revokes)" },
-          sileo: { title: "Install Sileo", description: "A fast, beautiful, modern package manager" },
-          roothide: { title: "Bypass RootHide", description: "Hide your jailbreak from banking & game apps" },
-          dg_26_0_1: { title: "iOS 26.0.1", description: "Lara Support" },
-          dg_18_7_1: { title: "iOS 18.7.1", description: "No Liquid Glass" },
-          dg_18_5: { title: "iOS 18.5", description: "Balanced" },
-          dg_18_3_1: { title: "iOS 18.3.1", description: "Perfect" },
-          pc_gta5: { title: "Grand Theft Auto V", description: "Open-world crime action game" },
-          pc_minecraft: { title: "Minecraft", description: "Sandbox game about building and survival" },
-          pc_rdr2: { title: "Red Dead Redemption 2", description: "Cinematic Wild West adventure" },
-          pc_rave: { title: "Rave", description: "Watch parties with friends on iOS" }
+          dopamine: { title: "Install Dopamine", description: "Rootless jailbreak setup for modern supported iOS versions." },
+          trollstore: { title: "Install TrollStore", description: "Permanent app signing for sideloaded apps without regular certificate revokes." },
+          sileo: { title: "Install Sileo", description: "Clean package manager for tweaks, repos, and essentials." },
+          roothide: { title: "Enable RootHide", description: "Reduce jailbreak detection in banking and game apps." },
+          dg_26_0_1: { title: "Downgrade to iOS 26.0.1", description: "iOS 26 branch with Lara support" },
+          dg_18_7_1: { title: "Downgrade to iOS 18.7.1", description: "Stable iOS 18 release without Liquid Glass" },
+          dg_18_5: { title: "Downgrade to iOS 18.5", description: "Recommended stable rollback target" },
+          dg_18_3_1: { title: "Downgrade to iOS 18.3.1", description: "Balanced iOS 18 build for compatibility" },
+          pc_gta5: { title: "Grand Theft Auto V", description: "Open-world action with story missions and online play." },
+          pc_minecraft: { title: "Minecraft", description: "Build, craft, survive, and play with friends." },
+          pc_rdr2: { title: "Red Dead Redemption 2", description: "Story-driven western adventure in a huge open world." },
+          pc_rave: { title: "Rave", description: "Watch videos and streams together with friends." }
         }
       },
       ru: {
@@ -1554,15 +1863,27 @@
         tabDowngrade: "Откат iOS",
         tabPcGames: "ПК Игры / Приложения",
         btnContinue: 'Продолжить <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnJailbreak: "НАЧАТЬ УСТАНОВКУ",
-        btnDowngrade: "ОТКАТИТЬ",
+        btnContinueJailbreak: 'Перейти к установке <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinueDowngrade: 'Перейти к откату iOS <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinuePcGames: 'Перейти к установке приложения <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnJailbreak: "Начать установку",
+        btnDowngrade: "Откатить",
         btnClose: "Закрыть",
         langTitle: "Язык",
         yourOption: "Вы выбрали:",
         iosAvailable: "Доступно для iOS",
-        infoDesc: "Революционный концепт, исследующий границы уязвимостей в браузере.",
+        raveDownloadAvailable: "Доступно к скачиванию",
+        recommendedLabel: "Рекомендуется",
+        stepSelect: "Шаг 1 - Выбор",
+        stepLaunch: "Шаг 2 - Запуск",
+        infoPill: "Концепт-сборка",
+        infoDesc: "Аккуратный интерфейс Web-Break с понятным выбором, адаптивной визуальной темой и чистым запуском.",
         version: "Версия",
         compatibility: "Совместимость",
+        interfaceLabel: "Интерфейс",
+        aboutFeatureFlow: "Пошаговый выбор для инструментов, отката и приложений.",
+        aboutFeatureTheme: "Цвет темы подстраивается под выбранную опцию.",
+        aboutFeatureIcons: "Реальные иконки используются там, где есть надежные источники.",
         viewCredits: "Показать создателей",
         hideCredits: "Скрыть создателей",
         creditsTitle: "Создатели",
@@ -1571,18 +1892,18 @@
         roleInfra: "Инфраструктура и настройка поддоменов",
         roleExecution: "Логика запуска Browser-to-SpringBoard (Respring)",
         items: {
-          dopamine: { title: "Установить Dopamine", description: "Современный rootless джейлбрейк для iOS 15.0 - <span class='relative inline-block text-white'><span class='relative z-0'>16.6.1</span><span class='absolute inset-x-[-4px] top-1/2 h-[3px] bg-red-600 transform -translate-y-1/2 -rotate-3 rounded-full z-10'></span></span> <span class='text-white font-bold ml-1'>26.5</span>" },
-          trollstore: { title: "Установить TrollStore", description: "Постоянный установщик приложений (Без отзывов)" },
-          sileo: { title: "Установить Sileo", description: "Быстрый, красивый и современный пакетный менеджер" },
-          roothide: { title: "Обход RootHide", description: "Скрытие джейлбрейка от банковских и игровых приложений" },
-          dg_26_0_1: { title: "iOS 26.0.1", description: "Поддержка Lara" },
-          dg_18_7_1: { title: "iOS 18.7.1", description: "Без Liquid Glass" },
-          dg_18_5: { title: "iOS 18.5", description: "Сбалансированная" },
-          dg_18_3_1: { title: "iOS 18.3.1", description: "Идеальная" },
-          pc_gta5: { title: "Grand Theft Auto V", description: "Криминальный экшен с открытым миром" },
-          pc_minecraft: { title: "Minecraft", description: "Песочница про строительство и выживание" },
-          pc_rdr2: { title: "Red Dead Redemption 2", description: "Кинематографичное приключение на Диком Западе" },
-          pc_rave: { title: "Rave", description: "Совместный просмотр с друзьями на iOS" }
+          dopamine: { title: "Установить Dopamine", description: "Rootless-установка джейлбрейка для современных поддерживаемых версий iOS." },
+          trollstore: { title: "Установить TrollStore", description: "Постоянная подпись sideload-приложений без регулярных отзывов сертификата." },
+          sileo: { title: "Установить Sileo", description: "Аккуратный менеджер пакетов для твиков, репозиториев и базовых инструментов." },
+          roothide: { title: "Включить RootHide", description: "Снижает обнаружение джейлбрейка в банковских и игровых приложениях." },
+          dg_26_0_1: { title: "Откат на iOS 26.0.1", description: "Ветка iOS 26 с поддержкой Lara" },
+          dg_18_7_1: { title: "Откат на iOS 18.7.1", description: "Стабильный релиз iOS 18 без Liquid Glass" },
+          dg_18_5: { title: "Откат на iOS 18.5", description: "Рекомендуемая стабильная версия для отката" },
+          dg_18_3_1: { title: "Откат на iOS 18.3.1", description: "Сбалансированная версия для совместимости" },
+          pc_gta5: { title: "Grand Theft Auto V", description: "Экшен с открытым миром, сюжетом и онлайн-режимом." },
+          pc_minecraft: { title: "Minecraft", description: "Песочница с выживанием, строительством и крафтом." },
+          pc_rdr2: { title: "Red Dead Redemption 2", description: "Вестерн-приключение с сюжетом и открытым миром." },
+          pc_rave: { title: "Rave", description: "Совместный просмотр видео и стримов с друзьями." }
         }
       }
     };
@@ -1631,6 +1952,33 @@
       setNodeText('jb-btn-text', label);
     }
 
+    function updateContinueButtonText() {
+      const t = translations[currentLang] || translations.en;
+      let label = t.btnContinueJailbreak || t.btnContinue;
+      if (currentCategory === 'downgrade') {
+        label = t.btnContinueDowngrade || t.btnContinue;
+      } else if (currentCategory === 'pcgames') {
+        label = t.btnContinuePcGames || t.btnContinue;
+      }
+      setNodeHTML('continue-btn', label);
+      safeCreateIcons();
+    }
+
+    function applyLanguageAnimated(lang) {
+      if (prefersReducedMotion) {
+        applyLanguage(lang);
+        return;
+      }
+
+      document.body.classList.add('language-swapping');
+      setTimeout(() => {
+        applyLanguage(lang);
+        requestAnimationFrame(() => {
+          document.body.classList.remove('language-swapping');
+        });
+      }, 120);
+    }
+
     function applyLanguage(lang) {
       const nextLang = Object.prototype.hasOwnProperty.call(translations, lang) ? lang : 'en';
       currentLang = nextLang;
@@ -1664,17 +2012,26 @@
       if (tabDg) tabDg.innerText = t.tabDowngrade;
       if (tabPc) tabPc.innerText = t.tabPcGames || translations.en.tabPcGames;
 
-      setNodeHTML('continue-btn', t.btnContinue);
+      updateContinueButtonText();
       updateMainButtonText();
       setNodeText('info-close-btn', t.btnClose);
       setNodeText('lang-close-btn', t.btnClose);
       setNodeText('lang-modal-title', t.langTitle);
       setNodeText('jb-your-option-lbl', t.yourOption);
       setNodeText('lang-btn-text', nextLang === 'en' ? 'EN' : 'RU');
+      setNodeText('step-label-1', t.stepSelect);
+      setNodeText('step-label-2', t.stepLaunch);
+      setNodeText('jb-step-label-1', t.stepSelect);
+      setNodeText('jb-step-label-2', t.stepLaunch);
 
+      setNodeHTML('info-pill', `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>${t.infoPill}`);
       setNodeText('info-desc', t.infoDesc);
       setNodeText('version-lbl', t.version);
       setNodeText('compat-lbl', t.compatibility);
+      setNodeText('build-lbl', t.interfaceLabel);
+      setNodeText('about-feature-flow', t.aboutFeatureFlow);
+      setNodeText('about-feature-theme', t.aboutFeatureTheme);
+      setNodeText('about-feature-icons', t.aboutFeatureIcons);
       setNodeText('credits-title', t.creditsTitle);
       setNodeText('role-designer', t.roleDesigner);
       setNodeText('role-ai', t.roleAi);
@@ -1756,8 +2113,8 @@
 
     document.querySelectorAll('.lang-option').forEach(btn => {
       btn.addEventListener('click', () => {
-        applyLanguage(btn.dataset.lang);
-        setTimeout(closeLang, 200);
+        applyLanguageAnimated(btn.dataset.lang);
+        setTimeout(closeLang, 280);
       });
     });
 
@@ -1797,15 +2154,16 @@
         {
           id: "dopamine",
           title: "Install Dopamine",
-          description: "Modern rootless jailbreak for iOS 15.0 - <span class='relative inline-block text-white'><span class='relative z-0'>16.6.1</span><span class='absolute inset-x-[-4px] top-1/2 h-[3px] bg-red-600 transform -translate-y-1/2 -rotate-3 rounded-full z-10'></span></span> <span class='text-white font-bold ml-1'>26.5</span>",
+          description: "Rootless jailbreak setup for modern supported iOS versions.",
           imgSrc: "https://raw.githubusercontent.com/opa334/Dopamine/2.x/Application/Dopamine/Assets.xcassets/AppIcon.appiconset/Icon-60%403x.png",
           icon: "flask-conical",
+          recommended: true,
           themeColor: "#22c55e" /* green */
         },
         {
           id: "trollstore",
           title: "Install TrollStore",
-          description: "Permasigned jailed app installer (No revokes)",
+          description: "Permanent app signing for sideloaded apps without regular certificate revokes.",
           imgSrc: "https://raw.githubusercontent.com/opa334/TrollStore/main/TrollStore/Resources/AppIcon60x60%403x.png",
           icon: "gem",
           themeColor: "#06b6d4" /* cyan */
@@ -1813,15 +2171,16 @@
         {
           id: "sileo",
           title: "Install Sileo",
-          description: "A fast, beautiful, modern package manager",
+          description: "Clean package manager for tweaks, repos, and essentials.",
           imgSrc: "https://raw.githubusercontent.com/Sileo/Sileo/main/Sileo/Assets.xcassets/AppIcon.appiconset/AppIcon60x60%403x.png",
           icon: "box",
           themeColor: "#3b82f6" /* blue */
         },
         {
           id: "roothide",
-          title: "Bypass RootHide",
-          description: "Hide your jailbreak from banking & game apps",
+          title: "Enable RootHide",
+          description: "Reduce jailbreak detection in banking and game apps.",
+          imgSrc: "https://theapplewiki.com/wiki/Special:Redirect/file/Dopamine-roothide_Icon.png",
           icon: "lock-open",
           themeColor: "#ef4444" /* red */
         }
@@ -1829,64 +2188,70 @@
       downgrade: [
         {
           id: "dg_26_0_1",
-          title: "iOS 26.0.1",
-          description: "Lara Support",
+          title: "Downgrade to iOS 26.0.1",
+          description: "iOS 26 branch with Lara support",
+          imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
-          themeColor: "#f97316" /* orange */
+          themeColor: "#60a5fa" /* iOS blue */
         },
         {
           id: "dg_18_7_1",
-          title: "iOS 18.7.1",
-          description: "No Liquid Glass",
+          title: "Downgrade to iOS 18.7.1",
+          description: "Stable iOS 18 release without Liquid Glass",
+          imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
-          themeColor: "#eab308" /* yellow */
+          themeColor: "#38bdf8" /* sky */
         },
         {
           id: "dg_18_5",
-          title: "iOS 18.5",
-          description: "Balanced",
+          title: "Downgrade to iOS 18.5",
+          description: "Recommended stable rollback target",
+          imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
-          themeColor: "#22c55e" /* green */
+          recommended: true,
+          themeColor: "#818cf8" /* indigo */
         },
         {
           id: "dg_18_3_1",
-          title: "iOS 18.3.1",
-          description: "Perfect",
+          title: "Downgrade to iOS 18.3.1",
+          description: "Balanced iOS 18 build for compatibility",
+          imgSrc: "https://commons.wikimedia.org/wiki/Special:FilePath/Settings_(iOS).png",
           icon: "download",
-          themeColor: "#3b82f6" /* blue */
+          themeColor: "#a78bfa" /* violet */
         }
       ],
       pcgames: [
         {
           id: "pc_gta5",
           title: "Grand Theft Auto V",
-          description: "Open-world crime action game",
+          description: "Open-world action with story missions and online play.",
           imgSrc: "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/library_600x900.jpg",
           icon: "car-front",
-          themeColor: "#22c55e" /* green */
+          themeColor: "#f97316" /* orange */
         },
         {
           id: "pc_minecraft",
           title: "Minecraft",
-          description: "Sandbox game about building and survival",
+          description: "Build, craft, survive, and play with friends.",
           imgSrc: "https://minecraft.wiki/images/Java_Edition_icon_3.png",
           icon: "pickaxe",
-          themeColor: "#84cc16" /* lime */
+          themeColor: "#16a34a" /* emerald */
         },
         {
           id: "pc_rdr2",
           title: "Red Dead Redemption 2",
-          description: "Cinematic Wild West adventure",
+          description: "Story-driven western adventure in a huge open world.",
           imgSrc: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/library_600x900.jpg",
           icon: "crosshair",
-          themeColor: "#ef4444" /* red */
+          themeColor: "#b91c1c" /* deep red */
         },
         {
           id: "pc_rave",
           title: "Rave",
-          description: "Watch parties with friends on iOS",
+          description: "Watch videos and streams together with friends.",
           imgSrc: "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/9e/14/9e9e1486-46e1-e1ed-ba47-5f619aca8318/AppIcon-0-0-1x_U007emarketing-0-0-0-8-0-0-85-220.png/512x512bb.jpg",
           icon: "square-play",
+          recommended: true,
           themeColor: "#ffffff" /* white */
         }
       ]
@@ -1941,6 +2306,12 @@
       target.style.setProperty('--accent-soft', rgbCss(mixRgb(rgb, white, 0.62)));
     }
 
+    const CATEGORY_THEME = {
+      jailbreak: { accent: '#22c55e', star: '#86efac' },
+      downgrade: { accent: '#60a5fa', star: '#93c5fd' },
+      pcgames: { accent: '#cbd5e1', star: '#e2e8f0' }
+    };
+
 
     // 4. Render Options List
     const CATEGORY_ORDER = ['jailbreak', 'downgrade', 'pcgames'];
@@ -1949,9 +2320,31 @@
     let categoryTransitionTimer = null;
     let isTransitioningToJailbreak = false;
     let isMainActionRunning = false;
+    const selectionScreen = document.getElementById('selection-screen');
     const list = document.getElementById('options-list');
     const continueBtnContainer = document.getElementById('continue-btn-container');
     const continueBtn = document.getElementById('continue-btn');
+
+    function updateStepIndicator(step) {
+      const stepPairs = [
+        [document.getElementById('step-chip-1'), document.getElementById('step-chip-2')],
+        [document.getElementById('jb-step-chip-1'), document.getElementById('jb-step-chip-2')]
+      ];
+
+      stepPairs.forEach(([chip1, chip2]) => {
+        if (!chip1 || !chip2) return;
+        chip1.classList.toggle('is-active', step === 1);
+        chip2.classList.toggle('is-active', step === 2);
+      });
+    }
+
+    function applyCategoryTheme(category) {
+      const theme = CATEGORY_THEME[category] || CATEGORY_THEME.jailbreak;
+      document.body.dataset.category = category;
+      if (list) list.dataset.category = category;
+      setAccentTheme(selectionScreen, theme.accent);
+      setStarfieldColor(theme.star);
+    }
 
     // Particle effects
     function createParticles(x, y, color) {
@@ -1984,6 +2377,7 @@
     function renderOptions(category) {
       if (!list) return;
 
+      list.dataset.category = category;
       list.innerHTML = '';
       if (selectedOptionId) {
         list.classList.add('has-selection');
@@ -2006,10 +2400,19 @@
         const tItem = getLocalizedItem(currentLang, opt);
         const mappedTitle = tItem.title;
         const mappedDesc = tItem.description;
-        const iosAvailableLabel = (translations[currentLang] && translations[currentLang].iosAvailable) || translations.en.iosAvailable || 'Доступно для iOS';
-        const iosBadgeHTML = category === 'pcgames'
-          ? `<div class="option-badge-row"><span class="ios-availability-badge">${iosAvailableLabel}</span></div>`
-          : '';
+        const activeTranslations = translations[currentLang] || translations.en;
+        const recommendationLabel = activeTranslations.recommendedLabel || translations.en.recommendedLabel || 'Recommended';
+        const iosAvailableLabel = opt.id === 'pc_rave'
+          ? (activeTranslations.raveDownloadAvailable || translations.en.raveDownloadAvailable || 'Доступно к скачиванию')
+          : (activeTranslations.iosAvailable || translations.en.iosAvailable || 'Доступно для iOS');
+        const badges = [];
+        if (opt.recommended && category !== 'pcgames') {
+          badges.push(`<span class="recommendation-badge">${recommendationLabel}</span>`);
+        }
+        if (category === 'pcgames') {
+          badges.push(`<span class="ios-availability-badge">${iosAvailableLabel}</span>`);
+        }
+        const badgesHTML = badges.length ? `<div class="option-badge-row">${badges.join('')}</div>` : '';
 
         // Генерируем иконку (либо картинка по ссылке, либо иконка lucide)
         let iconHTML = '';
@@ -2030,7 +2433,7 @@
           <div class="option-content">
             <div class="option-title">${mappedTitle}</div>
             <div class="option-desc">${mappedDesc}</div>
-            ${iosBadgeHTML}
+            ${badgesHTML}
           </div>
           <div class="option-radio"></div>
         `;
@@ -2053,6 +2456,7 @@
             item.setAttribute('aria-pressed', 'true');
             selectedOptionId = opt.id;
             list.classList.add('has-selection');
+            updateContinueButtonText();
             continueBtnContainer.classList.add('visible');
             continueBtn.setAttribute('aria-disabled', 'false');
             continueBtn.disabled = false;
@@ -2118,7 +2522,9 @@
       const isForward = nextIndex > previousIndex;
       currentCategory = newCategory;
       
+      applyCategoryTheme(newCategory);
       updateCategoryTabsUI();
+      updateMainButtonText();
       
       selectedOptionId = null;
       continueBtnContainer.classList.remove('visible');
@@ -2172,6 +2578,8 @@
     } catch (_) {}
     const initialLang = Object.prototype.hasOwnProperty.call(translations, savedLang) ? savedLang : (browserLang.toLowerCase().startsWith('ru') ? 'ru' : 'en');
     applyLanguage(initialLang);
+    applyCategoryTheme(currentCategory);
+    updateStepIndicator(1);
     updateCategoryTabsUI();
     window.addEventListener('resize', updateCategoryTabsUI, { passive: true });
 
@@ -2180,6 +2588,7 @@
       continueBtn.addEventListener('click', () => {
         if (!selectedOptionId || isTransitioningToJailbreak) return;
         isTransitioningToJailbreak = true;
+        updateStepIndicator(2);
         continueBtn.disabled = true;
         continueBtn.setAttribute('aria-disabled', 'true');
         
