@@ -431,6 +431,11 @@
       text-align: left;
     }
 
+    .desc-accent-purple {
+      color: #c4b5fd;
+      font-weight: 600;
+    }
+
     .option-badge-row {
       display: flex;
       flex-wrap: wrap;
@@ -2141,7 +2146,7 @@
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Story-driven western adventure in a huge open world." },
           pc_rave: { title: "Rave", description: "Watch videos and streams together with friends." },
           pc_ayugram: { title: "AyuGram", description: "Telegram mod with extra privacy tools, UI customization, recall history, and flexible chat controls." },
-          pc_nugget: { title: "Nugget Mobile", description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options." }
+          pc_nugget: { title: "Nugget Mobile", description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options. <span class=\"desc-accent-purple\">Supports animated wallpapers.</span>" }
         }
       },
       ru: {
@@ -2220,7 +2225,7 @@
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Вестерн-приключение с сюжетом и открытым миром." },
           pc_rave: { title: "Rave", description: "Совместный просмотр видео и стримов с друзьями." },
           pc_ayugram: { title: "AyuGram", description: "Модификация Telegram с расширенными настройками приватности, внешнего вида, историей удалений и гибким управлением чатами." },
-          pc_nugget: { title: "Nugget Mobile", description: "Набор твиков для iOS 26.4.2 и ниже с Dynamic Island, скрытыми флагами и дополнительными системными настройками." }
+          pc_nugget: { title: "Nugget Mobile", description: "Набор твиков для iOS 26.4.2 и ниже с Dynamic Island, скрытыми флагами и дополнительными системными настройками. <span class=\"desc-accent-purple\">Можно ставить анимированные обои.</span>" }
         }
       }
     };
@@ -2621,7 +2626,7 @@
         {
           id: "pc_nugget",
           title: "Nugget Mobile",
-          description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options.",
+          description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options. <span class=\"desc-accent-purple\">Supports animated wallpapers.</span>",
           imgSrc: "https://raw.githubusercontent.com/leminlimez/Nugget-Mobile/1881fdc2b721fd2675a2909e7fbc24769d11bb53/readme-images/icon.png",
           icon: "sliders-horizontal",
           imageFit: "contain",
@@ -3081,7 +3086,7 @@
       panicScreen.classList.add('active');
       panicScreen.setAttribute('aria-hidden', 'false');
     }
-    
+
        // 6. Main Jailbreak button
     const jbBtn = document.getElementById('main-jailbreak-btn');
     
