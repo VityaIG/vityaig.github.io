@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -317,6 +317,16 @@
       }
     }
 
+    @media (max-width: 767px) {
+      #options-list[data-category="icloud"] .option-title {
+        font-size: 1.1rem;
+      }
+
+      #options-list[data-category="icloud"] .option-desc {
+        font-size: 0.94rem;
+      }
+    }
+
     .option-item {
       position: relative;
       display: flex;
@@ -396,6 +406,20 @@
       padding: 0.12rem;
     }
 
+    .option-svg-icon {
+      width: 100%;
+      height: 100%;
+      display: block;
+      position: relative;
+      z-index: 10;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.12));
+    }
+
+    .option-svg-icon.is-icloud {
+      width: 100%;
+      height: 100%;
+    }
+
     .option-item[data-id="roothide"] .option-icon-wrapper {
       background: rgba(239, 68, 68, 0.14);
       border: 1px solid rgba(239, 68, 68, 0.28);
@@ -429,6 +453,24 @@
       margin-top: 0.25rem;
       transition: color 0.3s ease;
       text-align: left;
+    }
+
+    #options-list[data-category="icloud"] .option-title {
+      font-size: 1.24rem;
+    }
+
+    #options-list[data-category="icloud"] .option-desc {
+      font-size: 1rem;
+      line-height: 1.52;
+      color: rgba(255, 255, 255, 0.64);
+    }
+
+    #options-list[data-category="icloud"] .option-icon-wrapper {
+      width: 3.35rem;
+      height: 3.35rem;
+      background: color-mix(in srgb, var(--theme-color, #ffffff) 14%, rgba(0, 0, 0, 0.38));
+      border-color: color-mix(in srgb, var(--theme-color, #ffffff) 32%, rgba(255, 255, 255, 0.08));
+      box-shadow: inset 0 0 18px color-mix(in srgb, var(--theme-color, #ffffff) 14%, transparent);
     }
 
     .desc-accent-purple {
@@ -1131,6 +1173,72 @@
       transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
     }
 
+    .category-nav-btn {
+      width: 2.45rem;
+      height: 2.45rem;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.86);
+      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+    }
+
+    .category-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .category-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .category-current-label {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+      font-size: 1.04rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      letter-spacing: 0;
+      padding: 0 0.35rem;
+      transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
+      will-change: opacity, transform;
+    }
+
+    .category-current-label.is-transitioning {
+      opacity: 0;
+      filter: blur(4px);
+    }
+
+    .category-current-label.is-transitioning.is-forward {
+      transform: translateX(-16px);
+    }
+
+    .category-current-label.is-transitioning.is-backward {
+      transform: translateX(16px);
+    }
+
+    @media (min-width: 640px) {
+      .category-current-label {
+        font-size: 1.45rem;
+      }
+
+      .category-nav-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+      }
+
+      .category-current-label {
+        font-size: 0.98rem;
+      }
+    }
+
     .about-logo-wrap {
       position: relative;
       width: 4rem;
@@ -1273,7 +1381,7 @@
     }
 
     html[lang="en"] .step-label,
-    html[lang="en"] #category-tabs button,
+    html[lang="en"] #category-current-label,
     html[lang="en"] .option-title,
     html[lang="en"] #continue-btn,
     html[lang="en"] #jb-btn-text {
@@ -1333,7 +1441,7 @@
       display: flex;
       align-items: center;
       gap: 0.55rem;
-      font-size: 0.98rem;
+      font-size: 1.12rem;
       font-weight: 700;
       color: rgba(255, 255, 255, 0.95);
       line-height: 1.25;
@@ -1352,7 +1460,7 @@
       position: relative;
       z-index: 1;
       margin-top: 0.45rem;
-      font-size: 0.84rem;
+      font-size: 0.98rem;
       line-height: 1.5;
       color: rgba(255, 255, 255, 0.62);
       text-align: left;
@@ -1607,13 +1715,16 @@
 
     <!-- Category Tabs -->
     <div class="relative mb-6 w-full max-w-md sm:max-w-2xl md:max-w-3xl mx-auto select-none">
-      <div class="relative flex items-stretch p-1 bg-white/5 rounded-2xl border border-white/10">
-        <div class="relative flex flex-1 min-w-0" id="category-tabs">
-          <div id="tab-active-bg" class="absolute top-1 bottom-1 left-1 bg-white/10 rounded-xl shadow-sm transition-transform duration-300 ease-out z-0 pointer-events-none" style="width: calc((100% - 0.5rem) / 3);"></div>
-          <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white pointer-events-auto" data-category="jailbreak">Jailbreak Tools</button>
-          <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80 pointer-events-auto" data-category="downgrade">Downgrade iOS</button>
-          <button type="button" class="relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80 pointer-events-auto" data-category="pcgames">PC Games / Apps</button>
+      <div id="category-tabs" class="relative flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 bg-white/5 rounded-2xl border border-white/10">
+        <button id="category-prev" type="button" class="category-nav-btn" aria-label="Previous section">
+          <i data-lucide="chevron-left" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        </button>
+        <div class="min-w-0 flex-1 flex items-center justify-center">
+          <div id="category-current-label" class="category-current-label">Jailbreak</div>
         </div>
+        <button id="category-next" type="button" class="category-nav-btn" aria-label="Next section">
+          <i data-lucide="chevron-right" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        </button>
       </div>
     </div>
 
@@ -2182,7 +2293,7 @@
     }
 
     async function copyShareLink() {
-      const shareUrl = 'https://webbreak.axiomr.ru';
+      const shareUrl = 'https://vityaig.github.io/26jailbreak.html';
 
       try {
         if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
@@ -2233,12 +2344,15 @@
         tabJailbreak: "Jailbreak",
         tabDowngrade: "iOS Downgrade",
         tabPcGames: "PC Games / Apps",
+        tabIcloud: "Free iCloud Storage",
         btnContinue: 'Continue <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnContinueJailbreak: 'Continue to Installation <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnContinueDowngrade: 'Continue to Downgrade <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnContinuePcGames: 'Continue to App Setup <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinueIcloud: 'Continue to iCloud Setup <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnJailbreak: "Start Installation",
         btnDowngrade: "Start Downgrade",
+        btnIcloud: "Get Storage",
         btnClose: "Close",
         langTitle: "Language",
         yourOption: "You selected:",
@@ -2261,6 +2375,11 @@
             title: "PC Games / Apps",
             description: "Browse desktop titles and apps with a matching visual setup and direct install flow.",
             tags: ["Games", "Apps", "Downloads"]
+          },
+          icloud: {
+            title: "Free iCloud Storage",
+            description: "Choose the storage tier you want to unlock and continue to the activation step.",
+            tags: ["Cloud+", "Rainbow tiers", "Extra space"]
           }
         },
         downgradeTrack: {
@@ -2304,7 +2423,13 @@
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Story-driven western adventure in a huge open world." },
           pc_rave: { title: "Rave", description: "Watch videos and streams together with friends." },
           pc_ayugram: { title: "AyuGram", description: "Telegram mod with extra privacy tools, UI customization, recall history, and flexible chat controls." },
-          pc_nugget: { title: "Nugget Mobile", description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options. <span class=\"desc-accent-purple\">Supports animated wallpapers.</span>" }
+          pc_nugget: { title: "Nugget Mobile", description: "Tweak toolkit for iOS 26.4.2 and earlier with Dynamic Island, hidden flags, and extra system options. <span class=\"desc-accent-purple\">Supports animated wallpapers.</span>" },
+          icloud_32: { title: "32 GB iCloud", description: "Entry cloud storage tier for light backups and extra files." },
+          icloud_64: { title: "64 GB iCloud", description: "Balanced cloud plan for photos, backups, and daily storage." },
+          icloud_128: { title: "128 GB iCloud", description: "Expanded cloud tier for larger media libraries and device backups." },
+          icloud_256: { title: "256 GB iCloud", description: "High-capacity storage for photos, videos, and long-term syncing." },
+          icloud_512: { title: "512 GB iCloud", description: "Large storage plan for heavy media use and multiple backups." },
+          icloud_1tb: { title: "1 TB iCloud", description: "Maximum rainbow tier for full cloud libraries and oversized backups." }
         }
       },
       ru: {
@@ -2314,12 +2439,15 @@
         tabJailbreak: "Джейлбрейк",
         tabDowngrade: "Откат iOS",
         tabPcGames: "ПК Игры / Приложения",
+        tabIcloud: "Бесплатная память iCloud",
         btnContinue: 'Продолжить <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnContinueJailbreak: 'Перейти к установке <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnContinueDowngrade: 'Перейти к откату iOS <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnContinuePcGames: 'Перейти к установке приложения <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinueIcloud: 'Перейти к памяти iCloud <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
         btnJailbreak: "Начать установку",
         btnDowngrade: "Откатить",
+        btnIcloud: "Получить хранилище",
         btnClose: "Закрыть",
         langTitle: "Язык",
         yourOption: "Вы выбрали:",
@@ -2335,13 +2463,18 @@
           },
           downgrade: {
             title: "Каталог отката iOS",
-            description: "Выберите версию отката под своё устройство, нужную стабильность и поколение iOS.",
+            description: "Выберите версию отката под свое устройство, нужную стабильность и поколение iOS.",
             tags: ["Стабильно", "Рекомендуется", "Архив"]
           },
           pcgames: {
             title: "ПК Игры / Приложения",
             description: "Каталог настольных игр и приложений с отдельным визуальным стилем и прямым сценарием установки.",
             tags: ["Игры", "Приложения", "Загрузки"]
+          },
+          icloud: {
+            title: "Бесплатная память iCloud",
+            description: "Выберите объем памяти, который хотите активировать, и перейдите к следующему шагу.",
+            tags: ["Cloud+", "Радужные объемы", "Больше места"]
           }
         },
         downgradeTrack: {
@@ -2379,13 +2512,19 @@
           dg_16_5_1: { title: "Откат на iOS 16.5.1", description: "Эксклюзивная legacy-сборка для старых rootless-сценариев и приложений." },
           dg_18_7_1: { title: "Откат на iOS 18.7.1", description: "Чистая сборка iOS 18 для тех, кому нужна привычная стабильная версия." },
           dg_18_5: { title: "Откат на iOS 18.5", description: "Самая универсальная версия отката по стабильности и поддержке твиков." },
-          dg_18_3_1: { title: "Откат на iOS 18.3.1", description: "Более ранняя сборка iOS 18 с широкой совместимостью и лёгкой визуальной нагрузкой." },
+          dg_18_3_1: { title: "Откат на iOS 18.3.1", description: "Более ранняя сборка iOS 18 с широкой совместимостью и легкой визуальной нагрузкой." },
           pc_gta5: { title: "Grand Theft Auto V", description: "Экшен с открытым миром, сюжетом и онлайн-режимом." },
           pc_minecraft: { title: "Minecraft", description: "Песочница с выживанием, строительством и крафтом." },
           pc_rdr2: { title: "Red Dead Redemption 2", description: "Вестерн-приключение с сюжетом и открытым миром." },
           pc_rave: { title: "Rave", description: "Совместный просмотр видео и стримов с друзьями." },
           pc_ayugram: { title: "AyuGram", description: "Модификация Telegram с расширенными настройками приватности, внешнего вида, историей удалений и гибким управлением чатами." },
-          pc_nugget: { title: "Nugget Mobile", description: "Набор твиков для iOS 26.4.2 и ниже с Dynamic Island, скрытыми флагами и дополнительными системными настройками. <span class=\"desc-accent-purple\">Можно ставить анимированные обои.</span>" }
+          pc_nugget: { title: "Nugget Mobile", description: "Набор твиков для iOS 26.4.2 и ниже с Dynamic Island, скрытыми флагами и дополнительными системными настройками. <span class=\"desc-accent-purple\">Можно ставить анимированные обои.</span>" },
+          icloud_32: { title: "32 ГБ iCloud", description: "Базовый объем для легких резервных копий и дополнительных файлов." },
+          icloud_64: { title: "64 ГБ iCloud", description: "Сбалансированный объем для фото, бэкапов и повседневного хранения." },
+          icloud_128: { title: "128 ГБ iCloud", description: "Расширенный объем для больших медиатек и резервных копий устройства." },
+          icloud_256: { title: "256 ГБ iCloud", description: "Большой объем для фото, видео и долгой синхронизации." },
+          icloud_512: { title: "512 ГБ iCloud", description: "Очень большой объем для тяжелых медиафайлов и нескольких бэкапов." },
+          icloud_1tb: { title: "1 ТБ iCloud", description: "Максимальный радужный уровень для полной облачной медиатеки и крупных резервных копий." }
         }
       }
     };
@@ -2430,7 +2569,12 @@
 
     function updateMainButtonText() {
       const t = translations[currentLang] || translations.en;
-      const label = currentCategory === 'downgrade' ? t.btnDowngrade : t.btnJailbreak;
+      let label = t.btnJailbreak;
+      if (currentCategory === 'downgrade') {
+        label = t.btnDowngrade;
+      } else if (currentCategory === 'icloud') {
+        label = t.btnIcloud || t.btnJailbreak;
+      }
       setNodeText('jb-btn-text', label);
       updateMainButtonWidth();
     }
@@ -2452,6 +2596,8 @@
         label = t.btnContinueDowngrade || t.btnContinue;
       } else if (currentCategory === 'pcgames') {
         label = t.btnContinuePcGames || t.btnContinue;
+      } else if (currentCategory === 'icloud') {
+        label = t.btnContinueIcloud || t.btnContinue;
       }
       setNodeHTML('continue-btn', label);
       safeCreateIcons();
@@ -2517,12 +2663,9 @@
       
       setHeroTitle(t.heroTitle);
       
-      const tabJb = document.querySelector('button[data-category="jailbreak"]');
-      const tabDg = document.querySelector('button[data-category="downgrade"]');
-      const tabPc = document.querySelector('button[data-category="pcgames"]');
-      if (tabJb) tabJb.innerText = t.tabJailbreak;
-      if (tabDg) tabDg.innerText = t.tabDowngrade;
-      if (tabPc) tabPc.innerText = t.tabPcGames || translations.en.tabPcGames;
+      if (typeof updateCategoryTabsUI === 'function') {
+        updateCategoryTabsUI();
+      }
 
       updateContinueButtonText();
       updateMainButtonText();
@@ -2805,6 +2948,63 @@
           imageFit: "contain",
           themeColor: "#8b5cf6" /* violet */
         }
+      ],
+      icloud: [
+        {
+          id: "icloud_32",
+          title: "32 GB iCloud",
+          description: "Entry cloud storage tier for light backups and extra files.",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+          icon: "cloud",
+          imageFit: "contain",
+          themeColor: "#8b5cf6" /* violet */
+        },
+        {
+          id: "icloud_64",
+          title: "64 GB iCloud",
+          description: "Balanced cloud plan for photos, backups, and daily storage.",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+          icon: "cloud",
+          imageFit: "contain",
+          themeColor: "#4f46e5" /* indigo */
+        },
+        {
+          id: "icloud_128",
+          title: "128 GB iCloud",
+          description: "Expanded cloud tier for larger media libraries and device backups.",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+          icon: "cloud",
+          imageFit: "contain",
+          themeColor: "#06b6d4" /* cyan */
+        },
+        {
+          id: "icloud_256",
+          title: "256 GB iCloud",
+          description: "High-capacity storage for photos, videos, and long-term syncing.",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+          icon: "cloud",
+          imageFit: "contain",
+          recommended: true,
+          themeColor: "#22c55e" /* green */
+        },
+        {
+          id: "icloud_512",
+          title: "512 GB iCloud",
+          description: "Large storage plan for heavy media use and multiple backups.",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+          icon: "cloud",
+          imageFit: "contain",
+          themeColor: "#f97316" /* orange */
+        },
+        {
+          id: "icloud_1tb",
+          title: "1 TB iCloud",
+          description: "Maximum rainbow tier for full cloud libraries and oversized backups.",
+          imgSrc: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+          icon: "cloud",
+          imageFit: "contain",
+          themeColor: "#ef4444" /* red */
+        }
       ]
     };
 
@@ -2881,12 +3081,13 @@
     const CATEGORY_THEME = {
       jailbreak: { accent: '#22c55e', star: '#86efac' },
       downgrade: { accent: '#60a5fa', star: '#93c5fd' },
-      pcgames: { accent: '#cbd5e1', star: '#e2e8f0' }
+      pcgames: { accent: '#cbd5e1', star: '#e2e8f0' },
+      icloud: { accent: '#a78bfa', star: '#c4b5fd' }
     };
 
 
     // 4. Render Options List
-    const CATEGORY_ORDER = ['jailbreak', 'downgrade', 'pcgames'];
+    const CATEGORY_ORDER = ['jailbreak', 'downgrade', 'pcgames', 'icloud'];
     let selectedOptionId = null;
     let currentCategory = 'jailbreak';
     let categoryTransitionTimer = null;
@@ -2997,7 +3198,7 @@
         }
         const badgesHTML = badges.length ? `<div class="option-badge-row">${badges.join('')}</div>` : '';
 
-        // Генерируем иконку (либо картинка по ссылке, либо иконка lucide)
+        // Р“РµРЅРµСЂРёСЂСѓРµРј РёРєРѕРЅРєСѓ (Р»РёР±Рѕ РєР°СЂС‚РёРЅРєР° РїРѕ СЃСЃС‹Р»РєРµ, Р»РёР±Рѕ РёРєРѕРЅРєР° lucide)
         const iconHTML = buildOptionIconHTML(opt, mappedTitle);
 
         item.innerHTML = `
@@ -3061,31 +3262,57 @@
     
     renderOptions('jailbreak');
     
-    // Tab Switching Logic
+    // Category Navigation Logic
     const tabsBox = document.getElementById('category-tabs');
-    const tabActiveBg = document.getElementById('tab-active-bg');
-    const categoryButtons = tabsBox ? Array.from(tabsBox.querySelectorAll('button[data-category]')) : [];
+    const categoryPrevBtn = document.getElementById('category-prev');
+    const categoryNextBtn = document.getElementById('category-next');
+    const categoryCurrentLabel = document.getElementById('category-current-label');
 
     function getCategoryIndex(category) {
       const index = CATEGORY_ORDER.indexOf(category);
       return index === -1 ? 0 : index;
     }
 
+    function getCategoryDisplayName(category) {
+      const t = translations[currentLang] || translations.en;
+      if (category === 'downgrade') return t.tabDowngrade;
+      if (category === 'pcgames') return t.tabPcGames || translations.en.tabPcGames;
+      if (category === 'icloud') return t.tabIcloud || translations.en.tabIcloud;
+      return t.tabJailbreak;
+    }
+
     function updateCategoryTabsUI() {
-      if (!tabsBox || !tabActiveBg) return;
+      if (!tabsBox || !categoryCurrentLabel) return;
+      if (!categoryCurrentLabel.classList.contains('is-transitioning')) {
+        categoryCurrentLabel.textContent = getCategoryDisplayName(currentCategory);
+      }
 
-      const buttons = categoryButtons;
-      const activeIndex = getCategoryIndex(currentCategory);
+      const currentIndex = getCategoryIndex(currentCategory);
+      const prevIndex = (currentIndex - 1 + CATEGORY_ORDER.length) % CATEGORY_ORDER.length;
+      const nextIndex = (currentIndex + 1) % CATEGORY_ORDER.length;
+      if (categoryPrevBtn) categoryPrevBtn.setAttribute('aria-label', `Previous: ${getCategoryDisplayName(CATEGORY_ORDER[prevIndex])}`);
+      if (categoryNextBtn) categoryNextBtn.setAttribute('aria-label', `Next: ${getCategoryDisplayName(CATEGORY_ORDER[nextIndex])}`);
+    }
 
-      buttons.forEach((button) => {
-        if (button.dataset.category === currentCategory) {
-          button.className = 'relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white';
-        } else {
-          button.className = 'relative z-10 flex-1 min-w-0 px-2 py-2.5 rounded-xl text-[11px] sm:text-sm leading-tight font-semibold transition-all text-white/50 hover:text-white/80';
-        }
-      });
+    function animateCategoryLabel(nextCategory, isForward) {
+      if (!categoryCurrentLabel) return;
+      if (prefersReducedMotion) {
+        categoryCurrentLabel.textContent = getCategoryDisplayName(nextCategory);
+        return;
+      }
 
-      tabActiveBg.style.transform = `translateX(${activeIndex * 100}%)`;
+      categoryCurrentLabel.classList.remove('is-forward', 'is-backward');
+      categoryCurrentLabel.classList.add('is-transitioning', isForward ? 'is-forward' : 'is-backward');
+
+      window.setTimeout(() => {
+        categoryCurrentLabel.textContent = getCategoryDisplayName(nextCategory);
+        categoryCurrentLabel.classList.remove('is-forward', 'is-backward');
+        categoryCurrentLabel.classList.add(isForward ? 'is-backward' : 'is-forward');
+
+        requestAnimationFrame(() => {
+          categoryCurrentLabel.classList.remove('is-transitioning', 'is-forward', 'is-backward');
+        });
+      }, 120);
     }
     
     function switchCategory(newCategory) {
@@ -3095,6 +3322,7 @@
       const previousIndex = getCategoryIndex(currentCategory);
       const nextIndex = getCategoryIndex(newCategory);
       const isForward = nextIndex > previousIndex;
+      animateCategoryLabel(newCategory, isForward);
       currentCategory = newCategory;
       
       applyCategoryTheme(newCategory);
@@ -3130,19 +3358,23 @@
       }, 200);
     }
     
-    if (tabsBox && tabActiveBg) {
-      categoryButtons.forEach((button) => {
-        const handleSwitch = (event) => {
-          if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          switchCategory(button.dataset.category);
-        };
+    function switchRelativeCategory(direction) {
+      const currentIndex = getCategoryIndex(currentCategory);
+      const nextIndex = (currentIndex + direction + CATEGORY_ORDER.length) % CATEGORY_ORDER.length;
+      switchCategory(CATEGORY_ORDER[nextIndex]);
+    }
 
-        button.addEventListener('click', handleSwitch);
-        button.addEventListener('pointerup', handleSwitch);
-        button.addEventListener('touchend', handleSwitch, { passive: false });
+    if (categoryPrevBtn) {
+      categoryPrevBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        switchRelativeCategory(-1);
+      });
+    }
+
+    if (categoryNextBtn) {
+      categoryNextBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        switchRelativeCategory(1);
       });
     }
 
