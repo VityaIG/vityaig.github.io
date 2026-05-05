@@ -18,6 +18,11 @@
   <meta name="twitter:description" content="Web-Break is a polished jailbreak experience for iOS 16 - iOS 26.5 with clear options and trusted tools. Made by @VityaV on Telegram">
   <meta name="twitter:image" content="https://vityaig.github.io/embed-index.png">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8.5a4 4 0 0 1 8 0V11'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+  <link rel="dns-prefetch" href="//upload.wikimedia.org">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
@@ -183,6 +188,17 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .hero-logo-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0.34rem;
+      border-radius: 1.18rem;
+      border: 1.45px solid rgba(255,255,255,0.16);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+      pointer-events: none;
     }
 
     .hero-logo-glow {
@@ -198,12 +214,40 @@
       animation: logoGlowReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards, logoGlowBreath 5.8s ease-in-out 1.2s infinite;
     }
 
+    .brand-lock-logo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: currentColor;
+      overflow: visible;
+    }
+
+    .brand-lock-logo * {
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .brand-lock-logo .lock-shackle {
+      stroke-width: 3.6;
+    }
+
+    .brand-lock-logo .lock-body {
+      stroke-width: 3.8;
+    }
+
+    .brand-lock-logo .lock-square {
+      stroke-width: 3.1;
+    }
+
     .hero-logo {
-      width: clamp(2.85rem, 7vw, 4.6rem);
-      height: clamp(2.85rem, 7vw, 4.6rem);
+      width: 78%;
+      height: 78%;
       object-fit: contain;
       flex-shrink: 0;
-      filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.28));
+      filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(244, 114, 182, 0.28));
       image-rendering: auto;
       opacity: 0;
       transform: translateY(6px) scale(0.94);
@@ -215,33 +259,53 @@
     .hero-title {
       min-height: 1.12em;
       white-space: nowrap;
-      color: rgba(255,255,255,0.98);
-      background: linear-gradient(135deg, #ffffff, #fbcfe8, #ffffff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 14px 34px rgba(0,0,0,0.55);
-      filter: none;
-    }
-
-    body[data-theme="light"] .hero-heading {
-      border-color: rgba(204, 251, 241, 0.48);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(186,230,253,0.52) 24%, rgba(221,214,254,0.64) 50%, rgba(153,246,228,0.52) 76%, rgba(255,255,255,0.86) 100%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 0 26px rgba(125, 211, 252, 0.22), 0 18px 42px -30px rgba(0,0,0,0.82);
-    }
-
-    body[data-theme="light"] .hero-logo {
-      filter: brightness(0) drop-shadow(0 1px 0 rgba(255,255,255,0.35));
-    }
-
-    body[data-theme="light"] .hero-title {
-      color: #102a36;
+      color: rgba(255,255,255,0.96);
       background: none;
       -webkit-background-clip: initial;
       background-clip: initial;
-      -webkit-text-fill-color: #102a36;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.54);
+      -webkit-text-fill-color: rgba(255,255,255,0.96);
+      text-shadow: 0 14px 34px rgba(0,0,0,0.55);
+      filter: none;
+      animation: none;
+    }
+
+    body[data-theme="light"] .hero-heading {
+      border-color: rgba(255,255,255,0.2);
+      background:
+        radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,0.14) 0%, transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
+        linear-gradient(90deg, color-mix(in srgb, var(--section-accent) 8%, transparent), transparent 70%),
+        rgba(14, 18, 24, 0.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -18px 28px rgba(0,0,0,0.08), 0 22px 46px -30px rgba(0,0,0,0.58);
+    }
+
+    body[data-theme="light"] .hero-heading::before {
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    body[data-theme="light"] .hero-heading::after {
+      background:
+        radial-gradient(72% 120% at 18% 50%, color-mix(in srgb, var(--section-accent) 18%, transparent) 0%, transparent 78%),
+        linear-gradient(115deg, rgba(255,255,255,0.11), transparent 28%, transparent 76%, rgba(255,255,255,0.03));
+    }
+
+    body[data-theme="light"] .hero-logo {
+      color: rgba(255,255,255,0.98);
+      filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.14));
+    }
+
+    body[data-theme="light"] .hero-title {
+      color: rgba(255,255,255,0.98);
+      background: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: rgba(255,255,255,0.98);
+      text-shadow: 0 16px 32px rgba(0,0,0,0.34);
+    }
+
+    body[data-theme="light"] .hero-title.typing::after {
+      background: rgba(255,255,255,0.95);
     }
 
     .hero-title.typing::after {
@@ -281,6 +345,16 @@
       }
     }
 
+    @keyframes heroTitleShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes heroTitleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-0.08em); }
+    }
+
     @keyframes cursorBlink {
       50% { opacity: 0; }
     }
@@ -318,11 +392,6 @@
       filter: none !important;
     }
 
-    .low-perf .jb-pulse-waves span {
-      background: none;
-      box-shadow: none;
-    }
-
     .low-perf .particle {
       box-shadow: 0 0 8px currentColor;
     }
@@ -337,9 +406,44 @@
       animation: fadeOut 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
+    .slide-out-right {
+      animation: guiSlideOutRight 0.58s cubic-bezier(0.2, 0.82, 0.22, 1) forwards;
+    }
+
+    .selection-gui {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    body.launch-first-leaving #selection-gui,
+    body.launch-first-leaving .first-slide-gui {
+      animation: guiSlideOutRight 0.58s cubic-bezier(0.2, 0.82, 0.22, 1) forwards;
+    }
+
+    body.launch-complete #selection-gui,
+    body.launch-complete .first-slide-gui {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(100vw);
+    }
+
     @keyframes fadeOut {
       from { opacity: 1; filter: blur(0px); transform: translateY(0) scale(1); }
       to { opacity: 0; filter: blur(8px); transform: translateY(-40px) scale(0.95); }
+    }
+
+    @keyframes guiSlideOutRight {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(100vw);
+      }
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -434,30 +538,32 @@
       align-items: center;
       justify-content: center;
       z-index: 40;
-      background:
-        radial-gradient(52rem 30rem at 50% 42%, rgba(var(--theme-rgb, 34, 197, 94), 0.18), transparent 68%),
-        radial-gradient(34rem 24rem at 22% 18%, rgba(244, 114, 182, 0.15), transparent 72%),
-        radial-gradient(30rem 22rem at 82% 78%, rgba(125, 211, 252, 0.1), transparent 72%),
-        #05050c;
+      background: transparent;
       opacity: 0;
-      transform: scale(0.9);
-      transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: none;
+      transition: opacity 0.58s cubic-bezier(0.2, 0.82, 0.22, 1), transform 0.58s cubic-bezier(0.2, 0.82, 0.22, 1);
+    }
+
+    body.launch-preparing #jailbreak-screen {
+      display: flex;
+      opacity: 1;
+      transform: none;
     }
 
     body.launch-transitioning #jailbreak-screen {
       display: flex;
       opacity: 1;
-      transform: scale(1);
+      transform: none;
     }
 
     body.launch-transitioning #jailbreak-screen > * {
-      opacity: 0;
-      transform: translateY(10px) scale(0.98);
+      opacity: 1;
+      transform: translateY(0);
     }
 
     body.launch-transitioning #selection-screen::before,
     body.launch-transitioning #selection-screen::after {
-      opacity: 0.18;
+      opacity: 1;
       transition: opacity 0.45s ease !important;
     }
 
@@ -473,6 +579,8 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.58s ease;
     }
 
     #jailbreak-screen::before {
@@ -480,11 +588,10 @@
         linear-gradient(180deg, rgba(4, 4, 10, 0.86) 0%, rgba(8, 6, 15, 0.68) 48%, rgba(3, 3, 8, 0.88) 100%),
         radial-gradient(52% 38% at 50% 40%, rgba(var(--theme-rgb, 34, 197, 94), 0.32) 0%, transparent 72%),
         radial-gradient(42% 30% at 16% 18%, rgba(244, 114, 182, 0.22) 0%, transparent 72%),
-        radial-gradient(38% 30% at 86% 78%, rgba(125, 211, 252, 0.18) 0%, transparent 74%),
-        var(--kotost-scene-image);
-      background-size: cover, auto, auto, auto, cover;
+        radial-gradient(38% 30% at 86% 78%, rgba(125, 211, 252, 0.18) 0%, transparent 74%);
+      background-size: auto;
       background-position: center center;
-      opacity: 1;
+      opacity: 0;
       transform: none;
     }
 
@@ -493,9 +600,8 @@
         linear-gradient(180deg, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.34) 48%, rgba(0, 0, 0, 0.58) 100%),
         radial-gradient(52% 38% at 50% 40%, rgba(var(--theme-rgb, 34, 197, 94), 0.28) 0%, transparent 72%),
         radial-gradient(42% 30% at 16% 18%, rgba(255,255,255,0.18) 0%, transparent 72%),
-        radial-gradient(38% 30% at 86% 78%, rgba(125, 211, 252, 0.14) 0%, transparent 74%),
-        var(--kotost-scene-image);
-      background-size: cover, auto, auto, auto, cover;
+        radial-gradient(38% 30% at 86% 78%, rgba(125, 211, 252, 0.14) 0%, transparent 74%);
+      background-size: auto;
       background-position: center center;
     }
 
@@ -505,10 +611,29 @@
         linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.06) 42%, rgba(0,0,0,0.24) 100%);
       z-index: 0;
     }
+
+    body.launch-transitioning #jailbreak-screen::before,
+    body.launch-transitioning #jailbreak-screen::after,
+    #jailbreak-screen.active::before,
+    #jailbreak-screen.active::after {
+      opacity: 1;
+    }
     #jailbreak-screen.active {
       display: flex;
       opacity: 1;
-      transform: scale(1);
+      transform: translateX(0);
+    }
+
+    #jailbreak-gui {
+      transform: translateX(-100vw);
+      opacity: 0;
+      transition: transform 0.58s cubic-bezier(0.2, 0.82, 0.22, 1), opacity 0.58s ease;
+    }
+
+    body.launch-transitioning #jailbreak-gui,
+    #jailbreak-screen.active #jailbreak-gui {
+      transform: translateX(0);
+      opacity: 1;
     }
 
     #selection-screen,
@@ -548,9 +673,8 @@
         background:
           linear-gradient(180deg, rgba(4, 4, 10, 0.88) 0%, rgba(8, 6, 15, 0.7) 48%, rgba(3, 3, 8, 0.9) 100%),
           radial-gradient(64% 42% at 50% 42%, rgba(var(--theme-rgb, 34, 197, 94), 0.3) 0%, transparent 72%),
-          radial-gradient(48% 30% at 18% 18%, rgba(244, 114, 182, 0.2) 0%, transparent 72%),
-          var(--kotost-scene-image);
-        background-size: cover, auto, auto, cover;
+          radial-gradient(48% 30% at 18% 18%, rgba(244, 114, 182, 0.2) 0%, transparent 72%);
+        background-size: auto;
         background-position: center center;
       }
 
@@ -558,9 +682,8 @@
         background:
           linear-gradient(180deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.36) 48%, rgba(0, 0, 0, 0.62) 100%),
           radial-gradient(64% 42% at 50% 42%, rgba(var(--theme-rgb, 34, 197, 94), 0.26) 0%, transparent 72%),
-          radial-gradient(48% 30% at 18% 18%, rgba(255,255,255,0.15) 0%, transparent 72%),
-          var(--kotost-scene-image);
-        background-size: cover, auto, auto, cover;
+          radial-gradient(48% 30% at 18% 18%, rgba(255,255,255,0.15) 0%, transparent 72%);
+        background-size: auto;
         background-position: center center;
       }
 
@@ -637,7 +760,8 @@
       height: 100%;
       position: relative;
       z-index: 10;
-      transition: opacity 0.3s ease;
+      opacity: 1;
+      transition: opacity 0.18s ease;
     }
 
     .option-icon-wrapper img {
@@ -920,6 +1044,8 @@
       pointer-events: none;
       z-index: 9998;
       object-fit: cover;
+      background-size: cover;
+      background-position: center;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
       animation: kotost-fragment-burst 0.9s cubic-bezier(0.18, 0.8, 0.22, 1) forwards;
     }
@@ -1133,132 +1259,12 @@
     }
 
     #jb-btn-wrapper:hover {
-      transform: translateZ(0) scale(1.05);
-      box-shadow: 0 0 30px 0 var(--theme-color, rgba(255,255,255,0.3));
+      transform: translateY(-2px) translateZ(0) scale(1.015);
     }
 
     #jb-btn-wrapper:active {
-      transform: translateZ(0) scale(1.08) !important;
+      transform: translateY(0) translateZ(0) scale(0.992) !important;
       transition: transform 0.1s cubic-bezier(0.22, 1, 0.36, 1) !important;
-    }
-
-    .jb-orbit-ring {
-      position: absolute;
-      inset: -14px;
-      width: calc(100% + 28px);
-      height: calc(100% + 28px);
-      display: none;
-      pointer-events: none;
-      overflow: visible;
-      opacity: 0.95;
-      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.75)) drop-shadow(0 0 18px rgba(5, 150, 105, 0.35));
-      transform: translateZ(0);
-    }
-
-    .jb-orbit-track,
-    .jb-orbit-line {
-      fill: none;
-      vector-effect: non-scaling-stroke;
-    }
-
-    .jb-pulse-waves {
-      position: absolute;
-      inset: -16px;
-      z-index: 1;
-      pointer-events: none;
-      border-radius: 9999px;
-    }
-
-    .jb-button-halo {
-      position: absolute;
-      inset: -26px;
-      z-index: 0;
-      pointer-events: none;
-      border-radius: 9999px;
-      background:
-        radial-gradient(ellipse at center, rgba(var(--theme-rgb, 34, 197, 94), 0.34) 0%, rgba(var(--theme-rgb, 34, 197, 94), 0.18) 32%, rgba(var(--theme-rgb, 34, 197, 94), 0.06) 56%, transparent 78%);
-      filter: blur(18px);
-      opacity: 0.42;
-      transform: scale(0.92);
-      animation: button-halo-breathe 4.8s ease-in-out infinite;
-    }
-
-    .jb-pulse-waves span {
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      border: 1px solid rgba(var(--theme-rgb, 34, 197, 94), 0.55);
-      background: radial-gradient(closest-side, rgba(var(--theme-rgb, 34, 197, 94), 0.12), transparent 72%);
-      box-shadow: 0 0 16px rgba(var(--theme-rgb, 34, 197, 94), 0.28), inset 0 0 18px rgba(var(--theme-rgb, 34, 197, 94), 0.1);
-      opacity: 0;
-      transform: scale(0.92);
-      animation: pulse-wave 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-    }
-
-    .jb-pulse-waves span:nth-child(2) {
-      animation-delay: 0.8s;
-    }
-
-    .jb-pulse-waves span:nth-child(3) {
-      animation-delay: 1.6s;
-    }
-
-    @keyframes pulse-wave {
-      0% {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      18% {
-        opacity: 0.42;
-      }
-      72% {
-        opacity: 0;
-        transform: scale(1.42);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(1.42);
-      }
-    }
-
-    @keyframes button-halo-breathe {
-      0%, 100% {
-        opacity: 0.3;
-        transform: scale(0.9);
-      }
-      50% {
-        opacity: 0.62;
-        transform: scale(1.08);
-      }
-    }
-
-    .jb-orbit-track {
-      stroke: rgba(34, 197, 94, 0.18);
-      stroke-width: 2;
-    }
-
-    .jb-orbit-line {
-      stroke: url(#jb-green-gradient);
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-dasharray: 18 82;
-      animation: orbit-line 2.2s linear infinite, orbit-pulse 3.4s ease-in-out infinite;
-      will-change: stroke-dashoffset;
-    }
-
-    @keyframes orbit-line {
-      to { stroke-dashoffset: -100; }
-    }
-
-    @keyframes orbit-pulse {
-      0%, 100% {
-        opacity: 0.72;
-        stroke-width: 2.5;
-      }
-      50% {
-        opacity: 1;
-        stroke-width: 3.8;
-      }
     }
 
     #main-jailbreak-btn {
@@ -1278,35 +1284,13 @@
       letter-spacing: 0.1em;
       line-height: 1.1;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), filter 0.22s ease, box-shadow 0.22s ease;
       cursor: pointer;
       overflow: hidden;
       -webkit-tap-highlight-color: transparent;
       outline: none;
       transform: translateZ(0);
       z-index: 10;
-      will-change: transform;
-    }
-
-    #main-jailbreak-btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 2px;
-      pointer-events: none;
-      z-index: 1;
-      background: linear-gradient(90deg, var(--accent-deep, #052e16), var(--accent-dark, #16a34a), var(--theme-color, #22c55e), var(--accent-soft, #bbf7d0), var(--theme-color, #22c55e), var(--accent-deep, #064e3b));
-      background-size: 260% 100%;
-      box-shadow: inset 0 0 10px rgba(var(--theme-rgb, 34, 197, 94), 0.22), 0 0 10px rgba(var(--theme-rgb, 34, 197, 94), 0.34);
-      animation: button-border-flow 3.2s linear infinite;
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-    }
-
-    @keyframes button-border-flow {
-      to { background-position: 260% 0; }
     }
 
     @media (max-width: 640px) {
@@ -1367,30 +1351,6 @@
         padding: 1rem;
       }
 
-      .jb-orbit-ring {
-        inset: -12px;
-        width: calc(100% + 24px);
-        height: calc(100% + 24px);
-      }
-
-      .jb-pulse-waves {
-        inset: -12px;
-      }
-
-      .jb-button-halo {
-        inset: -18px;
-      }
-    }
-
-    #main-jailbreak-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: white;
-      border-radius: inherit;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 0;
     }
 
     #main-jailbreak-btn {
@@ -1495,24 +1455,17 @@
       max-width: 28rem;
       border-radius: 9999px;
       background:
-        radial-gradient(120% 180% at 50% 0%, rgba(var(--theme-rgb, 34, 197, 94), 0.18) 0%, transparent 58%),
-        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)),
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
         var(--glass-panel-bg-strong);
-      border: 1px solid color-mix(in srgb, var(--theme-color, #22c55e) 34%, var(--glass-border-strong));
-      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 30px 72px -44px rgba(0,0,0,0.95), 0 0 44px -30px var(--theme-color, #22c55e);
+      border: 1px solid color-mix(in srgb, var(--theme-color, #22c55e) 28%, var(--glass-border-strong));
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 28px 62px -42px rgba(0,0,0,0.95);
       padding: 0.55rem;
       overflow: hidden;
     }
 
     #jailbreak-screen #jb-btn-wrapper:hover {
       transform: translateY(-2px) scale(1.025);
-      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 34px 78px -44px rgba(0,0,0,0.95), 0 0 50px -28px var(--theme-color, #22c55e);
-    }
-
-    #jailbreak-screen .jb-orbit-ring,
-    #jailbreak-screen .jb-pulse-waves,
-    #jailbreak-screen .jb-button-halo {
-      display: none !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 32px 70px -42px rgba(0,0,0,0.95);
     }
 
     #jailbreak-screen #main-jailbreak-btn {
@@ -1521,27 +1474,40 @@
       padding: 1.15rem 1.4rem;
       border-radius: 9999px;
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.94) 0%, color-mix(in srgb, var(--theme-color, #22c55e) 20%, #bae6fd) 26%, rgba(221,214,254,0.74) 52%, color-mix(in srgb, var(--theme-color, #22c55e) 22%, #99f6e4) 76%, rgba(255,255,255,0.9) 100%) !important;
-      border: 1px solid color-mix(in srgb, var(--theme-color, #22c55e) 34%, rgba(204, 251, 241, 0.62)) !important;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 0 28px -18px color-mix(in srgb, var(--theme-color, #22c55e) 70%, rgba(125, 211, 252, 0.6)), 0 20px 44px -32px rgba(0,0,0,0.9);
+        linear-gradient(135deg, rgba(255,255,255,0.98) 0%, #bae6fd 23%, rgba(221,214,254,0.86) 50%, #99f6e4 77%, rgba(255,255,255,0.95) 100%) !important;
+      border: 1px solid rgba(224, 251, 255, 0.9) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.96), inset 0 -12px 26px rgba(15, 23, 42, 0.08), 0 20px 44px -32px rgba(0,0,0,0.9);
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
     }
 
-    #jailbreak-screen #main-jailbreak-btn::after {
-      opacity: 0.42;
+    #jailbreak-screen #main-jailbreak-btn:hover {
+      transform: translateY(-1px);
+      filter: saturate(1.05);
+    }
+
+    #jailbreak-screen #main-jailbreak-btn:active {
+      transform: translateY(0) scale(0.99);
     }
 
     #jailbreak-screen #jb-btn-text {
-      font-size: clamp(1.35rem, 5vw, 1.8rem);
-      letter-spacing: 0;
-      color: #102a36;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.58);
-      filter: none;
+      display: none !important;
+    }
+
+    #jailbreak-screen #jb-launch-title {
+      margin-top: 1.35rem;
+      text-align: center;
+      font-family: var(--ui-font-display);
+      font-size: clamp(1.38rem, 3.8vw, 1.82rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: rgba(248,250,252,0.98);
+      text-shadow: 0 10px 26px rgba(0,0,0,0.36);
     }
 
     #jailbreak-screen #jb-selected-container {
-      margin-top: 2rem;
+      margin-top: 0.95rem;
     }
 
     #jailbreak-screen #jb-your-option-lbl {
@@ -1558,6 +1524,141 @@
         var(--glass-panel-bg) !important;
       border-color: color-mix(in srgb, var(--theme-color, #22c55e) 28%, var(--glass-border-strong)) !important;
       box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 42px -34px rgba(0,0,0,0.86);
+    }
+
+    /* Slide to unlock launch control */
+    #jailbreak-screen #jb-btn-wrapper {
+      width: min(90vw, 31rem);
+      max-width: 31rem;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    #jailbreak-screen #jb-btn-wrapper:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn {
+      --slide-x: 0px;
+      --slide-progress: 0;
+      position: relative;
+      width: 100%;
+      min-height: 5.35rem;
+      padding: 0.58rem 1.25rem 0.58rem 5.9rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)),
+        rgba(7, 8, 12, 0.58) !important;
+      border: 1px solid rgba(255,255,255,0.18) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 24px 58px -42px rgba(0,0,0,0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      cursor: grab;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn:hover,
+    #jailbreak-screen #main-jailbreak-btn:active {
+      transform: none;
+      filter: none;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn.is-dragging {
+      cursor: grabbing;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn.is-returning .slide-thumb,
+    #jailbreak-screen #main-jailbreak-btn.is-returning .slide-progress {
+      transition: transform 0.22s ease, width 0.22s ease;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn.is-unlocked {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    #jailbreak-screen .slide-progress {
+      position: absolute;
+      left: 0.58rem;
+      top: 0.58rem;
+      bottom: 0.58rem;
+      width: calc(var(--slide-progress) * 1%);
+      max-width: calc(100% - 1.16rem);
+      border-radius: 9999px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.96) 0%, #bae6fd 24%, rgba(221,214,254,0.86) 52%, #99f6e4 78%, rgba(255,255,255,0.92) 100%);
+      opacity: 0.62;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.78), 0 0 24px -14px rgba(125,211,252,0.86);
+      pointer-events: none;
+    }
+
+    #jailbreak-screen .slide-label {
+      position: relative;
+      z-index: 2;
+      display: block;
+      color: rgba(255,255,255,0.86);
+      font-size: clamp(1.1rem, 4.2vw, 1.55rem);
+      font-weight: 950;
+      letter-spacing: 0;
+      text-align: center;
+      text-shadow: 0 1px 18px rgba(0,0,0,0.42);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn.is-unlocked .slide-label {
+      opacity: 0.42;
+      transform: translateX(0.45rem);
+    }
+
+    #jailbreak-screen .slide-thumb {
+      position: absolute;
+      z-index: 4;
+      left: 0.58rem;
+      top: 50%;
+      width: 4.2rem;
+      height: 4.2rem;
+      display: grid;
+      place-items: center;
+      transform: translate3d(var(--slide-x), -50%, 0);
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    #jailbreak-screen .slide-lock-diamond {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98) 0%, #bae6fd 24%, rgba(221,214,254,0.9) 54%, #99f6e4 78%, rgba(255,255,255,0.95) 100%);
+      color: #020304;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.96), inset 0 -10px 22px rgba(15,23,42,0.08), 0 14px 30px -22px rgba(125,211,252,0.95);
+    }
+
+    #jailbreak-screen .slide-lock-diamond svg {
+      width: 1.55rem;
+      height: 1.55rem;
+      color: #020304;
+      stroke: #020304;
+      stroke-width: 2.4;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn.is-unlocked .slide-lock-diamond {
+      animation: slideLockSpin 0.52s cubic-bezier(0.18, 0.86, 0.22, 1) both;
+    }
+
+    @keyframes slideLockSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     #status-badge {
@@ -1798,6 +1899,87 @@
       transform: translateX(16px);
     }
 
+    .category-current-label.is-flipping-out {
+      opacity: 0;
+      transform: translateY(-0.35rem);
+    }
+
+    .category-current-label.is-flipping-in {
+      animation: category-title-rise 0.22s ease-out;
+    }
+
+    @keyframes category-title-rise {
+      0% {
+        opacity: 0;
+        transform: translateY(0.35rem);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .category-current-label.is-slide-out-forward {
+      opacity: 0;
+      transform: translateX(120%);
+    }
+
+    .category-current-label.is-slide-out-backward {
+      opacity: 0;
+      transform: translateX(-120%);
+    }
+
+    .category-current-label.is-slide-in-forward {
+      animation: category-title-slide-in-forward 0.28s cubic-bezier(0.18, 0.85, 0.22, 1);
+    }
+
+    .category-current-label.is-slide-in-backward {
+      animation: category-title-slide-in-backward 0.28s cubic-bezier(0.18, 0.85, 0.22, 1);
+    }
+
+    @keyframes category-title-slide-in-forward {
+      0% {
+        opacity: 0;
+        transform: translateX(-120%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes category-title-slide-in-backward {
+      0% {
+        opacity: 0;
+        transform: translateX(120%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    #options-list.is-category-leaving {
+      opacity: 0;
+      transform: translateY(0.35rem);
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+
+    #options-list.is-category-entering .option-item {
+      animation: option-category-enter 0.22s ease-out both;
+    }
+
+    @keyframes option-category-enter {
+      0% {
+        opacity: 0;
+        transform: translateY(0.42rem);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (min-width: 640px) {
       .category-current-label {
         font-size: 1.45rem;
@@ -1823,7 +2005,7 @@
       background:
         linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)),
         var(--glass-panel-bg-strong);
-      border: 1px solid var(--glass-border-strong);
+      border: 1.45px solid var(--glass-border-strong);
       overflow: hidden;
       box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
     }
@@ -1836,12 +2018,21 @@
       animation: logoGlowBreath 5.5s ease-in-out infinite;
     }
 
-    .about-logo-wrap img {
+    .about-logo-wrap img,
+    .about-logo-wrap .about-logo {
       position: relative;
-      width: 2.8rem;
-      height: 2.8rem;
+      width: 3.15rem;
+      height: 3.15rem;
       object-fit: contain;
+    }
+
+    .about-logo-wrap img {
       filter: drop-shadow(0 0 10px rgba(255,255,255,0.22));
+    }
+
+    .about-logo-wrap .about-logo {
+      color: rgba(255,255,255,0.96);
+      filter: none;
     }
 
     .about-stat,
@@ -1901,7 +2092,7 @@
     .credits-showcase {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0.75rem;
+      gap: 0.85rem;
     }
 
     .creator-card {
@@ -1911,47 +2102,70 @@
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
-      gap: 0.9rem;
-      padding: 0.95rem;
-      border-radius: 1.15rem;
-      border: 1px solid var(--glass-border-strong);
+      gap: 0.95rem;
+      padding: 1rem;
+      border-radius: 1.35rem;
+      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 30%, var(--glass-border-strong));
       background:
-        radial-gradient(120% 120% at 0% 0%, var(--creator-glow, rgba(255,255,255,0.1)) 0%, transparent 55%),
-        linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03)),
+        radial-gradient(130% 140% at 100% 0%, var(--creator-glow, rgba(255,255,255,0.1)) 0%, transparent 48%),
+        linear-gradient(145deg, rgba(255,255,255,0.115), rgba(255,255,255,0.032)),
         var(--glass-panel-bg);
-      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 34px -28px rgba(0,0,0,0.82);
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 38px -30px rgba(0,0,0,0.88);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
+      transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
     }
 
-    .creator-card::after {
-      content: '';
-      position: absolute;
-      inset: 1px;
-      border-radius: inherit;
-      background: linear-gradient(120deg, transparent 18%, rgba(255,255,255,0.1) 50%, transparent 82%);
-      transform: translateX(-135%);
-      transition: transform 0.65s ease;
-      pointer-events: none;
+    .creator-card:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--creator-color, #ffffff) 48%, var(--glass-border-strong));
+      background:
+        radial-gradient(130% 140% at 100% 0%, var(--creator-glow, rgba(255,255,255,0.1)) 0%, transparent 52%),
+        linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.045)),
+        var(--glass-panel-bg-strong);
     }
 
-    .creator-card:hover::after {
-      transform: translateX(135%);
+    .creator-card.is-featured {
+      min-height: 8rem;
+      padding: 1.15rem;
+      background:
+        radial-gradient(120% 120% at 18% 0%, rgba(255,255,255,0.16) 0%, transparent 44%),
+        linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(186,230,253,0.45) 27%, rgba(221,214,254,0.54) 54%, rgba(153,246,228,0.44) 78%, rgba(255,255,255,0.84) 100%);
+      border-color: rgba(224, 251, 255, 0.72);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 22px 48px -34px rgba(125, 211, 252, 0.66);
+    }
+
+    .creator-card.is-featured .creator-name,
+    .creator-card.is-featured .creator-role {
+      color: #102a36;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .creator-card.is-featured .creator-role {
+      color: rgba(8, 24, 34, 0.92);
+      font-weight: 700;
     }
 
     .creator-mark {
-      width: 3.25rem;
-      height: 3.25rem;
+      width: 3.35rem;
+      height: 3.35rem;
       display: grid;
       place-items: center;
-      border-radius: 1rem;
+      border-radius: 9999px;
       background:
-        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)),
-        color-mix(in srgb, var(--creator-color, #ffffff) 16%, rgba(20,18,17,0.4));
-      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 38%, rgba(255,255,255,0.22));
+        linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)),
+        color-mix(in srgb, var(--creator-color, #ffffff) 16%, rgba(20,18,17,0.42));
+      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 40%, rgba(255,255,255,0.24));
       color: var(--creator-color, #ffffff);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 22px -12px var(--creator-color, rgba(255,255,255,0.5));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 0 24px -14px var(--creator-color, rgba(255,255,255,0.5));
       z-index: 1;
+    }
+
+    .creator-card.is-featured .creator-mark {
+      background: rgba(16, 42, 54, 0.1);
+      border-color: rgba(16, 42, 54, 0.18);
+      color: #102a36;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
     }
 
     .creator-copy {
@@ -1960,19 +2174,42 @@
       z-index: 1;
     }
 
+    .creator-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin-bottom: 0.45rem;
+      padding: 0.16rem 0.5rem;
+      border-radius: 9999px;
+      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 36%, rgba(255,255,255,0.18));
+      color: color-mix(in srgb, var(--creator-color, #ffffff) 74%, #ffffff);
+      background: rgba(255,255,255,0.07);
+      font-size: 0.66rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .creator-card.is-featured .creator-badge {
+      color: #102a36;
+      border-color: rgba(16, 42, 54, 0.16);
+      background: rgba(16, 42, 54, 0.08);
+    }
+
     .creator-name {
       display: block;
       color: rgba(255,255,255,0.94);
       font-size: 1rem;
-      font-weight: 800;
-      line-height: 1.15;
+      font-weight: 900;
+      line-height: 1.12;
       overflow-wrap: anywhere;
     }
 
     .creator-role {
       display: block;
-      margin-top: 0.32rem;
-      color: rgba(255,255,255,0.58);
+      margin-top: 0.34rem;
+      color: rgba(255,255,255,0.6);
       font-size: 0.8rem;
       line-height: 1.35;
       overflow-wrap: anywhere;
@@ -1980,13 +2217,19 @@
 
     @media (min-width: 680px) {
       .credits-showcase {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .creator-card {
         grid-template-columns: 1fr;
         align-content: start;
-        min-height: 10.25rem;
+        min-height: 10.4rem;
+      }
+
+      .creator-card.is-featured {
+        grid-column: 1 / -1;
+        grid-template-columns: auto minmax(0, 1fr);
+        min-height: 7.4rem;
       }
     }
 
@@ -2399,17 +2642,330 @@
       }
     }
 
+    /* Selector interface refresh */
+    #selection-screen #category-tabs {
+      width: 100%;
+      min-height: 4.45rem;
+      padding: 0.55rem !important;
+      border-radius: 1.55rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.035)),
+        color-mix(in srgb, var(--section-accent) 7%, var(--glass-panel-bg-strong)) !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 22px 54px -38px rgba(0,0,0,0.94) !important;
+    }
+
+    #selection-screen .category-nav-btn {
+      width: 3.15rem;
+      height: 3.15rem;
+      border-radius: 1.05rem;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        rgba(4, 5, 8, 0.62) !important;
+      border-color: color-mix(in srgb, var(--section-accent) 26%, rgba(255,255,255,0.16)) !important;
+      color: rgba(255,255,255,0.82) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 30px -24px rgba(0,0,0,0.82);
+    }
+
+    #selection-screen .category-nav-btn:hover {
+      transform: translateY(-1px);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
+        color-mix(in srgb, var(--section-accent) 16%, rgba(8, 8, 12, 0.72)) !important;
+    }
+
+    #selection-screen .category-current-label {
+      min-height: 3.15rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 1.05rem;
+      background:
+        radial-gradient(120% 160% at 50% 0%, var(--section-accent-soft) 0%, transparent 62%),
+        linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.055));
+      border: 1px solid color-mix(in srgb, var(--section-accent) 28%, rgba(255,255,255,0.16));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+      font-size: clamp(1rem, 2.5vw, 1.22rem) !important;
+      font-weight: 950;
+      -webkit-background-clip: border-box;
+      background-clip: border-box;
+      color: rgba(255,255,255,0.96);
+      -webkit-text-fill-color: currentColor;
+      filter: none;
+    }
+
+    #selection-screen #category-spotlight {
+      display: grid;
+      gap: 0.7rem;
+      padding: clamp(1rem, 2.8vw, 1.45rem) !important;
+      border-radius: 1.65rem;
+      overflow: hidden;
+      background:
+        radial-gradient(120% 120% at 100% 0%, color-mix(in srgb, var(--section-accent) 20%, transparent) 0%, transparent 52%),
+        radial-gradient(110% 120% at 0% 0%, var(--section-accent-soft) 0%, transparent 56%),
+        linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.04)),
+        var(--glass-panel-bg) !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 58px -38px rgba(0,0,0,0.94) !important;
+    }
+
+    #selection-screen #category-spotlight::after {
+      width: 9rem;
+      height: 9rem;
+      right: -2.6rem;
+      bottom: -3.4rem;
+      opacity: 0.62;
+      filter: blur(24px);
+    }
+
+    #selection-screen .category-spotlight-title {
+      align-items: center;
+      gap: 0.75rem;
+      font-size: clamp(1.32rem, 3vw, 1.85rem) !important;
+      line-height: 1.05;
+    }
+
+    #selection-screen .category-spotlight-title-dot {
+      width: 0.85rem;
+      height: 0.85rem;
+      box-shadow: 0 0 18px var(--section-accent), 0 0 0 0.42rem var(--section-accent-wash);
+    }
+
+    #selection-screen .category-spotlight-desc {
+      max-width: 48rem;
+      font-size: clamp(0.92rem, 2vw, 1.02rem);
+      line-height: 1.55;
+      color: rgba(255,255,255,0.76);
+    }
+
+    #selection-screen .category-spotlight-footer {
+      gap: 0.55rem;
+      margin-top: 0.25rem;
+    }
+
+    #selection-screen .category-spotlight-tag,
+    #selection-screen .downgrade-track-badge,
+    #selection-screen #share-btn {
+      min-height: 2rem;
+      padding: 0.42rem 0.72rem;
+      border-radius: 9999px;
+      font-weight: 800;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035)),
+        color-mix(in srgb, var(--section-accent) 10%, rgba(8,8,10,0.42)) !important;
+      border-color: color-mix(in srgb, var(--section-accent) 28%, rgba(255,255,255,0.16)) !important;
+    }
+
+    #selection-screen #options-list {
+      counter-reset: option-card;
+      gap: 0.9rem;
+      max-width: 60rem;
+    }
+
+    #selection-screen #options-list .option-item {
+      counter-increment: option-card;
+      min-height: 9.1rem;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 1rem 1.1rem 1.15rem;
+      border-radius: 1.45rem;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 12%, transparent), transparent 38%),
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.032)),
+        var(--glass-panel-bg) !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 40px -32px rgba(0,0,0,0.9);
+    }
+
+    #selection-screen #options-list .option-item::before {
+      left: 0;
+      right: auto;
+      top: 1rem;
+      bottom: 1rem;
+      width: 0.28rem;
+      height: auto;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, transparent, var(--theme-color, var(--section-accent)), transparent);
+      opacity: 0.9;
+    }
+
+    #selection-screen #options-list .option-item::after {
+      content: counter(option-card, decimal-leading-zero);
+      inset: 0.75rem 0.9rem auto auto;
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      background: none;
+      filter: none;
+      opacity: 0.34;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      transform: none;
+    }
+
+    #selection-screen #options-list .option-item:hover::after,
+    #selection-screen #options-list .option-item:focus-visible::after,
+    #selection-screen #options-list .option-item.selected::after {
+      transform: none;
+      opacity: 0.72;
+    }
+
+    #selection-screen #options-list .option-item:hover,
+    #selection-screen #options-list .option-item:focus-visible {
+      transform: translateY(-3px);
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent), transparent 42%),
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
+        var(--glass-panel-bg-strong) !important;
+    }
+
+    #selection-screen .option-icon-wrapper {
+      width: 3.6rem;
+      height: 3.6rem;
+      margin-right: 0;
+      border-radius: 1.15rem;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)),
+        color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, rgba(8,8,10,0.58));
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 34%, rgba(255,255,255,0.16));
+      color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 72%, #ffffff);
+    }
+
+    #selection-screen .option-content {
+      padding-right: 0.4rem;
+    }
+
+    #selection-screen .option-title {
+      font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+      font-weight: 950;
+      color: rgba(255,255,255,0.96);
+    }
+
+    #selection-screen .option-desc {
+      margin-top: 0.48rem;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.66);
+    }
+
+    #selection-screen .option-radio {
+      width: 2rem;
+      height: 2rem;
+      margin-left: 0;
+      border-width: 1px;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 30%, rgba(255,255,255,0.18));
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035)),
+        rgba(5,5,8,0.46);
+    }
+
+    #selection-screen .option-radio::after {
+      width: 0.86rem;
+      height: 0.86rem;
+      background: var(--theme-color, var(--section-accent));
+    }
+
+    #selection-screen .option-item.selected {
+      transform: translateY(-2px);
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 24%, transparent), transparent 48%),
+        linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.055)),
+        var(--glass-panel-bg-strong) !important;
+      box-shadow: 0 24px 56px -36px var(--theme-color, var(--section-accent)), inset 0 0 0 1px rgba(255,255,255,0.18) !important;
+    }
+
+    #selection-screen .option-item.selected .option-icon-wrapper {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08)),
+        var(--theme-color, var(--section-accent));
+      color: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 0 26px -14px var(--theme-color, var(--section-accent));
+    }
+
+    #selection-screen #options-list.has-selection .option-item:not(.selected),
+    #selection-screen #options-list:has(.option-item.selected) .option-item:not(.selected) {
+      opacity: 0.66;
+      transform: none;
+      filter: saturate(0.82) brightness(0.86);
+    }
+
+    #selection-screen #continue-btn {
+      min-height: 4.55rem;
+      border-radius: 1.35rem;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.95) 0%, #bae6fd 24%, rgba(221,214,254,0.82) 52%, #99f6e4 78%, rgba(255,255,255,0.92) 100%) !important;
+      border-color: rgba(224, 251, 255, 0.78) !important;
+      color: #102a36;
+      font-weight: 950;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 24px 54px -38px rgba(125,211,252,0.75) !important;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    #selection-screen #continue-btn svg {
+      color: #102a36;
+      stroke: #102a36;
+    }
+
+    @media (min-width: 900px) {
+      #selection-screen #options-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      #selection-screen #category-tabs {
+        min-height: 4rem;
+        border-radius: 1.35rem !important;
+      }
+
+      #selection-screen .category-nav-btn {
+        width: 2.7rem;
+        height: 2.7rem;
+        border-radius: 0.9rem;
+      }
+
+      #selection-screen .category-current-label {
+        min-height: 2.7rem;
+        font-size: 0.92rem !important;
+      }
+
+      #selection-screen #category-spotlight {
+        border-radius: 1.35rem;
+      }
+
+      #selection-screen #options-list .option-item {
+        grid-template-columns: auto minmax(0, 1fr);
+        min-height: 8.2rem;
+        padding: 1rem;
+      }
+
+      #selection-screen .option-radio {
+        position: absolute;
+        right: 0.9rem;
+        bottom: 0.9rem;
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+
+      #selection-screen .option-content {
+        padding-right: 1.7rem;
+      }
+    }
+
     #kotost-easter-egg {
       position: relative;
       width: 100%;
-      min-height: 145vh;
+      min-height: 190vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(7rem, 18vh, 12rem) 1rem;
+      padding: clamp(12rem, 34vh, 24rem) 1rem clamp(8rem, 18vh, 14rem);
       box-sizing: border-box;
       overflow: visible;
-      margin: 3.5rem 0 0;
+      margin: 38vh 0 0;
       border: 0;
       background: transparent;
       z-index: 12;
@@ -2493,13 +3049,26 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .kotost-button:hover {
-      transform: translateY(-2px) scale(1.05);
-      filter: drop-shadow(0 0 22px rgba(255,255,255,0.32)) drop-shadow(0 0 40px rgba(255,255,255,0.16));
+    @media (hover: hover) and (pointer: fine) {
+      .kotost-button:hover {
+        transform: translateY(-2px) scale(1.05);
+        filter: drop-shadow(0 0 22px rgba(255,255,255,0.32)) drop-shadow(0 0 40px rgba(255,255,255,0.16));
+      }
     }
 
     .kotost-button:active {
-      transform: scale(1.015);
+      transform: scale(0.985);
+      transition-duration: 0.08s;
+    }
+
+    @keyframes kotost-tap-pop {
+      0% { transform: scale(1); }
+      42% { transform: scale(0.965); }
+      100% { transform: scale(1); }
+    }
+
+    .kotost-button.is-tapping {
+      animation: kotost-tap-pop 0.22s ease-out;
     }
 
     .kotost-button::before,
@@ -2628,9 +3197,10 @@
 
     @media (max-width: 640px) {
       #kotost-easter-egg {
-        min-height: 105vh;
-        padding-top: 5rem;
-        padding-bottom: 5rem;
+        min-height: 165vh;
+        padding-top: 34vh;
+        padding-bottom: 6rem;
+        margin-top: 42vh;
       }
 
       .kotost-button {
@@ -3045,17 +3615,2260 @@
       }
     }
 
-    @media (hover: hover) {
-      #main-jailbreak-btn:hover::before {
-        opacity: 0.1;
+    /* Final selector UI override */
+    #selection-screen #category-tabs {
+      min-height: 4.45rem;
+      padding: 0.55rem !important;
+      border-radius: 1.55rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.035)),
+        color-mix(in srgb, var(--section-accent) 7%, var(--glass-panel-bg-strong)) !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 22px 54px -38px rgba(0,0,0,0.94) !important;
+    }
+
+    #selection-screen .category-nav-btn {
+      width: 3.15rem;
+      height: 3.15rem;
+      border-radius: 1.05rem;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        rgba(4, 5, 8, 0.62) !important;
+      border-color: color-mix(in srgb, var(--section-accent) 26%, rgba(255,255,255,0.16)) !important;
+    }
+
+    #selection-screen .category-current-label {
+      min-width: 0;
+      min-height: 3.15rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 1.05rem;
+      background:
+        radial-gradient(120% 160% at 50% 0%, var(--section-accent-soft) 0%, transparent 62%),
+        linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.055));
+      border: 1px solid color-mix(in srgb, var(--section-accent) 28%, rgba(255,255,255,0.16));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.96);
+      -webkit-text-fill-color: currentColor;
+      -webkit-background-clip: border-box;
+      background-clip: border-box;
+      filter: none;
+      font-size: clamp(1rem, 2.5vw, 1.22rem) !important;
+      font-weight: 950;
+    }
+
+    #selection-screen #category-spotlight {
+      display: grid;
+      gap: 0.7rem;
+      padding: clamp(1rem, 2.8vw, 1.45rem) !important;
+      border-radius: 1.65rem;
+      background:
+        radial-gradient(120% 120% at 100% 0%, color-mix(in srgb, var(--section-accent) 20%, transparent) 0%, transparent 52%),
+        radial-gradient(110% 120% at 0% 0%, var(--section-accent-soft) 0%, transparent 56%),
+        linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.04)),
+        var(--glass-panel-bg) !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 58px -38px rgba(0,0,0,0.94) !important;
+    }
+
+    #selection-screen .category-spotlight-title {
+      font-size: clamp(1.32rem, 3vw, 1.85rem) !important;
+      line-height: 1.05;
+    }
+
+    #selection-screen #options-list {
+      counter-reset: option-card;
+      gap: 0.9rem;
+      max-width: 60rem;
+    }
+
+    #selection-screen #options-list .option-item {
+      counter-increment: option-card;
+      min-height: 9.1rem;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 1rem 1.1rem 1.15rem;
+      border-radius: 1.45rem;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 12%, transparent), transparent 38%),
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.032)),
+        var(--glass-panel-bg) !important;
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 40px -32px rgba(0,0,0,0.9);
+    }
+
+    #selection-screen #options-list .option-item::before {
+      left: 0;
+      right: auto;
+      top: 1rem;
+      bottom: 1rem;
+      width: 0.28rem;
+      height: auto;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, transparent, var(--theme-color, var(--section-accent)), transparent);
+    }
+
+    #selection-screen #options-list .option-item::after {
+      content: counter(option-card, decimal-leading-zero);
+      inset: 0.75rem 0.9rem auto auto;
+      width: auto;
+      height: auto;
+      background: none;
+      filter: none;
+      opacity: 0.34;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      transform: none;
+    }
+
+    #selection-screen #options-list .option-item:hover,
+    #selection-screen #options-list .option-item:focus-visible {
+      transform: translateY(-3px);
+    }
+
+    #selection-screen .option-icon-wrapper {
+      width: 3.6rem;
+      height: 3.6rem;
+      margin-right: 0;
+      border-radius: 1.15rem;
+    }
+
+    #selection-screen .option-radio {
+      width: 2rem;
+      height: 2rem;
+      margin-left: 0;
+    }
+
+    #selection-screen #continue-btn {
+      min-height: 4.55rem;
+      border-radius: 1.35rem;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.95) 0%, #bae6fd 24%, rgba(221,214,254,0.82) 52%, #99f6e4 78%, rgba(255,255,255,0.92) 100%) !important;
+      border-color: rgba(224, 251, 255, 0.78) !important;
+      color: #102a36;
+      font-weight: 950;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 24px 54px -38px rgba(125,211,252,0.75) !important;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    #selection-screen #continue-btn svg {
+      color: #102a36;
+      stroke: #102a36;
+    }
+
+    /* Selector redesign v4 */
+    #selection-screen > .relative.mb-6 {
+      max-width: 46rem;
+      margin-bottom: 1rem;
+    }
+
+    #selection-screen #category-tabs {
+      min-height: 4.2rem;
+      padding: 0.42rem !important;
+      border-radius: 9999px !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)),
+        rgba(7, 8, 12, 0.58) !important;
+      border-color: rgba(255,255,255,0.18) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 20px 54px -42px rgba(0,0,0,0.96) !important;
+    }
+
+    #selection-screen .category-nav-btn {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 9999px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035)),
+        rgba(0,0,0,0.36) !important;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    #selection-screen .category-nav-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 14px 28px -24px var(--section-accent);
+    }
+
+    #selection-screen .category-current-label {
+      min-height: 3rem;
+      border-radius: 9999px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.96), #bae6fd 28%, rgba(221,214,254,0.88) 55%, #99f6e4 82%, rgba(255,255,255,0.94));
+      border-color: rgba(224,251,255,0.76);
+      color: #102a36;
+      -webkit-text-fill-color: #102a36;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.58);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -10px 22px rgba(15,23,42,0.08);
+    }
+
+    #selection-screen #category-spotlight {
+      max-width: 60rem;
+      border-radius: 1.25rem;
+      padding: 1.05rem 1.15rem !important;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--section-accent) 13%, transparent), transparent 48%),
+        linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.035)),
+        rgba(7, 8, 12, 0.56) !important;
+      border-color: color-mix(in srgb, var(--section-accent) 30%, rgba(255,255,255,0.16)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 22px 54px -40px rgba(0,0,0,0.94) !important;
+    }
+
+    #selection-screen #category-spotlight::after {
+      display: none;
+    }
+
+    #selection-screen .category-spotlight-title {
+      font-size: clamp(1.16rem, 2.6vw, 1.48rem) !important;
+    }
+
+    #selection-screen .category-spotlight-desc {
+      color: rgba(255,255,255,0.7);
+    }
+
+    #selection-screen #options-list {
+      gap: 0.72rem;
+    }
+
+    #selection-screen #options-list .option-item {
+      min-height: 7.7rem;
+      border-radius: 1.1rem;
+      padding: 0.95rem 0.95rem 0.95rem 1rem;
+      gap: 0.9rem;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 10%, transparent), transparent 44%),
+        linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.028)),
+        rgba(7, 8, 12, 0.54) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 24%, rgba(255,255,255,0.13)) !important;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    #selection-screen #options-list .option-item:hover,
+    #selection-screen #options-list .option-item:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 20px 44px -34px var(--theme-color, var(--section-accent));
+    }
+
+    #selection-screen #options-list .option-item.selected {
+      transform: translateY(-2px);
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent), transparent 52%),
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
+        rgba(8, 9, 14, 0.68) !important;
+    }
+
+    #selection-screen #options-list .option-item::before {
+      top: 0.85rem;
+      bottom: 0.85rem;
+      width: 0.22rem;
+    }
+
+    #selection-screen #options-list .option-item::after {
+      opacity: 0.24;
+    }
+
+    #selection-screen .option-icon-wrapper {
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: 0.92rem;
+    }
+
+    #selection-screen .option-title {
+      font-size: clamp(1rem, 2.2vw, 1.1rem);
+    }
+
+    #selection-screen .option-desc {
+      font-size: 0.84rem;
+      line-height: 1.38;
+      margin-top: 0.35rem;
+    }
+
+    #selection-screen .option-radio {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+
+    #selection-screen #continue-btn-container {
+      max-width: min(34rem, 92vw);
+      margin-top: 1.4rem;
+      padding: 0;
+      border-radius: 1.5rem;
+      background: none !important;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    #selection-screen #continue-btn {
+      position: relative;
+      min-height: 4.15rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.95rem;
+      padding: 0.38rem 0.42rem 0.38rem 1.3rem;
+      border-radius: 1.45rem;
+      text-align: left;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
+        linear-gradient(90deg, color-mix(in srgb, var(--section-accent) 12%, transparent), transparent 62%),
+        rgba(7, 9, 14, 0.68) !important;
+      border: 1px solid color-mix(in srgb, var(--section-accent) 28%, rgba(255,255,255,0.16)) !important;
+      color: rgba(255,255,255,0.96);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 22px 48px -36px rgba(0,0,0,0.96), 0 0 0 1px rgba(255,255,255,0.03) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+      overflow: hidden;
+    }
+
+    #selection-screen #continue-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, rgba(255,255,255,0.12), transparent 32%, transparent 68%, rgba(255,255,255,0.06));
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    #selection-screen #continue-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 24px 54px -34px color-mix(in srgb, var(--section-accent) 34%, rgba(0,0,0,0.95)), 0 0 0 1px rgba(255,255,255,0.04) !important;
+      border-color: color-mix(in srgb, var(--section-accent) 42%, rgba(255,255,255,0.18)) !important;
+    }
+
+    #selection-screen #continue-btn:active {
+      transform: translateY(0) scale(0.985);
+    }
+
+    #selection-screen #continue-btn[disabled] {
+      opacity: 0.72;
+      cursor: default;
+    }
+
+    #selection-screen #continue-btn .continue-btn-copy {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      display: block;
+      font-size: clamp(0.98rem, 2.4vw, 1.08rem);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: 0;
+      color: rgba(255,255,255,0.96);
+      text-wrap: balance;
+    }
+
+    #selection-screen #continue-btn .continue-btn-arrow {
+      position: relative;
+      z-index: 1;
+      width: 3.15rem;
+      height: 3.15rem;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 1.08rem;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98) 0%, #bae6fd 25%, rgba(221,214,254,0.88) 54%, #99f6e4 82%, rgba(255,255,255,0.95) 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -10px 22px rgba(15,23,42,0.08), 0 14px 28px -22px rgba(125,211,252,0.8);
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    #selection-screen #continue-btn:hover .continue-btn-arrow {
+      transform: translateX(2px);
+      filter: saturate(1.04);
+    }
+
+    #selection-screen #continue-btn svg,
+    #selection-screen #continue-btn i {
+      width: 1.3rem;
+      height: 1.3rem;
+      color: #081117;
+      stroke: #081117;
+      background: none;
+      padding: 0;
+      transform: none !important;
+    }
+
+    @media (max-width: 640px) {
+      #selection-screen #options-list .option-item {
+        min-height: 7.4rem;
+        padding: 0.9rem;
+      }
+
+      #selection-screen #continue-btn-container {
+        max-width: min(34rem, 92vw);
+      }
+
+      #selection-screen #continue-btn {
+        min-height: 4rem;
+        padding-left: 1.05rem;
+      }
+
+      #selection-screen #continue-btn .continue-btn-arrow {
+        width: 2.9rem;
+        height: 2.9rem;
       }
     }
+
+    @media (max-width: 640px) {
+      #selection-screen #options-list .option-item {
+        grid-template-columns: auto minmax(0, 1fr);
+        min-height: 8.2rem;
+      }
+
+      #selection-screen .option-radio {
+        position: absolute;
+        right: 0.9rem;
+        bottom: 0.9rem;
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+    }
+
+    @keyframes ui-press-pop {
+      0% { transform: scale(1); }
+      42% { transform: scale(0.965); }
+      100% { transform: scale(1); }
+    }
+
+    #selection-screen button.is-pressing,
+    #selection-screen .category-nav-btn.is-pressing,
+    #selection-screen #share-btn.is-pressing,
+    #lang-btn.is-pressing,
+    #theme-btn.is-pressing,
+    #info-btn.is-pressing,
+    #view-credits-btn.is-pressing,
+    #info-close-btn.is-pressing,
+    #lang-close-btn.is-pressing,
+    #main-jailbreak-btn.is-pressing {
+      animation: ui-press-pop 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Selector cards redesign v5 */
+    #selection-screen #options-list {
+      gap: 1rem;
+    }
+
+    #selection-screen #options-list .option-item {
+      min-height: 10.4rem;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto 1fr;
+      align-items: stretch;
+      gap: 0.85rem 1rem;
+      padding: 1rem;
+      border-radius: 1.35rem;
+      background:
+        radial-gradient(120% 120% at 88% 0%, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent) 0%, transparent 48%),
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.032)),
+        rgba(7, 8, 12, 0.62) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 26%, rgba(255,255,255,0.15)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 18px 42px -34px rgba(0,0,0,0.92);
+    }
+
+    #selection-screen #options-list .option-item::before {
+      content: '';
+      left: 1rem;
+      right: 1rem;
+      top: 0;
+      bottom: auto;
+      width: auto;
+      height: 0.24rem;
+      border-radius: 0 0 9999px 9999px;
+      background: linear-gradient(90deg, transparent, var(--theme-color, var(--section-accent)), transparent);
+      opacity: 0.78;
+    }
+
+    #selection-screen #options-list .option-item::after {
+      content: none;
+      display: none;
+    }
+
+    #selection-screen #options-list .option-item:hover,
+    #selection-screen #options-list .option-item:focus-visible {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 46%, rgba(255,255,255,0.2)) !important;
+      background:
+        radial-gradient(120% 120% at 88% 0%, color-mix(in srgb, var(--theme-color, var(--section-accent)) 24%, transparent) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(255,255,255,0.155), rgba(255,255,255,0.045)),
+        rgba(8, 9, 14, 0.72) !important;
+    }
+
+    #selection-screen #options-list .option-item.selected {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 64%, rgba(255,255,255,0.22)) !important;
+      background:
+        radial-gradient(120% 120% at 88% 0%, color-mix(in srgb, var(--theme-color, var(--section-accent)) 30%, transparent) 0%, transparent 52%),
+        linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.055)),
+        rgba(8, 9, 14, 0.78) !important;
+    }
+
+    #selection-screen .option-icon-wrapper {
+      grid-column: 1;
+      grid-row: 1;
+      width: 3.7rem;
+      height: 3.7rem;
+      border-radius: 1.05rem;
+      margin: 0;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)),
+        color-mix(in srgb, var(--theme-color, var(--section-accent)) 22%, rgba(0,0,0,0.42));
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 40%, rgba(255,255,255,0.16));
+    }
+
+    #selection-screen .option-content {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      padding: 0;
+      align-self: end;
+    }
+
+    #selection-screen .option-title {
+      max-width: calc(100% - 1.5rem);
+      font-size: clamp(1.08rem, 2.4vw, 1.24rem);
+      line-height: 1.08;
+    }
+
+    #selection-screen .option-desc {
+      max-width: 96%;
+      margin-top: 0.5rem;
+      font-size: 0.86rem;
+      line-height: 1.42;
+    }
+
+    #selection-screen .option-badge-row {
+      margin-top: 0.75rem;
+    }
+
+    #selection-screen .option-radio {
+      grid-column: 2;
+      grid-row: 1;
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: 2.25rem;
+      height: 2.25rem;
+      align-self: start;
+      border-radius: 0.85rem;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035)),
+        rgba(0,0,0,0.34);
+    }
+
+    #selection-screen .option-radio::after {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.35rem;
+      background: var(--theme-color, var(--section-accent));
+    }
+
+    #selection-screen .option-item.selected .option-radio {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08)),
+        color-mix(in srgb, var(--theme-color, var(--section-accent)) 44%, rgba(0,0,0,0.26));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 0 24px -12px var(--theme-color, var(--section-accent));
+    }
+
+    @media (min-width: 900px) {
+      #selection-screen #options-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      #selection-screen #options-list .option-item {
+        min-height: 9.6rem;
+        grid-template-columns: 1fr auto;
+      }
+
+      #selection-screen .option-radio {
+        position: relative;
+        right: auto;
+        bottom: auto;
+      }
+    }
+
+    /* Section header should read like navigation, not a button */
+    #selection-screen #category-tabs {
+      min-height: 3.7rem;
+      padding: 0.35rem 0.45rem !important;
+      border-radius: 1.35rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        rgba(7, 8, 12, 0.48) !important;
+      border-color: rgba(255,255,255,0.13) !important;
+    }
+
+    #selection-screen .category-current-label {
+      min-height: 2.9rem;
+      width: auto;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      color: rgba(255,255,255,0.94);
+      -webkit-text-fill-color: rgba(255,255,255,0.94);
+      text-shadow: 0 1px 14px rgba(0,0,0,0.44);
+      font-size: clamp(1.05rem, 2.7vw, 1.35rem) !important;
+    }
+
+    #selection-screen #category-tabs .min-w-0 {
+      overflow: hidden;
+      border-radius: 9999px;
+      contain: paint;
+    }
+
+    /* Options redesign v6: clean selectable rows */
+    #selection-screen #options-list {
+      gap: 0.65rem;
+      max-width: 54rem;
+    }
+
+    #selection-screen #options-list .option-item {
+      min-height: 5.8rem;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-rows: 1fr;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.85rem 0.95rem;
+      border-radius: 1rem;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 7%, transparent), transparent 44%),
+        linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.028)),
+        rgba(6, 7, 10, 0.58) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 22%, rgba(255,255,255,0.14)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.11), 0 14px 34px -30px rgba(0,0,0,0.92);
+      transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease, opacity 0.14s ease, filter 0.14s ease;
+    }
+
+    #selection-screen #options-list .option-item::before,
+    #selection-screen #options-list .option-item::after {
+      content: none;
+      display: none;
+    }
+
+    #selection-screen #options-list .option-item:hover,
+    #selection-screen #options-list .option-item:focus-visible {
+      transform: translateY(-1px);
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 12%, transparent), transparent 48%),
+        linear-gradient(145deg, rgba(255,255,255,0.135), rgba(255,255,255,0.04)),
+        rgba(8, 9, 13, 0.66) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 38%, rgba(255,255,255,0.18)) !important;
+    }
+
+    #selection-screen #options-list .option-item.selected {
+      transform: translateY(-1px);
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent), transparent 54%),
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
+        rgba(8, 9, 13, 0.76) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 58%, rgba(255,255,255,0.22)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 18px 40px -34px var(--theme-color, var(--section-accent));
+    }
+
+    #selection-screen .option-icon-wrapper {
+      grid-column: 1;
+      grid-row: 1;
+      width: 3.05rem;
+      height: 3.05rem;
+      margin: 0;
+      border-radius: 0.82rem;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.035)),
+        color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, rgba(0,0,0,0.4));
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 32%, rgba(255,255,255,0.14));
+    }
+
+    #selection-screen .option-content {
+      grid-column: 2;
+      grid-row: 1;
+      padding: 0;
+      align-self: center;
+    }
+
+    #selection-screen .option-title {
+      max-width: 100%;
+      font-size: clamp(0.98rem, 2.1vw, 1.08rem);
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    #selection-screen .option-desc {
+      max-width: 100%;
+      margin-top: 0.3rem;
+      font-size: 0.82rem;
+      line-height: 1.34;
+      color: rgba(255,255,255,0.62);
+    }
+
+    #selection-screen .option-badge-row {
+      margin-top: 0.55rem;
+    }
+
+    #selection-screen .option-radio {
+      grid-column: 3;
+      grid-row: 1;
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 9999px;
+      border-width: 1px;
+      background: rgba(255,255,255,0.055);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    #selection-screen .option-radio::after {
+      width: 0.78rem;
+      height: 0.78rem;
+      border-radius: 9999px;
+      background: var(--theme-color, var(--section-accent));
+    }
+
+    #selection-screen .option-item.selected .option-radio {
+      background: color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, rgba(255,255,255,0.08));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 0 18px -8px var(--theme-color, var(--section-accent));
+    }
+
+    @media (min-width: 900px) {
+      #selection-screen #options-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      #selection-screen #options-list .option-item {
+        min-height: 5.65rem;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        padding: 0.8rem;
+      }
+
+      #selection-screen .option-icon-wrapper {
+        width: 2.85rem;
+        height: 2.85rem;
+      }
+
+      #selection-screen .option-radio {
+        width: 1.65rem;
+        height: 1.65rem;
+      }
+    }
+
+    #selection-screen .category-nav-btn {
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.055) !important;
+      border-color: rgba(255,255,255,0.13) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
     @keyframes ambient-float {
       0% {
         transform: translate(0, 0);
       }
       100% {
         transform: translate(var(--ambient-tx), var(--ambient-ty));
+      }
+    }
+
+    /* Unified redesign */
+    :root {
+      --ui-font-body: "Sora", "Segoe UI Variable Text", "Segoe UI", sans-serif;
+      --ui-font-display: "Space Grotesk", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      --ui-shell: rgba(7, 10, 16, 0.76);
+      --ui-shell-strong: rgba(8, 11, 18, 0.9);
+      --ui-panel: rgba(12, 16, 25, 0.7);
+      --ui-panel-strong: rgba(9, 13, 21, 0.86);
+      --ui-border: rgba(255, 255, 255, 0.11);
+      --ui-border-accent: color-mix(in srgb, var(--section-accent) 34%, rgba(255, 255, 255, 0.12));
+      --ui-highlight: rgba(255, 255, 255, 0.16);
+      --ui-text-1: rgba(248, 250, 252, 0.96);
+      --ui-text-2: rgba(226, 232, 240, 0.72);
+      --ui-text-3: rgba(148, 163, 184, 0.78);
+      --ui-shadow: 0 30px 72px -46px rgba(0, 0, 0, 0.98);
+      --ui-shadow-soft: 0 22px 46px -34px rgba(0, 0, 0, 0.92);
+      --ui-bright: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, #dbeafe 24%, rgba(221,214,254,0.88) 52%, #99f6e4 78%, rgba(255,255,255,0.95) 100%);
+      --ui-gold: linear-gradient(135deg, #fff2bf 0%, #f9d96a 22%, #e4af2b 55%, #f7d778 82%, #fff4cb 100%);
+    }
+
+    body[data-theme="light"] {
+      --ui-shell: rgba(18, 21, 29, 0.48);
+      --ui-shell-strong: rgba(18, 21, 29, 0.62);
+      --ui-panel: rgba(22, 26, 36, 0.44);
+      --ui-panel-strong: rgba(20, 24, 34, 0.56);
+      --ui-border: rgba(255, 255, 255, 0.16);
+      --ui-highlight: rgba(255, 255, 255, 0.2);
+      --ui-text-1: rgba(250, 250, 252, 0.96);
+      --ui-text-2: rgba(236, 242, 248, 0.76);
+      --ui-text-3: rgba(209, 218, 230, 0.76);
+      --ui-shadow: 0 26px 62px -42px rgba(0, 0, 0, 0.82);
+      --ui-shadow-soft: 0 18px 38px -28px rgba(0, 0, 0, 0.72);
+    }
+
+    body,
+    button,
+    input,
+    textarea,
+    select {
+      font-family: var(--ui-font-body) !important;
+      letter-spacing: 0;
+    }
+
+    .hero-title,
+    .step-label,
+    .category-current-label,
+    .option-title,
+    .about-title,
+    .about-stat-value,
+    .creator-name,
+    .creator-badge,
+    #info-pill,
+    #jb-btn-text,
+    .slide-label,
+    #continue-btn .continue-btn-copy {
+      font-family: var(--ui-font-display) !important;
+    }
+
+    #selection-screen::before {
+      background:
+        linear-gradient(180deg, rgba(2, 4, 8, 0.16), rgba(2, 4, 8, 0.72)),
+        radial-gradient(120% 90% at 50% 0%, rgba(12, 22, 38, 0.14) 0%, transparent 52%),
+        radial-gradient(90% 70% at 14% 10%, color-mix(in srgb, var(--section-accent) 14%, transparent) 0%, transparent 58%);
+      opacity: 1 !important;
+    }
+
+    body[data-theme="light"] #selection-screen::before,
+    body[data-theme="light"] #jailbreak-screen::before {
+      background:
+        linear-gradient(180deg, rgba(4, 5, 10, 0.08), rgba(4, 5, 10, 0.5)),
+        radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 52%),
+        radial-gradient(90% 70% at 14% 10%, color-mix(in srgb, var(--section-accent) 18%, transparent) 0%, transparent 58%);
+    }
+
+    #jailbreak-screen::before {
+      background:
+        linear-gradient(180deg, rgba(2, 4, 8, 0.2), rgba(2, 4, 8, 0.76)),
+        radial-gradient(120% 90% at 50% 0%, rgba(12, 22, 38, 0.16) 0%, transparent 54%),
+        radial-gradient(90% 70% at 14% 10%, color-mix(in srgb, var(--section-accent) 18%, transparent) 0%, transparent 60%);
+    }
+
+    .selection-gui,
+    #jailbreak-gui {
+      width: min(100%, 74rem);
+      margin: 0 auto;
+      padding-inline: clamp(1rem, 2.8vw, 2rem);
+    }
+
+    .selection-gui {
+      padding-top: clamp(5.8rem, 11vh, 7.4rem);
+      padding-bottom: clamp(2rem, 6vh, 4rem);
+    }
+
+    #jailbreak-gui {
+      padding-top: clamp(6.8rem, 12vh, 8.6rem);
+      padding-bottom: clamp(2rem, 6vh, 4rem);
+    }
+
+    .hero-heading {
+      position: relative;
+      width: min(100%, 72rem);
+      justify-content: flex-start;
+      gap: 1.28rem;
+      min-height: 6.7rem;
+      padding: 0.78rem 1.55rem 0.78rem 0.78rem;
+      border-radius: 9999px;
+      border: 1.6px solid rgba(255,255,255,0.2);
+      background:
+        radial-gradient(120% 180% at 0% 0%, rgba(255,255,255,0.15) 0%, transparent 42%),
+        radial-gradient(82% 180% at 18% 50%, color-mix(in srgb, var(--section-accent) 16%, transparent) 0%, transparent 64%),
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.025)),
+        rgba(9, 12, 18, 0.56);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -20px 30px rgba(0,0,0,0.12), 0 30px 62px -38px rgba(0,0,0,0.92);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      overflow: hidden;
+    }
+
+    .hero-heading::before {
+      content: '';
+      position: absolute;
+      inset: 0.38rem;
+      border-radius: 9999px;
+      border: 1.25px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    .hero-heading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(72% 120% at 18% 50%, color-mix(in srgb, var(--section-accent) 20%, transparent) 0%, transparent 76%),
+        linear-gradient(115deg, rgba(255,255,255,0.11), transparent 32%, transparent 76%, rgba(255,255,255,0.03));
+      pointer-events: none;
+    }
+
+    .hero-logo-shell {
+      width: clamp(4.35rem, 8.8vw, 5.7rem);
+      height: clamp(4.35rem, 8.8vw, 5.7rem);
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background:
+        radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,0.14) 0%, transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)),
+        rgba(255,255,255,0.05);
+      border: 1.75px solid rgba(255,255,255,0.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 14px 30px -24px rgba(0,0,0,0.52);
+    }
+
+    .hero-logo-shell::after {
+      inset: 0.4rem;
+      border-radius: 9999px;
+    }
+
+    .hero-logo {
+      width: 76%;
+      height: 76%;
+      opacity: 1;
+      transform: none;
+      animation: none;
+      filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.18));
+    }
+
+    body[data-theme="light"] .hero-logo-shell {
+      border-color: rgba(255,255,255,0.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 12px 26px -22px rgba(0,0,0,0.34);
+    }
+
+    body[data-theme="light"] .hero-logo-shell::after {
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    body[data-theme="light"] .hero-heading::after {
+      background:
+        radial-gradient(72% 120% at 18% 50%, color-mix(in srgb, var(--section-accent) 20%, transparent) 0%, transparent 76%),
+        linear-gradient(115deg, rgba(255,255,255,0.11), transparent 32%, transparent 76%, rgba(255,255,255,0.03));
+    }
+
+    body[data-theme="light"] .hero-logo {
+      filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.12));
+    }
+
+    .hero-logo-glow {
+      inset: -26%;
+      opacity: 0.86;
+      transform: scale(1);
+      animation: logoGlowBreath 6s ease-in-out infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 6vw, 4.85rem) !important;
+      font-weight: 800 !important;
+      line-height: 0.92;
+      letter-spacing: -0.055em !important;
+      color: rgba(255,255,255,0.98);
+      -webkit-text-fill-color: rgba(255,255,255,0.98);
+      text-shadow: 0 16px 32px rgba(0,0,0,0.4);
+    }
+
+    .hero-title.typing::after {
+      background: color-mix(in srgb, var(--section-accent) 58%, #ffffff);
+    }
+
+    #status-badge,
+    #top-controls-ui > .flex {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        var(--ui-shell) !important;
+      border: 1px solid var(--ui-border-accent) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow-soft);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    #top-controls-ui > .flex {
+      padding: 0.34rem;
+      border-radius: 1.35rem;
+      gap: 0.4rem !important;
+    }
+
+    #lang-btn,
+    #theme-btn,
+    #info-btn {
+      min-width: 3.1rem;
+      height: 3.1rem !important;
+      border-radius: 1rem !important;
+      background: rgba(255,255,255,0.04) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      box-shadow: none !important;
+      color: var(--ui-text-2) !important;
+    }
+
+    #lang-btn:hover,
+    #theme-btn:hover,
+    #info-btn:hover {
+      background: rgba(255,255,255,0.08) !important;
+      border-color: rgba(255,255,255,0.16) !important;
+      transform: translateY(-1px);
+    }
+
+    #selection-screen > .relative.mb-6,
+    #selection-screen #category-spotlight,
+    #selection-screen #options-list,
+    #selection-screen #continue-btn-container {
+      width: min(100%, 70rem) !important;
+      max-width: 70rem !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    #selection-screen .step-indicator,
+    #jailbreak-screen .step-indicator {
+      padding: 0.38rem 0.42rem !important;
+      border-radius: 1.35rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        var(--ui-shell) !important;
+      border: 1px solid var(--ui-border) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow-soft) !important;
+    }
+
+    .step-chip {
+      min-height: 2.3rem !important;
+      padding: 0.42rem 0.85rem !important;
+      border-radius: 1rem !important;
+      color: var(--ui-text-3) !important;
+    }
+
+    .step-chip.is-active {
+      background: rgba(255,255,255,0.08) !important;
+      color: var(--ui-text-1) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 0 1px color-mix(in srgb, var(--section-accent) 26%, transparent) !important;
+    }
+
+    .step-label {
+      font-size: 0.74rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+    }
+
+    #selection-screen #category-tabs {
+      min-height: 4.75rem !important;
+      padding: 0.55rem !important;
+      border-radius: 2rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        var(--ui-shell-strong) !important;
+      border: 1px solid var(--ui-border-accent) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow) !important;
+    }
+
+    #selection-screen .category-nav-btn {
+      width: 3.45rem !important;
+      height: 3.45rem !important;
+      border-radius: 1.2rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(255,255,255,0.02) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      box-shadow: none !important;
+      color: var(--ui-text-2) !important;
+      stroke: var(--ui-text-2) !important;
+    }
+
+    #selection-screen .category-nav-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.18) !important;
+      box-shadow: 0 14px 26px -24px color-mix(in srgb, var(--section-accent) 42%, transparent) !important;
+    }
+
+    #selection-screen .category-current-label {
+      min-height: 3.55rem !important;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1.1rem !important;
+      border-radius: 1.35rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(255,255,255,0.02) !important;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--ui-text-1) !important;
+      -webkit-text-fill-color: var(--ui-text-1) !important;
+      font-size: clamp(1.02rem, 2vw, 1.24rem) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase;
+      text-shadow: none;
+      filter: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    #selection-screen #category-spotlight {
+      position: relative;
+      overflow: hidden;
+      padding: 1.22rem 1.35rem !important;
+      border-radius: 2rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.035)),
+        linear-gradient(90deg, color-mix(in srgb, var(--section-accent) 12%, transparent), transparent 60%),
+        var(--ui-panel) !important;
+      border: 1px solid var(--ui-border-accent) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow) !important;
+    }
+
+    #selection-screen #category-spotlight::before {
+      display: block !important;
+      background: radial-gradient(circle, color-mix(in srgb, var(--section-accent) 22%, transparent), transparent 62%) !important;
+      opacity: 0.8;
+      filter: blur(20px);
+    }
+
+    #selection-screen #category-spotlight::after {
+      display: none !important;
+    }
+
+    #selection-screen .category-spotlight-title {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem) !important;
+      font-weight: 700 !important;
+      color: var(--ui-text-1);
+    }
+
+    #selection-screen .category-spotlight-desc {
+      color: var(--ui-text-2) !important;
+      font-size: 0.94rem !important;
+      line-height: 1.58 !important;
+      max-width: 48rem;
+    }
+
+    #selection-screen .category-spotlight-footer {
+      gap: 0.9rem !important;
+      align-items: center !important;
+    }
+
+    #selection-screen .category-spotlight-tag,
+    #selection-screen .downgrade-track-badge,
+    #selection-screen #share-btn,
+    #selection-screen .recommendation-badge,
+    #selection-screen .ios-availability-badge,
+    #selection-screen .exclusive-badge {
+      min-height: 2.4rem;
+      padding: 0.4rem 0.8rem !important;
+      border-radius: 999px !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(255,255,255,0.03) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      color: var(--ui-text-2) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1) !important;
+      font-size: 0.72rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em;
+    }
+
+    #selection-screen #share-btn {
+      gap: 0.45rem !important;
+      color: var(--ui-text-1) !important;
+    }
+
+    #selection-screen #options-list {
+      gap: 1rem !important;
+    }
+
+    #selection-screen #options-list .option-item {
+      position: relative;
+      min-height: 8.75rem !important;
+      display: grid !important;
+      grid-template-columns: auto minmax(0, 1fr) auto !important;
+      grid-template-rows: none !important;
+      align-items: center !important;
+      gap: 1rem !important;
+      padding: 1.1rem 1.15rem 1.1rem 1.2rem !important;
+      border-radius: 1.8rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 12%, transparent), transparent 62%),
+        var(--ui-panel) !important;
+      border: 1px solid color-mix(in srgb, var(--theme-color, var(--section-accent)) 26%, rgba(255,255,255,0.12)) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow-soft) !important;
+      overflow: hidden;
+    }
+
+    #selection-screen #options-list .option-item::before {
+      content: '' !important;
+      left: 0 !important;
+      right: auto !important;
+      top: 1rem !important;
+      bottom: 1rem !important;
+      width: 0.26rem !important;
+      height: auto !important;
+      border-radius: 999px !important;
+      background: linear-gradient(180deg, transparent, var(--theme-color, var(--section-accent)), transparent) !important;
+      opacity: 0.9;
+    }
+
+    #selection-screen #options-list .option-item::after {
+      content: none !important;
+      display: none !important;
+    }
+
+    #selection-screen #options-list .option-item:hover,
+    #selection-screen #options-list .option-item:focus-visible {
+      transform: translateY(-2px) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 44%, rgba(255,255,255,0.16)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 24px 44px -34px color-mix(in srgb, var(--theme-color, var(--section-accent)) 24%, rgba(0,0,0,0.96)) !important;
+    }
+
+    #selection-screen #options-list .option-item.selected {
+      transform: translateY(-2px) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 56%, rgba(255,255,255,0.18)) !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)),
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent), transparent 70%),
+        var(--ui-panel-strong) !important;
+    }
+
+    #selection-screen .option-icon-wrapper {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      width: 4rem !important;
+      height: 4rem !important;
+      margin: 0 !important;
+      border-radius: 1.25rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05)),
+        color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, rgba(255,255,255,0.02)) !important;
+      border: 1px solid color-mix(in srgb, var(--theme-color, var(--section-accent)) 36%, rgba(255,255,255,0.14)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 18px 30px -26px rgba(0,0,0,0.82) !important;
+    }
+
+    #selection-screen .option-content {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      min-width: 0;
+      align-self: center !important;
+    }
+
+    #selection-screen .option-title {
+      max-width: none !important;
+      font-size: clamp(1.06rem, 2vw, 1.2rem) !important;
+      line-height: 1.08 !important;
+      font-weight: 700 !important;
+      color: var(--ui-text-1) !important;
+    }
+
+    #selection-screen .option-desc {
+      max-width: 52rem !important;
+      margin-top: 0.42rem !important;
+      font-size: 0.88rem !important;
+      line-height: 1.52 !important;
+      color: var(--ui-text-2) !important;
+    }
+
+    #selection-screen .option-badge-row {
+      gap: 0.45rem !important;
+      margin-top: 0.65rem !important;
+    }
+
+    #selection-screen .option-radio {
+      width: 2rem !important;
+      height: 2rem !important;
+      margin-left: 0 !important;
+      background: rgba(255,255,255,0.03) !important;
+      border: 1px solid rgba(255,255,255,0.14) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    }
+
+    #selection-screen .option-radio::after {
+      background: var(--theme-color, var(--section-accent)) !important;
+      box-shadow: 0 0 18px color-mix(in srgb, var(--theme-color, var(--section-accent)) 72%, transparent) !important;
+    }
+
+    #selection-screen #continue-btn-container {
+      padding: 0 !important;
+      border: 0 !important;
+      background: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    #selection-screen #continue-btn {
+      min-height: 4.65rem !important;
+      padding: 0.5rem 0.55rem 0.5rem 1.35rem !important;
+      border-radius: 1.7rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)),
+        linear-gradient(90deg, color-mix(in srgb, var(--section-accent) 14%, transparent), transparent 64%),
+        var(--ui-panel-strong) !important;
+      border: 1px solid var(--ui-border-accent) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+    }
+
+    #selection-screen #continue-btn::before {
+      background: linear-gradient(115deg, rgba(255,255,255,0.12), transparent 34%, transparent 72%, rgba(255,255,255,0.04)) !important;
+    }
+
+    #selection-screen #continue-btn .continue-btn-copy {
+      font-size: clamp(1.02rem, 2.4vw, 1.16rem) !important;
+      font-weight: 700 !important;
+      color: var(--ui-text-1) !important;
+    }
+
+    #selection-screen #continue-btn .continue-btn-arrow {
+      width: 3.4rem !important;
+      height: 3.4rem !important;
+      border-radius: 1.2rem !important;
+      background: var(--ui-bright) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -8px 20px rgba(15,23,42,0.08), 0 14px 26px -20px rgba(125,211,252,0.62) !important;
+    }
+
+    #selection-screen #continue-btn svg,
+    #selection-screen #continue-btn i {
+      width: 1.28rem !important;
+      height: 1.28rem !important;
+      color: #0a1117 !important;
+      stroke: #0a1117 !important;
+    }
+
+    #selection-screen #continue-btn:hover {
+      transform: translateY(-2px) !important;
+      border-color: color-mix(in srgb, var(--section-accent) 42%, rgba(255,255,255,0.18)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 26px 50px -34px color-mix(in srgb, var(--section-accent) 26%, rgba(0,0,0,0.96)) !important;
+    }
+
+    #selection-screen #continue-btn[disabled] {
+      opacity: 0.56 !important;
+      filter: saturate(0.78);
+    }
+
+    #jailbreak-screen #jb-btn-wrapper {
+      width: min(92vw, 36rem) !important;
+      max-width: 36rem !important;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn {
+      min-height: 5.95rem !important;
+      padding: 0.54rem 1rem 0.54rem 6rem !important;
+      border-radius: 9999px !important;
+      background:
+        radial-gradient(120% 180% at 0% 50%, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent) 0%, transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.03)),
+        rgba(10, 14, 22, 0.42) !important;
+      border: 1px solid color-mix(in srgb, var(--theme-color, var(--section-accent)) 28%, rgba(255,255,255,0.16)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), inset 0 -1px 0 rgba(0,0,0,0.22), 0 24px 40px -30px rgba(0,0,0,0.78) !important;
+      backdrop-filter: blur(18px) saturate(135%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn::before,
+    #jailbreak-screen #main-jailbreak-btn::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn::before {
+      inset: 0.36rem;
+      border-radius: 9999px;
+      background:
+        radial-gradient(90% 140% at 0% 50%, color-mix(in srgb, var(--theme-color, var(--section-accent)) 14%, transparent) 0%, transparent 66%),
+        linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 42%, rgba(0,0,0,0.03) 55%, rgba(0,0,0,0.1) 100%),
+        rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+      z-index: 0;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn::after {
+      left: 0.36rem;
+      right: 0.36rem;
+      top: 0.36rem;
+      height: calc(50% - 0.18rem);
+      border-radius: 9999px 9999px 1.2rem 1.2rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.04));
+      opacity: 0.88;
+      z-index: 1;
+    }
+
+    #jailbreak-screen .slide-progress {
+      left: 0.38rem !important;
+      top: 0.38rem !important;
+      bottom: 0.38rem !important;
+      max-width: calc(100% - 0.76rem) !important;
+      opacity: 0.3 !important;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 42%, rgba(255,255,255,0.34)) 0%, color-mix(in srgb, var(--theme-color, var(--section-accent)) 18%, transparent) 100%) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 18px -12px color-mix(in srgb, var(--theme-color, var(--section-accent)) 34%, transparent) !important;
+      z-index: 1;
+    }
+
+    #jailbreak-screen .slide-label {
+      display: none !important;
+    }
+
+    #jailbreak-screen .slide-thumb {
+      left: 0.42rem !important;
+      width: 5rem !important;
+      height: 5rem !important;
+    }
+
+    #jailbreak-screen .slide-lock-diamond {
+      position: relative;
+      border-radius: 9999px !important;
+      background:
+        linear-gradient(180deg, #f7fafc 0%, #e2e8ee 48%, #bfc7d0 49%, #eef3f8 100%) !important;
+      border: 1px solid rgba(255,255,255,0.82) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.98), inset 0 -1px 0 rgba(0,0,0,0.12), 0 10px 22px -16px rgba(0,0,0,0.88), 0 0 0 1px rgba(36,44,54,0.26) !important;
+    }
+
+    #jailbreak-screen .slide-lock-diamond::before {
+      content: '';
+      position: absolute;
+      inset: 0.48rem;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.16));
+      border: 1px solid rgba(255,255,255,0.72);
+      opacity: 0.92;
+    }
+
+    #jailbreak-screen .slide-lock-diamond svg {
+      position: relative;
+      z-index: 1;
+      width: 1.68rem !important;
+      height: 1.68rem !important;
+      color: #5a6672 !important;
+      stroke: #5a6672 !important;
+      stroke-width: 2.6 !important;
+      filter: none;
+    }
+
+    #jailbreak-screen #main-jailbreak-btn.is-unlocked .slide-lock-diamond {
+      animation: none !important;
+    }
+
+    #jailbreak-screen #jb-selected-box {
+      max-width: min(92vw, 38rem) !important;
+      min-height: 4.85rem;
+      border-radius: 1.7rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-color, var(--section-accent)) 14%, transparent), transparent 66%),
+        var(--ui-panel) !important;
+      border-color: color-mix(in srgb, var(--theme-color, var(--section-accent)) 32%, rgba(255,255,255,0.14)) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow-soft) !important;
+    }
+
+    #jailbreak-screen #jb-selected-value {
+      width: 100%;
+      justify-content: center;
+    }
+
+    #jailbreak-screen #jb-selected-value .option-icon-asset,
+    #jailbreak-screen #jb-selected-value img {
+      border-radius: 0.9rem;
+    }
+
+    #info-backdrop,
+    #lang-backdrop {
+      background: rgba(3, 5, 9, 0.72) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+    }
+
+    #info-content,
+    #lang-content {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        var(--ui-shell-strong) !important;
+      border: 1px solid var(--ui-border-accent) !important;
+      border-radius: 2rem !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), 0 42px 90px -54px rgba(0,0,0,0.98) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+    }
+
+    #lang-modal-title,
+    #info-title {
+      font-family: var(--ui-font-display) !important;
+      letter-spacing: -0.03em;
+    }
+
+    #info-pill {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(34,197,94,0.12) !important;
+      border: 1px solid rgba(34,197,94,0.28) !important;
+      color: #bbf7d0 !important;
+    }
+
+    .about-header {
+      align-items: center !important;
+      gap: 1rem !important;
+    }
+
+    .about-logo-wrap {
+      width: 5rem !important;
+      height: 5rem !important;
+      border-radius: 1.5rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
+        rgba(255,255,255,0.03) !important;
+      border: 1.55px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16) !important;
+    }
+
+    .about-logo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0.38rem;
+      border-radius: 1.14rem;
+      border: 1.45px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+
+    .about-logo-wrap::before {
+      display: none !important;
+    }
+
+    .about-logo-wrap img,
+    .about-logo-wrap .about-logo {
+      width: 76% !important;
+      height: 76% !important;
+      object-fit: contain !important;
+    }
+
+    .about-logo-wrap img {
+      filter: brightness(0) invert(1);
+    }
+
+    .about-logo-wrap .about-logo {
+      color: var(--ui-text-1);
+      filter: none;
+    }
+
+    .about-title {
+      font-size: clamp(1.9rem, 4vw, 2.65rem) !important;
+      font-weight: 700 !important;
+      color: var(--ui-text-1) !important;
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
+
+    .about-copy {
+      color: var(--ui-text-2) !important;
+      line-height: 1.65 !important;
+      max-width: 46rem;
+    }
+
+    .about-metadata {
+      gap: 0.85rem !important;
+    }
+
+    .about-stat {
+      padding: 1rem !important;
+      border-radius: 1.45rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.025)),
+        rgba(255,255,255,0.02) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 28px -24px rgba(0,0,0,0.74) !important;
+    }
+
+    .about-stat-label {
+      color: var(--ui-text-3) !important;
+      font-size: 0.72rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase;
+    }
+
+    .about-stat-value {
+      color: var(--ui-text-1) !important;
+      font-size: 1.02rem !important;
+      font-weight: 700 !important;
+    }
+
+    .about-version-value {
+      gap: 0.52rem !important;
+      font-family: var(--ui-font-display) !important;
+    }
+
+    .cat-update-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.58rem;
+      border-radius: 999px;
+      background: var(--ui-gold) !important;
+      color: #362200 !important;
+      -webkit-text-fill-color: #362200 !important;
+      border: 1px solid rgba(255, 224, 131, 0.54) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 10px 22px -18px rgba(236, 190, 70, 0.72) !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase;
+    }
+
+    .about-feature-list {
+      gap: 0.75rem !important;
+    }
+
+    .about-feature {
+      min-height: 4.85rem !important;
+      padding: 0.95rem 1rem !important;
+      border-radius: 1.4rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.025)),
+        rgba(255,255,255,0.02) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 28px -24px rgba(0,0,0,0.74) !important;
+    }
+
+    .about-feature-icon {
+      width: 2.75rem !important;
+      height: 2.75rem !important;
+      border-radius: 1rem !important;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+
+    .about-feature-text {
+      color: var(--ui-text-2) !important;
+      line-height: 1.55 !important;
+    }
+
+    #view-credits-btn,
+    #info-close-btn,
+    #lang-close-btn,
+    .lang-option {
+      border-radius: 1.35rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.025)),
+        rgba(255,255,255,0.02) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 28px -24px rgba(0,0,0,0.74) !important;
+      color: var(--ui-text-1) !important;
+    }
+
+    #view-credits-btn:hover,
+    #info-close-btn:hover,
+    #lang-close-btn:hover,
+    .lang-option:hover {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)),
+        rgba(255,255,255,0.03) !important;
+      border-color: rgba(255,255,255,0.14) !important;
+    }
+
+    .credits-showcase {
+      gap: 0.9rem !important;
+    }
+
+    .creator-card,
+    .creator-card.is-featured {
+      min-height: 7rem !important;
+      border-radius: 1.6rem !important;
+      padding: 1rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.025)),
+        linear-gradient(90deg, color-mix(in srgb, var(--creator-color, #ffffff) 14%, transparent), transparent 72%),
+        rgba(255,255,255,0.02) !important;
+      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 22%, rgba(255,255,255,0.1)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 28px -24px rgba(0,0,0,0.74) !important;
+      color: var(--ui-text-1) !important;
+    }
+
+    .creator-card.is-featured .creator-name,
+    .creator-card.is-featured .creator-role,
+    .creator-card.is-featured .creator-badge {
+      color: inherit !important;
+      text-shadow: none !important;
+    }
+
+    .creator-mark {
+      width: 3.2rem !important;
+      height: 3.2rem !important;
+      border-radius: 1.12rem !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04)),
+        color-mix(in srgb, var(--creator-color, #ffffff) 16%, rgba(255,255,255,0.02)) !important;
+      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 34%, rgba(255,255,255,0.12)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16) !important;
+      color: color-mix(in srgb, var(--creator-color, #ffffff) 80%, #ffffff) !important;
+    }
+
+    .creator-name {
+      font-size: 1.06rem !important;
+      font-weight: 700 !important;
+      color: var(--ui-text-1) !important;
+    }
+
+    .creator-role {
+      color: var(--ui-text-2) !important;
+      font-size: 0.82rem !important;
+    }
+
+    .creator-badge {
+      background: rgba(255,255,255,0.06) !important;
+      color: color-mix(in srgb, var(--creator-color, #ffffff) 78%, #ffffff) !important;
+      border: 1px solid color-mix(in srgb, var(--creator-color, #ffffff) 26%, rgba(255,255,255,0.1)) !important;
+      border-radius: 999px !important;
+    }
+
+    #share-toast {
+      border-radius: 1.2rem !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
+        var(--ui-shell-strong) !important;
+      box-shadow: inset 0 1px 0 var(--ui-highlight), var(--ui-shadow-soft) !important;
+    }
+
+    @media (max-width: 860px) {
+      .hero-heading {
+        justify-content: center;
+        text-align: center;
+      }
+
+      #selection-screen #category-spotlight {
+        padding: 1.1rem !important;
+      }
+
+      #selection-screen .category-spotlight-footer {
+        flex-direction: column;
+        align-items: stretch !important;
+      }
+
+      .about-metadata {
+        grid-template-columns: 1fr !important;
+      }
+
+      .credits-showcase {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .selection-gui,
+      #jailbreak-gui {
+        padding-inline: 0.95rem;
+      }
+
+      .hero-heading {
+        gap: 0.8rem;
+        padding: 0.95rem;
+        border-radius: 1.55rem;
+      }
+
+      .hero-title {
+        font-size: clamp(1.9rem, 8vw, 3rem) !important;
+      }
+
+      #selection-screen #category-tabs {
+        min-height: 4.15rem !important;
+        border-radius: 1.6rem !important;
+      }
+
+      #selection-screen .category-nav-btn {
+        width: 3rem !important;
+        height: 3rem !important;
+        border-radius: 1rem !important;
+      }
+
+      #selection-screen .category-current-label {
+        min-height: 3rem !important;
+        font-size: 0.94rem !important;
+      }
+
+      #selection-screen #options-list .option-item {
+        grid-template-columns: auto minmax(0, 1fr) !important;
+        padding-right: 3.9rem !important;
+      }
+
+      #selection-screen .option-content {
+        grid-column: 1 / -1 !important;
+        margin-top: 0.25rem;
+      }
+
+      #selection-screen .option-radio {
+        position: absolute !important;
+        top: 1rem !important;
+        right: 1rem !important;
+        bottom: auto !important;
+      }
+
+      #selection-screen #continue-btn {
+        min-height: 4.25rem !important;
+        padding-left: 1.1rem !important;
+      }
+
+      #selection-screen #continue-btn .continue-btn-arrow {
+        width: 3rem !important;
+        height: 3rem !important;
+      }
+
+      #jailbreak-screen #jb-btn-wrapper {
+        width: min(92vw, 32rem) !important;
+      }
+
+      #jailbreak-screen #main-jailbreak-btn {
+        min-height: 5.2rem !important;
+        padding-left: 5.7rem !important;
+      }
+
+      #jailbreak-screen .slide-thumb {
+        width: 4.15rem !important;
+        height: 4.15rem !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #selection-screen,
+      #jailbreak-screen {
+        padding: 3.25rem 0.9rem 2rem !important;
+      }
+
+      .selection-gui {
+        width: 100% !important;
+        max-width: none !important;
+        padding-inline: 0 !important;
+        padding-top: 4.95rem !important;
+        padding-bottom: 1.9rem !important;
+      }
+
+      #jailbreak-gui {
+        width: 100% !important;
+        max-width: none !important;
+        padding-inline: 0.1rem !important;
+        padding-top: 4.95rem !important;
+        padding-bottom: 1.9rem !important;
+      }
+
+      #status-badge {
+        min-height: 2.42rem !important;
+        padding: 0.5rem 0.9rem !important;
+        border-radius: 1.08rem !important;
+        font-size: 0.78rem !important;
+      }
+
+      #top-controls-ui > .flex {
+        padding: 0.28rem !important;
+        border-radius: 1.16rem !important;
+        gap: 0.34rem !important;
+      }
+
+      #lang-btn,
+      #theme-btn,
+      #info-btn {
+        min-width: 2.88rem !important;
+        height: 2.88rem !important;
+        border-radius: 0.94rem !important;
+      }
+
+      .hero-heading {
+        width: 100% !important;
+        gap: 0.86rem !important;
+        min-height: 6.1rem !important;
+        padding: 0.82rem 1.08rem 0.82rem 0.82rem !important;
+        border-radius: 9999px !important;
+      }
+
+      .hero-heading::before {
+        inset: 0.34rem !important;
+        border-radius: 9999px !important;
+      }
+
+      .hero-heading::after {
+        background:
+          radial-gradient(72% 120% at 18% 50%, color-mix(in srgb, var(--section-accent) 18%, transparent) 0%, transparent 78%),
+          linear-gradient(115deg, rgba(255,255,255,0.1), transparent 28%, transparent 76%, rgba(255,255,255,0.03)) !important;
+      }
+
+      .hero-logo-shell {
+        width: 4.18rem !important;
+        height: 4.18rem !important;
+        border-radius: 9999px !important;
+      }
+
+      .hero-logo-shell::after {
+        inset: 0.34rem !important;
+        border-radius: 9999px !important;
+      }
+
+      .hero-logo {
+        width: 76% !important;
+        height: 76% !important;
+      }
+
+      .hero-title {
+        font-size: clamp(2.04rem, 8.8vw, 3.38rem) !important;
+        line-height: 0.94 !important;
+      }
+
+      #selection-screen > .relative.mb-6,
+      #selection-screen #category-tabs,
+      #selection-screen #category-spotlight,
+      #selection-screen #options-list,
+      #selection-screen #continue-btn-container,
+      #selection-screen #continue-btn {
+        width: 100% !important;
+        max-width: none !important;
+      }
+
+      #selection-screen .step-indicator,
+      #jailbreak-screen .step-indicator {
+        padding: 0.28rem 0.32rem !important;
+        border-radius: 1.14rem !important;
+      }
+
+      .step-chip {
+        min-height: 2.16rem !important;
+        padding: 0.38rem 0.72rem !important;
+        border-radius: 0.92rem !important;
+      }
+
+      .step-label {
+        font-size: 0.67rem !important;
+      }
+
+      #selection-screen #category-tabs {
+        min-height: 4.02rem !important;
+        padding: 0.44rem !important;
+        border-radius: 1.58rem !important;
+      }
+
+      #selection-screen .category-nav-btn {
+        width: 2.76rem !important;
+        height: 2.76rem !important;
+        border-radius: 1rem !important;
+      }
+
+      #selection-screen .category-current-label {
+        min-height: 2.95rem !important;
+        padding: 0 0.82rem !important;
+        border-radius: 1.08rem !important;
+        font-size: 0.86rem !important;
+        letter-spacing: 0.045em !important;
+      }
+
+      #selection-screen #category-spotlight {
+        padding: 1.08rem 1.1rem !important;
+        border-radius: 1.62rem !important;
+      }
+
+      #selection-screen .category-spotlight-title {
+        font-size: 1.12rem !important;
+      }
+
+      #selection-screen .category-spotlight-desc {
+        font-size: 0.86rem !important;
+        line-height: 1.46 !important;
+      }
+
+      #selection-screen .category-spotlight-footer {
+        gap: 0.62rem !important;
+      }
+
+      #selection-screen .category-spotlight-tag,
+      #selection-screen .downgrade-track-badge,
+      #selection-screen #share-btn,
+      #selection-screen .recommendation-badge,
+      #selection-screen .ios-availability-badge,
+      #selection-screen .exclusive-badge {
+        min-height: 2.02rem !important;
+        padding: 0.34rem 0.64rem !important;
+        font-size: 0.66rem !important;
+      }
+
+      #selection-screen #options-list {
+        gap: 0.84rem !important;
+      }
+
+      #selection-screen #options-list .option-item {
+        min-height: 6.35rem !important;
+        grid-template-columns: auto minmax(0, 1fr) !important;
+        gap: 0.82rem !important;
+        padding: 0.92rem 0.96rem 0.92rem 1rem !important;
+        padding-right: 3.7rem !important;
+        border-radius: 1.52rem !important;
+      }
+
+      #selection-screen #options-list .option-item::before {
+        top: 0.92rem !important;
+        bottom: 0.92rem !important;
+        width: 0.22rem !important;
+      }
+
+      #selection-screen .option-icon-wrapper {
+        width: 3.45rem !important;
+        height: 3.45rem !important;
+        border-radius: 1.06rem !important;
+      }
+
+      #selection-screen .option-content {
+        margin-top: 0.22rem !important;
+      }
+
+      #selection-screen .option-title {
+        font-size: 1rem !important;
+        line-height: 1.08 !important;
+      }
+
+      #selection-screen .option-desc {
+        margin-top: 0.34rem !important;
+        font-size: 0.8rem !important;
+        line-height: 1.42 !important;
+      }
+
+      #selection-screen .option-badge-row {
+        gap: 0.38rem !important;
+        margin-top: 0.56rem !important;
+      }
+
+      #selection-screen .option-radio {
+        top: 0.92rem !important;
+        right: 0.92rem !important;
+        width: 1.55rem !important;
+        height: 1.55rem !important;
+      }
+
+      #selection-screen .option-radio::after {
+        width: 0.68rem !important;
+        height: 0.68rem !important;
+      }
+
+      #selection-screen #continue-btn {
+        min-height: 4.08rem !important;
+        padding: 0.46rem 0.5rem 0.46rem 1.08rem !important;
+        border-radius: 1.5rem !important;
+      }
+
+      #selection-screen #continue-btn .continue-btn-copy {
+        font-size: 0.98rem !important;
+      }
+
+      #selection-screen #continue-btn .continue-btn-arrow {
+        width: 2.92rem !important;
+        height: 2.92rem !important;
+        border-radius: 1rem !important;
+      }
+
+      #selection-screen #continue-btn svg,
+      #selection-screen #continue-btn i {
+        width: 1.1rem !important;
+        height: 1.1rem !important;
+      }
+
+      #jailbreak-screen #jb-btn-wrapper {
+        width: 100% !important;
+        max-width: none !important;
+      }
+
+      #jailbreak-screen #main-jailbreak-btn {
+        min-height: 5rem !important;
+        padding: 0.48rem 0.82rem 0.48rem 5.2rem !important;
+        border-radius: 9999px !important;
+      }
+
+      #jailbreak-screen #jb-launch-title {
+        margin-top: 1.18rem !important;
+        font-size: clamp(1.28rem, 6vw, 1.7rem) !important;
+      }
+
+      #jailbreak-screen .slide-label {
+        display: none !important;
+      }
+
+      #jailbreak-screen .slide-thumb {
+        left: 0.38rem !important;
+        width: 4.24rem !important;
+        height: 4.24rem !important;
+      }
+
+      #jailbreak-screen .slide-lock-diamond {
+        border-radius: 9999px !important;
+      }
+
+      #jailbreak-screen #main-jailbreak-btn::after {
+        left: 0.32rem !important;
+        right: 0.32rem !important;
+        top: 0.32rem !important;
+        width: auto !important;
+        height: calc(50% - 0.16rem) !important;
+        transform: none !important;
+      }
+
+      #jailbreak-screen #jb-selected-container {
+        margin-top: 0.8rem !important;
+      }
+
+      #jailbreak-screen #jb-selected-box {
+        max-width: 20rem !important;
+        padding: 0.8rem 1.08rem !important;
+        border-radius: 1.28rem !important;
+      }
+
+      #info-content,
+      #lang-content {
+        width: min(94vw, 24.75rem) !important;
+        max-height: min(84vh, 44rem) !important;
+        border-radius: 1.62rem !important;
+      }
+
+      #info-scroll-area {
+        padding: 1.08rem !important;
+      }
+
+      .about-header {
+        gap: 0.78rem !important;
+        margin-bottom: 0.85rem !important;
+      }
+
+      .about-logo-wrap {
+        width: 4.2rem !important;
+        height: 4.2rem !important;
+        border-radius: 1.22rem !important;
+      }
+
+      .about-logo-wrap::after {
+        inset: 0.32rem !important;
+        border-radius: 0.88rem !important;
+      }
+
+      .about-title {
+        font-size: 1.74rem !important;
+      }
+
+      .about-copy {
+        font-size: 0.9rem !important;
+        line-height: 1.54 !important;
+      }
+
+      .about-metadata {
+        gap: 0.58rem !important;
+      }
+
+      .about-stat {
+        min-height: 4.55rem !important;
+        padding: 0.84rem !important;
+        border-radius: 1.24rem !important;
+      }
+
+      .about-stat-label {
+        font-size: 0.66rem !important;
+      }
+
+      .about-stat-value {
+        font-size: 0.96rem !important;
+      }
+
+      .about-version-value {
+        font-size: 1.02rem !important;
+        gap: 0.38rem !important;
+      }
+
+      .cat-update-badge {
+        font-size: 0.64rem !important;
+        padding: 0.18rem 0.46rem !important;
+      }
+
+      .about-feature-list {
+        gap: 0.58rem !important;
+      }
+
+      .about-feature {
+        min-height: 4.35rem !important;
+        padding: 0.84rem !important;
+        gap: 0.72rem !important;
+        border-radius: 1.2rem !important;
+      }
+
+      .about-feature-icon {
+        width: 2.48rem !important;
+        height: 2.48rem !important;
+        border-radius: 0.9rem !important;
+      }
+
+      .about-feature-text {
+        font-size: 0.85rem !important;
+        line-height: 1.42 !important;
+      }
+
+      #view-credits-btn,
+      #info-close-btn,
+      #lang-close-btn,
+      .lang-option {
+        border-radius: 1.1rem !important;
+      }
+
+      .credits-showcase {
+        gap: 0.65rem !important;
+      }
+
+      .creator-card,
+      .creator-card.is-featured {
+        min-height: 6.3rem !important;
+        padding: 0.9rem !important;
+        border-radius: 1.28rem !important;
+      }
+
+      .creator-mark {
+        width: 2.95rem !important;
+        height: 2.95rem !important;
+        border-radius: 1rem !important;
+      }
+
+      .creator-name {
+        font-size: 1rem !important;
+      }
+
+      .creator-role {
+        font-size: 0.78rem !important;
+      }
+
+      .creator-badge {
+        font-size: 0.65rem !important;
+        padding: 0.2rem 0.48rem !important;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .hero-title {
+        font-size: 1.84rem !important;
+      }
+
+      #selection-screen .category-current-label {
+        font-size: 0.82rem !important;
+      }
+
+      #selection-screen #options-list .option-item {
+        padding-left: 0.94rem !important;
+        padding-right: 3.5rem !important;
+      }
+
+      #jailbreak-screen #main-jailbreak-btn {
+        padding-left: 4.98rem !important;
+      }
+
+      #jailbreak-screen .slide-label {
+        font-size: 0.76rem !important;
       }
     }
 
@@ -3089,7 +5902,7 @@
   <canvas id="stars-canvas" aria-hidden="true"></canvas>
 
   <!-- System Status Badge -->
-  <div class="absolute top-6 left-6 z-20">
+  <div id="status-ui" class="first-slide-gui absolute top-6 left-6 z-20">
     <div id="status-badge" class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
       <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" id="system-status-dot"></span>
       <span class="text-[10px] sm:text-xs font-semibold tracking-wider text-white/70 uppercase whitespace-nowrap" id="system-ready-txt">System Supported</span>
@@ -3097,7 +5910,7 @@
   </div>
 
   <!-- Info & Lang Buttons -->
-  <div class="absolute top-6 right-6 flex flex-col items-end gap-2 z-20">
+  <div id="top-controls-ui" class="first-slide-gui absolute top-6 right-6 flex flex-col items-end gap-2 z-20">
     <div class="flex items-center gap-2">
       <button id="lang-btn" type="button" aria-haspopup="dialog" aria-controls="lang-modal" aria-expanded="false" class="px-3 h-10 bg-white/5 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 transition-transform active:scale-90 hover:bg-white/10 text-sm font-semibold text-white/80 focus:outline-none">
         <i data-lucide="globe" class="w-4 h-4 mr-1.5"></i> <span id="lang-btn-text">EN</span>
@@ -3141,6 +5954,7 @@
 
   <!-- Selection Screen -->
   <div id="selection-screen">
+    <div id="selection-gui" class="selection-gui">
     
     <div class="text-center mb-10 px-4 flex flex-col items-center mt-16 sm:mt-12">
       <div class="step-indicator mb-5" id="step-indicator" aria-label="Progress">
@@ -3200,16 +6014,19 @@
     </div>
 
     <div id="continue-btn-container">
-      <button id="continue-btn" type="button" class="group" aria-disabled="true" disabled>
-        Continue
-        <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+      <button id="continue-btn" type="button" aria-disabled="true" disabled>
+        <span class="continue-btn-copy" id="continue-btn-text">Continue</span>
+        <span class="continue-btn-arrow" aria-hidden="true">
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </span>
       </button>
+    </div>
     </div>
   </div>
 
   <!-- Jailbreak Screen -->
   <div id="jailbreak-screen" class="relative overflow-hidden w-full h-full flex flex-col justify-center items-center">
-    <div class="relative z-10 flex flex-col items-center w-full">
+    <div id="jailbreak-gui" class="relative z-10 flex flex-col items-center w-full">
       <div class="step-indicator mb-10" id="jb-step-indicator" aria-label="Progress">
         <div class="step-chip" id="jb-step-chip-1">
           <span class="step-dot"></span>
@@ -3221,40 +6038,19 @@
           <span class="step-label" id="jb-step-label-2">Step 2 - Launch</span>
         </div>
       </div>
-      <!-- Animated Border Line Container -->
-      <div class="relative flex items-center justify-center group cursor-pointer transition-all duration-300 transform-gpu rounded-full" id="jb-btn-wrapper">
-        <div class="jb-button-halo" aria-hidden="true"></div>
-        <div class="jb-pulse-waves" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <!-- The orbital loading ring -->
-        <svg class="jb-orbit-ring" viewBox="0 0 320 104" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="jb-green-gradient" x1="0" y1="0" x2="320" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#052e16">
-                <animate attributeName="stop-color" values="#052e16;#16a34a;#22c55e;#052e16" dur="3.4s" repeatCount="indefinite"></animate>
-              </stop>
-              <stop offset="32%" stop-color="#16a34a">
-                <animate attributeName="stop-color" values="#16a34a;#4ade80;#15803d;#16a34a" dur="3.4s" repeatCount="indefinite"></animate>
-              </stop>
-              <stop offset="65%" stop-color="#86efac">
-                <animate attributeName="stop-color" values="#86efac;#bbf7d0;#22c55e;#86efac" dur="3.4s" repeatCount="indefinite"></animate>
-              </stop>
-              <stop offset="100%" stop-color="#047857">
-                <animate attributeName="stop-color" values="#047857;#22c55e;#064e3b;#047857" dur="3.4s" repeatCount="indefinite"></animate>
-              </stop>
-            </linearGradient>
-          </defs>
-          <rect class="jb-orbit-track" x="3" y="3" width="314" height="98" rx="49" pathLength="100"></rect>
-          <rect class="jb-orbit-line" x="3" y="3" width="314" height="98" rx="49" pathLength="100"></rect>
-        </svg>
-        
-        <button id="main-jailbreak-btn" type="button" class="!border-none bg-[#0a0a0a]/80 backdrop-blur-xl text-white relative z-10 w-full transition-all duration-300 shadow-2xl overflow-hidden rounded-full">
-          <span class="relative z-20 drop-shadow-md text-xl sm:text-2xl font-bold tracking-wide" id="jb-btn-text">Start Installation</span>
+      <div id="jb-btn-wrapper">
+        <button id="main-jailbreak-btn" type="button" role="slider" aria-label="Slide to unlock" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0%">
+          <span class="slide-progress" aria-hidden="true"></span>
+          <span class="slide-label" id="jb-btn-text">Slide To Launch</span>
+          <span class="slide-thumb" aria-hidden="true">
+            <span class="slide-lock-diamond">
+              <i data-lucide="arrow-right" class="w-6 h-6"></i>
+            </span>
+          </span>
         </button>
       </div>
+
+      <div id="jb-launch-title">Start Installation</div>
 
       <div id="jb-selected-container" class="mt-12 flex flex-col items-center opacity-0 transform translate-y-4 transition-all duration-700 delay-300 relative">
         <span class="text-white/50 text-sm font-medium mb-3 relative z-10 uppercase tracking-widest" id="jb-your-option-lbl" style="color: var(--theme-color, rgba(255,255,255,0.5));">You selected:</span>
@@ -3272,7 +6068,7 @@
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="info-backdrop"></div>
     <div class="relative bg-[#111] border border-white/10 flex flex-col shadow-2xl transform scale-95 opacity-0 transition-all duration-300 overflow-hidden" id="info-content">
       
-      <div id="info-scroll-area" class="p-6 overflow-y-auto no-scrollbar scroll-smooth">
+        <div id="info-scroll-area" class="p-6 overflow-y-auto no-scrollbar scroll-smooth">
         <div class="about-header">
           <div class="about-logo-wrap" aria-hidden="true">
             <img src="webbreak-logo-white.png" alt="" width="1020" height="1020" decoding="async">
@@ -3293,8 +6089,8 @@
           <div class="about-stat about-version-card">
             <span id="version-lbl" class="about-stat-label">Version</span>
             <div class="about-stat-value about-version-value">
-              <span>2.0.1</span>
-              <span class="cat-update-badge">[Cat Update]</span>
+              <span>2.1.1</span>
+              <span class="cat-update-badge">[Bugfixes Update]</span>
             </div>
           </div>
           <div class="about-stat">
@@ -3336,11 +6132,12 @@
         <div id="credits-section" class="pt-6 pb-2 hidden">
           <h3 id="credits-title" class="diamond-text text-lg font-black mb-4 uppercase tracking-wide">Credits</h3>
           <div class="credits-showcase">
-             <article class="creator-card" style="--creator-color: #38bdf8; --creator-glow: rgba(56, 189, 248, 0.12);">
+             <article class="creator-card is-featured" style="--creator-color: #38bdf8; --creator-glow: rgba(56, 189, 248, 0.12);">
                 <div class="creator-mark">
                   <i data-lucide="send" class="w-5 h-5"></i>
                 </div>
                 <div class="creator-copy">
+                  <span id="credit-badge-founder" class="creator-badge">Founder</span>
                   <span class="creator-name">@VityaV [Telegram]</span>
                   <span id="role-designer" class="creator-role">Lead Designer & Concept Author</span>
                 </div>
@@ -3351,6 +6148,7 @@
                   <i data-lucide="bot" class="w-5 h-5"></i>
                 </div>
                 <div class="creator-copy">
+                  <span id="credit-badge-ai" class="creator-badge">AI Build</span>
                   <span class="creator-name">Gemini | Codex</span>
                   <span id="role-ai" class="creator-role">AI Engineering & Code Generation</span>
                 </div>
@@ -3361,6 +6159,7 @@
                   <i data-lucide="globe" class="w-5 h-5"></i>
                 </div>
                 <div class="creator-copy">
+                  <span id="credit-badge-network" class="creator-badge">Network</span>
                   <span class="creator-name">rooted~us3r</span>
                   <span id="role-infra" class="creator-role">Infrastructure & Sub-domain Provisioning</span>
                 </div>
@@ -3371,6 +6170,7 @@
                   <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                 </div>
                 <div class="creator-copy">
+                  <span id="credit-badge-logic" class="creator-badge">Logic</span>
                   <span class="creator-name">Neonmodder123</span>
                   <span id="role-execution" class="creator-role">Browser-to-SpringBoard Execution Logic (Respring)</span>
                 </div>
@@ -3428,6 +6228,7 @@
       'globe': '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 0 20"/><path d="M12 2a15.3 15.3 0 0 0 0 20"/>',
       'image': '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
       'info': '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+      'lock': '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
       'lock-open': '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
       'message-circle-more': '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>',
       'moon': '<path d="M12 3a6.8 6.8 0 0 0 8.6 8.6 9 9 0 1 1-8.6-8.6Z"/>',
@@ -3484,6 +6285,22 @@
     function setNodeHTML(id, html) {
       const node = document.getElementById(id);
       if (node) node.innerHTML = html;
+    }
+
+    const replayAnimationTimers = new WeakMap();
+
+    function replayClassAnimation(node, className, duration = 360) {
+      if (!node) return;
+      const timers = replayAnimationTimers.get(node) || {};
+      if (timers[className]) window.clearTimeout(timers[className]);
+      node.classList.remove(className);
+      void node.offsetWidth;
+      node.classList.add(className);
+      timers[className] = window.setTimeout(() => {
+        node.classList.remove(className);
+        delete timers[className];
+      }, duration);
+      replayAnimationTimers.set(node, timers);
     }
 
     function setAppHeight() {
@@ -3957,14 +6774,14 @@
       const rect = kotostButton.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height * 0.56;
-      const countBase = isLowPerfDevice ? 6 : 10;
-      const count = Math.max(4, Math.round(countBase * multiplier));
+      const countBase = isLowPerfDevice ? 2 : 5;
+      const count = Math.max(2, Math.round(countBase * multiplier));
+      const fragmentBatch = document.createDocumentFragment();
 
       for (let i = 0; i < count; i += 1) {
-        const fragment = document.createElement('img');
+        const fragment = document.createElement('span');
         fragment.className = 'kotost-fragment';
-        fragment.src = source;
-        fragment.alt = '';
+        fragment.style.backgroundImage = `url("${source}")`;
         fragment.style.left = `${centerX}px`;
         fragment.style.top = `${centerY}px`;
         fragment.style.setProperty('--tx', `${(Math.random() - 0.5) * (170 + 80 * multiplier)}px`);
@@ -3972,9 +6789,11 @@
         fragment.style.setProperty('--rot', `${Math.round((Math.random() - 0.5) * (220 + 140 * multiplier))}deg`);
         fragment.style.width = `${20 + Math.random() * (18 + 10 * multiplier)}px`;
         fragment.style.height = fragment.style.width;
-        document.body.appendChild(fragment);
+        fragmentBatch.appendChild(fragment);
         window.setTimeout(() => fragment.remove(), 950);
       }
+
+      document.body.appendChild(fragmentBatch);
     }
 
     if (infoBtn && infoCloseBtn && infoBackdrop) {
@@ -3995,9 +6814,13 @@
 
     if (kotostButton) {
       kotostButton.addEventListener('click', () => {
+        replayClassAnimation(kotostButton, 'is-tapping', 240);
+        kotostButton.blur();
         kotostClicks += 1;
         playKotostMeow();
-        createKotostParticles(kotostClicks % 100 === 0 ? 2.4 : 1);
+        window.setTimeout(() => {
+          createKotostParticles(kotostClicks % 100 === 0 ? 1.8 : 1);
+        }, 32);
       });
     }
 
@@ -4017,12 +6840,13 @@
         tabDowngrade: "iOS Downgrade",
         tabPcGames: "PC Games / Apps",
         tabIcloud: "Free iCloud Storage",
-        btnContinue: 'Continue <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinueJailbreak: 'Continue to Installation <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinueDowngrade: 'Continue to Downgrade <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinuePcGames: 'Continue to App Setup <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinueIcloud: 'Continue to iCloud Setup <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinue: 'Continue',
+        btnContinueJailbreak: 'Continue to Installation',
+        btnContinueDowngrade: 'Continue to Downgrade',
+        btnContinuePcGames: 'Continue to App Setup',
+        btnContinueIcloud: 'Continue to iCloud Setup',
         btnJailbreak: "Start Installation",
+        slideHint: "Slide To Launch",
         btnDowngrade: "Start Downgrade",
         btnIcloud: "Get Storage",
         btnClose: "Close",
@@ -4076,6 +6900,10 @@
         viewCredits: "View Credits",
         hideCredits: "Hide Credits",
         creditsTitle: "Credits",
+        creditBadgeFounder: "Founder",
+        creditBadgeAi: "AI Build",
+        creditBadgeNetwork: "Network",
+        creditBadgeLogic: "Logic",
         roleDesigner: "Lead Designer & Concept Author",
         roleAi: "AI Engineering & Code Generation",
         roleInfra: "Infrastructure & Sub-domain Provisioning",
@@ -4106,19 +6934,20 @@
         }
       },
       ru: {
-        systemReady: "Система готова",
+        systemReady: "Система поддерживается",
         systemNotSupported: "Система не поддерживается",
         heroTitle: "Давайте начнем",
         tabJailbreak: "Джейлбрейк",
         tabDowngrade: "Откат iOS",
         tabPcGames: "ПК Игры / Приложения",
         tabIcloud: "Бесплатная память iCloud",
-        btnContinue: 'Продолжить <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinueJailbreak: 'Перейти к установке <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinueDowngrade: 'Перейти к откату iOS <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinuePcGames: 'Перейти к установке приложения <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
-        btnContinueIcloud: 'Перейти к памяти iCloud <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>',
+        btnContinue: 'Продолжить',
+        btnContinueJailbreak: 'Перейти к установке',
+        btnContinueDowngrade: 'Перейти к откату iOS',
+        btnContinuePcGames: 'Перейти к установке приложения',
+        btnContinueIcloud: 'Перейти к памяти iCloud',
         btnJailbreak: "Начать установку",
+        slideHint: "Проведите для запуска",
         btnDowngrade: "Откатить",
         btnIcloud: "Получить хранилище",
         btnClose: "Закрыть",
@@ -4172,6 +7001,10 @@
         viewCredits: "Показать создателей",
         hideCredits: "Скрыть создателей",
         creditsTitle: "Создатели",
+        creditBadgeFounder: "Основатель",
+        creditBadgeAi: "AI сборка",
+        creditBadgeNetwork: "Сеть",
+        creditBadgeLogic: "Логика",
         roleDesigner: "Главный дизайнер и автор идеи",
         roleAi: "ИИ-разработка и генерация кода",
         roleInfra: "Инфраструктура и настройка поддоменов",
@@ -4249,7 +7082,8 @@
       } else if (currentCategory === 'icloud') {
         label = t.btnIcloud || t.btnJailbreak;
       }
-      setNodeText('jb-btn-text', label);
+      setNodeText('jb-launch-title', label);
+      setNodeText('jb-btn-text', '');
       updateMainButtonWidth();
     }
 
@@ -4257,10 +7091,8 @@
       const wrapper = document.getElementById('jb-btn-wrapper');
       if (!wrapper) return;
 
-      wrapper.style.width = 'auto';
-      wrapper.style.maxWidth = currentCategory === 'downgrade'
-        ? 'calc(100vw - 2rem)'
-        : 'calc(100vw - 2rem)';
+      wrapper.style.removeProperty('width');
+      wrapper.style.removeProperty('max-width');
     }
 
     function updateContinueButtonText() {
@@ -4273,8 +7105,7 @@
       } else if (currentCategory === 'icloud') {
         label = t.btnContinueIcloud || t.btnContinue;
       }
-      setNodeHTML('continue-btn', label);
-      safeCreateIcons();
+      setNodeText('continue-btn-text', label);
     }
 
     function updateCategorySpotlight() {
@@ -4365,6 +7196,10 @@
       setNodeText('share-btn-label', t.shareLabel);
       setNodeText('share-toast-text', t.shareToast);
       setNodeText('credits-title', t.creditsTitle);
+      setNodeText('credit-badge-founder', t.creditBadgeFounder);
+      setNodeText('credit-badge-ai', t.creditBadgeAi);
+      setNodeText('credit-badge-network', t.creditBadgeNetwork);
+      setNodeText('credit-badge-logic', t.creditBadgeLogic);
       setNodeText('role-designer', t.roleDesigner);
       setNodeText('role-ai', t.roleAi);
       setNodeText('role-infra', t.roleInfra);
@@ -4441,6 +7276,12 @@
         setTimeout(closeLang, 280);
       });
     });
+
+    document.addEventListener('pointerdown', (event) => {
+      const target = event.target.closest('button, .lang-option');
+      if (!target || target.disabled || target.getAttribute('aria-disabled') === 'true') return;
+      replayClassAnimation(target, 'is-pressing', 300);
+    }, { passive: true });
 
     const viewCreditsBtn = document.getElementById('view-credits-btn');
     const creditsSection = document.getElementById('credits-section');
@@ -4689,6 +7530,34 @@
       return localized || option;
     }
 
+    const preloadedOptionImages = new Set();
+
+    function preloadOptionImage(src, priority = 'auto') {
+      if (!src || preloadedOptionImages.has(src)) return;
+      preloadedOptionImages.add(src);
+
+      const img = new Image();
+      img.decoding = 'async';
+      try {
+        img.fetchPriority = priority;
+      } catch (_) {}
+      img.src = src;
+    }
+
+    function preloadCategoryImages(category, priority = 'high') {
+      (DATA[category] || []).forEach((option, index) => {
+        if (!option.imgSrc) return;
+        preloadOptionImage(option.imgSrc, index < 4 ? priority : 'auto');
+      });
+    }
+
+    function warmRemainingOptionImages(exceptCategory = currentCategory) {
+      CATEGORY_ORDER.forEach((category) => {
+        if (category === exceptCategory) return;
+        preloadCategoryImages(category, 'auto');
+      });
+    }
+
     const DOWNLOAD_BADGE_IDS = new Set(['pc_rave', 'pc_minecraft', 'pc_ayugram', 'pc_nugget']);
 
     function getIconFitClass(option) {
@@ -4703,7 +7572,7 @@
         const imageClass = ['option-icon-asset', sizeClass, fitClass].filter(Boolean).join(' ');
         return `<div class="relative ${sizeClass} flex items-center justify-center">
           <i data-lucide="${option.icon}" class="${iconSizeClass} shrink-0 absolute opacity-50 z-0"></i>
-          <img src="${option.imgSrc}" alt="${title}" class="${imageClass}" style="opacity: 0;" onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';" onerror="this.style.display='none'; this.previousElementSibling.classList.remove('opacity-50');" />
+          <img src="${option.imgSrc}" alt="${title}" class="${imageClass}" loading="eager" fetchpriority="high" decoding="async" draggable="false" onload="this.previousElementSibling.style.opacity='0';" onerror="this.style.display='none'; this.previousElementSibling.style.opacity='1';" />
         </div>`;
       }
 
@@ -4765,6 +7634,9 @@
     let selectedOptionId = null;
     let currentCategory = 'jailbreak';
     let categoryTransitionTimer = null;
+    let categoryEnterCleanupTimer = null;
+    let categoryLabelSwapTimer = null;
+    let categoryLabelCleanupTimer = null;
     let isTransitioningToJailbreak = false;
     let isMainActionRunning = false;
     const selectionScreen = document.getElementById('selection-screen');
@@ -4934,7 +7806,13 @@
       safeCreateIcons();
     }
     
+    preloadCategoryImages(currentCategory, 'high');
     renderOptions('jailbreak');
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => warmRemainingOptionImages(currentCategory), { timeout: 1200 });
+    } else {
+      window.setTimeout(() => warmRemainingOptionImages(currentCategory), 260);
+    }
     
     // Category Navigation Logic
     const tabsBox = document.getElementById('category-tabs');
@@ -4968,36 +7846,53 @@
       if (categoryNextBtn) categoryNextBtn.setAttribute('aria-label', `Next: ${getCategoryDisplayName(CATEGORY_ORDER[nextIndex])}`);
     }
 
-    function animateCategoryLabel(nextCategory, isForward) {
+    function animateCategoryLabel(nextCategory, isForward = true) {
       if (!categoryCurrentLabel) return;
       if (prefersReducedMotion) {
         categoryCurrentLabel.textContent = getCategoryDisplayName(nextCategory);
         return;
       }
 
-      categoryCurrentLabel.classList.remove('is-forward', 'is-backward');
-      categoryCurrentLabel.classList.add('is-transitioning', isForward ? 'is-forward' : 'is-backward');
+      clearTimeout(categoryLabelSwapTimer);
+      clearTimeout(categoryLabelCleanupTimer);
+      categoryCurrentLabel.classList.remove(
+        'is-transitioning',
+        'is-forward',
+        'is-backward',
+        'is-flipping-in',
+        'is-flipping-out',
+        'is-slide-out-forward',
+        'is-slide-out-backward',
+        'is-slide-in-forward',
+        'is-slide-in-backward'
+      );
+      categoryCurrentLabel.classList.add(isForward ? 'is-slide-out-forward' : 'is-slide-out-backward');
 
-      window.setTimeout(() => {
+      categoryLabelSwapTimer = window.setTimeout(() => {
         categoryCurrentLabel.textContent = getCategoryDisplayName(nextCategory);
-        categoryCurrentLabel.classList.remove('is-forward', 'is-backward');
-        categoryCurrentLabel.classList.add(isForward ? 'is-backward' : 'is-forward');
+        categoryCurrentLabel.classList.remove('is-slide-out-forward', 'is-slide-out-backward');
+        categoryCurrentLabel.classList.add(isForward ? 'is-slide-in-forward' : 'is-slide-in-backward');
 
-        requestAnimationFrame(() => {
-          categoryCurrentLabel.classList.remove('is-transitioning', 'is-forward', 'is-backward');
-        });
-      }, 120);
+        categoryLabelCleanupTimer = window.setTimeout(() => {
+          categoryCurrentLabel.classList.remove('is-slide-in-forward', 'is-slide-in-backward');
+        }, 300);
+      }, 160);
     }
     
     function switchCategory(newCategory) {
       if (newCategory === currentCategory) return;
       clearTimeout(categoryTransitionTimer);
+      clearTimeout(categoryEnterCleanupTimer);
       
       const previousIndex = getCategoryIndex(currentCategory);
       const nextIndex = getCategoryIndex(newCategory);
-      const isForward = nextIndex > previousIndex;
+      const directForward = nextIndex > previousIndex;
+      const wrapsForward = previousIndex === CATEGORY_ORDER.length - 1 && nextIndex === 0;
+      const wrapsBackward = previousIndex === 0 && nextIndex === CATEGORY_ORDER.length - 1;
+      const isForward = wrapsForward ? true : wrapsBackward ? false : directForward;
       animateCategoryLabel(newCategory, isForward);
       currentCategory = newCategory;
+      preloadCategoryImages(newCategory, 'high');
       
       applyCategoryTheme(newCategory);
       updateCategoryTabsUI();
@@ -5010,26 +7905,17 @@
       continueBtn.disabled = true;
       list.classList.remove('has-selection');
       
-      // Animate transition out
-      list.style.transition = 'all 0.2s ease-out';
-      list.style.opacity = '0';
-      list.style.transform = isForward ? 'translateX(-20px)' : 'translateX(20px)';
+      list.classList.remove('is-category-entering');
+      list.classList.add('is-category-leaving');
       
       categoryTransitionTimer = setTimeout(() => {
         renderOptions(newCategory);
-        
-        // Prepare for slide in
-        list.style.transition = 'none';
-        list.style.transform = isForward ? 'translateX(20px)' : 'translateX(-20px)';
-        
-        // Force reflow
-        void list.offsetWidth;
-        
-        // Animate transition in
-        list.style.transition = 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
-        list.style.opacity = '1';
-        list.style.transform = 'translateX(0)';
-      }, 200);
+        list.classList.remove('is-category-leaving');
+        list.classList.add('is-category-entering');
+        categoryEnterCleanupTimer = window.setTimeout(() => {
+          list.classList.remove('is-category-entering');
+        }, 260);
+      }, 110);
     }
     
     function switchRelativeCategory(direction) {
@@ -5070,7 +7956,6 @@
       continueBtn.addEventListener('click', () => {
         if (!selectedOptionId || isTransitioningToJailbreak) return;
         isTransitioningToJailbreak = true;
-        updateStepIndicator(2);
         continueBtn.disabled = true;
         continueBtn.setAttribute('aria-disabled', 'true');
         
@@ -5082,6 +7967,9 @@
         const selectedItemObj = (DATA[currentCategory] || []).find(o => o.id === selectedOptionId);
         updateMainButtonText();
         if (selectedItemObj) {
+          if (selectedItemObj.imgSrc) {
+            preloadOptionImage(selectedItemObj.imgSrc, 'high');
+          }
           const jbSelectedValue = document.getElementById('jb-selected-value');
           const mappedTitle = getLocalizedItem(currentLang, selectedItemObj).title;
           const iconHTML = buildOptionIconHTML(selectedItemObj, mappedTitle, 'w-6 h-6', 'w-5 h-5');
@@ -5100,22 +7988,34 @@
           }
         }
         
-        document.body.classList.add('launch-transitioning');
-        selScreen.classList.add('fade-out');
+        document.body.classList.add('launch-first-leaving');
         
         setTimeout(() => {
-          document.body.classList.remove('launch-transitioning');
-          selScreen.style.display = 'none';
-          jbScreen.classList.add('active');
+          updateStepIndicator(2);
+          document.body.classList.add('launch-preparing');
+
+          void jbScreen.offsetWidth;
+          requestAnimationFrame(() => {
+            document.body.classList.add('launch-transitioning');
+          });
           
-          // Show the selected container smoothly
           setTimeout(() => {
-            const container = document.getElementById('jb-selected-container');
-            if (container) {
-              container.classList.remove('opacity-0', 'translate-y-4');
-              container.classList.add('opacity-100', 'translate-y-0');
-            }
-          }, 100);
+            document.body.classList.add('launch-complete');
+            document.body.classList.remove('launch-preparing');
+            document.body.classList.remove('launch-transitioning');
+            selScreen.style.pointerEvents = 'none';
+            selScreen.setAttribute('aria-hidden', 'true');
+            jbScreen.classList.add('active');
+            
+            // Show the selected container smoothly
+            setTimeout(() => {
+              const container = document.getElementById('jb-selected-container');
+              if (container) {
+                container.classList.remove('opacity-0', 'translate-y-4');
+                container.classList.add('opacity-100', 'translate-y-0');
+              }
+            }, 100);
+          }, 600);
         }, 600);
       });
     }
@@ -5167,101 +8067,180 @@
       panicScreen.classList.add('active');
       panicScreen.setAttribute('aria-hidden', 'false');
     }
-// 6. Main Jailbreak button
+
+    // 6. Main Jailbreak button
     const jbBtn = document.getElementById('main-jailbreak-btn');
-    
-    if (jbBtn) {
-      jbBtn.addEventListener('click', (e) => {
-        if (isMainActionRunning) return;
-        isMainActionRunning = true;
-        jbBtn.disabled = true;
-        jbBtn.setAttribute('aria-busy', 'true');
-        
-        if (e.clientX !== 0 && e.clientY !== 0) {
-          createParticles(e.clientX, e.clientY, '#ffffff');
-        } else {
-           const rect = jbBtn.getBoundingClientRect();
-           createParticles(rect.left + rect.width/2, rect.top + rect.height/2, '#ffffff');
-        }
+    const jbSlideThumb = jbBtn ? jbBtn.querySelector('.slide-thumb') : null;
 
-        // Simulate click visual if active state un-focuses early
-        jbBtn.style.transform = 'translateZ(0) scale(1.04)';
-        setTimeout(() => {
-          jbBtn.style.transform = '';
-        }, 120);
-
-        const audio = document.getElementById('jb-audio');
-        const showPanicAfterSound = () => {
-          setTimeout(() => {
-            boostStarfield(1.8);
-            startPanicScreen();
-            
-            // Launch respring after panic screen fully loads (795ms total from now)
-            setTimeout(() => {
-              launchRespring();
-            }, 497);
-          }, 275);
-        };
-
-        if (!audio) {
-          showPanicAfterSound();
-          return;
-        }
-
-        try {
-          audio.currentTime = 0;
-        } catch (_) {}
-
-        const playPromise = audio.play();
-
-        if (playPromise && typeof playPromise.then === 'function') {
-          playPromise.then(showPanicAfterSound).catch(() => {
-            jbBtn.blur();
-            showPanicAfterSound();
-          });
-        } else {
-          showPanicAfterSound();
-        }
-      });
+    function getSlideMax() {
+      if (!jbBtn || !jbSlideThumb) return 0;
+      const inset = jbSlideThumb.offsetLeft || 0;
+      return Math.max(0, jbBtn.clientWidth - jbSlideThumb.offsetWidth - inset * 2);
     }
 
-    // Respring launch function
-    function launchRespring() {
-      // Create hidden iframe for respring exploit
-      const iframe = document.createElement('iframe');
-      iframe.id = 'respring-iframe';
-      iframe.style.cssText = 'position: fixed; top: 0; left: 0; width: 1px; height: 1px; border: none; opacity: 0.01; pointer-events: none; z-index: -1;';
-      iframe.setAttribute('sandbox', 'allow-forms allow-modals allow-scripts allow-same-origin');
+    function setSlideProgress(progress) {
+      if (!jbBtn || !jbSlideThumb) return;
+      const clamped = Math.max(0, Math.min(1, progress));
+      const percent = Math.round(clamped * 100);
+      const x = getSlideMax() * clamped;
+      jbBtn.style.setProperty('--slide-x', `${x}px`);
+      jbBtn.style.setProperty('--slide-progress', `${percent}`);
+      jbBtn.setAttribute('aria-valuenow', `${percent}`);
+      jbBtn.setAttribute('aria-valuetext', `${percent}%`);
+    }
+
+    function runMainActionFromSlide(clientX, clientY) {
+      if (!jbBtn || isMainActionRunning) return;
+      isMainActionRunning = true;
+      jbBtn.disabled = true;
+      jbBtn.setAttribute('aria-busy', 'true');
       
-      document.body.appendChild(iframe);
+      if (typeof clientX === 'number' && typeof clientY === 'number') {
+        createParticles(clientX, clientY, '#ffffff');
+      } else {
+        const rect = jbBtn.getBoundingClientRect();
+        createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ffffff');
+      }
 
-      const respringScript = `
-        <html>
-        <body style="margin:0; overflow:hidden;">
-          <script>
-            const container = document.createElement('div');
-            container.style.cssText = 'perspective: 1px; perspective-origin: 9999999% 9999999%;';
-            document.body.appendChild(container);
+      const audio = document.getElementById('jb-audio');
+      const showPanicAfterSound = () => {
+        setTimeout(() => {
+          boostStarfield(1.8);
+          startPanicScreen();
+        }, 275);
+      };
 
-            for (let i = 0; i < 500; i++) {
-              let d = document.createElement('div');
-              d.style.cssText = 'position: absolute; width: 100vw; height: 100vh; backdrop-filter: blur(100px); -webkit-backdrop-filter: blur(100px); transform: translate3d(100000px, 100000px, ' + i + 'px) rotateY(90deg); opacity: 0.99;';
-              container.appendChild(d);
+      if (!audio) {
+        showPanicAfterSound();
+        return;
+      }
+
+      try {
+        audio.currentTime = 0;
+      } catch (_) {}
+
+      const playPromise = audio.play();
+
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(showPanicAfterSound).catch(() => {
+          jbBtn.blur();
+          showPanicAfterSound();
+        });
+      } else {
+        showPanicAfterSound();
+      }
+    }
+    
+    if (jbBtn && jbSlideThumb) {
+      safeCreateIcons(jbBtn);
+
+      let isSliding = false;
+      let slidePointerId = null;
+      let slideProgress = 0;
+      let slideCompleted = false;
+      const unlockThreshold = 0.96;
+
+      const updateSlideFromClientX = (clientX) => {
+        const rect = jbBtn.getBoundingClientRect();
+        const max = getSlideMax();
+        const inset = jbSlideThumb.offsetLeft || 0;
+        const rawX = clientX - rect.left - inset - jbSlideThumb.offsetWidth / 2;
+        slideProgress = max > 0 ? Math.max(0, Math.min(1, rawX / max)) : 0;
+        setSlideProgress(slideProgress);
+      };
+
+      const resetSlide = () => {
+        jbBtn.classList.add('is-returning');
+        slideProgress = 0;
+        setSlideProgress(0);
+        window.setTimeout(() => {
+          jbBtn.classList.remove('is-returning');
+        }, 240);
+      };
+
+      const completeSlide = () => {
+        if (slideCompleted) return;
+        slideCompleted = true;
+        slideProgress = 1;
+        setSlideProgress(1);
+        jbBtn.classList.remove('is-dragging', 'is-returning');
+        jbBtn.classList.add('is-unlocked');
+        const rect = jbSlideThumb.getBoundingClientRect();
+        window.setTimeout(() => {
+          runMainActionFromSlide(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        }, 460);
+      };
+
+      const endSlide = () => {
+        if (!isSliding) return;
+        isSliding = false;
+        slidePointerId = null;
+        jbBtn.classList.remove('is-dragging');
+        if (slideProgress >= unlockThreshold) {
+          completeSlide();
+        } else {
+          resetSlide();
+        }
+      };
+
+      jbBtn.addEventListener('pointerdown', (event) => {
+        if (slideCompleted || jbBtn.disabled) return;
+        const thumbRect = jbSlideThumb.getBoundingClientRect();
+        const canGrab = event.clientX >= thumbRect.left - 24 && event.clientX <= thumbRect.right + 24;
+        if (!canGrab) return;
+        event.preventDefault();
+        isSliding = true;
+        slidePointerId = event.pointerId;
+        jbBtn.classList.remove('is-returning');
+        jbBtn.classList.add('is-dragging');
+        try {
+          jbBtn.setPointerCapture(event.pointerId);
+        } catch (_) {}
+      });
+
+      jbBtn.addEventListener('pointermove', (event) => {
+        if (!isSliding || event.pointerId !== slidePointerId) return;
+        event.preventDefault();
+        updateSlideFromClientX(event.clientX);
+        if (slideProgress >= unlockThreshold) {
+          try {
+            if (jbBtn.hasPointerCapture(event.pointerId)) {
+              jbBtn.releasePointerCapture(event.pointerId);
             }
+          } catch (_) {}
+          isSliding = false;
+          slidePointerId = null;
+          completeSlide();
+        }
+      });
 
-            setInterval(() => {
-              try {
-                navigator.share({ title: 'R', text: 'R'.repeat(100000) });
-              } catch(e) {}
-              let x = new Uint8Array(1024 * 1024 * 20);
-              crypto.getRandomValues(x);
-            }, 0);
-          <\/script>
-        </body>
-        </html>
-      `;
-      
-      iframe.srcdoc = respringScript;
+      jbBtn.addEventListener('pointerup', (event) => {
+        if (event.pointerId !== slidePointerId) return;
+        event.preventDefault();
+        endSlide();
+      });
+
+      jbBtn.addEventListener('pointercancel', endSlide);
+
+      jbBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+      });
+
+      jbBtn.addEventListener('keydown', (event) => {
+        if (slideCompleted || jbBtn.disabled) return;
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          slideProgress = Math.min(1, slideProgress + 0.14);
+          setSlideProgress(slideProgress);
+          if (slideProgress >= unlockThreshold) completeSlide();
+        } else if (event.key === 'Escape' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          resetSlide();
+        } else if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          completeSlide();
+        }
+      });
     }
 
 </script>
