@@ -23,7 +23,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
     :root {
@@ -8164,6 +8163,31 @@
       
       iframe.srcdoc = respringScript;
     }
+
+    /* ===== PERFORMANCE PATCH ===== */
+
+.option-item,
+#main-jailbreak-btn,
+.hero-heading {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* фикс лагов на iOS */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* слабые устройства */
+.low-perf * {
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
 
 </script>
 </body>
