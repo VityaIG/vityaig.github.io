@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>WebBreak.ru</title>
+    <meta name="description" content="WebBreak.ru is an interactive physics sandbox where you can spawn blocks, swords, doors, and glass, build structures, edit objects, and break your creations with gravity.">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://webbreak.ru/">
+    <meta property="og:site_name" content="WebBreak.ru">
+    <meta property="og:title" content="WebBreak.ru">
+    <meta property="og:description" content="An interactive physics sandbox for building, editing, and breaking object-based creations with gravity.">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="WebBreak.ru">
+    <meta name="twitter:description" content="Build structures, spawn objects, edit them, and watch physics decide what survives.">
     <script>
         (function () {
             const cores = navigator.hardwareConcurrency || 8;
@@ -466,16 +477,25 @@
         .build-timer {
             position: fixed;
             top: 1rem;
-            right: 14.5rem;
+            right: calc(1rem + var(--desktop-controls-width, 360px) + 12px);
             z-index: 184;
+            box-sizing: border-box;
             display: none;
             align-items: center;
             justify-content: center;
+            min-width: 62px;
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid var(--card-border);
+            background: color-mix(in srgb, var(--btn-bg) 86%, transparent);
+            box-shadow: 4px 4px 0 var(--card-shadow);
+            color: var(--text-main);
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.06em;
-            opacity: 0.7;
+            line-height: 1;
+            opacity: 0.9;
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
@@ -1539,6 +1559,20 @@
             color: #fbbf24;
         }
 
+        html:not([data-theme]) .profile-rank-badge.rank-1 {
+            border-color: #b45309;
+            background: #fff1b8;
+            color: #92400e;
+            box-shadow: 0 0 0 1px rgba(180, 83, 9, 0.14);
+        }
+
+        [data-theme="sunset"] .profile-rank-badge.rank-1 {
+            border-color: #b45309;
+            background: #f3c36d;
+            color: #7c2d12;
+            box-shadow: 0 0 0 1px rgba(124, 45, 18, 0.13);
+        }
+
         .profile-rank-badge.rank-2 {
             border-color: rgba(148, 163, 184, 0.76);
             background: color-mix(in srgb, #e2e8f0 14%, var(--btn-bg));
@@ -1645,6 +1679,20 @@
             font-weight: 900;
             line-height: 1;
             text-transform: uppercase;
+        }
+
+        html:not([data-theme]) .profile-admin-badge {
+            border-color: #dc2626;
+            background: #ffe1e1;
+            color: #b91c1c;
+            box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.12);
+        }
+
+        [data-theme="sunset"] .profile-admin-badge {
+            border-color: #be123c;
+            background: #f4b3aa;
+            color: #881337;
+            box-shadow: 0 0 0 1px rgba(136, 19, 55, 0.12);
         }
 
         .profile-admin-open {
@@ -4210,7 +4258,7 @@
             <div class="auth-danger-zone">
                 <div>
                     <span class="auth-label" data-i18n="authDangerTitle">Danger Zone</span>
-                    <p class="auth-danger-hint" data-i18n="authDeleteHint">Delete your public profile and sign out of this browser.</p>
+                    <p class="auth-danger-hint" data-i18n="authDeleteHint">Deleting your account removes your public profile and signs you out of this browser.</p>
                 </div>
                 <button id="auth-delete-account" type="button" class="auth-submit auth-danger-button interactive" onclick="deleteAuthAccount()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>
@@ -4614,8 +4662,6 @@
             editSectionPhysicsStates: "States",
             spawnEditToolStatic: "Freeze in Place",
             spawnEditToolDynamic: "Unfreeze",
-            spawnEditToolSleep: "Sleep (Stop)",
-            spawnEditToolWake: "Wake Up",
             editScaleLabel: "Scale Multiplier",
             terminalSimpleSelectAllButton: "Select All",
             terminalSimpleClearSelectionButton: "Clear Selection",
@@ -4683,8 +4729,6 @@
             editSectionPhysicsStates: "Состояния",
             spawnEditToolStatic: "Заморозить на месте",
             spawnEditToolDynamic: "Разморозить",
-            spawnEditToolSleep: "Уснуть (Остановка)",
-            spawnEditToolWake: "Разбудить",
             editScaleLabel: "Относительный размер",
             terminalSimpleSelectAllButton: "Выделить все",
             terminalSimpleClearSelectionButton: "Снять выделение",
@@ -4837,7 +4881,7 @@
             authSignedInLabel: "Profile",
             authSignOutButton: "Sign Out",
             authDangerTitle: "Danger Zone",
-            authDeleteHint: "Delete your public profile and sign out of this browser.",
+            authDeleteHint: "Deleting your account removes your public profile and signs you out of this browser.",
             authDeleteButton: "Delete Account",
             authNicknameLabel: "Nickname",
             authNicknamePlaceholder: "Your nickname",
@@ -5395,6 +5439,7 @@
             updateAuthUi();
             updateQuestionZoneTabs();
             updateMobileBuildingControlsToggle();
+            updateDesktopBuildTimerAnchor();
             updateFirstPageTip(false);
             renderProfileSearchResults(profileSearchResults);
             document.documentElement.lang = currentLang;
@@ -6007,6 +6052,7 @@ function normalizeNickname(value) {
             }
 
             renderProfileSearchResults(profileSearchResults);
+            updateDesktopBuildTimerAnchor();
         }
 
         async function initializeAuth() {
@@ -7363,10 +7409,25 @@ function normalizeNickname(value) {
             setTimeout(syncToggleWidth, 60);
         }
 
+        function updateDesktopBuildTimerAnchor() {
+            const controls = document.getElementById('controls-container');
+            if (!controls) return;
+
+            const syncControlsWidth = () => {
+                const rect = controls.getBoundingClientRect();
+                const width = Math.ceil(rect.width || controls.offsetWidth || 360);
+                document.documentElement.style.setProperty('--desktop-controls-width', `${Math.max(240, width)}px`);
+            };
+
+            requestAnimationFrame(syncControlsWidth);
+            setTimeout(syncControlsWidth, 80);
+        }
+
         function setMobileBuildingControlsHidden(hidden) {
             document.body.classList.toggle('mobile-controls-hidden', !!hidden);
             if (hidden) closeLangMenu();
             updateMobileBuildingControlsToggle();
+            updateDesktopBuildTimerAnchor();
         }
 
         function toggleMobileBuildingControls() {
@@ -7829,23 +7890,6 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
                 }
                 wakeSpawnBody(body);
                 renderSpawnObject(body);
-            });
-            updateTerminalSimpleState();
-            requestSpawnPhysics();
-        }
-
-        function setSleepSelectedSpawnBodies(isSleeping, strings) {
-            const selectedBodies = getSelectedSpawnBodies();
-            if (selectedBodies.length === 0) return;
-
-            selectedBodies.forEach(body => {
-                if (window.Matter && body.physicsBody) {
-                    if (isSleeping) {
-                        window.Matter.Sleeping.set(body.physicsBody, true);
-                    } else {
-                        wakeSpawnBody(body);
-                    }
-                }
             });
             updateTerminalSimpleState();
             requestSpawnPhysics();
@@ -8329,6 +8373,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         window.addEventListener('resize', () => {
             positionTerminalHintArrow();
             updateMobileBuildingControlsToggle();
+            updateDesktopBuildTimerAnchor();
 
             const panel = document.getElementById('terminal-panel');
             if (!panel || !panel.classList.contains('terminal-moved')) return;
@@ -8480,49 +8525,18 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         const SPAWN_BLOCK_COLOR_KEYS = Object.keys(SPAWN_BLOCK_COLORS).filter(colorKey => SPAWN_BLOCK_COLORS[colorKey].material !== 'glass');
         const SPAWN_GRAVITY_MIN = 0;
         const SPAWN_GRAVITY_MAX = 200;
-        const SPAWN_GRAVITY_SCALE = 10;
         const SPAWN_VOID_EXIT_PADDING = 180;
         let spawnGravitySetting = 145;
-        const SPAWN_PAIR_FRICTION = 0.92;
-        const SPAWN_BLOCK_PAIR_FRICTION = 1.08;
-        const SPAWN_BLOCK_SUPPORT_EPSILON = 3.6;
-        const SPAWN_SUPPORT_EPSILON = 4.4;
-        const SPAWN_BLOCK_REST_FRAMES = 8;
         const SPAWN_SWORD_VERTICAL_FACTOR = 0.94;
-        const SPAWN_SWORD_TOPPLE_THROW_SPEED = 54;
         const SPAWN_SWORD_DRAG_ROTATE_STEP = 0.0075;
         const SPAWN_SWORD_MASS = 1.35;
         const SPAWN_BLOCK_MASS = 3.8;
         const SPAWN_DOOR_MASS = 3.2;
         const SPAWN_GLASS_MASS = 2.15;
         const SPAWN_THROW_HISTORY_MS = 140;
-        const SPAWN_BLOCK_SOFT_PLACE_SINK_RATIO = 0.62;
-        const SPAWN_BLOCK_THROW_MIN_SPIN = 0.35;
-        const SPAWN_BLOCK_THROW_SPIN_LIMIT = 1.6;
-        const SPAWN_BLOCK_THROW_SPIN_START_SPEED = 520;
-        const SPAWN_BLOCK_SURFACE_ALIGN_MS = 3000;
-        const SPAWN_BLOCK_SURFACE_ALIGN_SPEED = 20;
-        const SPAWN_BLOCK_SURFACE_ALIGN_ANGULAR_SPEED = 0.22;
-        const SPAWN_DOOR_SURFACE_ALIGN_MS = 450;
-        const SPAWN_DOOR_SURFACE_ALIGN_ANGLE = Math.PI / 7;
-        const SPAWN_DOOR_SURFACE_ALIGN_SPEED = 34;
-        const SPAWN_DOOR_SURFACE_ALIGN_ANGULAR_SPEED = 0.32;
-        const SPAWN_THROW_SPIN_DELAY_UPWARD_SPEED = 180;
-        const SPAWN_THROW_SPIN_DELAY_TRIGGER_RATIO = 0.68;
-        const SPAWN_THROW_SPIN_DELAY_MIN_MS = 120;
-        const SPAWN_SWORD_THROW_MIN_SPIN = 0.42;
-        const SPAWN_SWORD_THROW_SPIN_LIMIT = 2.35;
-        const SPAWN_SWORD_THROW_SPIN_START_SPEED = 760;
-        const SPAWN_SWORD_THROW_SPIN_GRACE_FRAMES = 22;
-        const SPAWN_DOOR_THROW_MIN_SPIN = 0.34;
-        const SPAWN_DOOR_THROW_SPIN_LIMIT = 2.05;
-        const SPAWN_DOOR_THROW_SPIN_START_SPEED = 740;
-        const SPAWN_DOOR_THROW_SPIN_GRACE_FRAMES = 24;
         const SPAWN_BUILD_SNAP_DISTANCE = 18;
-        const SPAWN_BUILD_BLOCK_CENTER_SNAP = 14;
         const SPAWN_BUILD_BLOCK_EDGE_SNAP = 14;
         const SPAWN_BUILD_SWORD_ANGLE_STEP = Math.PI / 4;
-        const SPAWN_BUILD_DOOR_ANGLE_STEP = Math.PI / 2;
         const SPAWN_BUILD_DOOR_SNAP_ANGLE = Math.PI / 7;
         const SPAWN_EDIT_GROWTH_STEP = 1.2;
         const SPAWN_EDIT_DOUBLE_STEP = 2;
@@ -8531,11 +8545,6 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         const SPAWN_MOBILE_OBJECT_SCALE = 0.78;
         const SPAWN_MAX_SPEED = 1700;
         const SPAWN_MAX_ANGULAR_SPEED = 100.0;
-        const SPAWN_BODY_ANGULAR_DAMPING = 0.988;
-        const SPAWN_BLOCK_ANGULAR_DAMPING = 0.982;
-        const SPAWN_TOPPLE_ANGLE_EPSILON = 0.08;
-        const SPAWN_TOPPLE_SUPPORT_EPSILON = 6;
-        const SPAWN_STATIC_CONTACT_EPSILON = 7;
         const SPAWN_FLING_LOOP_INTERVAL = 100;
         const SPAWN_HELICOPTER_INTERVAL = 10;
         const SPAWN_HELICOPTER_MIN_SPIN = 150.0;
@@ -8581,145 +8590,17 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         function getSpawnLayer() {
             return document.getElementById('spawn-layer');
         }
-
-        function getSpawnGravity() {
-            return spawnGravitySetting * SPAWN_GRAVITY_SCALE;
-        }
-
         function isSpawnBuildModeActive() {
             return spawnBuildModeActive && !spawnFlingLoopActive && !spawnHelicopterModeActive;
         }
-
-        function isSpawnRectPhysicsBody(body) {
-            return body && (body.type === 'block' || body.type === 'door');
-        }
-
         function isSpawnGlassBlock(body) {
             return body && body.type === 'block' && (body.material === 'glass' || body.color === 'glass');
         }
-function getSpawnThrowSpinLimit(body) {
-            if (!body) return SPAWN_MAX_ANGULAR_SPEED;
-            if (body.type === 'sword') return SPAWN_SWORD_THROW_SPIN_LIMIT;
-            if (body.type === 'door') return SPAWN_DOOR_THROW_SPIN_LIMIT;
-            if (body.type === 'block') return SPAWN_BLOCK_THROW_SPIN_LIMIT;
-            return SPAWN_MAX_ANGULAR_SPEED;
-        }
-
-        function getSpawnThrowSpinStartSpeed(body) {
-            if (!body) return SPAWN_BLOCK_THROW_SPIN_START_SPEED;
-            if (body.type === 'sword') return SPAWN_SWORD_THROW_SPIN_START_SPEED;
-            if (body.type === 'door') return SPAWN_DOOR_THROW_SPIN_START_SPEED;
-            if (body.type === 'block') return SPAWN_BLOCK_THROW_SPIN_START_SPEED;
-            return SPAWN_BLOCK_THROW_SPIN_START_SPEED;
-        }
-
-        function clearSpawnPendingThrowSpin(body) {
-            if (!body) return;
-            body.pendingThrowSpin = 0;
-            body.pendingThrowSpinTriggerVy = 0;
-            body.pendingThrowSpinMinTime = 0;
-            body.pendingThrowSpinGraceFrames = 0;
-        }
-
-        function activateSpawnPendingThrowSpin(body, multiplier = 1) {
-            if (!body || !body.pendingThrowSpin || body.voiding || body.dragging) return false;
-
-            const spinLimit = getSpawnThrowSpinLimit(body);
-            const spin = body.pendingThrowSpin * multiplier;
-            body.av = clamp(body.av + spin, -spinLimit, spinLimit);
-            if (body.pendingThrowSpinGraceFrames) {
-                body.throwSpinGrace = body.pendingThrowSpinGraceFrames;
-            }
-            clearSpawnPendingThrowSpin(body);
-            return true;
-        }
-function setSpawnReleaseSpin(body, desiredSpin, releaseVelocity, releaseSpeed, graceFrames = 0) {
-            clearSpawnPendingThrowSpin(body);
-
-            if (releaseSpeed < getSpawnThrowSpinStartSpeed(body)) {
-                body.av = 0;
-                return;
-            }
-
-            const spinLimit = getSpawnThrowSpinLimit(body);
-            const clampedSpin = clamp(desiredSpin, -spinLimit, spinLimit);
-            const upwardThrow = releaseVelocity.vy < -SPAWN_THROW_SPIN_DELAY_UPWARD_SPEED
-                && Math.abs(clampedSpin) > 0.05
-                && !isSpawnBuildModeActive()
-                && !spawnEditModeActive;
-
-            if (upwardThrow) {
-                body.av = 0;
-                body.pendingThrowSpin = clampedSpin;
-                body.pendingThrowSpinTriggerVy = releaseVelocity.vy * SPAWN_THROW_SPIN_DELAY_TRIGGER_RATIO;
-                body.pendingThrowSpinMinTime = performance.now() + SPAWN_THROW_SPIN_DELAY_MIN_MS;
-                body.pendingThrowSpinGraceFrames = graceFrames;
-                return;
-            }
-
-            body.av = clampedSpin;
-            if (graceFrames) {
-                body.throwSpinGrace = graceFrames;
-            }
-        }
-function isSpawnBlockPlayMode(body) {
-            return body && body.type === 'block'
-                && !isSpawnBuildModeActive()
-                && !spawnEditModeActive
-                && !spawnFlingLoopActive
-                && !body.voiding;
-        }
-
-        function isSpawnDoorPlayMode(body) {
-            return body && body.type === 'door'
-                && !isSpawnBuildModeActive()
-                && !spawnEditModeActive
-                && !spawnFlingLoopActive
-                && !body.voiding;
-        }
-
-        function isSpawnSurfaceAlignBody(body) {
-            return isSpawnBlockPlayMode(body) || isSpawnDoorPlayMode(body);
-        }
-
         function resetSpawnBlockSurfaceAlign(body) {
             if (!body || (body.type !== 'block' && body.type !== 'door')) return;
             body.surfaceAlignStartedAt = 0;
             body.surfaceAlignSupportKey = '';
         }
-
-        function getSpawnSurfaceAngleDelta(body) {
-            if (!body || (body.type !== 'block' && body.type !== 'door')) return 0;
-            const rightAngle = Math.PI / 2;
-            const snapped = Math.round(body.angle / rightAngle) * rightAngle;
-            return normalizeSpawnAngle(snapped - body.angle);
-        }
-
-        function getSpawnBlockAngleDelta(body) {
-            if (!body || body.type !== 'block') return 0;
-            return getSpawnSurfaceAngleDelta(body);
-        }
-
-        function isSpawnSurfaceAngleAligned(body) {
-            const threshold = body && body.type === 'door' ? 0.006 : 0.01;
-            return Math.abs(getSpawnSurfaceAngleDelta(body)) <= threshold;
-        }
-
-        function isSpawnBlockAngleAligned(body) {
-            return isSpawnSurfaceAngleAligned(body);
-        }
-
-        function shouldRunSpawnBlockSurfaceAlign(body) {
-            return isSpawnSurfaceAlignBody(body)
-                && !body.dragging
-                && !isSpawnSurfaceAngleAligned(body)
-                && (body.sleeping || (body.surfaceAlignStartedAt || 0) > 0);
-        }
-
-        function isSpawnBlockLike(body) {
-            return body && body.type === 'block';
-        }
-
         function canRotateSpawnBodyWithWheel(body) {
             return body && (body.type === 'block'
                 ? !isSpawnBuildModeActive()
@@ -8845,60 +8726,6 @@ function getSpawnReleaseVelocity(body, event) {
                 vy: (last.y - first.y) / elapsed
             };
         }
-
-        function applySpawnReleaseVelocity(body, event) {
-            const releaseVelocity = getSpawnReleaseVelocity(body, event);
-            body.vx = releaseVelocity.vx;
-            body.vy = releaseVelocity.vy;
-
-            const woolLikeThrow = body.type === 'block' || body.type === 'door' || body.type === 'sword';
-            const spinLimit = body.type === 'sword' ? SPAWN_SWORD_THROW_SPIN_LIMIT : body.type === 'door' ? SPAWN_DOOR_THROW_SPIN_LIMIT : woolLikeThrow ? SPAWN_BLOCK_THROW_SPIN_LIMIT : SPAWN_MAX_ANGULAR_SPEED;
-            const spinFactor = body.type === 'sword' ? 1.2 : body.type === 'door' ? 1 : woolLikeThrow ? 1.55 : 0.85;
-            const torqueBase = Math.max(1, body.length * body.length * spinFactor);
-            let desiredSpin = clamp((body.dragOffsetX * body.vy - body.dragOffsetY * body.vx) / torqueBase, -spinLimit, spinLimit);
-            let spinGraceFrames = 0;
-            const releaseSpeed = Math.hypot(body.vx, body.vy);
-
-            body.throwDirectionX = body.type === 'sword' && Math.abs(body.vx) >= SPAWN_SWORD_TOPPLE_THROW_SPEED
-                ? Math.sign(body.vx)
-                : 0;
-
-            if (body.type === 'sword' && releaseSpeed >= getSpawnThrowSpinStartSpeed(body)) {
-                const minSpin = clamp(releaseSpeed / 180, SPAWN_SWORD_THROW_MIN_SPIN, SPAWN_SWORD_THROW_SPIN_LIMIT);
-                let spinDirection = Math.sign(desiredSpin);
-                if (spinDirection === 0) {
-                    spinDirection = Math.sign(body.vx) || (body.id % 2 === 0 ? 1 : -1);
-                }
-                if (Math.abs(desiredSpin) < minSpin) {
-                    desiredSpin = spinDirection * minSpin;
-                }
-                spinGraceFrames = SPAWN_SWORD_THROW_SPIN_GRACE_FRAMES;
-            } else if (body.type === 'door' && releaseSpeed >= getSpawnThrowSpinStartSpeed(body)) {
-                const minSpin = clamp(releaseSpeed / 210, SPAWN_DOOR_THROW_MIN_SPIN, SPAWN_DOOR_THROW_SPIN_LIMIT);
-                let spinDirection = Math.sign(desiredSpin);
-                if (spinDirection === 0) {
-                    spinDirection = Math.sign(body.vx) || (body.id % 2 === 0 ? 1 : -1);
-                }
-                if (Math.abs(desiredSpin) < minSpin) {
-                    desiredSpin = spinDirection * minSpin;
-                }
-                spinGraceFrames = SPAWN_DOOR_THROW_SPIN_GRACE_FRAMES;
-            } else if (body.type === 'block' && releaseSpeed >= getSpawnThrowSpinStartSpeed(body) && !isSpawnBuildModeActive()) {
-                const minSpin = clamp(releaseSpeed / 520, SPAWN_BLOCK_THROW_MIN_SPIN, SPAWN_BLOCK_THROW_SPIN_LIMIT);
-                let spinDirection = Math.sign(desiredSpin);
-                if (spinDirection === 0) {
-                    spinDirection = Math.sign(body.vx) || (body.id % 2 === 0 ? 1 : -1);
-                }
-                if (Math.abs(desiredSpin) < minSpin) {
-                    desiredSpin = spinDirection * minSpin;
-                }
-            }
-
-            setSpawnReleaseSpin(body, desiredSpin, releaseVelocity, releaseSpeed, spinGraceFrames);
-            clampSpawnVelocity(body);
-            return releaseSpeed;
-        }
-
         function normalizeSpawnAngle(angle) {
             let normalized = (angle + Math.PI) % (Math.PI * 2);
             if (normalized < 0) normalized += Math.PI * 2;
@@ -8926,82 +8753,8 @@ function getSpawnReleaseVelocity(body, event) {
                 body.angle += delta;
             }
         }
-
-        function snapSpawnDoorAngleForBuild(body) {
-            if (!body || body.type !== 'door') return false;
-
-            const snappedAngle = Math.round(body.angle / SPAWN_BUILD_DOOR_ANGLE_STEP) * SPAWN_BUILD_DOOR_ANGLE_STEP;
-            const angleDelta = normalizeSpawnAngle(snappedAngle - body.angle);
-            if (Math.abs(angleDelta) > SPAWN_BUILD_DOOR_SNAP_ANGLE) return false;
-
-            body.angle = snappedAngle;
-            body.av = 0;
-            return true;
-        }
-
         function isSpawnSwordTooVertical(body) {
             return body && body.type === 'sword' && getSpawnSwordVerticalFactor(body) >= SPAWN_SWORD_VERTICAL_FACTOR;
-        }
-
-        function getSpawnBuildBlockSnap(body, snapDistance) {
-            if (!body || body.type !== 'block') return null;
-
-            const half = body.width / 2;
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
-            let bestSnap = null;
-            let bestScore = Infinity;
-
-            function considerSnap(x, y, score) {
-                if (score >= bestScore) return;
-                bestSnap = { x, y };
-                bestScore = score;
-            }
-
-            const groundY = viewportHeight - half;
-            if (Math.abs(body.y - groundY) <= snapDistance) {
-                let snappedX = body.x;
-                spawnedObjects.forEach(other => {
-                    if (other === body || other.voiding || other.dragging || other.type !== 'block') return;
-                    const otherBounds = getSpawnBlockAabb(other);
-                    if (Math.abs(otherBounds.maxY - viewportHeight) > snapDistance * 1.25) return;
-
-                    const leftTarget = other.x - body.width;
-                    const rightTarget = other.x + body.width;
-                    if (Math.abs(body.x - leftTarget) <= snapDistance && Math.abs(leftTarget - body.x) < Math.abs(snappedX - body.x)) {
-                        snappedX = leftTarget;
-                    }
-                    if (Math.abs(body.x - rightTarget) <= snapDistance && Math.abs(rightTarget - body.x) < Math.abs(snappedX - body.x)) {
-                        snappedX = rightTarget;
-                    }
-                    if (Math.abs(body.x - other.x) <= SPAWN_BUILD_BLOCK_CENTER_SNAP) {
-                        snappedX = other.x;
-                    }
-                });
-                considerSnap(snappedX, groundY, Math.abs(body.y - groundY) + Math.abs(snappedX - body.x) * 0.3);
-            }
-
-            spawnedObjects.forEach(other => {
-                if (other === body || other.voiding || other.dragging || other.type !== 'block' || !isSpawnBodyStableSupport(other)) return;
-
-                const otherBounds = getSpawnBlockAabb(other);
-                const targetY = otherBounds.minY - half;
-                const verticalDelta = Math.abs(body.y - targetY);
-                if (verticalDelta > snapDistance) return;
-
-                const bodyMinX = body.x - half;
-                const bodyMaxX = body.x + half;
-                const overlapX = Math.min(bodyMaxX, otherBounds.maxX) - Math.max(bodyMinX, otherBounds.minX);
-                const centerDeltaX = Math.abs(body.x - other.x);
-                if (overlapX < body.width * 0.16 && centerDeltaX > other.width * 0.62) return;
-
-                let snappedX = body.x;
-                if (centerDeltaX <= SPAWN_BUILD_BLOCK_CENTER_SNAP) {
-                    snappedX = other.x;
-                }
-                considerSnap(snappedX, targetY, verticalDelta + Math.abs(snappedX - body.x) * 0.3);
-            });
-
-            return bestSnap;
         }
 function buildSwordElement() {
             const element = document.createElement('div');
@@ -9460,12 +9213,6 @@ function recordSpawnPointer(body, event) {
                 body.pointerHistory.shift();
             }
         }
-function getSpawnBodyAngularDamping(body) {
-            if (body && body.type === 'block' && !isSpawnBuildModeActive()) {
-                return SPAWN_BLOCK_ANGULAR_DAMPING;
-            }
-            return SPAWN_BODY_ANGULAR_DAMPING;
-        }
 function getSpawnBounds(body) {
             const segments = getSpawnSegments(body);
             if (!segments.length) {
@@ -9534,71 +9281,6 @@ function getSpawnBounds(body) {
         function getSpawnAabb(body) {
             return getSpawnBounds(body);
         }
-
-        function getSpawnRectCorners(body) {
-            if (!body || !['block', 'door'].includes(body.type)) return [];
-
-            const halfWidth = body.width / 2;
-            const halfHeight = body.height / 2;
-            return [
-                rotateSpawnPoint(body, -halfWidth, -halfHeight),
-                rotateSpawnPoint(body, halfWidth, -halfHeight),
-                rotateSpawnPoint(body, halfWidth, halfHeight),
-                rotateSpawnPoint(body, -halfWidth, halfHeight)
-            ];
-        }
-
-        function getSpawnNearestRightAngleDelta(body) {
-            if (!body) return 0;
-            const rightAngle = Math.PI / 2;
-            const snapped = Math.round(body.angle / rightAngle) * rightAngle;
-            return normalizeSpawnAngle(snapped - body.angle);
-        }
-
-        function getSpawnToppleSupport(body, supportInfo = null) {
-            if (!body || !['block', 'door'].includes(body.type)) return null;
-            if (body.type === 'block' && isSpawnBuildModeActive()) return null;
-
-            const angleDelta = getSpawnNearestRightAngleDelta(body);
-            if (Math.abs(angleDelta) <= SPAWN_TOPPLE_ANGLE_EPSILON) return null;
-            if (body.type === 'door' && Math.abs(angleDelta) <= SPAWN_DOOR_SURFACE_ALIGN_ANGLE) return null;
-
-            const info = supportInfo || getSpawnSupportInfo(body);
-            if (!info) return null;
-
-            const corners = getSpawnRectCorners(body);
-            if (corners.length === 0) return null;
-
-            const supportBounds = info.supportBody ? getSpawnAabb(info.supportBody) : null;
-            const supportY = supportBounds ? supportBounds.minY : (window.innerHeight || document.documentElement.clientHeight || 600);
-            const bottomY = Math.max(...corners.map(corner => corner.y));
-            const contacts = corners.filter(corner => {
-                const nearBottom = bottomY - corner.y <= SPAWN_TOPPLE_SUPPORT_EPSILON;
-                const nearSupport = Math.abs(corner.y - supportY) <= SPAWN_TOPPLE_SUPPORT_EPSILON * 1.5;
-                return nearBottom || nearSupport;
-            });
-
-            if (contacts.length === 0) return null;
-
-            const minContactX = Math.min(...contacts.map(corner => corner.x));
-            const maxContactX = Math.max(...contacts.map(corner => corner.x));
-            const contactSpan = maxContactX - minContactX;
-            const stableSpan = Math.min(body.width, body.height) * 0.42;
-            if (contacts.length >= 2 && contactSpan >= stableSpan) return null;
-
-            const pivotX = contacts.reduce((sum, corner) => sum + corner.x, 0) / contacts.length;
-            const centerOffset = body.x - pivotX;
-            const torqueDirection = Math.abs(centerOffset) > 1.5
-                ? Math.sign(centerOffset)
-                : -Math.sign(angleDelta || 1);
-
-            return {
-                supportInfo: info,
-                pivotX,
-                centerOffset,
-                torqueDirection: torqueDirection || 1
-            };
-        }
 function isSpawnBodyStableSupport(body) {
             if (!body || body.voiding || body.dragging) return false;
             if (body.type === 'sword' && isSpawnSwordTooVertical(body)) return false;
@@ -9614,251 +9296,6 @@ function isSpawnBodyStableSupport(body) {
             }
 
             return true;
-        }
-
-        function getSpawnSupportInfo(body, supportEpsilonOverride = null) {
-            if (body.voiding) return null;
-
-            const bounds = getSpawnAabb(body);
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
-            const groundOffset = viewportHeight - bounds.maxY;
-            const supportEpsilon = supportEpsilonOverride ?? (isSpawnBlockLike(body) ? SPAWN_BLOCK_SUPPORT_EPSILON : SPAWN_SUPPORT_EPSILON);
-            const width = Math.max(1, bounds.maxX - bounds.minX);
-
-            if (groundOffset >= -supportEpsilon && groundOffset <= supportEpsilon) {
-                return {
-                    offset: groundOffset,
-                    supportBody: null,
-                    overlapX: width
-                };
-            }
-
-            let bestSupport = null;
-            let bestDistance = Infinity;
-            const minOverlap = isSpawnBlockLike(body) ? body.width * 0.42 : Math.min(34, Math.max(14, width * 0.26));
-
-            spawnedObjects.forEach(other => {
-                if (other === body || !isSpawnBodyStableSupport(other)) return;
-
-                const otherBounds = getSpawnAabb(other);
-                const overlapX = Math.min(bounds.maxX, otherBounds.maxX) - Math.max(bounds.minX, otherBounds.minX);
-                if (overlapX < minOverlap) return;
-
-                const supportOffset = otherBounds.minY - bounds.maxY;
-                const distance = Math.abs(supportOffset);
-                if (supportOffset < -supportEpsilon || supportOffset > supportEpsilon) return;
-                if (distance >= bestDistance) return;
-
-                bestSupport = {
-                    offset: supportOffset,
-                    supportBody: other,
-                    overlapX
-                };
-                bestDistance = distance;
-            });
-
-            return bestSupport;
-        }
-
-        function getSpawnSupportOffset(body) {
-            const supportInfo = getSpawnSupportInfo(body);
-            return supportInfo ? supportInfo.offset : null;
-        }
-
-        function getSpawnBlockSupportOffset(body) {
-            return getSpawnSupportOffset(body);
-        }
-
-        function getSpawnBlockSoftPlaceSupport(body) {
-            if (!body || body.type !== 'block' || body.voiding) return null;
-
-            const bounds = getSpawnAabb(body);
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
-            const minOverlap = body.width * 0.42;
-            const maxSink = body.height * SPAWN_BLOCK_SOFT_PLACE_SINK_RATIO;
-            let bestSupport = null;
-
-            const considerSupport = (offset, supportBody, overlapX) => {
-                if (overlapX < minOverlap) return;
-                if (offset < -maxSink || offset > SPAWN_BLOCK_SUPPORT_EPSILON) return;
-
-                const score = Math.abs(offset) + (supportBody ? Math.abs(body.x - supportBody.x) * 0.015 : 0);
-                if (!bestSupport || score < bestSupport.score) {
-                    bestSupport = {
-                        offset,
-                        supportBody,
-                        overlapX,
-                        score
-                    };
-                }
-            };
-
-            considerSupport(viewportHeight - bounds.maxY, null, Math.max(1, bounds.maxX - bounds.minX));
-
-            spawnedObjects.forEach(other => {
-                if (other === body || !isSpawnBodyStableSupport(other)) return;
-                if (body.y >= other.y) return;
-
-                const otherBounds = getSpawnAabb(other);
-                if (bounds.minY > otherBounds.minY - 2) return;
-
-                const overlapX = Math.min(bounds.maxX, otherBounds.maxX) - Math.max(bounds.minX, otherBounds.minX);
-                const supportOffset = otherBounds.minY - bounds.maxY;
-                considerSupport(supportOffset, other, overlapX);
-            });
-
-            return bestSupport;
-        }
-function updateSpawnBlockSurfaceAlign(body, supportInfo = null, now = performance.now()) {
-            if (!isSpawnSurfaceAlignBody(body) || body.dragging || body.voiding || isSpawnSurfaceAngleAligned(body)) {
-                resetSpawnBlockSurfaceAlign(body);
-                return false;
-            }
-
-            const angleDelta = getSpawnSurfaceAngleDelta(body);
-            if (body.type === 'door' && Math.abs(angleDelta) > SPAWN_DOOR_SURFACE_ALIGN_ANGLE) {
-                resetSpawnBlockSurfaceAlign(body);
-                return false;
-            }
-
-            const speed = Math.hypot(body.vx, body.vy);
-            const alignSpeed = body.type === 'door' ? SPAWN_DOOR_SURFACE_ALIGN_SPEED : SPAWN_BLOCK_SURFACE_ALIGN_SPEED;
-            const alignAngularSpeed = body.type === 'door' ? SPAWN_DOOR_SURFACE_ALIGN_ANGULAR_SPEED : SPAWN_BLOCK_SURFACE_ALIGN_ANGULAR_SPEED;
-            const slowOnSurface = body.sleeping
-                || (speed <= alignSpeed && Math.abs(body.av) <= alignAngularSpeed);
-            if (!slowOnSurface) {
-                resetSpawnBlockSurfaceAlign(body);
-                return false;
-            }
-
-            const info = supportInfo || getSpawnSupportInfo(body);
-            if (!info) {
-                resetSpawnBlockSurfaceAlign(body);
-                return false;
-            }
-
-            const supportKey = info.supportBody ? `body:${info.supportBody.id}` : 'ground';
-            if (body.surfaceAlignSupportKey !== supportKey || !body.surfaceAlignStartedAt) {
-                body.surfaceAlignSupportKey = supportKey;
-                body.surfaceAlignStartedAt = now;
-                return false;
-            }
-
-            const alignDelay = body.type === 'door' ? SPAWN_DOOR_SURFACE_ALIGN_MS : SPAWN_BLOCK_SURFACE_ALIGN_MS;
-            if (now - body.surfaceAlignStartedAt < alignDelay) {
-                return false;
-            }
-
-            snapSpawnSurfaceAngle(body);
-            const adjustedSupport = getSpawnSupportInfo(body);
-            if (adjustedSupport) {
-                body.y += adjustedSupport.offset;
-            }
-            body.vx = 0;
-            body.vy = 0;
-            body.av = 0;
-            body.sleeping = true;
-            clearSpawnPendingThrowSpin(body);
-            body.restFrames = SPAWN_BLOCK_REST_FRAMES;
-            resetSpawnBlockSurfaceAlign(body);
-            return true;
-        }
-
-        function snapSpawnBlockAngle(body) {
-            snapSpawnSurfaceAngle(body);
-        }
-
-        function snapSpawnSurfaceAngle(body) {
-            const rightAngle = Math.PI / 2;
-            body.angle = Math.round(body.angle / rightAngle) * rightAngle;
-        }
-function getSpawnImpulseInvMass(body) {
-            if (!body || body.dragging) return 0;
-            if (body.sleeping && !spawnFlingLoopActive) return 0;
-            return body.invMass || 0;
-        }
-
-        function getSpawnImpulseInvInertia(body) {
-            if (!body || body.dragging) return 0;
-            if (body.sleeping && !spawnFlingLoopActive) return 0;
-            return body.invInertia || 0;
-        }
-
-        function getAverageSpawnPoint(points) {
-            if (!points || points.length === 0) return { x: 0, y: 0, count: 0 };
-            return points.reduce((acc, point) => {
-                acc.x += point.x;
-                acc.y += point.y;
-                return acc;
-            }, { x: 0, y: 0, count: points.length });
-        }
-
-        function finishAverageSpawnPoint(point) {
-            const count = point.count || 0;
-            if (count <= 0) return { x: NaN, y: NaN };
-            return {
-                x: point.x / count,
-                y: point.y / count
-            };
-        }
-
-        function getSpawnSupportPoints(points, nx, ny, mode = 'min', tolerance = SPAWN_STATIC_CONTACT_EPSILON) {
-            if (!points || points.length === 0) return [];
-
-            let target = mode === 'max' ? -Infinity : Infinity;
-            points.forEach(point => {
-                const projection = point.x * nx + point.y * ny;
-                target = mode === 'max' ? Math.max(target, projection) : Math.min(target, projection);
-            });
-
-            return points.filter(point => {
-                const projection = point.x * nx + point.y * ny;
-                return Math.abs(projection - target) <= tolerance;
-            });
-        }
-
-        function getSpawnCollisionPoints(body, nx = 0, ny = -1) {
-            const corners = getSpawnRectCorners(body);
-            if (corners.length > 0) return corners;
-
-            const segments = getSpawnSegments(body);
-            const points = [];
-            segments.forEach(segment => {
-                const radiusOffsetX = -nx * (segment.radius || 0);
-                const radiusOffsetY = -ny * (segment.radius || 0);
-                points.push({
-                    x: segment.ax + radiusOffsetX,
-                    y: segment.ay + radiusOffsetY
-                }, {
-                    x: segment.bx + radiusOffsetX,
-                    y: segment.by + radiusOffsetY
-                }, {
-                    x: (segment.ax + segment.bx) * 0.5 + radiusOffsetX,
-                    y: (segment.ay + segment.by) * 0.5 + radiusOffsetY
-                });
-            });
-
-            return points.length > 0 ? points : [{ x: body.x, y: body.y }];
-        }
-
-        function getSpawnStaticContactPoint(body, nx, ny) {
-            const supportPoints = getSpawnSupportPoints(getSpawnCollisionPoints(body, nx, ny), nx, ny, 'min');
-            const average = finishAverageSpawnPoint(getAverageSpawnPoint(supportPoints));
-            if (Number.isFinite(average.x) && Number.isFinite(average.y)) return average;
-            return { x: body.x, y: body.y };
-        }
-
-        function applySpawnImpulseAtPoint(body, impulseX, impulseY, contactX, contactY) {
-            const invMass = getSpawnImpulseInvMass(body);
-            const invInertia = getSpawnImpulseInvInertia(body);
-            if (invMass <= 0 && invInertia <= 0) return;
-
-            const rx = contactX - body.x;
-            const ry = contactY - body.y;
-            body.vx += impulseX * invMass;
-            body.vy += impulseY * invMass;
-            body.av += (rx * impulseY - ry * impulseX) * invInertia;
-            clampSpawnVelocity(body);
         }
 function rotateSpawnPoint(body, localX, localY) {
             const cos = Math.cos(body.angle);
@@ -9893,112 +9330,6 @@ function rotateSpawnPoint(body, localX, localY) {
             const closestX = ax + vx * t;
             const closestY = ay + vy * t;
             return Math.hypot(px - closestX, py - closestY);
-        }
-function closestSegmentPoints(a, b) {
-            const d1x = a.bx - a.ax;
-            const d1y = a.by - a.ay;
-            const d2x = b.bx - b.ax;
-            const d2y = b.by - b.ay;
-            const rx = a.ax - b.ax;
-            const ry = a.ay - b.ay;
-            const aa = d1x * d1x + d1y * d1y;
-            const ee = d2x * d2x + d2y * d2y;
-            const ff = d2x * rx + d2y * ry;
-            const epsilon = 0.0001;
-            let s = 0;
-            let t = 0;
-
-            if (aa <= epsilon && ee <= epsilon) {
-                return {
-                    ax: a.ax,
-                    ay: a.ay,
-                    bx: b.ax,
-                    by: b.ay
-                };
-            }
-
-            if (aa <= epsilon) {
-                t = clamp(ff / ee, 0, 1);
-            } else {
-                const cc = d1x * rx + d1y * ry;
-                if (ee <= epsilon) {
-                    s = clamp(-cc / aa, 0, 1);
-                } else {
-                    const bb = d1x * d2x + d1y * d2y;
-                    const denom = aa * ee - bb * bb;
-                    if (Math.abs(denom) > epsilon) {
-                        s = clamp((bb * ff - cc * ee) / denom, 0, 1);
-                    }
-                    t = (bb * s + ff) / ee;
-                    if (t < 0) {
-                        t = 0;
-                        s = clamp(-cc / aa, 0, 1);
-                    } else if (t > 1) {
-                        t = 1;
-                        s = clamp((bb - cc) / aa, 0, 1);
-                    }
-                }
-            }
-
-            return {
-                ax: a.ax + d1x * s,
-                ay: a.ay + d1y * s,
-                bx: b.ax + d2x * t,
-                by: b.ay + d2y * t
-            };
-        }
-
-        function velocityAtPoint(body, x, y) {
-            const rx = x - body.x;
-            const ry = y - body.y;
-            return {
-                x: body.vx - body.av * ry,
-                y: body.vy + body.av * rx
-            };
-        }
-
-        function getSpawnPairFriction(a, b) {
-            if (isSpawnBlockLike(a) || isSpawnBlockLike(b)) {
-                return SPAWN_BLOCK_PAIR_FRICTION;
-            }
-
-            return SPAWN_PAIR_FRICTION;
-        }
-
-        function projectSpawnPolygon(points, axisX, axisY) {
-            return points.reduce((projection, point) => {
-                const value = point.x * axisX + point.y * axisY;
-                projection.min = Math.min(projection.min, value);
-                projection.max = Math.max(projection.max, value);
-                return projection;
-            }, { min: Infinity, max: -Infinity });
-        }
-
-        function getSpawnPolygonAxes(points) {
-            const axes = [];
-            for (let index = 0; index < points.length; index++) {
-                const current = points[index];
-                const next = points[(index + 1) % points.length];
-                const edgeX = next.x - current.x;
-                const edgeY = next.y - current.y;
-                const length = Math.hypot(edgeX, edgeY);
-                if (length <= 0.0001) continue;
-
-                axes.push({
-                    x: -edgeY / length,
-                    y: edgeX / length
-                });
-            }
-            return axes;
-        }
-function getSpawnBlockAabb(body) {
-            const half = body.width / 2;
-            return {
-                minX: body.x - half,
-                maxX: body.x + half,
-                minY: body.y - half,
-                maxY: body.y + half
-            };
         }
 document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: false });
         document.addEventListener('pointermove', updateSpawnMarqueeSelection, { passive: false });
@@ -12003,6 +11334,7 @@ function handleConfirm(action) {
             const backButton = document.getElementById('build-back-btn');
             if (backButton) backButton.classList.remove('show');
             setMobileBuildingControlsHidden(false);
+            updateDesktopBuildTimerAnchor();
             
             document.body.classList.add('show-default-cursor');
         }
@@ -12018,6 +11350,7 @@ function handleConfirm(action) {
             const backButton = document.getElementById('build-back-btn');
             if (backButton) backButton.classList.add('show');
             setMobileBuildingControlsHidden(false);
+            updateDesktopBuildTimerAnchor();
         }
 
         function hideBuildingControls() {
@@ -12030,6 +11363,7 @@ function handleConfirm(action) {
             const backButton = document.getElementById('build-back-btn');
             if (backButton) backButton.classList.remove('show');
             setMobileBuildingControlsHidden(false);
+            updateDesktopBuildTimerAnchor();
         }
 
         let _buildTimerInterval = null;
@@ -12192,22 +11526,6 @@ function handleConfirm(action) {
                 card.style.removeProperty('min-height');
             }
         }
-
-        // Final i18n overrides to ensure consistency
-        Object.assign(i18n.en, {
-            terminalHelp: "Available commands: help, clear, clear objects, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn <name> <count>, spawn glass <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, edit select all, edit clear, edit duplicate, edit reset, delete <name>, helicoptermode, unhelicoptermode, about.",
-            accountButton: "Account",
-            editPhysicsMassLabel: "Mass",
-            editPhysicsFrictionLabel: "Friction",
-            editPhysicsBounceLabel: "Bounce"
-        });
-        Object.assign(i18n.ru, {
-            terminalHelp: "Доступные команды: help, clear, clear objects, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn <name> <count>, spawn glass <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, edit select all, edit clear, edit duplicate, edit reset, delete <name>, helicoptermode, unhelicoptermode, about.",
-            accountButton: "Account",
-            editPhysicsMassLabel: "Масса",
-            editPhysicsFrictionLabel: "Трение",
-            editPhysicsBounceLabel: "Прыгучесть"
-        });
 
         function initApp() {
             window.scrollTo(0, 0);
