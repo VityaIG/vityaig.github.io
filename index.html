@@ -43,7 +43,7 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://raw.githubusercontent.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://raw.githubusercontent.com/VityaIG/vityaig.github.io/refs/heads/main/sword.png" as="image">
+    <link rel="preload" href="sword.png?v=2" as="image">
     <link rel="preload" href="whitewool.png?v=2" as="image">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -434,6 +434,118 @@
 
         .terminal-panel.dragging-terminal .terminal-header {
             cursor: grabbing;
+        }
+
+        .terminal-title-cluster {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        .terminal-title-label {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .terminal-header-prompt {
+            color: var(--btn-hover-border);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .terminal-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .terminal-header-save-button {
+            height: 32px;
+            min-width: 86px;
+            padding: 0 10px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            box-shadow: 3px 3px 0 color-mix(in srgb, var(--card-shadow) 70%, transparent);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .terminal-header-save-button:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0 color-mix(in srgb, var(--card-shadow) 86%, transparent);
+        }
+
+        #theme-toggle-container {
+            flex: 0 0 auto;
+        }
+
+        .theme-menu {
+            z-index: 220;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 168px;
+            padding: 6px;
+            overflow: hidden;
+            box-shadow: 7px 7px 0 color-mix(in srgb, var(--card-shadow) 78%, transparent);
+        }
+
+        .theme-menu-option {
+            width: 100%;
+            min-height: 36px;
+            display: grid;
+            grid-template-columns: 16px minmax(0, 1fr);
+            align-items: center;
+            gap: 10px;
+            padding: 0 10px;
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            line-height: 1;
+            text-align: left;
+            text-transform: uppercase;
+            transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+        }
+
+        .theme-menu-option:hover,
+        .theme-menu-option.active {
+            background: var(--btn-hover-bg);
+            color: var(--btn-hover-text);
+        }
+
+        .theme-menu-option.active {
+            transform: none;
+            box-shadow: inset 3px 0 0 var(--btn-hover-border);
+        }
+
+        .theme-menu-swatch {
+            width: 14px;
+            height: 14px;
+            justify-self: center;
+            border: 1px solid currentColor;
+            box-shadow: 2px 2px 0 color-mix(in srgb, var(--card-shadow) 65%, transparent);
+        }
+
+        .theme-swatch-light {
+            background: #e3e1d7;
+        }
+
+        .theme-swatch-sunset {
+            background: #d7b39b;
+        }
+
+        .theme-swatch-dark {
+            background: #151515;
+        }
+
+        .theme-swatch-midnight {
+            background: #030507;
         }
 
         .spawn-edit-shortcut {
@@ -1488,7 +1600,9 @@
         }
 
         .build-library-banner {
-            height: 92px;
+            min-height: 92px;
+            height: auto;
+            aspect-ratio: 4.55 / 1;
         }
 
         .build-library-piece {
@@ -1505,14 +1619,21 @@
         }
 
         .build-library-piece.sword {
-            border-radius: 999px;
-            height: max(5px, var(--preview-height, 6px));
+            border: 0;
+            background-color: transparent;
+            background: var(--preview-texture) center / contain no-repeat;
+            box-shadow: none;
+            filter: drop-shadow(0 0 8px rgba(248, 250, 252, 0.34));
+        }
+
+        .build-library-piece.textured:not(.sword) {
+            background: var(--preview-texture) center / cover no-repeat;
+            image-rendering: pixelated;
         }
 
         .build-library-piece.door {
-            background:
-                linear-gradient(90deg, transparent 48%, color-mix(in srgb, var(--btn-border) 56%, transparent) 49% 51%, transparent 52%),
-                color-mix(in srgb, var(--preview-color, #9a6a3f) 82%, transparent);
+            background: var(--preview-texture) center / cover no-repeat;
+            image-rendering: pixelated;
         }
 
         .featured-preview-piece {
@@ -1563,7 +1684,7 @@
 
         .build-library-actions {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
             margin-top: auto;
         }
@@ -1578,6 +1699,9 @@
             font-size: 11px;
             font-weight: 900;
             letter-spacing: 0.08em;
+            line-height: 1.15;
+            overflow-wrap: anywhere;
+            padding: 0 6px;
             text-transform: uppercase;
             transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
         }
@@ -2207,6 +2331,30 @@
             gap: 7px;
         }
 
+        .community-profile-context {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 74%, transparent);
+            background: color-mix(in srgb, var(--btn-bg) 66%, transparent);
+        }
+
+        .community-profile-context-title {
+            min-width: 0;
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 900;
+            overflow-wrap: anywhere;
+        }
+
+        .community-profile-card .profile-search-description {
+            display: block;
+            max-height: none;
+            opacity: 1;
+        }
+
         .community-feed {
             min-height: clamp(340px, 50vh, 520px);
             overflow-y: auto;
@@ -2325,6 +2473,216 @@
             line-height: 1.4;
             overflow-wrap: anywhere;
             user-select: text;
+        }
+
+        .community-build-banner {
+            position: relative;
+            aspect-ratio: 4.55 / 1;
+            min-height: 126px;
+            overflow: hidden;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 82%, transparent);
+            background:
+                linear-gradient(color-mix(in srgb, var(--btn-border) 11%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 11%, transparent) 1px, transparent 1px),
+                color-mix(in srgb, #000000 8%, var(--btn-bg));
+            background-size: 20px 20px;
+            box-shadow: inset 0 0 28px color-mix(in srgb, #000000 18%, transparent);
+        }
+
+        .community-build-banner.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .community-reaction-row,
+        .community-command-row,
+        .community-detail-nav {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .community-command-row {
+            justify-content: flex-end;
+            margin-left: auto;
+        }
+
+        .community-reaction-button,
+        .community-count-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            min-width: 42px;
+            min-height: 34px;
+            padding: 0 9px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 72%, transparent);
+            background: color-mix(in srgb, var(--btn-bg) 76%, transparent);
+            color: var(--text-sub);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 12px;
+            font-weight: 900;
+            line-height: 1;
+            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+        }
+
+        .community-reaction-button:hover,
+        .community-reaction-button:focus-visible,
+        .community-reaction-button.active {
+            border-color: var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-hover-bg) 78%, transparent);
+            color: var(--btn-hover-text);
+            outline: none;
+        }
+
+        .community-reaction-button.active {
+            transform: translateY(-1px);
+        }
+
+        .community-reaction-button svg,
+        .community-count-pill svg {
+            width: 14px;
+            height: 14px;
+            flex: 0 0 auto;
+        }
+
+        .community-detail-card {
+            gap: 12px;
+        }
+
+        .community-detail-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .community-detail-nav {
+            justify-content: space-between;
+            padding-bottom: 2px;
+        }
+
+        .community-detail-card .community-code {
+            max-height: 130px;
+        }
+
+        .community-banner-picker {
+            position: fixed;
+            inset: 0;
+            z-index: 245;
+            display: none;
+            pointer-events: none;
+        }
+
+        .community-banner-picker.open {
+            display: block;
+        }
+
+        .community-banner-picker-hint {
+            position: fixed;
+            top: max(14px, env(safe-area-inset-top));
+            left: 50%;
+            width: min(520px, calc(100vw - 28px));
+            transform: translateX(-50%);
+            padding: 10px 12px;
+            border: 1px solid var(--btn-border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: 6px 6px 0 var(--card-shadow);
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            line-height: 1.35;
+            text-align: center;
+            text-transform: uppercase;
+            pointer-events: auto;
+        }
+
+        .community-banner-frame {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: min(520px, calc(100vw - 36px));
+            height: 116px;
+            border: 2px solid var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-hover-border) 6%, transparent);
+            box-shadow:
+                0 0 0 9999px rgba(0, 0, 0, 0.42),
+                0 0 22px color-mix(in srgb, var(--btn-hover-border) 34%, transparent);
+            cursor: grab;
+            touch-action: none;
+            pointer-events: auto;
+        }
+
+        .community-banner-frame:active {
+            cursor: grabbing;
+        }
+
+        .community-banner-frame::before,
+        .community-banner-frame::after {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border: 1px solid color-mix(in srgb, var(--btn-hover-border) 55%, transparent);
+            pointer-events: none;
+        }
+
+        .community-banner-frame::after {
+            inset: 50% auto auto 50%;
+            width: 12px;
+            height: 12px;
+            border: 0;
+            border-left: 2px solid var(--btn-hover-border);
+            border-top: 2px solid var(--btn-hover-border);
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .community-banner-controls {
+            position: fixed;
+            left: 50%;
+            bottom: max(14px, env(safe-area-inset-bottom));
+            width: min(560px, calc(100vw - 24px));
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            padding: 10px;
+            border: 1px solid var(--btn-border);
+            background: var(--card-bg);
+            box-shadow: 7px 7px 0 var(--card-shadow);
+            transform: translateX(-50%);
+            pointer-events: auto;
+        }
+
+        .community-banner-status {
+            position: fixed;
+            left: 50%;
+            bottom: calc(max(14px, env(safe-area-inset-bottom)) + 66px);
+            width: min(560px, calc(100vw - 24px));
+            min-height: 16px;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-align: center;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        .community-banner-status.error {
+            color: #ef4444;
+        }
+
+        .community-banner-status.success {
+            color: #22c55e;
         }
 
         .community-comments {
@@ -4980,6 +5338,18 @@
     <div id="spawn-layer"></div>
     <div id="effects-layer" aria-hidden="true"></div>
 
+    <div id="community-banner-picker" class="community-banner-picker" aria-hidden="true">
+        <div class="community-banner-picker-hint" data-i18n="communityBannerPrompt">Choose the banner area for this post.</div>
+        <div id="community-banner-frame" class="community-banner-frame" onpointerdown="beginCommunityBannerDrag(event)" aria-hidden="true"></div>
+        <div id="community-banner-status" class="community-banner-status" aria-live="polite"></div>
+        <div class="community-banner-controls">
+            <button type="button" class="terminal-simple-action-button interactive" onclick="cancelCommunityBannerSelection()" data-i18n="communityBannerCancel">Cancel</button>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="saveCommunityBannerSelection()" data-i18n="communityBannerSave">Save</button>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="adjustCommunityBannerZoom(-1)" data-i18n="communityBannerZoomOut">Zoom out</button>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="adjustCommunityBannerZoom(1)" data-i18n="communityBannerZoomIn">Zoom in</button>
+        </div>
+    </div>
+
     <button id="build-back-btn" class="build-back-btn border themed-btn backdrop-blur-sm focus:outline-none interactive" onclick="returnToFirstPage()" data-i18n-aria-label="buildBackAria" aria-label="Back to main page">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/><path d="M21 12H9"/></svg>
     </button>
@@ -4994,13 +5364,34 @@
 
     <!-- Top Controls -->
     <div id="controls-container" class="fixed top-4 right-4 z-50 flex items-center justify-end gap-3">
-        <!-- Theme Toggle -->
-        <button id="theme-btn" class="w-10 h-10 flex items-center justify-center border themed-btn hover:scale-[1.05] active:scale-[0.95] backdrop-blur-sm focus:outline-none interactive" onclick="toggleTheme()">
-            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-            <svg id="theme-icon-sunset" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 5-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
-            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-            <svg id="theme-icon-midnight" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9"/><path d="M19 3v4"/><path d="M21 5h-4"/><path d="M5 11v2"/><path d="M6 12H4"/><path d="M13 19v2"/><path d="M14 20h-2"/></svg>
-        </button>
+        <!-- Theme Select -->
+        <div id="theme-toggle-container" class="relative">
+            <button id="theme-btn" class="w-10 h-10 flex items-center justify-center border themed-btn hover:scale-[1.05] active:scale-[0.95] backdrop-blur-sm focus:outline-none interactive" onclick="toggleThemeMenu()" data-i18n-aria-label="themeMenuButton" aria-label="Choose theme" aria-haspopup="menu" aria-expanded="false">
+                <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                <svg id="theme-icon-sunset" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 5-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+                <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                <svg id="theme-icon-midnight" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9"/><path d="M19 3v4"/><path d="M21 5h-4"/><path d="M5 11v2"/><path d="M6 12H4"/><path d="M13 19v2"/><path d="M14 20h-2"/></svg>
+            </button>
+
+            <div id="theme-menu" class="theme-menu absolute right-0 top-12 w-40 glass-card border opacity-0 invisible transform translate-y-[-10px] transition-all duration-200" role="menu" data-i18n-aria-label="themeMenuLabel" aria-label="Theme">
+                <button type="button" data-theme-option="light" onclick="setTheme('light')" class="theme-menu-option interactive" role="menuitemradio">
+                    <span class="theme-menu-swatch theme-swatch-light" aria-hidden="true"></span>
+                    <span data-i18n="themeLight">Light</span>
+                </button>
+                <button type="button" data-theme-option="sunset" onclick="setTheme('sunset')" class="theme-menu-option interactive" role="menuitemradio">
+                    <span class="theme-menu-swatch theme-swatch-sunset" aria-hidden="true"></span>
+                    <span data-i18n="themeSunset">Sunset</span>
+                </button>
+                <button type="button" data-theme-option="dark" onclick="setTheme('dark')" class="theme-menu-option interactive" role="menuitemradio">
+                    <span class="theme-menu-swatch theme-swatch-dark" aria-hidden="true"></span>
+                    <span data-i18n="themeDark">Dark</span>
+                </button>
+                <button type="button" data-theme-option="midnight" onclick="setTheme('midnight')" class="theme-menu-option interactive" role="menuitemradio">
+                    <span class="theme-menu-swatch theme-swatch-midnight" aria-hidden="true"></span>
+                    <span data-i18n="themeMidnight">Night</span>
+                </button>
+            </div>
+        </div>
 
         <!-- Language Toggle -->
         <div id="lang-toggle-container" class="relative">
@@ -5272,6 +5663,7 @@
                             <div class="community-filter-tabs">
                                 <button id="community-filter-all" type="button" class="terminal-simple-action-button active interactive" onclick="setCommunityFilter('all')" data-i18n="communityFilterAll">All</button>
                                 <button id="community-filter-mine" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('mine')" data-i18n="communityFilterMine">Mine</button>
+                                <button id="community-filter-profiles" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('profiles')" data-i18n="communityFilterProfiles">Profiles</button>
                             </div>
 
                             <div class="community-shell">
@@ -5400,13 +5792,16 @@
 
     <div id="terminal-panel" class="terminal-panel glass-card border rounded-[2px] p-4 transition-all duration-300">
         <div id="terminal-header" class="terminal-header flex items-center justify-between gap-3 mb-3">
-            <div class="flex items-center gap-2 themed-text">
-                <span class="w-2 h-2 rounded-full bg-[var(--btn-hover-border)]"></span>
-                <span data-i18n="terminalTitle" class="text-[12px] font-semibold uppercase tracking-[0.2em]">Terminal</span>
+            <div class="terminal-title-cluster flex items-center gap-2 themed-text">
+                <span class="terminal-header-prompt" aria-hidden="true">&gt;_</span>
+                <span data-i18n="terminalTitle" class="terminal-title-label text-[12px] font-semibold uppercase tracking-[0.2em]">Terminal</span>
             </div>
-            <button onclick="closeTerminal()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn hover:scale-[1.05] active:scale-[0.95] focus:outline-none interactive" aria-label="Close terminal">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
+            <div class="terminal-header-actions">
+                <button type="button" class="terminal-header-save-button rounded-sm border themed-btn focus:outline-none interactive" onclick="openSaveBuildModal('save')" data-i18n="terminalQuickSaveButton">Save</button>
+                <button onclick="closeTerminal()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn hover:scale-[1.05] active:scale-[0.95] focus:outline-none interactive" aria-label="Close terminal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
         </div>
         <div class="flex items-center gap-2 mb-3">
             <button id="terminal-command-mode-btn" onclick="setTerminalMode('command')" class="terminal-mode-btn active flex-1 px-3 py-2 rounded-sm border themed-btn text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em] focus:outline-none interactive" data-i18n="terminalCommandMode">Command</button>
@@ -6027,7 +6422,7 @@
             firstPageProfilesButton: "Profiles",
             firstPageFeaturedEyebrow: "Featured",
             firstPageFeaturedTitle: "Featured buildings",
-            firstPageFeaturedBody: "Load admin-featured community builds directly into the sandbox.",
+            firstPageFeaturedBody: "Best community builds selected by the admins.",
             firstPageFeaturedButton: "Load build",
             featuredBuildLoading: "Loading featured buildings...",
             featuredBuildCommunityStatus: "Community featured builds are ready.",
@@ -6041,6 +6436,7 @@
             libraryEmpty: "No saved builds yet.",
             libraryStatus: "Saved builds:",
             libraryViewButton: "View",
+            libraryCopyCodeButton: "Copy code",
             libraryDeleteButton: "Delete",
             libraryCorrupted: "Save code damaged",
             librarySavedAt: "saved",
@@ -6053,7 +6449,17 @@
                 "Use build on when you want clean, steady placement.",
                 "Edit Mode lets you move, resize, duplicate, and delete objects.",
                 "Search builders by nickname or #ID.",
-                "Use gravity set 80 for lighter physics experiments."
+                "Use gravity set 80 for lighter physics experiments.",
+                "Press Save in the Terminal before risky experiments.",
+                "Use My Library to keep local builds before reloading the page.",
+                "Pick a clear Community banner area so your build is easy to recognize.",
+                "Use glass with wool frames for cleaner looking structures.",
+                "Lower gravity before stacking tall towers.",
+                "Use Simple Mode in the Terminal if you forget command names.",
+                "Hide buttons on mobile Build Mode when you need more screen space.",
+                "Duplicate selected objects in Edit Mode to build faster.",
+                "Try diagonal swords as braces, ramps, or decoration.",
+                "Type WEBREAK in the Terminal when you want controlled chaos."
             ],
             terminalSimpleEditTitle: "Edit",
             terminalSimpleEditButtonOn: "Edit Mode: On",
@@ -6329,7 +6735,9 @@
             authDeleteProfileRemoved: "Profile deleted and signed out.",
             authDeleteError: "Could not delete account.",
             authDeleteAlreadyDeleted: "This account was deleted.",
-            authWelcome: "Welcome back."
+            authWelcome: "Welcome back.",
+            captchaLocked: "Too many failed attempts. Try again in {time}.",
+            authCaptchaLocked: "Too many failed verifications. Try again in {time}."
         });
 
         Object.assign(i18n.ru, {
@@ -6396,7 +6804,9 @@
             authDeleteProfileRemoved: "Профиль удалён, вы вышли.",
             authDeleteError: "Не удалось удалить аккаунт.",
             authDeleteAlreadyDeleted: "Этот аккаунт был удалён.",
-            authWelcome: "С возвращением."
+            authWelcome: "С возвращением.",
+            captchaLocked: "\u0421\u043b\u0438\u0448\u043a\u043e\u043c \u043c\u043d\u043e\u0433\u043e \u043e\u0448\u0438\u0431\u043e\u043a. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0447\u0435\u0440\u0435\u0437 {time}.",
+            authCaptchaLocked: "\u0421\u043b\u0438\u0448\u043a\u043e\u043c \u043c\u043d\u043e\u0433\u043e \u043e\u0448\u0438\u0431\u043e\u043a \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0447\u0435\u0440\u0435\u0437 {time}."
         });
 
         Object.assign(i18n.ru, {
@@ -6436,7 +6846,17 @@
                 "Используйте build on для ровной и спокойной постановки объектов.",
                 "Edit Mode позволяет двигать, увеличивать, дублировать, склеивать и удалять объекты.",
                 "Ищите строителей по никнейму или #ID.",
-                "Используйте gravity set 80 для более лёгкой физики."
+                "Используйте gravity set 80 для более лёгкой физики.",
+                "\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u00ab\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c\u00bb \u0432 Terminal \u043f\u0435\u0440\u0435\u0434 \u0440\u0438\u0441\u043a\u043e\u0432\u0430\u043d\u043d\u044b\u043c\u0438 \u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u0430\u043c\u0438.",
+                "\u0418\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435 \u00ab\u041c\u043e\u044e \u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0443\u00bb, \u0447\u0442\u043e\u0431\u044b \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0443 \u043f\u0435\u0440\u0435\u0434 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u043e\u0439.",
+                "\u0414\u043b\u044f \u043f\u043e\u0441\u0442\u0430 \u0432 Community \u0432\u044b\u0431\u0438\u0440\u0430\u0439\u0442\u0435 \u043f\u043e\u043d\u044f\u0442\u043d\u0443\u044e \u043e\u0431\u043b\u0430\u0441\u0442\u044c \u0431\u0430\u043d\u043d\u0435\u0440\u0430.",
+                "\u0421\u0442\u0435\u043a\u043b\u043e \u043b\u0443\u0447\u0448\u0435 \u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0432 \u0440\u0430\u043c\u043a\u0435 \u0438\u0437 \u0448\u0435\u0440\u0441\u0442\u0438.",
+                "\u041f\u0435\u0440\u0435\u0434 \u0432\u044b\u0441\u043e\u043a\u0438\u043c\u0438 \u0431\u0430\u0448\u043d\u044f\u043c\u0438 \u0443\u043c\u0435\u043d\u044c\u0448\u0438\u0442\u0435 gravity.",
+                "\u0415\u0441\u043b\u0438 \u0437\u0430\u0431\u044b\u043b\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u044b, \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u0435 Simple Mode \u0432 Terminal.",
+                "\u041d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435 \u0441\u043f\u0440\u044f\u0447\u044c\u0442\u0435 \u043a\u043d\u043e\u043f\u043a\u0438 \u0432 \u0440\u0435\u0436\u0438\u043c\u0435 \u0441\u0442\u0440\u043e\u0439\u043a\u0438, \u0447\u0442\u043e\u0431\u044b \u043e\u0441\u0432\u043e\u0431\u043e\u0434\u0438\u0442\u044c \u044d\u043a\u0440\u0430\u043d.",
+                "\u0412 \u041f\u0440\u0430\u0432\u043a\u0435 \u0434\u0443\u0431\u043b\u0438\u0440\u0443\u0439\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b, \u0447\u0442\u043e\u0431\u044b \u0441\u0442\u0440\u043e\u0438\u0442\u044c \u0431\u044b\u0441\u0442\u0440\u0435\u0435.",
+                "\u041c\u0435\u0447\u0438 \u043f\u043e\u0434 \u0443\u0433\u043b\u043e\u043c \u043f\u043e\u0434\u0445\u043e\u0434\u044f\u0442 \u0434\u043b\u044f \u043f\u043e\u0434\u043f\u043e\u0440\u043e\u043a, \u0440\u0430\u043c\u043f \u0438 \u0434\u0435\u043a\u043e\u0440\u0430.",
+                "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 WEBREAK \u0432 Terminal, \u0435\u0441\u043b\u0438 \u0445\u043e\u0442\u0438\u0442\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u043c\u044b\u0439 \u0445\u0430\u043e\u0441."
             ]
         });
 
@@ -6457,6 +6877,13 @@
         });
 
         Object.assign(i18n.en, {
+            themeMenuButton: "Choose theme",
+            themeMenuLabel: "Theme",
+            themeLight: "Light",
+            themeSunset: "Sunset",
+            themeDark: "Dark",
+            themeMidnight: "Night",
+            terminalQuickSaveButton: "Save",
             saveBuildButton: "Save Build",
             loadBuildButton: "Load Build",
             saveBuildTitle: "Build Memory",
@@ -6477,7 +6904,7 @@
             saveSaved: "Build saved.",
             saveLoaded: "Build loaded.",
             saveDeleted: "Save deleted.",
-            saveExported: "Export code ready.",
+            saveExported: "Code copied.",
             saveImported: "Imported save loaded.",
             saveImportInvalid: "Save code is damaged or unsupported.",
             saveOverwriteConfirm: "Overwrite this save name?",
@@ -6504,6 +6931,13 @@
         });
 
         Object.assign(i18n.ru, {
+            themeMenuButton: "\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u0442\u0435\u043c\u0443",
+            themeMenuLabel: "\u0422\u0435\u043c\u0430",
+            themeLight: "\u0421\u0432\u0435\u0442\u043b\u0430\u044f",
+            themeSunset: "\u0417\u0430\u043a\u0430\u0442",
+            themeDark: "\u0422\u0435\u043c\u043d\u0430\u044f",
+            themeMidnight: "\u041d\u043e\u0447\u043d\u0430\u044f",
+            terminalQuickSaveButton: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
             saveBuildButton: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
             loadBuildButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
             saveBuildTitle: "\u041f\u0430\u043c\u044f\u0442\u044c \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
@@ -6524,7 +6958,7 @@
             saveSaved: "\u041f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0430.",
             saveLoaded: "\u041f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043d\u0430.",
             saveDeleted: "\u0421\u0435\u0439\u0432 \u0443\u0434\u0430\u043b\u0435\u043d.",
-            saveExported: "\u041a\u043e\u0434 \u0433\u043e\u0442\u043e\u0432.",
+            saveExported: "\u041a\u043e\u0434 \u0441\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d.",
             saveImported: "\u0421\u0435\u0439\u0432 \u0438\u043c\u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043d.",
             saveImportInvalid: "\u041a\u043e\u0434 \u0441\u0435\u0439\u0432\u0430 \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0435\u043d \u0438\u043b\u0438 \u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442\u0441\u044f.",
             saveOverwriteConfirm: "\u041f\u0435\u0440\u0435\u0437\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u0441\u0435\u0439\u0432 \u0441 \u044d\u0442\u0438\u043c \u0438\u043c\u0435\u043d\u0435\u043c?",
@@ -6553,25 +6987,41 @@
         Object.assign(i18n.en, {
             communityButton: "Community",
             communityTitle: "Community",
-            communitySubtitle: "Share builds, like posts, and inspect creation codes.",
+            communitySubtitle: "Share builds, like posts, and view creation banners.",
             communityCloseAria: "Close community panel",
             communitySearchPlaceholder: "Search posts",
+            communityProfileSearchPlaceholder: "Search profiles or #ID",
             communitySearchAria: "Search community",
             communityCreateButton: "Create Post",
             communityRefreshButton: "Refresh",
             communityFilterAll: "All",
             communityFilterMine: "Mine",
+            communityFilterProfiles: "Profiles",
             communityComposeTitle: "New Post",
             communityEditTitle: "Edit Post",
             communityPostTitlePlaceholder: "Title",
             communityPostDescriptionPlaceholder: "Description",
             communityPostCodePlaceholder: "WB1: exported build code",
+            communityBannerPrompt: "Choose the banner area for this post.",
+            communityBannerCancel: "Cancel",
+            communityBannerSave: "Save",
+            communityBannerZoomOut: "Zoom out",
+            communityBannerZoomIn: "Zoom in",
+            communityBannerSelecting: "Move the frame, then save the banner.",
+            communityBannerSaving: "Saving post banner...",
+            communityBannerInvalid: "Banner preview unavailable.",
             communitySubmitPost: "Post",
             communitySaveEdit: "Save Edit",
             communityCancelEdit: "Cancel",
             communityLoadMore: "Load More",
             communityLoading: "Loading community feed...",
             communityEmpty: "No posts found.",
+            communityProfilesLoading: "Searching profiles...",
+            communityProfileEmpty: "No profiles found.",
+            communityViewProfilePosts: "View posts",
+            communityProfilePostsTitle: "Posts by",
+            communityProfilePostsEmpty: "This builder has not posted yet.",
+            communityBackToProfiles: "Back to profiles",
             communityTableMissing: "Community tables are not ready yet, using local mode.",
             communityConnectionError: "Could not connect to Supabase, using local mode.",
             communitySignInRequired: "Sign in to use community actions.",
@@ -6582,6 +7032,12 @@
             communityPostHidden: "Post hidden.",
             communityPostModerated: "Moderation updated.",
             communityLikeSaved: "Reaction updated.",
+            communityDislikeSetupNeeded: "Run the Community reactions SQL update to enable dislikes.",
+            communityPostCooldown: "Post cooldown: {time} left.",
+            communityCommentCooldown: "Comment cooldown: {time} left.",
+            communityViewPost: "View",
+            communityBackToFeed: "Back",
+            communityThreadTitle: "Comments",
             communityCommentPlaceholder: "Write a comment",
             communityCommentButton: "Comment",
             communityCommentEmpty: "Comment cannot be empty.",
@@ -6615,25 +7071,41 @@
         Object.assign(i18n.ru, {
             communityButton: "\u0421\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
             communityTitle: "\u0421\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
-            communitySubtitle: "\u0414\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u043c\u0438, \u043b\u0430\u0439\u043a\u0430\u0439\u0442\u0435 \u043f\u043e\u0441\u0442\u044b \u0438 \u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435 \u043a\u043e\u0434\u044b.",
+            communitySubtitle: "\u0414\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u043c\u0438, \u043b\u0430\u0439\u043a\u0430\u0439\u0442\u0435 \u043f\u043e\u0441\u0442\u044b \u0438 \u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435 \u0431\u0430\u043d\u043d\u0435\u0440\u044b.",
             communityCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
             communitySearchPlaceholder: "\u041f\u043e\u0438\u0441\u043a \u043f\u043e\u0441\u0442\u043e\u0432",
+            communityProfileSearchPlaceholder: "\u041f\u043e\u0438\u0441\u043a \u043f\u0440\u043e\u0444\u0438\u043b\u0435\u0439 \u0438\u043b\u0438 #ID",
             communitySearchAria: "\u0418\u0441\u043a\u0430\u0442\u044c \u0432 \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0435",
             communityCreateButton: "\u0421\u043e\u0437\u0434\u0430\u0442\u044c",
             communityRefreshButton: "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c",
             communityFilterAll: "\u0412\u0441\u0435",
             communityFilterMine: "\u041c\u043e\u0438",
+            communityFilterProfiles: "\u041f\u0440\u043e\u0444\u0438\u043b\u0438",
             communityComposeTitle: "\u041d\u043e\u0432\u044b\u0439 \u043f\u043e\u0441\u0442",
             communityEditTitle: "\u041f\u0440\u0430\u0432\u043a\u0430 \u043f\u043e\u0441\u0442\u0430",
             communityPostTitlePlaceholder: "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a",
             communityPostDescriptionPlaceholder: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435",
             communityPostCodePlaceholder: "WB1: \u044d\u043a\u0441\u043f\u043e\u0440\u0442-\u043a\u043e\u0434 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            communityBannerPrompt: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043e\u0431\u043b\u0430\u0441\u0442\u044c \u0434\u043b\u044f \u0431\u0430\u043d\u043d\u0435\u0440\u0430 \u043f\u043e\u0441\u0442\u0430.",
+            communityBannerCancel: "\u041e\u0442\u043c\u0435\u043d\u0430",
+            communityBannerSave: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
+            communityBannerZoomOut: "\u041e\u0442\u0434\u0430\u043b\u0438\u0442\u044c",
+            communityBannerZoomIn: "\u041f\u0440\u0438\u0431\u043b\u0438\u0437\u0438\u0442\u044c",
+            communityBannerSelecting: "\u0414\u0432\u0438\u0433\u0430\u0439\u0442\u0435 \u0440\u0430\u043c\u043a\u0443, \u0437\u0430\u0442\u0435\u043c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u0435 \u0431\u0430\u043d\u043d\u0435\u0440.",
+            communityBannerSaving: "\u0421\u043e\u0445\u0440\u0430\u043d\u044f\u044e \u0431\u0430\u043d\u043d\u0435\u0440 \u043f\u043e\u0441\u0442\u0430...",
+            communityBannerInvalid: "\u041f\u0440\u0435\u0432\u044c\u044e \u0431\u0430\u043d\u043d\u0435\u0440\u0430 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e.",
             communitySubmitPost: "\u041e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u0442\u044c",
             communitySaveEdit: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
             communityCancelEdit: "\u041e\u0442\u043c\u0435\u043d\u0430",
             communityLoadMore: "\u0415\u0449\u0451",
             communityLoading: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u044e \u043b\u0435\u043d\u0442\u0443...",
             communityEmpty: "\u041f\u043e\u0441\u0442\u044b \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b.",
+            communityProfilesLoading: "\u0418\u0449\u0443 \u043f\u0440\u043e\u0444\u0438\u043b\u0438...",
+            communityProfileEmpty: "\u041f\u0440\u043e\u0444\u0438\u043b\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b.",
+            communityViewProfilePosts: "\u041f\u043e\u0441\u0442\u044b",
+            communityProfilePostsTitle: "\u041f\u043e\u0441\u0442\u044b",
+            communityProfilePostsEmpty: "\u042d\u0442\u043e\u0442 \u0431\u0438\u043b\u0434\u0435\u0440 \u043f\u043e\u043a\u0430 \u043d\u0435 \u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043b \u043f\u043e\u0441\u0442\u044b.",
+            communityBackToProfiles: "\u041a \u043f\u0440\u043e\u0444\u0438\u043b\u044f\u043c",
             communityTableMissing: "\u0422\u0430\u0431\u043b\u0438\u0446\u044b Community \u0435\u0449\u0451 \u043d\u0435 \u0433\u043e\u0442\u043e\u0432\u044b, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
             communityConnectionError: "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 Supabase, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
             communitySignInRequired: "\u0412\u043e\u0439\u0434\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0434\u0435\u0439\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c.",
@@ -6644,6 +7116,12 @@
             communityPostHidden: "\u041f\u043e\u0441\u0442 \u0441\u043a\u0440\u044b\u0442.",
             communityPostModerated: "\u041c\u043e\u0434\u0435\u0440\u0430\u0446\u0438\u044f \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430.",
             communityLikeSaved: "\u0420\u0435\u0430\u043a\u0446\u0438\u044f \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430.",
+            communityDislikeSetupNeeded: "\u0414\u043b\u044f \u0434\u0438\u0437\u043b\u0430\u0439\u043a\u043e\u0432 \u043d\u0443\u0436\u043d\u043e \u0432\u044b\u043f\u043e\u043b\u043d\u0438\u0442\u044c SQL-\u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 Community reactions.",
+            communityPostCooldown: "\u041f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u044f \u043f\u0435\u0440\u0435\u0437\u0430\u0440\u044f\u0436\u0430\u0435\u0442\u0441\u044f: {time}.",
+            communityCommentCooldown: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043f\u0435\u0440\u0435\u0437\u0430\u0440\u044f\u0436\u0430\u0435\u0442\u0441\u044f: {time}.",
+            communityViewPost: "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c",
+            communityBackToFeed: "\u041d\u0430\u0437\u0430\u0434",
+            communityThreadTitle: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0438",
             communityCommentPlaceholder: "\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439",
             communityCommentButton: "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c",
             communityCommentEmpty: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u043f\u0443\u0441\u0442\u044b\u043c.",
@@ -6700,7 +7178,7 @@
         Object.assign(i18n.en, {
             firstPageLibraryTabLineOne: "My",
             firstPageLibraryTabLineTwo: "Library",
-            firstPageFeaturedBody: "Load admin-featured community builds directly into the sandbox.",
+            firstPageFeaturedBody: "Best community builds selected by the admins.",
             featuredBuildEmpty: "No featured community buildings yet.",
             firstPageLibraryEyebrow: "My Library",
             firstPageLibraryTitle: "Saved builds",
@@ -6708,6 +7186,7 @@
             libraryEmpty: "No saved builds yet.",
             libraryStatus: "Saved builds:",
             libraryViewButton: "View",
+            libraryCopyCodeButton: "Copy code",
             libraryDeleteButton: "Delete",
             libraryCorrupted: "Save code damaged",
             librarySavedAt: "saved"
@@ -6716,7 +7195,7 @@
         Object.assign(i18n.ru, {
             firstPageLibraryTabLineOne: "\u041c\u043e\u044f",
             firstPageLibraryTabLineTwo: "\u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430",
-            firstPageFeaturedBody: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0439\u0442\u0435 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 Community-\u0431\u0438\u043b\u0434\u044b, \u043e\u0442\u043c\u0435\u0447\u0435\u043d\u043d\u044b\u0435 \u0430\u0434\u043c\u0438\u043d\u043e\u043c.",
+            firstPageFeaturedBody: "\u041b\u0443\u0447\u0448\u0438\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0430, \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0430\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0435\u0439.",
             featuredBuildEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445 Community-\u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a.",
             firstPageLibraryEyebrow: "\u041c\u043e\u044f \u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430",
             firstPageLibraryTitle: "\u0421\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
@@ -6724,6 +7203,7 @@
             libraryEmpty: "\u0421\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0445 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a \u043f\u043e\u043a\u0430 \u043d\u0435\u0442.",
             libraryStatus: "\u0421\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e:",
             libraryViewButton: "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c",
+            libraryCopyCodeButton: "\u041a\u043e\u0434",
             libraryDeleteButton: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
             libraryCorrupted: "\u0421\u0435\u0439\u0432 \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0451\u043d",
             librarySavedAt: "\u0441\u043e\u0445\u0440."
@@ -6758,6 +7238,11 @@
         let authCaptchaType = null;
         let authCaptchaSelected = new Set();
         let authCaptchaSolved = false;
+        const CAPTCHA_FAIL_THRESHOLD = 5;
+        const CAPTCHA_LOCK_BASE_MS = 3 * 60 * 1000;
+        const CAPTCHA_LOCK_MAX_MS = 30 * 60 * 1000;
+        const MAIN_CAPTCHA_LOCK_KEY = 'webbreak.captcha.entryLock.v1';
+        const AUTH_CAPTCHA_LOCK_KEY = 'webbreak.captcha.authLock.v1';
         let questionZoneTab = 'main';
         const GREETING_SEEN_KEY = 'minebuildGreetingSeen';
         const PROFILE_SEARCH_PAGE_SIZE = 10;
@@ -6773,16 +7258,30 @@
         const COMMUNITY_MOD_ACCOUNT_IDS = [];
         const COMMUNITY_PAGE_SIZE = 6;
         const COMMUNITY_LOCAL_STORAGE_KEY = 'webbreak.community.localPosts.v1';
+        const COMMUNITY_COOLDOWN_STORAGE_KEY = 'webbreak.community.cooldowns.v1';
         const COMMUNITY_ACTION_COOLDOWN_MS = 850;
+        const COMMUNITY_POST_COOLDOWN_MS = 5 * 60 * 1000;
+        const COMMUNITY_COMMENT_COOLDOWN_MS = 3 * 60 * 1000;
+        const COMMUNITY_BANNER_ASPECT = 4.55;
+        const COMMUNITY_BANNER_BASE_WIDTH = 540;
+        const COMMUNITY_BANNER_MIN_WIDTH = 210;
+        const COMMUNITY_BANNER_ZOOM_MIN = 0.68;
+        const COMMUNITY_BANNER_ZOOM_MAX = 2.35;
         let communityPosts = [];
         let communityPage = 0;
         let communityHasMore = false;
         let communityFilter = 'all';
         let communitySearchQuery = '';
+        let communityProfileResults = [];
+        let communityProfileTarget = null;
         let communityRequestId = 0;
         let communityLoading = false;
         let communityUsingLocalFallback = false;
         let communityEditingPostId = null;
+        let communityDetailPostId = null;
+        let communityReactionColumnAvailable = null;
+        let communityBannerDraft = null;
+        let communityBannerDrag = null;
         const communityActionCooldowns = {};
         let profileAdminOpenTargetId = null;
         let expandedProfileDescriptions = new Set();
@@ -6802,7 +7301,7 @@
         /* --- Theme Logic --- */
         function getPreferredTheme() {
             const savedTheme = localStorage.getItem('preferredTheme');
-            if (savedTheme) {
+            if (savedTheme && ['light', 'sunset', 'dark', 'midnight'].includes(savedTheme)) {
                 return savedTheme;
             }
             const hour = new Date().getHours();
@@ -6812,6 +7311,7 @@
         }
 
         function setTheme(theme) {
+            const normalizedTheme = ['light', 'sunset', 'dark', 'midnight'].includes(theme) ? theme : 'light';
             const root = document.documentElement;
             const darkIcon = document.getElementById('theme-icon-dark');
             const lightIcon = document.getElementById('theme-icon-light');
@@ -6825,28 +7325,61 @@
                 icon.classList.remove('block');
             });
 
-            if (theme === 'dark') {
+            if (normalizedTheme === 'dark') {
                 root.setAttribute('data-theme', 'dark');
                 darkIcon.classList.remove('hidden'); darkIcon.classList.add('block');
-            } else if (theme === 'sunset') {
+            } else if (normalizedTheme === 'sunset') {
                 root.setAttribute('data-theme', 'sunset');
                 sunsetIcon.classList.remove('hidden'); sunsetIcon.classList.add('block');
-            } else if (theme === 'midnight') {
+            } else if (normalizedTheme === 'midnight') {
                 root.setAttribute('data-theme', 'midnight');
                 midnightIcon.classList.remove('hidden'); midnightIcon.classList.add('block');
             } else {
                 root.removeAttribute('data-theme');
                 lightIcon.classList.remove('hidden'); lightIcon.classList.add('block');
             }
-            localStorage.setItem('preferredTheme', theme);
+            localStorage.setItem('preferredTheme', normalizedTheme);
+            updateThemeMenu(normalizedTheme);
+            closeThemeMenu();
         }
 
         function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            if (currentTheme === 'light') setTheme('sunset');
-            else if (currentTheme === 'sunset') setTheme('dark');
-            else if (currentTheme === 'dark') setTheme('midnight');
-            else setTheme('light');
+            toggleThemeMenu();
+        }
+
+        function updateThemeMenu(theme) {
+            document.querySelectorAll('[data-theme-option]').forEach(button => {
+                const isActive = button.getAttribute('data-theme-option') === theme;
+                button.classList.toggle('active', isActive);
+                button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+            });
+        }
+
+        function toggleThemeMenu() {
+            const menu = document.getElementById('theme-menu');
+            const button = document.getElementById('theme-btn');
+            if (!menu) return;
+            if (menu.classList.contains('invisible')) {
+                closeLangMenu();
+                menu.classList.remove('invisible', 'opacity-0', 'translate-y-[-10px]');
+                menu.classList.add('opacity-100', 'translate-y-0');
+                if (button) button.setAttribute('aria-expanded', 'true');
+            } else {
+                closeThemeMenu();
+            }
+        }
+
+        function closeThemeMenu() {
+            const menu = document.getElementById('theme-menu');
+            const button = document.getElementById('theme-btn');
+            if (menu) {
+                menu.classList.remove('opacity-100', 'translate-y-0');
+                menu.classList.add('opacity-0', 'translate-y-[-10px]');
+                if (button) button.setAttribute('aria-expanded', 'false');
+                setTimeout(() => {
+                    menu.classList.add('invisible');
+                }, 200);
+            }
         }
 
         /* --- Pointer Tracking Logic --- */
@@ -7192,6 +7725,7 @@
         function toggleLangMenu() {
             const menu = document.getElementById('lang-menu');
             if (menu.classList.contains('invisible')) {
+                closeThemeMenu();
                 menu.classList.remove('invisible', 'opacity-0', 'translate-y-[-10px]');
                 menu.classList.add('opacity-100', 'translate-y-0');
             } else {
@@ -7240,6 +7774,66 @@
 
         function getAuthStrings() {
             return i18n[currentLang] || i18n.en;
+        }
+
+        function readCaptchaLockState(storageKey) {
+            try {
+                const state = JSON.parse(localStorage.getItem(storageKey) || '{}') || {};
+                return {
+                    failures: Math.max(0, Number(state.failures) || 0),
+                    lockLevel: Math.max(0, Number(state.lockLevel) || 0),
+                    lockUntil: Math.max(0, Number(state.lockUntil) || 0)
+                };
+            } catch (error) {
+                return { failures: 0, lockLevel: 0, lockUntil: 0 };
+            }
+        }
+
+        function writeCaptchaLockState(storageKey, state) {
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(state));
+            } catch (error) {
+                // Captcha lockouts are a local anti-spam guard; storage failure should not break the page.
+            }
+        }
+
+        function getCaptchaLockRemaining(storageKey) {
+            const state = readCaptchaLockState(storageKey);
+            return Math.max(0, state.lockUntil - Date.now());
+        }
+
+        function formatCaptchaLockTime(milliseconds) {
+            const totalSeconds = Math.max(1, Math.ceil(milliseconds / 1000));
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            if (minutes <= 0) return `${seconds}s`;
+            return `${minutes}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function getCaptchaLockMessage(storageKey, key = 'captchaLocked') {
+            const strings = getAuthStrings();
+            return String(strings[key] || strings.captchaLocked || '')
+                .replace('{time}', formatCaptchaLockTime(getCaptchaLockRemaining(storageKey)));
+        }
+
+        function registerCaptchaFailure(storageKey) {
+            const state = readCaptchaLockState(storageKey);
+            if (state.lockUntil > Date.now()) return state;
+
+            state.failures += 1;
+            if (state.failures >= CAPTCHA_FAIL_THRESHOLD) {
+                state.failures = 0;
+                state.lockLevel += 1;
+                const duration = Math.min(CAPTCHA_LOCK_MAX_MS, CAPTCHA_LOCK_BASE_MS * Math.pow(2, state.lockLevel - 1));
+                state.lockUntil = Date.now() + duration;
+            }
+
+            writeCaptchaLockState(storageKey, state);
+            return state;
+        }
+
+        function clearCaptchaFailures(storageKey) {
+            writeCaptchaLockState(storageKey, { failures: 0, lockLevel: 0, lockUntil: 0 });
         }
 
         function getSupabaseClient() {
@@ -7495,6 +8089,16 @@ function setAuthCaptchaInputState({ inputMode = 'text', placeholder = null, read
         function generateAuthCaptcha() {
             const strings = getAuthStrings();
             const question = document.getElementById('auth-captcha-question');
+            if (getCaptchaLockRemaining(AUTH_CAPTCHA_LOCK_KEY) > 0) {
+                authCaptchaSolved = false;
+                authCaptchaExpected = null;
+                clearAuthCaptchaOptions();
+                if (question) question.textContent = getCaptchaLockMessage(AUTH_CAPTCHA_LOCK_KEY, 'authCaptchaLocked');
+                setAuthCaptchaInputState({ readOnly: true, placeholder: getCaptchaLockMessage(AUTH_CAPTCHA_LOCK_KEY, 'authCaptchaLocked') });
+                setAuthCaptchaStatus(getCaptchaLockMessage(AUTH_CAPTCHA_LOCK_KEY, 'authCaptchaLocked'), 'error');
+                updateAuthCaptchaUi();
+                return;
+            }
             const types = ['math', 'reverse', 'text', 'order', 'shapes'];
             authCaptchaType = getRandomAuthCaptchaItem(types);
             authCaptchaExpected = null;
@@ -7571,19 +8175,38 @@ function setAuthCaptchaInputState({ inputMode = 'text', placeholder = null, read
             const checkIcon = check ? check.querySelector('svg') : null;
             const verifyButton = document.getElementById('auth-captcha-verify');
             const answer = document.getElementById('auth-captcha-answer');
+            const lockRemaining = getCaptchaLockRemaining(AUTH_CAPTCHA_LOCK_KEY);
+            const locked = lockRemaining > 0;
 
             if (check) check.classList.toggle('solved', authCaptchaSolved);
             if (checkIcon) checkIcon.classList.toggle('hidden', !authCaptchaSolved);
-            if (verifyButton) verifyButton.disabled = authCaptchaSolved;
-            if (answer) answer.disabled = authCaptchaSolved;
+            if (verifyButton) verifyButton.disabled = authCaptchaSolved || locked;
+            if (answer) answer.disabled = authCaptchaSolved || locked;
+            document.querySelectorAll('.auth-captcha-option').forEach(button => {
+                button.disabled = authCaptchaSolved || locked;
+            });
             if (authCaptchaSolved) {
                 setAuthCaptchaStatus(strings.authCaptchaSolved, 'success');
+            } else if (locked) {
+                setAuthCaptchaStatus(getCaptchaLockMessage(AUTH_CAPTCHA_LOCK_KEY, 'authCaptchaLocked'), 'error');
+                setTimeout(() => {
+                    if (getCaptchaLockRemaining(AUTH_CAPTCHA_LOCK_KEY) <= 0 && !authCaptchaExpected) {
+                        generateAuthCaptcha();
+                    } else {
+                        updateAuthCaptchaUi();
+                    }
+                }, Math.min(lockRemaining, 1000));
             }
         }
 
         function verifyAuthCaptcha() {
             const strings = getAuthStrings();
             const answer = document.getElementById('auth-captcha-answer');
+            if (getCaptchaLockRemaining(AUTH_CAPTCHA_LOCK_KEY) > 0) {
+                setAuthCaptchaStatus(getCaptchaLockMessage(AUTH_CAPTCHA_LOCK_KEY, 'authCaptchaLocked'), 'error');
+                updateAuthCaptchaUi();
+                return false;
+            }
             if (!authCaptchaExpected) generateAuthCaptcha();
 
             let correct = false;
@@ -7601,11 +8224,17 @@ function setAuthCaptchaInputState({ inputMode = 'text', placeholder = null, read
 
             if (correct) {
                 authCaptchaSolved = true;
+                clearCaptchaFailures(AUTH_CAPTCHA_LOCK_KEY);
                 updateAuthCaptchaUi();
                 return true;
             }
 
             authCaptchaSolved = false;
+            const lockState = registerCaptchaFailure(AUTH_CAPTCHA_LOCK_KEY);
+            if (lockState.lockUntil > Date.now()) {
+                generateAuthCaptcha();
+                return false;
+            }
             generateAuthCaptcha();
             setAuthCaptchaStatus(strings.authCaptchaIncorrect, 'error');
             setTimeout(() => {
@@ -9289,6 +9918,69 @@ function normalizeNickname(value) {
             return true;
         }
 
+        function readCommunityCooldowns() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(COMMUNITY_COOLDOWN_STORAGE_KEY) || '{}');
+                return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+            } catch (error) {
+                return {};
+            }
+        }
+
+        function writeCommunityCooldowns(cooldowns) {
+            try {
+                const now = Date.now();
+                const clean = {};
+                Object.entries(cooldowns || {}).forEach(([key, value]) => {
+                    const until = Number(value) || 0;
+                    if (until > now) clean[key] = until;
+                });
+                localStorage.setItem(COMMUNITY_COOLDOWN_STORAGE_KEY, JSON.stringify(clean));
+            } catch (error) {
+                // Cooldowns are protective UI state; failing storage should not block normal play.
+            }
+        }
+
+        function getCommunityCooldownKey(type, user) {
+            const userId = user && user.id ? String(user.id) : 'guest';
+            return `${type}:${userId}`;
+        }
+
+        function getCommunityCooldownRemaining(type, user) {
+            const cooldowns = readCommunityCooldowns();
+            const until = Number(cooldowns[getCommunityCooldownKey(type, user)]) || 0;
+            return Math.max(0, until - Date.now());
+        }
+
+        function setCommunityCooldown(type, user, durationMs) {
+            const cooldowns = readCommunityCooldowns();
+            cooldowns[getCommunityCooldownKey(type, user)] = Date.now() + durationMs;
+            writeCommunityCooldowns(cooldowns);
+        }
+
+        function formatCommunityCooldownTime(milliseconds) {
+            const totalSeconds = Math.max(1, Math.ceil(Number(milliseconds) / 1000));
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function formatCommunityCooldownMessage(template, milliseconds) {
+            return String(template || '').replace('{time}', formatCommunityCooldownTime(milliseconds));
+        }
+
+        function guardCommunityCooldown(type, user, durationMs, messageTemplate, statusTarget = 'feed') {
+            const remaining = getCommunityCooldownRemaining(type, user);
+            if (remaining <= 0) return true;
+            const message = formatCommunityCooldownMessage(messageTemplate, remaining);
+            if (statusTarget === 'compose') {
+                setCommunityComposeStatus(message, 'error');
+            } else {
+                setCommunityStatus(message, 'error');
+            }
+            return false;
+        }
+
         function normalizeCommunityPost(row) {
             const accountId = row.author_account_id || row.account_id || null;
             const role = row.author_role || getCommunityAuthorRole(accountId, row.author_email);
@@ -9309,9 +10001,13 @@ function normalizeNickname(value) {
                 created_at: row.created_at || new Date().toISOString(),
                 updated_at: row.updated_at || row.created_at || new Date().toISOString(),
                 likes_count: Math.max(0, Number(row.likes_count) || 0),
+                dislikes_count: Math.max(0, Number(row.dislikes_count) || 0),
                 comments_count: Math.max(0, Number(row.comments_count) || 0),
                 likedBy: Array.isArray(row.likedBy) ? row.likedBy.map(String) : [],
-                my_liked: !!row.my_liked || !!(getCommunityUser() && Array.isArray(row.likedBy) && row.likedBy.map(String).includes(String(getCommunityUser().id))),
+                dislikedBy: Array.isArray(row.dislikedBy) ? row.dislikedBy.map(String) : [],
+                my_reaction: Number(row.my_reaction) || 0,
+                my_liked: !!row.my_liked || Number(row.my_reaction) > 0 || !!(getCommunityUser() && Array.isArray(row.likedBy) && row.likedBy.map(String).includes(String(getCommunityUser().id))),
+                my_disliked: !!row.my_disliked || Number(row.my_reaction) < 0 || !!(getCommunityUser() && Array.isArray(row.dislikedBy) && row.dislikedBy.map(String).includes(String(getCommunityUser().id))),
                 comments: Array.isArray(row.comments) ? row.comments.map(normalizeCommunityComment) : []
             };
         }
@@ -9357,17 +10053,68 @@ function normalizeNickname(value) {
         function filterCommunityLocalPosts(posts) {
             const user = getCommunityUser();
             const query = communitySearchQuery.toLowerCase();
+            const targetProfileId = communityProfileTarget && communityProfileTarget.id ? String(communityProfileTarget.id) : '';
+            const targetAccountId = communityProfileTarget && communityProfileTarget.account_id ? Number(communityProfileTarget.account_id) : null;
             return sortCommunityPosts(posts).filter(post => {
                 if (post.hidden) return false;
                 if (communityFilter === 'mine' && (!user || post.author_id !== user.id)) return false;
+                if (communityProfileTarget) {
+                    const sameAuthor = targetProfileId && String(post.author_id) === targetProfileId;
+                    const sameAccount = targetAccountId && Number(post.author_account_id) === targetAccountId;
+                    if (!sameAuthor && !sameAccount) return false;
+                }
                 if (!query) return true;
                 return `${post.title} ${post.description} ${post.username}`.toLowerCase().includes(query);
+            });
+        }
+
+        function normalizeCommunityProfile(row) {
+            return {
+                id: String(row && row.id ? row.id : ''),
+                account_id: row && row.account_id ? Number(row.account_id) : null,
+                nickname: normalizeNickname(row && (row.nickname || row.username)) || 'Player',
+                description: normalizeDescription(row && row.description)
+            };
+        }
+
+        function getCommunityLocalProfiles() {
+            const profiles = new Map();
+            readCommunityLocalPosts().forEach(post => {
+                const key = post.author_id || `account-${post.author_account_id || post.username}`;
+                if (!key || profiles.has(key)) return;
+                profiles.set(key, normalizeCommunityProfile({
+                    id: post.author_id || key,
+                    account_id: post.author_account_id,
+                    nickname: post.username,
+                    description: ''
+                }));
+            });
+
+            const currentProfile = getCommunityProfile();
+            if (currentProfile && currentProfile.id) {
+                profiles.set(String(currentProfile.id), normalizeCommunityProfile(currentProfile));
+            }
+            return Array.from(profiles.values()).sort((a, b) => Number(a.account_id || 999999) - Number(b.account_id || 999999));
+        }
+
+        function filterCommunityProfiles(profiles) {
+            const query = communitySearchQuery.toLowerCase();
+            const idQuery = query.replace(/^#/, '').trim();
+            return (profiles || []).filter(profile => {
+                if (!query) return true;
+                if (/^\d+$/.test(idQuery) && Number(profile.account_id) === Number(idQuery)) return true;
+                return `${profile.nickname} #${profile.account_id || ''}`.toLowerCase().includes(query);
             });
         }
 
         function isCommunitySetupError(error) {
             const message = getErrorText(error);
             return message.includes('community_posts') || message.includes('community_comments') || message.includes('community_likes') || message.includes('relation') || message.includes('does not exist');
+        }
+
+        function isCommunityReactionColumnError(error) {
+            const message = getErrorText(error);
+            return message.includes('reaction') && (message.includes('column') || message.includes('schema cache') || message.includes('does not exist'));
         }
 
         function getCommunityErrorMessage(error) {
@@ -9383,10 +10130,17 @@ function normalizeNickname(value) {
         }
 
         function updateCommunityFilterTabs() {
-            ['all', 'mine'].forEach(filter => {
+            const strings = getAuthStrings();
+            ['all', 'mine', 'profiles'].forEach(filter => {
                 const button = document.getElementById(`community-filter-${filter}`);
-                if (button) button.classList.toggle('active', communityFilter === filter);
+                if (button) button.classList.toggle('active', communityFilter === filter || (filter === 'profiles' && !!communityProfileTarget));
             });
+            const input = document.getElementById('community-search-input');
+            if (input) {
+                const key = communityFilter === 'profiles' && !communityProfileTarget ? 'communityProfileSearchPlaceholder' : 'communitySearchPlaceholder';
+                input.setAttribute('data-i18n-placeholder', key);
+                input.placeholder = strings[key] || strings.communitySearchPlaceholder;
+            }
         }
 
         function renderCommunityPlaceholders() {
@@ -9507,10 +10261,26 @@ function normalizeNickname(value) {
             if (!client || ids.length === 0) return posts;
 
             try {
-                const { data: likes, error: likesError } = await client
+                let likes = [];
+                let likesError = null;
+                const reactionSelect = communityReactionColumnAvailable === false ? 'post_id, user_id' : 'post_id, user_id, reaction';
+                const likesResult = await client
                     .from('community_likes')
-                    .select('post_id, user_id')
+                    .select(reactionSelect)
                     .in('post_id', ids);
+                likes = likesResult.data || [];
+                likesError = likesResult.error;
+                if (likesError && communityReactionColumnAvailable !== false && isCommunityReactionColumnError(likesError)) {
+                    communityReactionColumnAvailable = false;
+                    const fallbackLikes = await client
+                        .from('community_likes')
+                        .select('post_id, user_id')
+                        .in('post_id', ids);
+                    likes = fallbackLikes.data || [];
+                    likesError = fallbackLikes.error;
+                } else if (!likesError) {
+                    communityReactionColumnAvailable = reactionSelect.includes('reaction');
+                }
                 if (likesError) throw likesError;
 
                 const { data: comments, error: commentsError } = await client
@@ -9523,9 +10293,11 @@ function normalizeNickname(value) {
                 const likesByPost = {};
                 (likes || []).forEach(like => {
                     const postId = String(like.post_id);
-                    if (!likesByPost[postId]) likesByPost[postId] = { count: 0, myLiked: false };
-                    likesByPost[postId].count += 1;
-                    if (currentUserId && like.user_id === currentUserId) likesByPost[postId].myLiked = true;
+                    const reaction = communityReactionColumnAvailable === false ? 1 : (Number(like.reaction) < 0 ? -1 : 1);
+                    if (!likesByPost[postId]) likesByPost[postId] = { likes: 0, dislikes: 0, myReaction: 0 };
+                    if (reaction < 0) likesByPost[postId].dislikes += 1;
+                    else likesByPost[postId].likes += 1;
+                    if (currentUserId && like.user_id === currentUserId) likesByPost[postId].myReaction = reaction;
                 });
 
                 const commentsByPost = {};
@@ -9535,8 +10307,11 @@ function normalizeNickname(value) {
                 });
 
                 return posts.map(post => Object.assign({}, post, {
-                    likes_count: likesByPost[post.id] ? likesByPost[post.id].count : post.likes_count,
-                    my_liked: likesByPost[post.id] ? likesByPost[post.id].myLiked : false,
+                    likes_count: likesByPost[post.id] ? likesByPost[post.id].likes : post.likes_count,
+                    dislikes_count: likesByPost[post.id] ? likesByPost[post.id].dislikes : post.dislikes_count,
+                    my_reaction: likesByPost[post.id] ? likesByPost[post.id].myReaction : 0,
+                    my_liked: likesByPost[post.id] ? likesByPost[post.id].myReaction > 0 : false,
+                    my_disliked: likesByPost[post.id] ? likesByPost[post.id].myReaction < 0 : false,
                     comments_count: commentsByPost[post.id] ? commentsByPost[post.id].length : post.comments_count,
                     comments: commentsByPost[post.id] || []
                 }));
@@ -9545,7 +10320,63 @@ function normalizeNickname(value) {
             }
         }
 
+        async function loadCommunityProfiles() {
+            const strings = getAuthStrings();
+            const client = getSupabaseClient();
+            const requestId = ++communityRequestId;
+            communityLoading = true;
+            communityHasMore = false;
+            communityProfileTarget = null;
+            communityDetailPostId = null;
+            updateCommunityFilterTabs();
+            renderCommunityPlaceholders();
+            setCommunityStatus(strings.communityProfilesLoading);
+
+            if (!client || communityUsingLocalFallback) {
+                communityProfileResults = filterCommunityProfiles(getCommunityLocalProfiles());
+                communityLoading = false;
+                renderCommunityPosts();
+                setCommunityStatus(communityProfileResults.length ? '' : strings.communityProfileEmpty);
+                return;
+            }
+
+            try {
+                let request = client
+                    .from('profiles')
+                    .select('id, account_id, nickname, description')
+                    .order('account_id', { ascending: true })
+                    .limit(60);
+
+                const query = communitySearchQuery.trim();
+                const idQuery = query.replace(/^#/, '').trim();
+                if (query && /^\d+$/.test(idQuery)) {
+                    request = request.eq('account_id', Number(idQuery));
+                } else if (query) {
+                    request = request.ilike('nickname', `%${query}%`);
+                }
+
+                const { data, error } = await request;
+                if (error) throw error;
+                if (requestId !== communityRequestId) return;
+
+                communityProfileResults = (data || []).map(normalizeCommunityProfile);
+                communityLoading = false;
+                renderCommunityPosts();
+                setCommunityStatus(communityProfileResults.length ? '' : strings.communityProfileEmpty);
+            } catch (error) {
+                if (requestId !== communityRequestId) return;
+                communityProfileResults = filterCommunityProfiles(getCommunityLocalProfiles());
+                communityLoading = false;
+                renderCommunityPosts();
+                setCommunityStatus(getProfileSearchErrorMessage(error, strings, strings.communityProfileEmpty), 'error');
+            }
+        }
+
         async function loadCommunityPosts({ append = false } = {}) {
+            if (communityFilter === 'profiles' && !communityProfileTarget) {
+                return loadCommunityProfiles();
+            }
+
             const strings = getAuthStrings();
             const client = getSupabaseClient();
             const requestId = ++communityRequestId;
@@ -9586,6 +10417,10 @@ function normalizeNickname(value) {
                     query = query.eq('author_id', user.id);
                 }
 
+                if (communityProfileTarget) {
+                    query = query.eq('author_id', communityProfileTarget.id);
+                }
+
                 if (communitySearchQuery) {
                     const safeQuery = communitySearchQuery.replace(/[%,()]/g, ' ').trim();
                     if (safeQuery) {
@@ -9619,6 +10454,7 @@ function normalizeNickname(value) {
 
         function refreshCommunityFeed(reset = true) {
             if (reset) communityPage = 0;
+            if (reset) communityDetailPostId = null;
             communitySearchQuery = getCommunitySearchQuery();
             loadCommunityPosts({ append: false });
         }
@@ -9630,14 +10466,18 @@ function normalizeNickname(value) {
         }
 
         function setCommunityFilter(filter) {
-            communityFilter = ['all', 'mine'].includes(filter) ? filter : 'all';
+            communityFilter = ['all', 'mine', 'profiles'].includes(filter) ? filter : 'all';
             communityPage = 0;
+            communityDetailPostId = null;
+            communityProfileTarget = null;
+            communityProfileResults = [];
             refreshCommunityFeed(false);
         }
 
         function handleCommunitySearchSubmit(event) {
             event.preventDefault();
             communityPage = 0;
+            communityDetailPostId = null;
             refreshCommunityFeed(false);
         }
 
@@ -9657,6 +10497,223 @@ function normalizeNickname(value) {
             return button;
         }
 
+        function createCommunityReactionButton(post, reactionValue) {
+            const strings = getAuthStrings();
+            const isLike = reactionValue > 0;
+            const active = isLike ? post.my_liked : post.my_disliked;
+            const count = isLike ? post.likes_count : post.dislikes_count;
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `community-reaction-button interactive${active ? ' active' : ''}`;
+            button.setAttribute('aria-label', isLike ? strings.profileSearchLike : strings.profileSearchDislike);
+            button.append(
+                createSvgIcon(isLike
+                    ? '<path d="M7 10v11"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/>'
+                    : '<path d="M17 14V3"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z"/>'
+                ),
+                document.createTextNode(String(Math.max(0, Number(count) || 0)))
+            );
+            button.addEventListener('click', () => toggleCommunityReaction(post.id, reactionValue));
+            return button;
+        }
+
+        function createCommunityCommentCount(post) {
+            const pill = document.createElement('span');
+            pill.className = 'community-count-pill';
+            pill.append(
+                createSvgIcon('<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>'),
+                document.createTextNode(String(Math.max(0, Number(post.comments_count) || 0)))
+            );
+            return pill;
+        }
+
+        function getSnapshotObjectBounds(objects) {
+            return (objects || []).reduce((acc, object) => {
+                const size = getBuildLibraryPieceSize(object);
+                const x = Number(object.x) || 0;
+                const y = Number(object.y) || 0;
+                acc.minX = Math.min(acc.minX, x - size.width / 2);
+                acc.maxX = Math.max(acc.maxX, x + size.width / 2);
+                acc.minY = Math.min(acc.minY, y - size.height / 2);
+                acc.maxY = Math.max(acc.maxY, y + size.height / 2);
+                return acc;
+            }, { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+        }
+
+        function getPreviewCropForObjects(objects, aspect = COMMUNITY_BANNER_ASPECT, paddingFactor = 1.22, minWidth = 220) {
+            const bounds = getSnapshotObjectBounds(objects);
+            if (!Number.isFinite(bounds.minX) || !Number.isFinite(bounds.maxX) || !Number.isFinite(bounds.minY) || !Number.isFinite(bounds.maxY)) {
+                return { x: 0, y: 0, w: minWidth, h: minWidth / aspect, z: 1 };
+            }
+
+            const contentWidth = Math.max(1, bounds.maxX - bounds.minX);
+            const contentHeight = Math.max(1, bounds.maxY - bounds.minY);
+            let width = Math.max(contentWidth * paddingFactor, contentHeight * aspect * paddingFactor, minWidth);
+            let height = width / aspect;
+            if (height < contentHeight * paddingFactor) {
+                height = contentHeight * paddingFactor;
+                width = height * aspect;
+            }
+
+            return {
+                x: (bounds.minX + bounds.maxX) / 2,
+                y: (bounds.minY + bounds.maxY) / 2,
+                w: width,
+                h: height,
+                z: 1
+            };
+        }
+
+        function getCommunityDefaultBannerCrop(snapshot) {
+            const objects = snapshot && Array.isArray(snapshot.objects) ? snapshot.objects : [];
+            const viewport = snapshot && snapshot.viewport ? snapshot.viewport : {};
+            const fallbackWidth = Number(viewport.width) || window.innerWidth || 900;
+            const fallbackHeight = Number(viewport.height) || window.innerHeight || 520;
+            if (objects.length === 0) {
+                const width = Math.min(fallbackWidth, 520);
+                return { x: fallbackWidth / 2, y: fallbackHeight / 2, w: width, h: width / COMMUNITY_BANNER_ASPECT, z: 1 };
+            }
+
+            return getPreviewCropForObjects(objects, COMMUNITY_BANNER_ASPECT, 1.35, 260);
+        }
+
+        function getCommunityBannerCrop(snapshot) {
+            const banner = normalizeBuildSaveBanner(snapshot && snapshot.banner);
+            return banner || getCommunityDefaultBannerCrop(snapshot);
+        }
+
+        function renderCommunityBuildBanner(post) {
+            const strings = getAuthStrings();
+            const banner = document.createElement('div');
+            banner.className = 'community-build-banner';
+            let snapshot = null;
+            try {
+                snapshot = decodeBuildSaveCode(post.build_code);
+            } catch (error) {
+                banner.classList.add('empty');
+                banner.textContent = strings.communityBannerInvalid;
+                return banner;
+            }
+
+            const objects = snapshot.objects || [];
+            if (objects.length === 0) {
+                banner.classList.add('empty');
+                banner.textContent = strings.communityBannerInvalid;
+                return banner;
+            }
+
+            const crop = getCommunityBannerCrop(snapshot);
+            objects.slice(0, 36).forEach(object => {
+                const piece = document.createElement('span');
+                const texture = getBuildLibraryPieceTexture(object);
+                const size = getBuildLibraryPieceSize(object);
+                const left = 50 + (((Number(object.x) || 0) - crop.x) / crop.w) * 100;
+                const top = 50 + (((Number(object.y) || 0) - crop.y) / crop.h) * 100;
+                const width = clamp((size.width / crop.w) * 100, 1.5, 120);
+                const height = clamp((size.height / crop.h) * 100, 3, 120);
+                piece.className = `build-library-piece ${object.type || 'block'}${texture ? ' textured' : ''}`;
+                piece.style.setProperty('--preview-left', `${left.toFixed(2)}%`);
+                piece.style.setProperty('--preview-top', `${top.toFixed(2)}%`);
+                piece.style.setProperty('--preview-width', `${width.toFixed(2)}%`);
+                piece.style.setProperty('--preview-height', `${height.toFixed(2)}%`);
+                piece.style.setProperty('--preview-rotate', `${((Number(object.angle) || 0) * 180 / Math.PI).toFixed(2)}deg`);
+                piece.style.setProperty('--preview-color', getBuildLibraryPieceColor(object));
+                if (texture) {
+                    piece.style.setProperty('--preview-texture', `url("${texture}")`);
+                }
+                banner.appendChild(piece);
+            });
+
+            return banner;
+        }
+
+        function renderCommunityProfileCard(profile) {
+            const strings = getAuthStrings();
+            const card = document.createElement('article');
+            card.className = 'profile-search-card community-profile-card';
+
+            const head = document.createElement('div');
+            head.className = 'profile-search-head';
+            const nameLine = document.createElement('div');
+            nameLine.className = 'auth-profile-line';
+
+            const name = document.createElement('span');
+            name.className = 'profile-search-name';
+            name.textContent = normalizeNickname(profile.nickname) || 'Player';
+
+            const accountBadge = document.createElement('span');
+            accountBadge.className = 'auth-account-id';
+            accountBadge.textContent = formatAccountId(profile.account_id);
+
+            nameLine.append(name, accountBadge);
+            if (Number(profile.account_id) === 1) {
+                const adminBadge = document.createElement('span');
+                adminBadge.className = 'profile-admin-badge';
+                adminBadge.textContent = strings.profileAdminBadge;
+                nameLine.appendChild(adminBadge);
+            }
+            head.appendChild(nameLine);
+
+            const description = document.createElement('div');
+            description.className = 'profile-search-description open';
+            description.textContent = normalizeDescription(profile.description) || strings.profileSearchNoDescription;
+
+            const actions = document.createElement('div');
+            actions.className = 'profile-search-actions';
+            actions.appendChild(createCommunityActionButton(strings.communityViewProfilePosts, () => openCommunityProfilePosts(profile)));
+
+            card.append(head, description, actions);
+            return card;
+        }
+
+        function renderCommunityProfileResults(feed, loadMore) {
+            if (loadMore) loadMore.style.display = 'none';
+            if (communityProfileResults.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'community-empty-card';
+                empty.textContent = getAuthStrings().communityProfileEmpty;
+                feed.appendChild(empty);
+                return;
+            }
+
+            communityProfileResults.forEach(profile => {
+                feed.appendChild(renderCommunityProfileCard(profile));
+            });
+        }
+
+        function renderCommunityProfileContext(feed) {
+            if (!communityProfileTarget) return;
+            const strings = getAuthStrings();
+            const context = document.createElement('div');
+            context.className = 'community-profile-context';
+
+            const title = document.createElement('div');
+            title.className = 'community-profile-context-title';
+            title.textContent = `${strings.communityProfilePostsTitle}: ${normalizeNickname(communityProfileTarget.nickname) || 'Player'} ${formatAccountId(communityProfileTarget.account_id)}`;
+
+            const back = createCommunityActionButton(strings.communityBackToProfiles, closeCommunityProfilePosts);
+            context.append(title, back);
+            feed.appendChild(context);
+        }
+
+        function openCommunityProfilePosts(profile) {
+            communityFilter = 'profiles';
+            communityProfileTarget = normalizeCommunityProfile(profile);
+            communityPage = 0;
+            communityDetailPostId = null;
+            const input = document.getElementById('community-search-input');
+            if (input) input.value = '';
+            communitySearchQuery = '';
+            loadCommunityPosts({ append: false });
+        }
+
+        function closeCommunityProfilePosts() {
+            communityProfileTarget = null;
+            communityPage = 0;
+            communityDetailPostId = null;
+            loadCommunityPosts({ append: false });
+        }
+
         function renderCommunityPosts() {
             const feed = document.getElementById('community-feed');
             const loadMore = document.getElementById('community-load-more');
@@ -9664,10 +10721,27 @@ function normalizeNickname(value) {
             if (!feed) return;
             feed.innerHTML = '';
 
+            if (communityFilter === 'profiles' && !communityProfileTarget) {
+                renderCommunityProfileResults(feed, loadMore);
+                return;
+            }
+
+            if (communityDetailPostId) {
+                const post = getCommunityPostById(communityDetailPostId);
+                if (post) {
+                    feed.appendChild(renderCommunityPostDetail(post));
+                    if (loadMore) loadMore.style.display = 'none';
+                    return;
+                }
+                communityDetailPostId = null;
+            }
+
+            renderCommunityProfileContext(feed);
+
             if (communityPosts.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'community-empty-card';
-                empty.textContent = strings.communityEmpty;
+                empty.textContent = communityProfileTarget ? strings.communityProfilePostsEmpty : strings.communityEmpty;
                 feed.appendChild(empty);
             } else {
                 communityPosts.forEach(post => feed.appendChild(renderCommunityPostCard(post)));
@@ -9679,13 +10753,14 @@ function normalizeNickname(value) {
             }
         }
 
-        function renderCommunityPostCard(post) {
+        function renderCommunityPostCard(post, options = {}) {
             const strings = getAuthStrings();
             const isOwner = isCommunityPostOwner(post);
             const isMod = isCommunityMod();
+            const isDetail = !!options.detail;
             const card = document.createElement('article');
             card.id = `community-post-${post.id}`;
-            card.className = `community-card${post.pinned ? ' pinned' : ''}`;
+            card.className = `community-card${post.pinned ? ' pinned' : ''}${isDetail ? ' community-detail-card' : ''}`;
 
             const head = document.createElement('div');
             head.className = 'community-card-head';
@@ -9712,32 +10787,29 @@ function normalizeNickname(value) {
             description.className = 'community-card-description';
             description.textContent = post.description;
 
-            const codeBox = document.createElement('div');
-            codeBox.className = 'community-code-box';
-            const codeLabel = document.createElement('div');
-            codeLabel.className = 'community-code-label';
-            codeLabel.textContent = strings.communityCodeLabel;
-            const code = document.createElement('div');
-            code.className = 'community-code';
-            code.textContent = post.build_code;
-            codeBox.append(codeLabel, code);
+            const buildBanner = renderCommunityBuildBanner(post);
 
             const actions = document.createElement('div');
             actions.className = 'community-card-actions';
             const leftActions = document.createElement('div');
-            leftActions.className = 'community-card-actions';
+            leftActions.className = 'community-reaction-row';
             const likeButton = createCommunityActionButton(`${post.my_liked ? '♥' : '♡'} ${post.likes_count} ${strings.communityLikesLabel}`, () => toggleCommunityLike(post.id), post.my_liked ? 'active' : '');
             const commentCount = document.createElement('span');
             commentCount.className = 'community-count';
             commentCount.textContent = `${post.comments_count} ${strings.communityCommentsLabel}`;
             leftActions.append(likeButton, commentCount);
+            leftActions.replaceChildren(
+                createCommunityReactionButton(post, 1),
+                createCommunityReactionButton(post, -1),
+                createCommunityCommentCount(post)
+            );
 
             const rightActions = document.createElement('div');
-            rightActions.className = 'community-card-actions';
-            rightActions.append(
-                createCommunityActionButton(strings.communityLoadBuild, () => loadCommunityBuild(post.id)),
-                createCommunityActionButton(strings.communityCopyCode, () => copyCommunityPostCode(post.id))
-            );
+            rightActions.className = 'community-command-row';
+            rightActions.append(createCommunityActionButton(strings.communityLoadBuild, () => loadCommunityBuild(post.id)));
+            if (!isDetail) {
+                rightActions.prepend(createCommunityActionButton(strings.communityViewPost, () => openCommunityPostDetail(post.id)));
+            }
             if (isOwner) {
                 rightActions.append(
                     createCommunityActionButton(strings.communityEditPost, () => beginEditCommunityPost(post.id)),
@@ -9746,8 +10818,10 @@ function normalizeNickname(value) {
             }
             actions.append(leftActions, rightActions);
 
-            const comments = renderCommunityComments(post);
-            card.append(head, title, description, codeBox, actions, comments);
+            card.append(head, title, description, buildBanner, actions);
+            if (isDetail) {
+                card.appendChild(renderCommunityComments(post, { full: true }));
+            }
 
             if (isMod) {
                 const admin = document.createElement('div');
@@ -9764,11 +10838,40 @@ function normalizeNickname(value) {
             return card;
         }
 
-        function renderCommunityComments(post) {
+        function renderCommunityPostDetail(post) {
+            const strings = getAuthStrings();
+            const wrap = document.createElement('div');
+            wrap.className = 'community-detail-wrap';
+
+            const nav = document.createElement('div');
+            nav.className = 'community-detail-nav';
+            const back = createCommunityActionButton(strings.communityBackToFeed, closeCommunityPostDetail);
+            const title = document.createElement('div');
+            title.className = 'community-title';
+            title.textContent = strings.communityThreadTitle;
+            nav.append(back, title);
+
+            wrap.append(nav, renderCommunityPostCard(post, { detail: true }));
+            return wrap;
+        }
+
+        function openCommunityPostDetail(postId) {
+            communityDetailPostId = String(postId);
+            renderCommunityPosts();
+            const feed = document.getElementById('community-feed');
+            if (feed) feed.scrollTop = 0;
+        }
+
+        function closeCommunityPostDetail() {
+            communityDetailPostId = null;
+            renderCommunityPosts();
+        }
+
+        function renderCommunityComments(post, options = {}) {
             const strings = getAuthStrings();
             const wrap = document.createElement('div');
             wrap.className = 'community-comments';
-            const comments = (post.comments || []).slice(-6);
+            const comments = options.full ? (post.comments || []) : (post.comments || []).slice(-6);
             comments.forEach(comment => {
                 const row = document.createElement('div');
                 row.className = 'community-comment';
@@ -9820,17 +10923,175 @@ function normalizeNickname(value) {
             return wrap;
         }
 
+        function getCommunityBannerViewport() {
+            return {
+                width: window.innerWidth || document.documentElement.clientWidth || 800,
+                height: window.innerHeight || document.documentElement.clientHeight || 600
+            };
+        }
+
+        function getCommunityBannerFrameSize() {
+            const viewport = getCommunityBannerViewport();
+            const zoom = communityBannerDraft ? communityBannerDraft.zoom : 1;
+            const maxWidth = Math.max(COMMUNITY_BANNER_MIN_WIDTH, viewport.width - 36);
+            const width = clamp(COMMUNITY_BANNER_BASE_WIDTH / zoom, COMMUNITY_BANNER_MIN_WIDTH, maxWidth);
+            const maxHeight = Math.max(58, viewport.height - 170);
+            const height = Math.min(width / COMMUNITY_BANNER_ASPECT, maxHeight);
+            return { width, height };
+        }
+
+        function clampCommunityBannerFrame() {
+            if (!communityBannerDraft) return;
+            const viewport = getCommunityBannerViewport();
+            const size = getCommunityBannerFrameSize();
+            const margin = 12;
+            const topLimit = Math.max(64, margin + (window.visualViewport ? window.visualViewport.offsetTop : 0));
+            const bottomLimit = Math.max(topLimit + size.height, viewport.height - 96);
+            communityBannerDraft.centerX = clamp(communityBannerDraft.centerX, margin + size.width / 2, viewport.width - margin - size.width / 2);
+            communityBannerDraft.centerY = clamp(communityBannerDraft.centerY, topLimit + size.height / 2, bottomLimit - size.height / 2);
+        }
+
+        function applyCommunityBannerFrame() {
+            const frame = document.getElementById('community-banner-frame');
+            if (!frame || !communityBannerDraft) return;
+            clampCommunityBannerFrame();
+            const size = getCommunityBannerFrameSize();
+            frame.style.width = `${size.width.toFixed(1)}px`;
+            frame.style.height = `${size.height.toFixed(1)}px`;
+            frame.style.left = `${(communityBannerDraft.centerX - size.width / 2).toFixed(1)}px`;
+            frame.style.top = `${(communityBannerDraft.centerY - size.height / 2).toFixed(1)}px`;
+        }
+
+        function setCommunityBannerPickerStatus(message = '', type = '') {
+            const status = document.getElementById('community-banner-status');
+            if (!status) return;
+            status.textContent = message;
+            status.className = `community-banner-status ${type}`.trim();
+        }
+
+        function beginCommunityBannerSelection(draft) {
+            const strings = getAuthStrings();
+            communityBannerDraft = Object.assign({}, draft, {
+                zoom: 1,
+                centerX: getCommunityDefaultBannerCrop(draft.snapshot).x,
+                centerY: getCommunityDefaultBannerCrop(draft.snapshot).y,
+                submitting: false
+            });
+            closeLangMenu();
+            closeThemeMenu();
+            closeAuthPanel();
+            closeChangelogPanel();
+            startBuildingExperience();
+            loadBuildSnapshot(draft.snapshot, { skipConfirm: true });
+            const picker = document.getElementById('community-banner-picker');
+            if (picker) {
+                picker.classList.add('open');
+                picker.setAttribute('aria-hidden', 'false');
+            }
+            setCommunityBannerPickerStatus(strings.communityBannerSelecting);
+            applyCommunityBannerFrame();
+        }
+
+        function closeCommunityBannerPicker(clearDraft = true) {
+            const picker = document.getElementById('community-banner-picker');
+            if (picker) {
+                picker.classList.remove('open');
+                picker.setAttribute('aria-hidden', 'true');
+            }
+            communityBannerDrag = null;
+            setCommunityBannerPickerStatus('');
+            if (clearDraft) communityBannerDraft = null;
+        }
+
+        function cancelCommunityBannerSelection() {
+            closeCommunityBannerPicker(true);
+            returnToFirstPage();
+            setQuestionZoneTab('community');
+            updateCommunityComposerMode();
+        }
+
+        function beginCommunityBannerDrag(event) {
+            if (!communityBannerDraft) return;
+            event.preventDefault();
+            const frame = document.getElementById('community-banner-frame');
+            if (frame && frame.setPointerCapture && event.pointerId !== undefined) {
+                try { frame.setPointerCapture(event.pointerId); } catch (error) {}
+            }
+            communityBannerDrag = {
+                pointerId: event.pointerId,
+                startX: event.clientX,
+                startY: event.clientY,
+                centerX: communityBannerDraft.centerX,
+                centerY: communityBannerDraft.centerY
+            };
+        }
+
+        function moveCommunityBannerDrag(event) {
+            if (!communityBannerDraft || !communityBannerDrag) return;
+            if (communityBannerDrag.pointerId !== undefined && event.pointerId !== communityBannerDrag.pointerId) return;
+            communityBannerDraft.centerX = communityBannerDrag.centerX + (event.clientX - communityBannerDrag.startX);
+            communityBannerDraft.centerY = communityBannerDrag.centerY + (event.clientY - communityBannerDrag.startY);
+            applyCommunityBannerFrame();
+        }
+
+        function endCommunityBannerDrag(event) {
+            if (!communityBannerDrag) return;
+            const frame = document.getElementById('community-banner-frame');
+            if (frame && frame.releasePointerCapture && event && event.pointerId !== undefined) {
+                try { frame.releasePointerCapture(event.pointerId); } catch (error) {}
+            }
+            communityBannerDrag = null;
+        }
+
+        function adjustCommunityBannerZoom(direction) {
+            if (!communityBannerDraft) return;
+            const step = Number(direction) > 0 ? 0.18 : -0.18;
+            communityBannerDraft.zoom = clamp((communityBannerDraft.zoom || 1) + step, COMMUNITY_BANNER_ZOOM_MIN, COMMUNITY_BANNER_ZOOM_MAX);
+            applyCommunityBannerFrame();
+        }
+
+        async function saveCommunityBannerSelection() {
+            const strings = getAuthStrings();
+            if (!communityBannerDraft || communityBannerDraft.submitting) return;
+            const frame = document.getElementById('community-banner-frame');
+            if (!frame) return;
+            const rect = frame.getBoundingClientRect();
+            communityBannerDraft.submitting = true;
+            setCommunityBannerPickerStatus(strings.communityBannerSaving);
+            const snapshot = Object.assign({}, communityBannerDraft.snapshot, {
+                banner: {
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2,
+                    w: rect.width,
+                    h: rect.height,
+                    z: communityBannerDraft.zoom || 1
+                }
+            });
+            communityBannerDraft.payload.build_code = encodeBuildSave(snapshot);
+            communityBannerDraft.payload.updated_at = new Date().toISOString();
+            const draft = communityBannerDraft;
+            const saved = await commitCommunityPostPayload(draft);
+            closeCommunityBannerPicker(true);
+            returnToFirstPage();
+            setQuestionZoneTab('community');
+            if (saved) setCommunityStatus(draft.isEditingPost ? strings.communityPostUpdated : strings.communityPostCreated, 'success');
+        }
+
         async function handleCommunityPostSubmit(event) {
             event.preventDefault();
             const strings = getAuthStrings();
             const user = requireCommunityUser();
-            if (!user || !canUseCommunityAction('post')) return;
+            if (!user || !canUseCommunityAction('post-submit')) return;
+            const isEditingPost = !!communityEditingPostId;
+            const editPostId = communityEditingPostId;
+            if (!isEditingPost && !guardCommunityCooldown('post', user, COMMUNITY_POST_COOLDOWN_MS, strings.communityPostCooldown, 'compose')) return;
             const title = sanitizeCommunityText(document.getElementById('community-post-title')?.value, 80);
             const description = sanitizeCommunityText(document.getElementById('community-post-description')?.value, 700);
             const buildCode = sanitizeCommunityCode(document.getElementById('community-post-code')?.value);
+            let snapshot = null;
 
             try {
-                decodeBuildSaveCode(buildCode);
+                snapshot = decodeBuildSaveCode(buildCode);
             } catch (error) {
                 setCommunityComposeStatus(strings.communityInvalidPost, 'error');
                 return;
@@ -9852,14 +11113,30 @@ function normalizeNickname(value) {
                 updated_at: new Date().toISOString()
             };
 
+            beginCommunityBannerSelection({
+                payload,
+                snapshot,
+                user,
+                isEditingPost,
+                editPostId
+            });
+        }
+
+        async function commitCommunityPostPayload(draft) {
+            const strings = getAuthStrings();
+            const payload = draft.payload;
+            const isEditingPost = !!draft.isEditingPost;
+            const editPostId = draft.editPostId;
+            const user = draft.user || getCommunityUser();
+
             try {
                 if (communityUsingLocalFallback || !getSupabaseClient()) {
-                    saveCommunityPostLocal(payload);
-                } else if (communityEditingPostId) {
+                    saveCommunityPostLocal(payload, editPostId);
+                } else if (isEditingPost) {
                     const { error } = await getSupabaseClient()
                         .from('community_posts')
-                        .update({ title, description, build_code: buildCode, updated_at: payload.updated_at })
-                        .eq('id', communityEditingPostId)
+                        .update({ title: payload.title, description: payload.description, build_code: payload.build_code, updated_at: payload.updated_at })
+                        .eq('id', editPostId)
                         .eq('author_id', user.id);
                     if (error) throw error;
                 } else {
@@ -9874,22 +11151,27 @@ function normalizeNickname(value) {
                         }));
                     if (error) throw error;
                 }
-                setCommunityComposeStatus(communityEditingPostId ? strings.communityPostUpdated : strings.communityPostCreated, 'success');
+                if (!isEditingPost) setCommunityCooldown('post', user, COMMUNITY_POST_COOLDOWN_MS);
+                const successMessage = isEditingPost ? strings.communityPostUpdated : strings.communityPostCreated;
                 resetCommunityComposer();
+                setCommunityComposeStatus(successMessage, 'success');
                 refreshCommunityFeed(true);
+                return true;
             } catch (error) {
                 communityUsingLocalFallback = true;
-                saveCommunityPostLocal(payload);
+                saveCommunityPostLocal(payload, editPostId);
+                if (!isEditingPost) setCommunityCooldown('post', user, COMMUNITY_POST_COOLDOWN_MS);
                 setCommunityComposeStatus(getCommunityErrorMessage(error), 'error');
                 refreshCommunityFeed(true);
+                return false;
             }
         }
 
-        function saveCommunityPostLocal(payload) {
+        function saveCommunityPostLocal(payload, editPostId = communityEditingPostId) {
             const user = getCommunityUser();
             const posts = readCommunityLocalPosts();
-            if (communityEditingPostId) {
-                const index = posts.findIndex(post => post.id === communityEditingPostId && post.author_id === user.id);
+            if (editPostId) {
+                const index = posts.findIndex(post => post.id === editPostId && post.author_id === user.id);
                 if (index >= 0) {
                     posts[index] = Object.assign({}, posts[index], payload, {
                         id: posts[index].id,
@@ -9902,21 +11184,27 @@ function normalizeNickname(value) {
                     created_at: new Date().toISOString(),
                     comments: [],
                     likedBy: [],
+                    dislikedBy: [],
                     likes_count: 0,
+                    dislikes_count: 0,
                     comments_count: 0,
-                    my_liked: false
+                    my_liked: false,
+                    my_disliked: false,
+                    my_reaction: 0
                 })));
             }
             writeCommunityLocalPosts(posts);
         }
 
-        async function toggleCommunityLike(postId) {
+        async function toggleCommunityReaction(postId, reactionValue = 1) {
             const strings = getAuthStrings();
             const user = requireCommunityUser();
-            if (!user || !canUseCommunityAction(`like-${postId}`)) return;
+            const normalizedReaction = Number(reactionValue) < 0 ? -1 : 1;
+            if (!user || !canUseCommunityAction(`reaction-${postId}`)) return;
             const post = getCommunityPostById(postId);
             if (!post) return;
-            const nextLiked = !post.my_liked;
+            const previousReaction = Number(post.my_reaction) || (post.my_liked ? 1 : (post.my_disliked ? -1 : 0));
+            const nextReaction = previousReaction === normalizedReaction ? 0 : normalizedReaction;
 
             try {
                 if (communityUsingLocalFallback || !getSupabaseClient()) {
@@ -9924,15 +11212,35 @@ function normalizeNickname(value) {
                     const target = posts.find(item => item.id === String(postId));
                     if (target) {
                         const likedBy = new Set(target.likedBy || []);
-                        if (nextLiked) likedBy.add(user.id); else likedBy.delete(user.id);
+                        const dislikedBy = new Set(target.dislikedBy || []);
+                        likedBy.delete(user.id);
+                        dislikedBy.delete(user.id);
+                        if (nextReaction > 0) likedBy.add(user.id);
+                        if (nextReaction < 0) dislikedBy.add(user.id);
                         target.likedBy = Array.from(likedBy);
+                        target.dislikedBy = Array.from(dislikedBy);
                         target.likes_count = target.likedBy.length;
+                        target.dislikes_count = target.dislikedBy.length;
                         writeCommunityLocalPosts(posts);
                     }
-                } else if (nextLiked) {
-                    const { error } = await getSupabaseClient()
+                } else if (nextReaction !== 0) {
+                    const payload = { post_id: postId, user_id: user.id };
+                    if (communityReactionColumnAvailable !== false) payload.reaction = nextReaction;
+                    let { error } = await getSupabaseClient()
                         .from('community_likes')
-                        .upsert({ post_id: postId, user_id: user.id }, { onConflict: 'post_id,user_id' });
+                        .upsert(payload, { onConflict: 'post_id,user_id' });
+
+                    if (error && communityReactionColumnAvailable !== false && isCommunityReactionColumnError(error)) {
+                        communityReactionColumnAvailable = false;
+                        if (nextReaction < 0) {
+                            setCommunityStatus(strings.communityDislikeSetupNeeded, 'error');
+                            return;
+                        }
+                        const fallback = await getSupabaseClient()
+                            .from('community_likes')
+                            .upsert({ post_id: postId, user_id: user.id }, { onConflict: 'post_id,user_id' });
+                        error = fallback.error;
+                    }
                     if (error) throw error;
                 } else {
                     const { error } = await getSupabaseClient()
@@ -9942,8 +11250,13 @@ function normalizeNickname(value) {
                         .eq('user_id', user.id);
                     if (error) throw error;
                 }
-                post.my_liked = nextLiked;
-                post.likes_count = Math.max(0, post.likes_count + (nextLiked ? 1 : -1));
+                if (previousReaction > 0) post.likes_count = Math.max(0, post.likes_count - 1);
+                if (previousReaction < 0) post.dislikes_count = Math.max(0, post.dislikes_count - 1);
+                if (nextReaction > 0) post.likes_count += 1;
+                if (nextReaction < 0) post.dislikes_count += 1;
+                post.my_reaction = nextReaction;
+                post.my_liked = nextReaction > 0;
+                post.my_disliked = nextReaction < 0;
                 renderCommunityPosts();
                 setCommunityStatus(strings.communityLikeSaved, 'success');
             } catch (error) {
@@ -9951,11 +11264,16 @@ function normalizeNickname(value) {
             }
         }
 
+        function toggleCommunityLike(postId) {
+            return toggleCommunityReaction(postId, 1);
+        }
+
         async function handleCommunityCommentSubmit(event, postId, input) {
             event.preventDefault();
             const strings = getAuthStrings();
             const user = requireCommunityUser();
-            if (!user || !canUseCommunityAction(`comment-${postId}`)) return;
+            if (!user || !canUseCommunityAction(`comment-submit-${postId}`)) return;
+            if (!guardCommunityCooldown('comment', user, COMMUNITY_COMMENT_COOLDOWN_MS, strings.communityCommentCooldown, 'feed')) return;
             const post = getCommunityPostById(postId);
             if (!post) return;
             if (post.comments_locked && !isCommunityMod()) {
@@ -9995,6 +11313,7 @@ function normalizeNickname(value) {
                     if (error) throw error;
                 }
                 if (input) input.value = '';
+                setCommunityCooldown('comment', user, COMMUNITY_COMMENT_COOLDOWN_MS);
                 setCommunityStatus(strings.communityCommentAdded, 'success');
                 refreshCommunityFeed(false);
             } catch (error) {
@@ -10103,6 +11422,9 @@ function normalizeNickname(value) {
 
         // Global click to close
         document.addEventListener('click', (e) => {
+            if (!e.target.closest('#theme-toggle-container')) {
+                closeThemeMenu();
+            }
             if (!e.target.closest('#lang-toggle-container')) {
                 closeLangMenu();
             }
@@ -10116,6 +11438,11 @@ function normalizeNickname(value) {
                 closeAuthPanel();
             }
         });
+
+        window.addEventListener('pointermove', moveCommunityBannerDrag, { passive: false });
+        window.addEventListener('pointerup', endCommunityBannerDrag);
+        window.addEventListener('pointercancel', endCommunityBannerDrag);
+        window.addEventListener('resize', applyCommunityBannerFrame);
 
         let terminalInitialized = false;
         let terminalDrag = null;
@@ -11524,6 +12851,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         const DEFAULT_SPAWN_OBJECT_LIMIT = 15;
         const INCREASED_SPAWN_OBJECT_LIMIT = 125;
         let spawnObjectLimit = DEFAULT_SPAWN_OBJECT_LIMIT;
+        const SPAWN_SWORD_TEXTURE = 'sword.png?v=2';
         const SPAWN_SWORD_SIZE = 96;
         const SPAWN_SWORD_LENGTH = Math.hypot(86, 86);
         const SPAWN_SWORD_HITBOXES = [
@@ -11802,7 +13130,7 @@ function buildSwordElement() {
             const element = document.createElement('div');
             element.className = 'spawn-object spawn-sword has-image';
             element.innerHTML = `
-                <img class="spawn-sword-img" src="https://raw.githubusercontent.com/VityaIG/vityaig.github.io/refs/heads/main/sword.png" alt="" draggable="false">
+                <img class="spawn-sword-img" src="${SPAWN_SWORD_TEXTURE}" alt="" draggable="false">
                 <span class="spawn-sword-part spawn-sword-blade"></span>
                 <span class="spawn-sword-part spawn-sword-guard"></span>
                 <span class="spawn-sword-part spawn-sword-grip"></span>
@@ -11976,6 +13304,13 @@ function buildSwordElement() {
                 l: snapshot.limit,
                 vw: snapshot.viewport && snapshot.viewport.width,
                 vh: snapshot.viewport && snapshot.viewport.height,
+                b: snapshot.banner ? {
+                    x: snapshot.banner.x,
+                    y: snapshot.banner.y,
+                    w: snapshot.banner.w,
+                    h: snapshot.banner.h,
+                    z: snapshot.banner.z
+                } : undefined,
                 o: snapshot.objects.map(object => ({
                     t: object.type,
                     c: object.color,
@@ -12012,6 +13347,7 @@ function buildSwordElement() {
                     width: Number(data.vw) || window.innerWidth || 800,
                     height: Number(data.vh) || window.innerHeight || 600
                 },
+                banner: data.b || null,
                 objects: data.o.map(object => ({
                     type: object.t,
                     color: object.c || '',
@@ -12030,6 +13366,21 @@ function buildSwordElement() {
                     editRestitution: object.er === null || object.er === undefined ? null : Number(object.er),
                     customProperties: object.cp || {}
                 }))
+            };
+        }
+
+        function normalizeBuildSaveBanner(banner) {
+            if (!banner || typeof banner !== 'object') return null;
+            const width = clamp(Number(banner.w) || 0, 120, 2400);
+            const height = clamp(Number(banner.h) || 0, 40, 900);
+            const x = Number.isFinite(Number(banner.x)) ? Number(banner.x) : width / 2;
+            const y = Number.isFinite(Number(banner.y)) ? Number(banner.y) : height / 2;
+            return {
+                x: roundSaveNumber(x),
+                y: roundSaveNumber(y),
+                w: roundSaveNumber(width),
+                h: roundSaveNumber(height),
+                z: roundSaveNumber(clamp(Number(banner.z) || 1, 0.55, 2.8), 3)
             };
         }
 
@@ -12059,6 +13410,7 @@ function buildSwordElement() {
                     width: window.innerWidth || 800,
                     height: window.innerHeight || 600
                 },
+                banner: normalizeBuildSaveBanner(snapshot.banner),
                 objects: safeObjects
             };
         }
@@ -12211,11 +13563,20 @@ function buildSwordElement() {
             return SPAWN_BLOCK_COLORS[key] ? SPAWN_BLOCK_COLORS[key].base : '#f8fafc';
         }
 
+        function getBuildLibraryPieceTexture(object) {
+            if (!object) return '';
+            if (object.type === 'sword') return SPAWN_SWORD_TEXTURE;
+            if (object.type === 'door') return SPAWN_DOOR_TEXTURES.bottom;
+            if (object.type !== 'block') return '';
+            const key = object.material === 'glass' ? 'glass' : (object.color || 'red');
+            return SPAWN_BLOCK_COLORS[key] ? SPAWN_BLOCK_COLORS[key].texture : '';
+        }
+
         function getBuildLibraryPieceSize(object) {
             const size = clamp(Number(object && object.sizeMultiplier) || 1, 0.35, 3.2);
-            if (object && object.type === 'sword') return { width: 88 * size, height: 10 * size };
+            if (object && object.type === 'sword') return { width: 58 * size, height: 58 * size };
             if (object && object.type === 'door') return { width: 38 * size, height: 68 * size };
-            return { width: 52 * size, height: 52 * size };
+            return { width: 58 * size, height: 58 * size };
         }
 
         function renderBuildLibraryBanner(snapshot) {
@@ -12224,38 +13585,26 @@ function buildSwordElement() {
             const objects = snapshot && Array.isArray(snapshot.objects) ? snapshot.objects.slice(0, 28) : [];
             if (objects.length === 0) return banner;
 
-            const measured = objects.map(object => {
-                const size = getBuildLibraryPieceSize(object);
-                const x = Number(object.x) || 0;
-                const y = Number(object.y) || 0;
-                return { object, size, x, y };
-            });
+            const crop = getPreviewCropForObjects(objects, COMMUNITY_BANNER_ASPECT, 1.22, 210);
 
-            const bounds = measured.reduce((acc, item) => {
-                acc.minX = Math.min(acc.minX, item.x - item.size.width / 2);
-                acc.maxX = Math.max(acc.maxX, item.x + item.size.width / 2);
-                acc.minY = Math.min(acc.minY, item.y - item.size.height / 2);
-                acc.maxY = Math.max(acc.maxY, item.y + item.size.height / 2);
-                return acc;
-            }, { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
-
-            const rangeX = Math.max(1, bounds.maxX - bounds.minX);
-            const rangeY = Math.max(1, bounds.maxY - bounds.minY);
-            const scale = Math.min(1.2, 88 / rangeX, 58 / rangeY);
-
-            measured.forEach(item => {
+            objects.forEach(object => {
                 const piece = document.createElement('span');
-                piece.className = `build-library-piece ${item.object.type || 'block'}`;
-                const left = 8 + ((item.x - bounds.minX) / rangeX) * 84;
-                const top = 12 + ((item.y - bounds.minY) / rangeY) * 76;
-                const width = clamp(item.size.width * scale, item.object.type === 'sword' ? 22 : 10, item.object.type === 'sword' ? 78 : 38);
-                const height = clamp(item.size.height * scale, item.object.type === 'sword' ? 5 : 10, item.object.type === 'door' ? 56 : 38);
+                const texture = getBuildLibraryPieceTexture(object);
+                const size = getBuildLibraryPieceSize(object);
+                piece.className = `build-library-piece ${object.type || 'block'}${texture ? ' textured' : ''}`;
+                const left = 50 + (((Number(object.x) || 0) - crop.x) / crop.w) * 100;
+                const top = 50 + (((Number(object.y) || 0) - crop.y) / crop.h) * 100;
+                const width = clamp((size.width / crop.w) * 100, 1.5, 120);
+                const height = clamp((size.height / crop.h) * 100, 3, 120);
                 piece.style.setProperty('--preview-left', `${left.toFixed(2)}%`);
                 piece.style.setProperty('--preview-top', `${top.toFixed(2)}%`);
-                piece.style.setProperty('--preview-width', `${width.toFixed(1)}px`);
-                piece.style.setProperty('--preview-height', `${height.toFixed(1)}px`);
-                piece.style.setProperty('--preview-rotate', `${((Number(item.object.angle) || 0) * 180 / Math.PI).toFixed(2)}deg`);
-                piece.style.setProperty('--preview-color', getBuildLibraryPieceColor(item.object));
+                piece.style.setProperty('--preview-width', `${width.toFixed(2)}%`);
+                piece.style.setProperty('--preview-height', `${height.toFixed(2)}%`);
+                piece.style.setProperty('--preview-rotate', `${((Number(object.angle) || 0) * 180 / Math.PI).toFixed(2)}deg`);
+                piece.style.setProperty('--preview-color', getBuildLibraryPieceColor(object));
+                if (texture) {
+                    piece.style.setProperty('--preview-texture', `url("${texture}")`);
+                }
                 banner.appendChild(piece);
             });
 
@@ -12312,13 +13661,20 @@ function buildSwordElement() {
                 viewButton.disabled = !snapshot;
                 viewButton.addEventListener('click', () => viewBuildLibrarySlot(slot.id));
 
+                const copyButton = document.createElement('button');
+                copyButton.type = 'button';
+                copyButton.className = 'build-library-action interactive';
+                copyButton.textContent = strings.libraryCopyCodeButton || strings.saveCopyCodeButton || 'Copy code';
+                copyButton.disabled = !slot.payload;
+                copyButton.addEventListener('click', () => copyBuildLibraryCode(slot.id));
+
                 const deleteButton = document.createElement('button');
                 deleteButton.type = 'button';
                 deleteButton.className = 'build-library-action delete interactive';
                 deleteButton.textContent = strings.libraryDeleteButton || strings.saveDeleteButton || 'Delete';
                 deleteButton.addEventListener('click', () => deleteBuildLibrarySlot(slot.id));
 
-                actions.append(viewButton, deleteButton);
+                actions.append(viewButton, copyButton, deleteButton);
                 card.append(banner, title, meta, actions);
                 list.appendChild(card);
             });
@@ -12340,6 +13696,43 @@ function buildSwordElement() {
             } catch (error) {
                 setBuildLibraryStatus(strings.saveImportInvalid, 'error');
             }
+        }
+
+        function fallbackCopyText(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = String(text || '');
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                return document.execCommand('copy');
+            } catch (error) {
+                return false;
+            } finally {
+                textarea.remove();
+            }
+        }
+
+        function copyTextToClipboard(text) {
+            const value = String(text || '');
+            if (!value.trim()) return false;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(value).catch(() => fallbackCopyText(value));
+                return true;
+            }
+            return fallbackCopyText(value);
+        }
+
+        function copyBuildLibraryCode(slotId) {
+            const strings = getTerminalStrings();
+            const slot = readBuildSaveSlots().find(item => item.id === slotId);
+            if (!slot || !slot.payload) return;
+            copyTextToClipboard(slot.payload);
+            setBuildLibraryStatus(strings.saveExported || strings.libraryCopyCodeButton || 'Code copied.');
         }
 
         function deleteBuildLibrarySlot(slotId) {
@@ -12583,11 +13976,7 @@ function buildSwordElement() {
             const codeInput = document.getElementById('save-code-input');
             if (!codeInput || !codeInput.value.trim()) return;
             codeInput.select();
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(codeInput.value).catch(() => document.execCommand('copy'));
-            } else {
-                document.execCommand('copy');
-            }
+            copyTextToClipboard(codeInput.value);
             setSaveModalStatus(getTerminalStrings().saveExported, 'success');
         }
 
@@ -14676,8 +16065,59 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
         let captchaPuzzleStarting = false;
         let captchaPuzzleTimer = null;
 
+        function setEntryCaptchaError(message, persist = false) {
+            const err = document.getElementById('captcha-error');
+            if (!err) return;
+            err.textContent = message || getAuthStrings().tryAgain || 'Try again.';
+            err.style.opacity = '1';
+            if (!persist) {
+                setTimeout(() => {
+                    err.style.opacity = '0';
+                }, 2000);
+            }
+        }
+
+        function updateEntryCaptchaLockUi() {
+            const remaining = getCaptchaLockRemaining(MAIN_CAPTCHA_LOCK_KEY);
+            const locked = remaining > 0;
+            const message = locked ? getCaptchaLockMessage(MAIN_CAPTCHA_LOCK_KEY, 'captchaLocked') : '';
+            const mainBox = document.getElementById('captcha-main-box');
+            const subtitle = document.querySelector('#captcha-main-box .captcha-main-subtitle');
+            const verifyBtn = document.getElementById('verify-btn');
+            const refreshBtn = document.getElementById('refresh-captcha-btn');
+            const input = document.getElementById('captcha-text-input');
+
+            if (mainBox) mainBox.disabled = locked;
+            if (verifyBtn) verifyBtn.disabled = locked;
+            if (refreshBtn) refreshBtn.disabled = locked;
+            if (input) input.disabled = locked;
+            document.querySelectorAll('.captcha-btn').forEach(button => {
+                button.disabled = locked;
+            });
+
+            if (locked) {
+                if (subtitle) subtitle.textContent = message;
+                setEntryCaptchaError(message, true);
+                setTimeout(updateEntryCaptchaLockUi, Math.min(remaining, 1000));
+            } else if (!captchaSolved) {
+                const err = document.getElementById('captcha-error');
+                if (err) {
+                    err.textContent = getAuthStrings().tryAgain;
+                    err.style.opacity = '0';
+                }
+                if (subtitle) {
+                    subtitle.setAttribute('data-i18n', 'captchaVerify');
+                    subtitle.textContent = getAuthStrings().captchaVerify;
+                }
+            }
+        }
+
         function startCaptchaPuzzle() {
             if (captchaSolved || captchaPuzzleStarting) return;
+            if (getCaptchaLockRemaining(MAIN_CAPTCHA_LOCK_KEY) > 0) {
+                updateEntryCaptchaLockUi();
+                return;
+            }
             captchaPuzzleStarting = true;
             document.getElementById('captcha-spinner').classList.remove('hidden');
             captchaPuzzleTimer = setTimeout(() => {
@@ -14699,6 +16139,10 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
         }
 
         function generateCurrentCaptcha() {
+            if (getCaptchaLockRemaining(MAIN_CAPTCHA_LOCK_KEY) > 0) {
+                updateEntryCaptchaLockUi();
+                return;
+            }
             hideCaptchaError();
 
             const grid = document.getElementById('captcha-grid');
@@ -15175,6 +16619,8 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
         function markGeometryFailed() {
             if (!geometryGame) return;
 
+            const lockState = registerCaptchaFailure(MAIN_CAPTCHA_LOCK_KEY);
+            const locked = lockState.lockUntil > Date.now();
             geometryGame.lost = true;
             geometryGame.started = false;
             if (geometryGame.frame) {
@@ -15182,11 +16628,10 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                 geometryGame.frame = null;
             }
 
-            const err = document.getElementById('captcha-error');
-            if (err) {
-                err.style.opacity = '1';
-                setTimeout(() => err.style.opacity = '0', 1800);
-            }
+            setEntryCaptchaError(
+                locked ? getCaptchaLockMessage(MAIN_CAPTCHA_LOCK_KEY, 'captchaLocked') : getAuthStrings().tryAgain,
+                locked
+            );
 
             const stage = document.getElementById('geometry-stage');
             if (stage) {
@@ -15196,6 +16641,7 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
             }
 
             syncGeometryCopy();
+            if (locked) updateEntryCaptchaLockUi();
         }
 
         function markGeometryWon() {
@@ -15275,6 +16721,7 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
         function completeCaptcha() {
             captchaSolved = true;
             captchaPuzzleStarting = false;
+            clearCaptchaFailures(MAIN_CAPTCHA_LOCK_KEY);
             if (captchaPuzzleTimer) {
                 clearTimeout(captchaPuzzleTimer);
                 captchaPuzzleTimer = null;
@@ -15336,8 +16783,12 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
             if (allCorrect) {
                 completeCaptcha();
             } else {
-                const err = document.getElementById('captcha-error');
-                err.style.opacity = '1';
+                const lockState = registerCaptchaFailure(MAIN_CAPTCHA_LOCK_KEY);
+                const locked = lockState.lockUntil > Date.now();
+                setEntryCaptchaError(
+                    locked ? getCaptchaLockMessage(MAIN_CAPTCHA_LOCK_KEY, 'captchaLocked') : getAuthStrings().tryAgain,
+                    locked
+                );
 
                 const el = document.getElementById(captchaType === 'shapes' ? 'captcha-grid' : captchaType === 'geometry' ? 'geometry-stage' : 'captcha-text-input');
                 if (el) {
@@ -15346,7 +16797,10 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                     el.classList.add('shake');
                 }
 
-                setTimeout(() => err.style.opacity = '0', 2000);
+                if (locked) {
+                    updateEntryCaptchaLockUi();
+                    return;
+                }
                 setTimeout(() => {
                     generateCurrentCaptcha();
                 }, 500);
@@ -15560,6 +17014,7 @@ function handleConfirm(action) {
             const card = document.getElementById('ui-card');
             const questionContainer = document.getElementById('question-container');
             if (!card || !questionContainer) return;
+            if (communityBannerDraft) closeCommunityBannerPicker(true);
 
             if (_buildingExperienceTimeout) {
                 clearTimeout(_buildingExperienceTimeout);
@@ -15812,7 +17267,7 @@ function handleConfirm(action) {
                 scrollbar-width: none !important;
             }
             body.building-mode #lang-toggle-container,
-            body.building-mode #theme-btn,
+            body.building-mode #theme-toggle-container,
             body.building-mode #account-btn,
             body.building-mode #terminal-btn {
                 transition: opacity 0.24s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease !important;
@@ -15859,8 +17314,9 @@ function handleConfirm(action) {
             body.building-mode #account-btn {
                 order: 2 !important;
             }
-            body.building-mode #theme-btn {
+            body.building-mode #theme-toggle-container {
                 order: 3 !important;
+                width: 42px !important;
             }
             body.building-mode #terminal-btn {
                 order: 4 !important;
@@ -15888,6 +17344,12 @@ function handleConfirm(action) {
                 right: calc(100% + 8px) !important;
                 transform: none !important;
             }
+            body.building-mode #theme-menu {
+                top: 50% !important;
+                right: calc(100% + 10px) !important;
+                width: min(174px, calc(100dvw - 74px)) !important;
+                transform: translateY(-50%) !important;
+            }
             body.building-mode .spawn-edit-shortcut {
                 top: max(10px, env(safe-area-inset-top)) !important;
                 left: calc(env(safe-area-inset-left) + 56px) !important;
@@ -15911,7 +17373,7 @@ function handleConfirm(action) {
                 white-space: nowrap !important;
             }
             body.building-mode.mobile-controls-hidden #lang-toggle-container,
-            body.building-mode.mobile-controls-hidden #theme-btn,
+            body.building-mode.mobile-controls-hidden #theme-toggle-container,
             body.building-mode.mobile-controls-hidden #account-btn,
             body.building-mode.mobile-controls-hidden #terminal-btn {
                 opacity: 0 !important;
@@ -15939,7 +17401,7 @@ function handleConfirm(action) {
                 transition: none !important;
             }
             .terminal-panel {
-                width: min(340px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 52px)) !important;
+                width: min(360px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 44px)) !important;
                 height: min(320px, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 104px)) !important;
                 bottom: max(10px, env(safe-area-inset-bottom)) !important;
                 padding: 10px !important;
@@ -15947,7 +17409,7 @@ function handleConfirm(action) {
             body.building-mode .terminal-panel {
                 left: max(10px, env(safe-area-inset-left)) !important;
                 right: auto !important;
-                width: min(318px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 76px)) !important;
+                width: min(334px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 64px)) !important;
                 transform: translate(var(--terminal-x), var(--terminal-y)) !important;
             }
             body.building-mode .terminal-panel.open {
@@ -15962,6 +17424,24 @@ function handleConfirm(action) {
             #terminal-header {
                 margin-bottom: 8px !important;
                 gap: 8px !important;
+            }
+            .terminal-header-actions {
+                gap: 6px !important;
+            }
+            .terminal-header-save-button {
+                height: 30px !important;
+                min-width: 78px !important;
+                padding: 0 8px !important;
+                font-size: 9px !important;
+                letter-spacing: 0.05em !important;
+                box-shadow: 2px 2px 0 color-mix(in srgb, var(--card-shadow) 72%, transparent) !important;
+            }
+            .terminal-title-label {
+                font-size: 11px !important;
+                letter-spacing: 0.12em !important;
+            }
+            .terminal-header-prompt {
+                font-size: 11px !important;
             }
             #terminal-output {
                 font-size: 11px !important;
@@ -15998,6 +17478,107 @@ function handleConfirm(action) {
                 padding: 5px 7px !important;
                 font-size: 10px !important;
                 letter-spacing: 0.04em !important;
+            }
+            .webbreak-modal {
+                align-items: flex-end !important;
+                padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)) !important;
+            }
+            .webbreak-modal-backdrop {
+                backdrop-filter: blur(3px) !important;
+                -webkit-backdrop-filter: blur(3px) !important;
+            }
+            .webbreak-modal-card {
+                width: min(100%, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px)) !important;
+                max-height: min(72dvh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 18px)) !important;
+                padding: 10px !important;
+                gap: 7px !important;
+                overflow-y: auto !important;
+                overscroll-behavior: contain !important;
+                -webkit-overflow-scrolling: touch !important;
+                box-shadow: 6px 6px 0 var(--card-shadow) !important;
+            }
+            .webbreak-modal-head {
+                gap: 8px !important;
+                align-items: flex-start !important;
+            }
+            .webbreak-modal-head > div {
+                min-width: 0 !important;
+            }
+            .webbreak-modal-title {
+                font-size: 11px !important;
+                line-height: 1.15 !important;
+                letter-spacing: 0.16em !important;
+            }
+            .webbreak-modal-subtitle,
+            .save-slot-meta,
+            .save-modal-status {
+                font-size: 9px !important;
+                line-height: 1.25 !important;
+                letter-spacing: 0.08em !important;
+            }
+            .webbreak-modal-head button {
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                min-height: 30px !important;
+            }
+            .save-build-controls,
+            .save-code-actions {
+                gap: 6px !important;
+            }
+            .save-name-input {
+                height: 32px !important;
+                padding: 0 9px !important;
+                font-size: 12px !important;
+            }
+            .save-build-controls .terminal-simple-action-button,
+            .save-code-actions .terminal-simple-action-button {
+                min-height: 32px !important;
+                height: 32px !important;
+                padding: 5px 8px !important;
+                font-size: 10px !important;
+                letter-spacing: 0.05em !important;
+            }
+            .save-slot-list {
+                max-height: 132px !important;
+                grid-template-columns: 1fr !important;
+                gap: 7px !important;
+                padding-right: 0 !important;
+            }
+            .save-slot-card {
+                min-height: auto !important;
+                padding: 8px !important;
+                gap: 6px !important;
+                box-shadow: 3px 3px 0 color-mix(in srgb, var(--card-shadow) 74%, transparent) !important;
+            }
+            .save-slot-card:hover,
+            .save-slot-card:focus-within {
+                transform: none !important;
+                box-shadow: 3px 3px 0 color-mix(in srgb, var(--card-shadow) 74%, transparent) !important;
+            }
+            .save-slot-empty {
+                min-height: 56px !important;
+            }
+            .save-slot-name {
+                font-size: 11px !important;
+                line-height: 1.2 !important;
+                letter-spacing: 0.04em !important;
+            }
+            .save-slot-actions {
+                gap: 5px !important;
+            }
+            .save-slot-actions .terminal-simple-action-button {
+                min-height: 28px !important;
+                height: 28px !important;
+                padding: 4px 5px !important;
+                font-size: 9px !important;
+            }
+            .save-code-input {
+                min-height: 58px !important;
+                max-height: 78px !important;
+                padding: 8px !important;
+                font-size: 10px !important;
+                line-height: 1.3 !important;
             }
             .auth-panel {
                 top: calc(env(safe-area-inset-top) + 56px) !important;
@@ -16138,9 +17719,37 @@ function handleConfirm(action) {
                 padding: 10px !important;
                 box-shadow: 3px 3px 0 var(--card-shadow) !important;
             }
+            .community-build-banner {
+                min-height: 92px !important;
+            }
             .community-card:hover {
                 transform: none !important;
                 box-shadow: 3px 3px 0 var(--card-shadow) !important;
+            }
+            .community-banner-picker-hint {
+                top: calc(max(10px, env(safe-area-inset-top)) + 44px) !important;
+                width: calc(100dvw - 20px) !important;
+                padding: 8px !important;
+                font-size: 9px !important;
+                letter-spacing: 0.05em !important;
+            }
+            .community-banner-controls {
+                width: calc(100dvw - 18px) !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 6px !important;
+                padding: 8px !important;
+            }
+            .community-banner-controls .terminal-simple-action-button {
+                min-height: 32px !important;
+                height: 32px !important;
+                padding: 5px 7px !important;
+                font-size: 10px !important;
+                letter-spacing: 0.04em !important;
+            }
+            .community-banner-status {
+                bottom: calc(max(14px, env(safe-area-inset-bottom)) + 84px) !important;
+                width: calc(100dvw - 22px) !important;
+                font-size: 9px !important;
             }
             body.building-mode #spawn-edit-panel {
                 top: calc(env(safe-area-inset-top) + 56px) !important;
