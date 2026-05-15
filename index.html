@@ -1793,6 +1793,343 @@
             text-align: center;
         }
 
+        .community-panel {
+            position: fixed;
+            inset: 4.5rem 1rem 1rem auto;
+            z-index: 176;
+            width: min(920px, calc(100vw - 2rem));
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: hidden;
+            transform: translateY(14px) scale(0.985);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            border: 1px solid var(--card-border);
+            box-shadow: 12px 12px 0px var(--card-shadow);
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, visibility 0.2s;
+        }
+
+        .community-panel.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .community-head,
+        .community-toolbar,
+        .community-status-row,
+        .community-card-head,
+        .community-card-actions,
+        .community-comment-head,
+        .community-form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .community-title {
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        .community-subtitle,
+        .community-status,
+        .community-meta,
+        .community-count,
+        .community-badge,
+        .community-code-label {
+            color: var(--text-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        .community-status.error {
+            color: #ef4444;
+        }
+
+        .community-status.success {
+            color: #22c55e;
+        }
+
+        .community-shell {
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.45fr);
+            gap: 12px;
+        }
+
+        .community-side,
+        .community-feed-wrap {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .community-compose,
+        .community-featured-strip,
+        .community-feed {
+            border: 1px solid color-mix(in srgb, var(--btn-border) 82%, transparent);
+            background: color-mix(in srgb, var(--btn-bg) 72%, transparent);
+        }
+
+        .community-compose {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+        }
+
+        .community-compose.collapsed {
+            display: none;
+        }
+
+        .community-input,
+        .community-textarea,
+        .community-search-input {
+            width: 100%;
+            min-width: 0;
+            border: 1px solid var(--btn-border);
+            border-radius: 0;
+            background: color-mix(in srgb, var(--btn-bg) 82%, transparent);
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .community-input,
+        .community-search-input {
+            height: 38px;
+            padding: 0 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .community-textarea {
+            min-height: 74px;
+            max-height: 160px;
+            padding: 9px 10px;
+            resize: vertical;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .community-code-input {
+            min-height: 92px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 11px;
+        }
+
+        .community-input:focus,
+        .community-textarea:focus,
+        .community-search-input:focus {
+            border-color: var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-bg) 58%, var(--btn-hover-bg));
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--btn-hover-border) 18%, transparent);
+        }
+
+        .community-toolbar {
+            align-items: stretch;
+        }
+
+        .community-search-form {
+            flex: 1;
+            min-width: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 38px;
+            gap: 7px;
+        }
+
+        .community-filter-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 7px;
+        }
+
+        .community-feed {
+            min-height: 280px;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .community-featured-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            padding: 8px;
+        }
+
+        .community-featured-mini {
+            min-height: 72px;
+            padding: 9px;
+            border: 1px solid color-mix(in srgb, var(--btn-hover-border) 38%, var(--btn-border));
+            background: linear-gradient(135deg, color-mix(in srgb, var(--btn-hover-bg) 14%, transparent), color-mix(in srgb, var(--btn-bg) 86%, transparent));
+            text-align: left;
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .community-featured-mini:hover {
+            transform: translate(-2px, -2px);
+            border-color: var(--btn-hover-border);
+            box-shadow: 5px 5px 0 var(--card-shadow);
+        }
+
+        .community-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid var(--btn-border);
+            background: var(--btn-bg);
+            text-align: left;
+            box-shadow: 5px 5px 0 var(--card-shadow);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .community-card:hover {
+            transform: translate(-2px, -2px);
+            border-color: var(--btn-hover-border);
+            box-shadow: 8px 8px 0 color-mix(in srgb, var(--btn-border) 82%, transparent);
+        }
+
+        .community-card.pinned {
+            border-color: color-mix(in srgb, #f59e0b 70%, var(--btn-border));
+        }
+
+        .community-card.featured {
+            box-shadow: 5px 5px 0 var(--card-shadow), 0 0 24px color-mix(in srgb, var(--btn-hover-border) 16%, transparent);
+        }
+
+        .community-author {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .community-author-name,
+        .community-card-title,
+        .community-featured-title {
+            color: var(--text-main);
+            font-weight: 900;
+            overflow-wrap: anywhere;
+        }
+
+        .community-author-name {
+            font-size: 13px;
+        }
+
+        .community-card-title {
+            font-size: 17px;
+            letter-spacing: 0.02em;
+        }
+
+        .community-card-description,
+        .community-comment-body {
+            color: var(--text-sub);
+            font-size: 13px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .community-badge {
+            min-height: 20px;
+            padding: 3px 6px;
+            border: 1px solid var(--btn-border);
+            background: color-mix(in srgb, var(--btn-bg) 66%, transparent);
+        }
+
+        .community-badge.admin {
+            border-color: rgba(239, 68, 68, 0.65);
+            color: #fca5a5;
+        }
+
+        .community-badge.mod {
+            border-color: rgba(56, 189, 248, 0.62);
+            color: #7dd3fc;
+        }
+
+        .community-badge.featured,
+        .community-badge.pinned {
+            border-color: rgba(245, 158, 11, 0.66);
+            color: #fbbf24;
+        }
+
+        .community-code-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 8px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 80%, transparent);
+            background: color-mix(in srgb, #000000 10%, var(--btn-bg));
+        }
+
+        .community-code {
+            max-height: 70px;
+            overflow: hidden;
+            color: var(--text-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 10px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+            user-select: text;
+        }
+
+        .community-comments {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-top: 1px solid color-mix(in srgb, var(--btn-border) 56%, transparent);
+            padding-top: 9px;
+        }
+
+        .community-comment {
+            padding: 8px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 58%, transparent);
+            background: color-mix(in srgb, var(--card-bg) 42%, transparent);
+            animation: communityCommentIn 0.2s ease both;
+        }
+
+        .community-comment-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 7px;
+        }
+
+        .community-placeholder {
+            min-height: 112px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 72%, transparent);
+            background:
+                linear-gradient(90deg, transparent, color-mix(in srgb, var(--btn-hover-border) 9%, transparent), transparent),
+                color-mix(in srgb, var(--btn-bg) 72%, transparent);
+            background-size: 220% 100%;
+            animation: communityLoading 1.1s linear infinite;
+        }
+
+        @keyframes communityLoading {
+            to { background-position-x: -220%; }
+        }
+
+        @keyframes communityCommentIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .changelog-list {
             display: flex;
             flex-direction: column;
@@ -2188,7 +2525,7 @@
             font-size: 12px;
             line-height: 1.2;
             text-align: center;
-            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
         }
 
         .terminal-simple-action-button:hover,
@@ -2196,6 +2533,8 @@
             background: color-mix(in srgb, var(--btn-hover-bg) 70%, transparent);
             border-color: var(--btn-hover-border);
             color: var(--btn-hover-text);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 color-mix(in srgb, var(--btn-hover-border) 54%, transparent);
             outline: none;
         }
 
@@ -2818,6 +3157,380 @@
         .spawn-door-bottom {
             bottom: 0;
             background-image: var(--spawn-door-bottom-texture);
+        }
+
+        #effects-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 136;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.22s ease, visibility 0.22s ease;
+        }
+
+        body.building-mode #effects-layer {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .webbreak-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 230;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .webbreak-modal.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .webbreak-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, color-mix(in srgb, var(--btn-hover-border) 12%, transparent), transparent 46%),
+                rgba(0, 0, 0, 0.58);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .webbreak-modal-card {
+            position: relative;
+            z-index: 1;
+            width: min(760px, calc(100vw - 24px));
+            max-height: min(82vh, 720px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px;
+            opacity: 0;
+            transform: translateY(14px) scale(0.98);
+            transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .webbreak-modal.open .webbreak-modal-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .webbreak-modal-head,
+        .save-build-controls,
+        .save-code-actions,
+        .chaos-panel-head,
+        .chaos-tool-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .webbreak-modal-title,
+        .chaos-panel-title {
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        .webbreak-modal-subtitle,
+        .save-slot-meta,
+        .save-modal-status,
+        .chaos-tool-meta {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .save-build-controls {
+            align-items: stretch;
+        }
+
+        .save-name-input,
+        .save-code-input,
+        .chaos-number-input {
+            min-width: 0;
+            border: 1px solid var(--btn-border);
+            background: color-mix(in srgb, var(--btn-bg) 84%, transparent);
+            color: var(--text-main);
+            outline: none;
+            border-radius: 0;
+            transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .save-name-input:focus,
+        .save-code-input:focus,
+        .chaos-number-input:focus {
+            border-color: var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-bg) 60%, var(--btn-hover-bg));
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--btn-hover-border) 16%, transparent);
+        }
+
+        .save-name-input {
+            flex: 1;
+            height: 40px;
+            padding: 0 12px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .save-slot-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            overflow: auto;
+            padding-right: 2px;
+        }
+
+        .save-slot-card {
+            border: 1px solid var(--btn-border);
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-bg) 94%, transparent), color-mix(in srgb, var(--card-bg) 75%, transparent));
+            padding: 11px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            box-shadow: 5px 5px 0 color-mix(in srgb, var(--card-shadow) 70%, transparent);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .save-slot-card:hover,
+        .save-slot-card:focus-within {
+            transform: translate(-2px, -2px);
+            border-color: var(--btn-hover-border);
+            box-shadow: 8px 8px 0 color-mix(in srgb, var(--card-shadow) 85%, transparent);
+        }
+
+        .save-slot-empty {
+            min-height: 92px;
+            justify-content: center;
+            opacity: 0.72;
+            text-align: center;
+        }
+
+        .save-slot-name {
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-main);
+            overflow-wrap: anywhere;
+        }
+
+        .save-slot-actions {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        .save-slot-actions .terminal-simple-action-button {
+            min-height: 30px;
+            padding: 6px 7px;
+            font-size: 9px;
+        }
+
+        .save-code-input {
+            width: 100%;
+            min-height: 76px;
+            max-height: 132px;
+            padding: 10px;
+            resize: vertical;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .save-modal-status.error {
+            color: #ff4f76;
+        }
+
+        .save-modal-status.success {
+            color: #3ddc97;
+        }
+
+        .chaos-panel {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 188;
+            width: min(340px, calc(100vw - 24px));
+            padding: 14px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(16px) scale(0.98);
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .chaos-panel.unlocked {
+            display: flex;
+        }
+
+        .chaos-panel.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .chaos-panel::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border: 1px solid color-mix(in srgb, var(--btn-hover-border) 36%, transparent);
+            pointer-events: none;
+            box-shadow: 0 0 24px color-mix(in srgb, var(--btn-hover-border) 16%, transparent);
+        }
+
+        .chaos-tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .chaos-tool-row {
+            align-items: end;
+        }
+
+        .chaos-number-input {
+            width: 100%;
+            height: 34px;
+            padding: 0 8px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .chaos-singularity {
+            position: fixed;
+            width: var(--chaos-size, 180px);
+            height: var(--chaos-size, 180px);
+            left: var(--chaos-x, 50vw);
+            top: var(--chaos-y, 50vh);
+            transform: translate(-50%, -50%);
+            border: 1px solid color-mix(in srgb, var(--btn-hover-border) 80%, transparent);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(0, 0, 0, 0.96) 0 16%, color-mix(in srgb, var(--btn-hover-border) 34%, transparent) 17% 24%, transparent 42%),
+                conic-gradient(from 0deg, transparent, color-mix(in srgb, var(--btn-hover-border) 64%, transparent), transparent, rgba(255,255,255,0.22), transparent);
+            filter: drop-shadow(0 0 22px color-mix(in srgb, var(--btn-hover-border) 45%, transparent));
+            animation: chaosSingularityPulse 1.1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        .chaos-particle {
+            position: fixed;
+            left: var(--particle-x, 50vw);
+            top: var(--particle-y, 50vh);
+            width: var(--particle-size, 6px);
+            height: var(--particle-size, 6px);
+            background: var(--particle-color, var(--btn-hover-border));
+            box-shadow: 0 0 12px var(--particle-color, var(--btn-hover-border));
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            pointer-events: none;
+            animation: chaosParticle 680ms ease-out forwards;
+        }
+
+        .impact-flash {
+            position: fixed;
+            left: var(--impact-x, 50vw);
+            top: var(--impact-y, 50vh);
+            width: var(--impact-size, 42px);
+            height: var(--impact-size, 42px);
+            border: 1px solid color-mix(in srgb, var(--btn-hover-border) 76%, transparent);
+            background: radial-gradient(circle, color-mix(in srgb, var(--btn-hover-border) 36%, transparent), transparent 64%);
+            transform: translate(-50%, -50%) scale(0.2);
+            pointer-events: none;
+            opacity: 0;
+            animation: impactFlash 360ms ease-out forwards;
+        }
+
+        body.screen-shake #spawn-layer,
+        body.screen-shake #effects-layer,
+        body.screen-shake .ambient-bg {
+            animation: webbreakScreenShake 360ms cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        body.slow-motion-active .spawn-object {
+            filter: drop-shadow(0 0 14px color-mix(in srgb, var(--btn-hover-border) 36%, transparent)) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.26));
+        }
+
+        html.physics-stress-mode .chaos-particle,
+        html.low-end-mode .chaos-particle {
+            box-shadow: none;
+            animation-duration: 500ms;
+        }
+
+        @keyframes chaosSingularityPulse {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.46) rotate(0deg); }
+            28% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.55) rotate(240deg); }
+        }
+
+        @keyframes chaosParticle {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--particle-dx, 0px)), calc(-50% + var(--particle-dy, 0px))) scale(0.2); }
+        }
+
+        @keyframes impactFlash {
+            0% { opacity: 0.85; transform: translate(-50%, -50%) scale(0.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+        }
+
+        @keyframes webbreakScreenShake {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            15% { transform: translate3d(-5px, 3px, 0); }
+            30% { transform: translate3d(6px, -3px, 0); }
+            45% { transform: translate3d(-4px, -4px, 0); }
+            60% { transform: translate3d(4px, 3px, 0); }
+            75% { transform: translate3d(-3px, 2px, 0); }
+        }
+
+        @media (max-width: 640px) {
+            .webbreak-modal {
+                align-items: flex-end;
+                padding: 10px;
+            }
+
+            .webbreak-modal-card {
+                width: 100%;
+                max-height: 76vh;
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .save-build-controls,
+            .save-code-actions,
+            .chaos-tool-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .save-slot-list {
+                grid-template-columns: 1fr;
+            }
+
+            .chaos-panel {
+                right: max(10px, env(safe-area-inset-right));
+                bottom: max(10px, env(safe-area-inset-bottom));
+                width: min(300px, calc(100vw - 20px));
+            }
         }
 
         /* End of new styles */
@@ -3715,6 +4428,7 @@
     </div>
 
     <div id="spawn-layer"></div>
+    <div id="effects-layer" aria-hidden="true"></div>
 
     <button id="build-back-btn" class="build-back-btn border themed-btn backdrop-blur-sm focus:outline-none interactive" onclick="returnToFirstPage()" data-i18n-aria-label="buildBackAria" aria-label="Back to main page">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/><path d="M21 12H9"/></svg>
@@ -3910,6 +4624,9 @@
                             <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive" onclick="setQuestionZoneTab('search')">
                                 <span data-i18n="firstPageProfilesButton">Profiles</span>
                             </button>
+                            <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive community-trigger" onclick="openCommunityPanel()">
+                                <span data-i18n="communityButton">Community</span>
+                            </button>
                         </div>
                     </div>
 
@@ -3972,6 +4689,9 @@
                             </button>
                             <button type="button" class="first-page-action changelog-trigger interactive" onclick="toggleChangelogPanel()">
                                 <span data-i18n="changelogButton">Changelogs</span>
+                            </button>
+                            <button type="button" class="first-page-action community-trigger interactive" onclick="openCommunityPanel()">
+                                <span data-i18n="communityButton">Community</span>
                             </button>
                         </div>
                     </div>
@@ -4154,6 +4874,9 @@
                         <button id="terminal-simple-build-btn" type="button" class="terminal-simple-action-button wide interactive" onclick="handleTerminalSimpleAction('build')">Build Mode: Off</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('clear')" data-i18n="terminalSimpleClearButton">Clear Objects</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('fling')" data-i18n="terminalSimpleFlingButton">Fling All Objects</button>
+                        <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('save')" data-i18n="saveBuildButton">Save Build</button>
+                        <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('load')" data-i18n="loadBuildButton">Load Build</button>
+                        <button id="terminal-simple-chaos-btn" type="button" class="terminal-simple-action-button wide interactive hidden" onclick="handleTerminalSimpleAction('chaos')" data-i18n="chaosToolsButton">Chaos Tools</button>
                         <button type="button" class="terminal-simple-action-button wide interactive" onclick="handleTerminalSimpleAction('limit')" data-i18n="terminalSimpleLimitButton">Increase Limit to 125 Objects</button>
                     </div>
                 </div>
@@ -4180,6 +4903,118 @@
             <span class="terminal-input themed-muted text-sm">&gt;</span>
             <input id="terminal-input" class="terminal-input flex-1 bg-transparent border-none outline-none themed-text text-sm" autocomplete="off" spellcheck="false" placeholder="help">
         </form>
+    </div>
+
+    <div id="save-build-modal" class="webbreak-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="save-build-title">
+        <div class="webbreak-modal-backdrop" onclick="closeSaveBuildModal()" aria-hidden="true"></div>
+        <div class="webbreak-modal-card glass-card border rounded-[2px]">
+            <div class="webbreak-modal-head">
+                <div>
+                    <div id="save-build-title" class="webbreak-modal-title" data-i18n="saveBuildTitle">Build Memory</div>
+                    <div class="webbreak-modal-subtitle" data-i18n="saveBuildSubtitle">Local slots, export codes, safe reloads.</div>
+                </div>
+                <button onclick="closeSaveBuildModal()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" data-i18n-aria-label="saveCloseAria" aria-label="Close save menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <div class="save-build-controls">
+                <input id="save-build-name" class="save-name-input interactive" maxlength="36" autocomplete="off" data-i18n-placeholder="saveNamePlaceholder" placeholder="Build name">
+                <button type="button" class="terminal-simple-action-button interactive" onclick="saveCurrentBuildFromModal()" data-i18n="saveBuildButton">Save Build</button>
+            </div>
+            <div id="save-modal-status" class="save-modal-status" aria-live="polite"></div>
+            <div id="save-slot-list" class="save-slot-list" aria-live="polite"></div>
+            <div class="webbreak-modal-subtitle" data-i18n="saveImportExportTitle">Import / Export Code</div>
+            <textarea id="save-code-input" class="save-code-input interactive" autocomplete="off" spellcheck="false" data-i18n-placeholder="saveCodePlaceholder" placeholder="Paste or export a save code"></textarea>
+            <div class="save-code-actions">
+                <button type="button" class="terminal-simple-action-button interactive" onclick="importBuildSaveCodeFromModal()" data-i18n="saveImportButton">Import Code</button>
+                <button type="button" class="terminal-simple-action-button interactive" onclick="copySaveCodeToClipboard()" data-i18n="saveCopyCodeButton">Copy Code</button>
+                <button type="button" class="terminal-simple-action-button interactive" onclick="clearSaveCodeInput()" data-i18n="saveClearCodeButton">Clear Code</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chaos-panel" class="chaos-panel glass-card border rounded-[2px]" aria-hidden="true">
+        <div class="chaos-panel-head">
+            <div>
+                <div class="chaos-panel-title" data-i18n="chaosToolsTitle">Chaos Tools</div>
+                <div class="chaos-tool-meta" data-i18n="chaosToolsSubtitle">WEBREAK protocol armed.</div>
+            </div>
+            <button onclick="closeChaosPanel()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" data-i18n-aria-label="chaosCloseAria" aria-label="Close chaos tools">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div class="chaos-tool-grid">
+            <label>
+                <span class="chaos-tool-meta" data-i18n="chaosRadiusLabel">Radius</span>
+                <input id="chaos-radius-input" class="chaos-number-input interactive" type="number" min="80" max="900" step="10" value="320">
+            </label>
+            <label>
+                <span class="chaos-tool-meta" data-i18n="chaosPowerLabel">Power</span>
+                <input id="chaos-power-input" class="chaos-number-input interactive" type="number" min="1" max="10" step="1" value="6">
+            </label>
+        </div>
+        <div class="chaos-tool-row">
+            <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosBlackHole()" data-i18n="chaosBlackHoleButton">Black Hole</button>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosExplosion()" data-i18n="chaosExplosionButton">Explosion</button>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosSlowMotion()" data-i18n="chaosSlowMotionButton">Slow Motion</button>
+        </div>
+        <div id="chaos-status" class="chaos-tool-meta" aria-live="polite"></div>
+    </div>
+
+    <div id="community-panel" class="community-panel glass-card rounded-[2px] p-4 transition-all duration-300" aria-hidden="true">
+        <div class="community-head">
+            <div>
+                <div class="community-title" data-i18n="communityTitle">Community</div>
+                <div class="community-subtitle" data-i18n="communitySubtitle">Share builds, like posts, and inspect creation codes.</div>
+            </div>
+            <button onclick="closeCommunityPanel()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" data-i18n-aria-label="communityCloseAria" aria-label="Close community panel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="community-toolbar">
+            <form class="community-search-form" onsubmit="handleCommunitySearchSubmit(event)">
+                <input id="community-search-input" class="community-search-input interactive" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="communitySearchPlaceholder" placeholder="Search posts">
+                <button type="submit" class="profile-search-submit interactive" data-i18n-aria-label="communitySearchAria" aria-label="Search community">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </button>
+            </form>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="toggleCommunityComposer()" data-i18n="communityCreateButton">Create Post</button>
+            <button type="button" class="terminal-simple-action-button interactive" onclick="refreshCommunityFeed(true)" data-i18n="communityRefreshButton">Refresh</button>
+        </div>
+
+        <div class="community-filter-tabs">
+            <button id="community-filter-all" type="button" class="terminal-simple-action-button active interactive" onclick="setCommunityFilter('all')" data-i18n="communityFilterAll">All</button>
+            <button id="community-filter-featured" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('featured')" data-i18n="communityFilterFeatured">Featured</button>
+            <button id="community-filter-mine" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('mine')" data-i18n="communityFilterMine">Mine</button>
+        </div>
+
+        <div class="community-shell">
+            <aside class="community-side">
+                <form id="community-compose" class="community-compose collapsed" onsubmit="handleCommunityPostSubmit(event)">
+                    <div class="community-title" id="community-compose-title" data-i18n="communityComposeTitle">New Post</div>
+                    <input id="community-post-title" class="community-input interactive" maxlength="80" autocomplete="off" data-i18n-placeholder="communityPostTitlePlaceholder" placeholder="Title">
+                    <textarea id="community-post-description" class="community-textarea interactive" maxlength="700" autocomplete="off" data-i18n-placeholder="communityPostDescriptionPlaceholder" placeholder="Description"></textarea>
+                    <textarea id="community-post-code" class="community-textarea community-code-input interactive" autocomplete="off" spellcheck="false" data-i18n-placeholder="communityPostCodePlaceholder" placeholder="WB1: exported build code"></textarea>
+                    <div class="community-form-actions">
+                        <button id="community-post-submit" type="submit" class="terminal-simple-action-button interactive" data-i18n="communitySubmitPost">Post</button>
+                        <button type="button" class="terminal-simple-action-button interactive" onclick="resetCommunityComposer()" data-i18n="communityCancelEdit">Cancel</button>
+                    </div>
+                    <div id="community-compose-status" class="community-status" aria-live="polite"></div>
+                </form>
+
+                <div class="community-featured-strip" id="community-featured-strip"></div>
+            </aside>
+
+            <section class="community-feed-wrap">
+                <div class="community-status-row">
+                    <div id="community-status" class="community-status" aria-live="polite"></div>
+                    <div id="community-page-indicator" class="community-count"></div>
+                </div>
+                <div id="community-feed" class="community-feed"></div>
+                <button id="community-load-more" type="button" class="terminal-simple-action-button interactive" onclick="loadMoreCommunityPosts()" data-i18n="communityLoadMore">Load More</button>
+            </section>
+        </div>
     </div>
 
     <div id="auth-panel" class="auth-panel glass-card border rounded-[2px] p-4 transition-all duration-300">
@@ -4898,6 +5733,8 @@
             authReady: "Ready.",
             authWorking: "Working...",
             authMissingClient: "Supabase client did not load. Check your internet connection.",
+            authConnectionError: "Could not reach Supabase. Check your internet, ad blocker, or SUPABASE_URL.",
+            authInvalidApiKey: "Supabase anon key is invalid. Paste the project's anon/public key into SUPABASE_ANON_KEY.",
             authFillFields: "Enter email and password.",
             authPasswordShort: "Password must be at least 6 characters.",
             authLoginSuccess: "Logged in.",
@@ -4963,6 +5800,8 @@
             authReady: "Готово.",
             authWorking: "Работаю...",
             authMissingClient: "Supabase клиент не загрузился. Проверьте подключение к интернету.",
+            authConnectionError: "Не удалось подключиться к Supabase. Проверьте интернет, блокировщик или SUPABASE_URL.",
+            authInvalidApiKey: "Неверный anon key Supabase. Вставьте anon/public key проекта в SUPABASE_ANON_KEY.",
             authFillFields: "Введите почту и пароль.",
             authPasswordShort: "Пароль должен быть минимум 6 символов.",
             authLoginSuccess: "Вход выполнен.",
@@ -5025,6 +5864,235 @@
             terminalSpawnInvalid: "Неизвестная команда spawn. Используйте: spawn sword <количество>, spawn door <количество>, spawn glass <количество>, spawn colorblock <количество> или spawn blueblock <количество>."
         });
 
+        Object.assign(i18n.en, {
+            saveBuildButton: "Save Build",
+            loadBuildButton: "Load Build",
+            saveBuildTitle: "Build Memory",
+            saveBuildSubtitle: "Local slots, export codes, safe reloads.",
+            saveCloseAria: "Close save menu",
+            saveNamePlaceholder: "Build name",
+            saveImportExportTitle: "Import / Export Code",
+            saveCodePlaceholder: "Paste or export a save code",
+            saveImportButton: "Import Code",
+            saveCopyCodeButton: "Copy Code",
+            saveClearCodeButton: "Clear Code",
+            saveLoadButton: "Load",
+            saveDeleteButton: "Delete",
+            saveExportButton: "Export",
+            saveEmptySlot: "No saves yet. Build something and save it.",
+            saveUnnamedBuild: "Untitled Build",
+            saveNoObjects: "Nothing to save yet.",
+            saveSaved: "Build saved.",
+            saveLoaded: "Build loaded.",
+            saveDeleted: "Save deleted.",
+            saveExported: "Export code ready.",
+            saveImported: "Imported save loaded.",
+            saveImportInvalid: "Save code is damaged or unsupported.",
+            saveOverwriteConfirm: "Overwrite this save name?",
+            saveLoadConfirm: "Load this build and replace current objects?",
+            saveDeleteConfirm: "Delete this save?",
+            saveSlotObjects: "objects",
+            saveSlotUpdated: "updated",
+            chaosToolsButton: "Chaos Tools",
+            chaosToolsTitle: "Chaos Tools",
+            chaosToolsSubtitle: "WEBREAK protocol armed.",
+            chaosCloseAria: "Close chaos tools",
+            chaosRadiusLabel: "Radius",
+            chaosPowerLabel: "Power",
+            chaosBlackHoleButton: "Black Hole",
+            chaosExplosionButton: "Explosion",
+            chaosSlowMotionButton: "Slow Motion",
+            chaosUnlocked: "CHAOS TOOLS UNLOCKED. WEBREAK is armed.",
+            chaosLockedHint: "Type WEBREAK in the terminal to arm Chaos Tools.",
+            chaosCooldown: "Tool cooling down.",
+            chaosNoObjects: "No objects for chaos.",
+            chaosBlackHoleStatus: "Black hole deployed.",
+            chaosExplosionStatus: "Explosion triggered.",
+            chaosSlowMotionStatus: "Slow motion engaged."
+        });
+
+        Object.assign(i18n.ru, {
+            saveBuildButton: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
+            loadBuildButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
+            saveBuildTitle: "\u041f\u0430\u043c\u044f\u0442\u044c \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            saveBuildSubtitle: "\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u043b\u043e\u0442\u044b, \u043a\u043e\u0434\u044b, \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u0430\u044f \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430.",
+            saveCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u043c\u0435\u043d\u044e \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0439",
+            saveNamePlaceholder: "\u0418\u043c\u044f \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            saveImportExportTitle: "\u0418\u043c\u043f\u043e\u0440\u0442 / \u044d\u043a\u0441\u043f\u043e\u0440\u0442 \u043a\u043e\u0434\u0430",
+            saveCodePlaceholder: "\u0412\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0438\u043b\u0438 \u044d\u043a\u0441\u043f\u043e\u0440\u0442\u0438\u0440\u0443\u0439\u0442\u0435 \u043a\u043e\u0434 \u0441\u0435\u0439\u0432\u0430",
+            saveImportButton: "\u0418\u043c\u043f\u043e\u0440\u0442",
+            saveCopyCodeButton: "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c",
+            saveClearCodeButton: "\u041e\u0447\u0438\u0441\u0442\u0438\u0442\u044c",
+            saveLoadButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
+            saveDeleteButton: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
+            saveExportButton: "\u041a\u043e\u0434",
+            saveEmptySlot: "\u0421\u0435\u0439\u0432\u043e\u0432 \u043f\u043e\u043a\u0430 \u043d\u0435\u0442. \u041f\u043e\u0441\u0442\u0440\u043e\u0439\u0442\u0435 \u0447\u0442\u043e-\u043d\u0438\u0431\u0443\u0434\u044c \u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u0435.",
+            saveUnnamedBuild: "\u0411\u0435\u0437 \u0438\u043c\u0435\u043d\u0438",
+            saveNoObjects: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0447\u0435\u0433\u043e \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0442\u044c.",
+            saveSaved: "\u041f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0430.",
+            saveLoaded: "\u041f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043d\u0430.",
+            saveDeleted: "\u0421\u0435\u0439\u0432 \u0443\u0434\u0430\u043b\u0435\u043d.",
+            saveExported: "\u041a\u043e\u0434 \u0433\u043e\u0442\u043e\u0432.",
+            saveImported: "\u0421\u0435\u0439\u0432 \u0438\u043c\u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043d.",
+            saveImportInvalid: "\u041a\u043e\u0434 \u0441\u0435\u0439\u0432\u0430 \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0435\u043d \u0438\u043b\u0438 \u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442\u0441\u044f.",
+            saveOverwriteConfirm: "\u041f\u0435\u0440\u0435\u0437\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u0441\u0435\u0439\u0432 \u0441 \u044d\u0442\u0438\u043c \u0438\u043c\u0435\u043d\u0435\u043c?",
+            saveLoadConfirm: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u044d\u0442\u0443 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0443 \u0438 \u0437\u0430\u043c\u0435\u043d\u0438\u0442\u044c \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b?",
+            saveDeleteConfirm: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u0441\u0435\u0439\u0432?",
+            saveSlotObjects: "\u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432",
+            saveSlotUpdated: "\u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d",
+            chaosToolsButton: "\u0425\u0430\u043e\u0441",
+            chaosToolsTitle: "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0445\u0430\u043e\u0441\u0430",
+            chaosToolsSubtitle: "\u041f\u0440\u043e\u0442\u043e\u043a\u043e\u043b WEBREAK \u0432\u043a\u043b\u044e\u0447\u0435\u043d.",
+            chaosCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0445\u0430\u043e\u0441",
+            chaosRadiusLabel: "\u0420\u0430\u0434\u0438\u0443\u0441",
+            chaosPowerLabel: "\u0421\u0438\u043b\u0430",
+            chaosBlackHoleButton: "\u0427\u0435\u0440\u043d\u0430\u044f \u0434\u044b\u0440\u0430",
+            chaosExplosionButton: "\u0412\u0437\u0440\u044b\u0432",
+            chaosSlowMotionButton: "\u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435",
+            chaosUnlocked: "\u0425\u0410\u041e\u0421 \u041e\u0422\u041a\u0420\u042b\u0422. WEBREAK \u0432\u043a\u043b\u044e\u0447\u0435\u043d.",
+            chaosLockedHint: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 WEBREAK \u0432 \u0442\u0435\u0440\u043c\u0438\u043d\u0430\u043b\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0445\u0430\u043e\u0441.",
+            chaosCooldown: "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442 \u043d\u0430 \u043f\u0435\u0440\u0435\u0437\u0430\u0440\u044f\u0434\u043a\u0435.",
+            chaosNoObjects: "\u041d\u0435\u0442 \u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432 \u0434\u043b\u044f \u0445\u0430\u043e\u0441\u0430.",
+            chaosBlackHoleStatus: "\u0427\u0435\u0440\u043d\u0430\u044f \u0434\u044b\u0440\u0430 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u0430.",
+            chaosExplosionStatus: "\u0412\u0437\u0440\u044b\u0432 \u0437\u0430\u043f\u0443\u0449\u0435\u043d.",
+            chaosSlowMotionStatus: "\u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+        });
+
+        Object.assign(i18n.en, {
+            communityButton: "Community",
+            communityTitle: "Community",
+            communitySubtitle: "Share builds, like posts, and inspect creation codes.",
+            communityCloseAria: "Close community panel",
+            communitySearchPlaceholder: "Search posts",
+            communitySearchAria: "Search community",
+            communityCreateButton: "Create Post",
+            communityRefreshButton: "Refresh",
+            communityFilterAll: "All",
+            communityFilterFeatured: "Featured",
+            communityFilterMine: "Mine",
+            communityComposeTitle: "New Post",
+            communityEditTitle: "Edit Post",
+            communityPostTitlePlaceholder: "Title",
+            communityPostDescriptionPlaceholder: "Description",
+            communityPostCodePlaceholder: "WB1: exported build code",
+            communitySubmitPost: "Post",
+            communitySaveEdit: "Save Edit",
+            communityCancelEdit: "Cancel",
+            communityLoadMore: "Load More",
+            communityLoading: "Loading community feed...",
+            communityEmpty: "No posts found.",
+            communityTableMissing: "Community tables are not ready yet, using local mode.",
+            communityConnectionError: "Could not connect to Supabase, using local mode.",
+            communitySignInRequired: "Sign in to use community actions.",
+            communityInvalidPost: "Title, description, and a valid exported build code are required.",
+            communityPostCreated: "Post created.",
+            communityPostUpdated: "Post updated.",
+            communityPostDeleted: "Post deleted.",
+            communityPostHidden: "Post hidden.",
+            communityPostModerated: "Moderation updated.",
+            communityLikeSaved: "Reaction updated.",
+            communityCommentPlaceholder: "Write a comment",
+            communityCommentButton: "Comment",
+            communityCommentEmpty: "Comment cannot be empty.",
+            communityCommentAdded: "Comment added.",
+            communityCommentDeleted: "Comment deleted.",
+            communityCommentsLocked: "Comments are locked.",
+            communityLoadBuild: "Load Build",
+            communityCopyCode: "Copy Code",
+            communityEditPost: "Edit",
+            communityDeletePost: "Delete",
+            communityFeaturePost: "Feature",
+            communityUnfeaturePost: "Unfeature",
+            communityPinPost: "Pin",
+            communityUnpinPost: "Unpin",
+            communityLockComments: "Lock",
+            communityUnlockComments: "Unlock",
+            communityHidePost: "Hide",
+            communityAnnouncement: "Announcement",
+            communityMarkAnnouncement: "Announce",
+            communityUnmarkAnnouncement: "Unannounce",
+            communityFeaturedBadge: "Featured",
+            communityPinnedBadge: "Pinned",
+            communityAdminBadge: "Admin",
+            communityModBadge: "Mod",
+            communityLikesLabel: "likes",
+            communityCommentsLabel: "comments",
+            communityCodeLabel: "Build code",
+            communityLocalMode: "Local mode",
+            communityConfirmDelete: "Delete this post?",
+            communityConfirmHide: "Hide this post from community?",
+            communityConfirmLoad: "Load this build and replace current objects?"
+        });
+
+        Object.assign(i18n.ru, {
+            communityButton: "\u0421\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
+            communityTitle: "\u0421\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
+            communitySubtitle: "\u0414\u0435\u043b\u0438\u0442\u0435\u0441\u044c \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u043c\u0438, \u043b\u0430\u0439\u043a\u0430\u0439\u0442\u0435 \u043f\u043e\u0441\u0442\u044b \u0438 \u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435 \u043a\u043e\u0434\u044b.",
+            communityCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
+            communitySearchPlaceholder: "\u041f\u043e\u0438\u0441\u043a \u043f\u043e\u0441\u0442\u043e\u0432",
+            communitySearchAria: "\u0418\u0441\u043a\u0430\u0442\u044c \u0432 \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0435",
+            communityCreateButton: "\u0421\u043e\u0437\u0434\u0430\u0442\u044c",
+            communityRefreshButton: "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c",
+            communityFilterAll: "\u0412\u0441\u0435",
+            communityFilterFeatured: "\u041b\u0443\u0447\u0448\u0438\u0435",
+            communityFilterMine: "\u041c\u043e\u0438",
+            communityComposeTitle: "\u041d\u043e\u0432\u044b\u0439 \u043f\u043e\u0441\u0442",
+            communityEditTitle: "\u041f\u0440\u0430\u0432\u043a\u0430 \u043f\u043e\u0441\u0442\u0430",
+            communityPostTitlePlaceholder: "\u0417\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a",
+            communityPostDescriptionPlaceholder: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435",
+            communityPostCodePlaceholder: "WB1: \u044d\u043a\u0441\u043f\u043e\u0440\u0442-\u043a\u043e\u0434 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            communitySubmitPost: "\u041e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u0442\u044c",
+            communitySaveEdit: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
+            communityCancelEdit: "\u041e\u0442\u043c\u0435\u043d\u0430",
+            communityLoadMore: "\u0415\u0449\u0451",
+            communityLoading: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u044e \u043b\u0435\u043d\u0442\u0443...",
+            communityEmpty: "\u041f\u043e\u0441\u0442\u044b \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b.",
+            communityTableMissing: "\u0422\u0430\u0431\u043b\u0438\u0446\u044b Community \u0435\u0449\u0451 \u043d\u0435 \u0433\u043e\u0442\u043e\u0432\u044b, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
+            communityConnectionError: "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 Supabase, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
+            communitySignInRequired: "\u0412\u043e\u0439\u0434\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0434\u0435\u0439\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c.",
+            communityInvalidPost: "\u041d\u0443\u0436\u043d\u044b \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a, \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0438 \u0432\u0435\u0440\u043d\u044b\u0439 \u044d\u043a\u0441\u043f\u043e\u0440\u0442-\u043a\u043e\u0434.",
+            communityPostCreated: "\u041f\u043e\u0441\u0442 \u0441\u043e\u0437\u0434\u0430\u043d.",
+            communityPostUpdated: "\u041f\u043e\u0441\u0442 \u043e\u0431\u043d\u043e\u0432\u043b\u0451\u043d.",
+            communityPostDeleted: "\u041f\u043e\u0441\u0442 \u0443\u0434\u0430\u043b\u0451\u043d.",
+            communityPostHidden: "\u041f\u043e\u0441\u0442 \u0441\u043a\u0440\u044b\u0442.",
+            communityPostModerated: "\u041c\u043e\u0434\u0435\u0440\u0430\u0446\u0438\u044f \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430.",
+            communityLikeSaved: "\u0420\u0435\u0430\u043a\u0446\u0438\u044f \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430.",
+            communityCommentPlaceholder: "\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439",
+            communityCommentButton: "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c",
+            communityCommentEmpty: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u043f\u0443\u0441\u0442\u044b\u043c.",
+            communityCommentAdded: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d.",
+            communityCommentDeleted: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0443\u0434\u0430\u043b\u0451\u043d.",
+            communityCommentsLocked: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0438 \u0437\u0430\u043a\u0440\u044b\u0442\u044b.",
+            communityLoadBuild: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
+            communityCopyCode: "\u041a\u043e\u043f\u0438\u044f",
+            communityEditPost: "\u041f\u0440\u0430\u0432\u043a\u0430",
+            communityDeletePost: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
+            communityFeaturePost: "\u0412 \u043b\u0443\u0447\u0448\u0438\u0435",
+            communityUnfeaturePost: "\u0423\u0431\u0440\u0430\u0442\u044c",
+            communityPinPost: "\u0417\u0430\u043a\u0440\u0435\u043f",
+            communityUnpinPost: "\u041e\u0442\u043a\u0440\u0435\u043f",
+            communityLockComments: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c",
+            communityUnlockComments: "\u041e\u0442\u043a\u0440\u044b\u0442\u044c",
+            communityHidePost: "\u0421\u043a\u0440\u044b\u0442\u044c",
+            communityAnnouncement: "\u0410\u043d\u043e\u043d\u0441",
+            communityMarkAnnouncement: "\u0410\u043d\u043e\u043d\u0441",
+            communityUnmarkAnnouncement: "\u041d\u0435 \u0430\u043d\u043e\u043d\u0441",
+            communityFeaturedBadge: "\u041b\u0443\u0447\u0448\u0435\u0435",
+            communityPinnedBadge: "\u0417\u0430\u043a\u0440\u0435\u043f",
+            communityAdminBadge: "Admin",
+            communityModBadge: "Mod",
+            communityLikesLabel: "\u043b\u0430\u0439\u043a\u043e\u0432",
+            communityCommentsLabel: "\u043a\u043e\u043c\u043c.",
+            communityCodeLabel: "\u041a\u043e\u0434 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            communityLocalMode: "\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c",
+            communityConfirmDelete: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043f\u043e\u0441\u0442?",
+            communityConfirmHide: "\u0421\u043a\u0440\u044b\u0442\u044c \u044d\u0442\u043e\u0442 \u043f\u043e\u0441\u0442?",
+            communityConfirmLoad: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u044d\u0442\u0443 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0443 \u0438 \u0437\u0430\u043c\u0435\u043d\u0438\u0442\u044c \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b?"
+        });
+
+        i18n.en.terminalHelp = "Available commands: help, clear, clear objects, save, load, WEBREAK, blackhole, explosion, slowmo, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn sword <count>, spawn door <count>, spawn glass <count>, spawn <color>block <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, helicoptermode, unhelicoptermode, about.";
+        i18n.ru.terminalHelp = "\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b: help, clear, clear objects, save, load, WEBREAK, blackhole, explosion, slowmo, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn sword <count>, spawn door <count>, spawn glass <count>, spawn <color>block <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, helicoptermode, unhelicoptermode, about.";
+
         let currentLang = 'en';
         const FIRST_PAGE_TIP_INTERVAL_MS = 10000;
         let firstPageTipIndex = 0;
@@ -5034,6 +6102,7 @@
         let firstPageTipSignature = '';
                 
         let supabaseClient = null;
+        let supabaseAuthConfigCheck = null;
         let authSession = null;
         let authProfile = null;
         let authMode = 'login';
@@ -5053,6 +6122,24 @@
         let profileSearchRequestId = 0;
         let profileSearchPage = 0;
         let profileVoteTotalsAvailable = null;
+
+        // Community moderation is intentionally centralized here so the admin/mod list is easy to change.
+        const COMMUNITY_ADMIN_ACCOUNT_IDS = [1];
+        const COMMUNITY_ADMIN_EMAILS = [];
+        const COMMUNITY_MOD_ACCOUNT_IDS = [];
+        const COMMUNITY_PAGE_SIZE = 6;
+        const COMMUNITY_LOCAL_STORAGE_KEY = 'webbreak.community.localPosts.v1';
+        const COMMUNITY_ACTION_COOLDOWN_MS = 850;
+        let communityPosts = [];
+        let communityPage = 0;
+        let communityHasMore = false;
+        let communityFilter = 'all';
+        let communitySearchQuery = '';
+        let communityRequestId = 0;
+        let communityLoading = false;
+        let communityUsingLocalFallback = false;
+        let communityEditingPostId = null;
+        const communityActionCooldowns = {};
         let profileAdminOpenTargetId = null;
         let expandedProfileDescriptions = new Set();
 
@@ -5440,6 +6527,10 @@
             updateQuestionZoneTabs();
             updateMobileBuildingControlsToggle();
             updateDesktopBuildTimerAnchor();
+            renderSaveSlots();
+            updateChaosToolsUi();
+            renderCommunityPosts();
+            updateCommunityComposerMode();
             updateFirstPageTip(false);
             renderProfileSearchResults(profileSearchResults);
             document.documentElement.lang = currentLang;
@@ -5483,6 +6574,7 @@
             if (!panel) return;
             closeLangMenu();
             closeAuthPanel();
+            closeCommunityPanel();
             panel.classList.add('open');
         }
 
@@ -5520,6 +6612,67 @@
             return supabaseClient;
         }
 
+        function createAuthDiagnosticError(code, message) {
+            const error = new Error(message);
+            error.webbreakAuthCode = code;
+            return error;
+        }
+
+        function isSupabaseInvalidKeyError(error) {
+            if (!error) return false;
+            const message = `${error.message || ''} ${error.details || ''} ${error.hint || ''}`.toLowerCase();
+            return error.webbreakAuthCode === 'invalid-api-key'
+                || message.includes('invalid api key')
+                || message.includes('invalid apikey');
+        }
+
+        function getAuthErrorMessage(error, strings, fallback) {
+            if (isSupabaseInvalidKeyError(error)) return strings.authInvalidApiKey;
+            if (isSupabaseConnectionError(error)) return strings.authConnectionError;
+            return error && error.message ? error.message : fallback;
+        }
+
+        async function ensureSupabaseAuthReady() {
+            if (supabaseAuthConfigCheck) return supabaseAuthConfigCheck;
+            if (typeof fetch !== 'function') return true;
+
+            const baseUrl = String(SUPABASE_URL || '').replace(/\/+$/, '');
+            supabaseAuthConfigCheck = (async () => {
+                try {
+                    const response = await fetch(`${baseUrl}/auth/v1/settings`, {
+                        method: 'GET',
+                        headers: {
+                            apikey: SUPABASE_ANON_KEY,
+                            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+                        },
+                        cache: 'no-store'
+                    });
+
+                    if (response.status === 401 || response.status === 403) {
+                        const body = await response.text().catch(() => '');
+                        throw createAuthDiagnosticError(
+                            'invalid-api-key',
+                            body || getAuthStrings().authInvalidApiKey
+                        );
+                    }
+                    if (!response.ok) {
+                        throw createAuthDiagnosticError('auth-config', `Supabase auth check failed (${response.status}).`);
+                    }
+                    return true;
+                } catch (error) {
+                    if (isSupabaseInvalidKeyError(error)) throw error;
+                    throw createAuthDiagnosticError('connection', error && error.message ? error.message : 'Failed to fetch');
+                }
+            })();
+
+            try {
+                return await supabaseAuthConfigCheck;
+            } catch (error) {
+                supabaseAuthConfigCheck = null;
+                throw error;
+            }
+        }
+
         function isAuthUserMarkedDeleted(user) {
             return !!(user && user.user_metadata && user.user_metadata.account_deleted);
         }
@@ -5534,6 +6687,7 @@
             if (!panel) return;
             closeLangMenu();
             closeChangelogPanel();
+            closeCommunityPanel();
             panel.classList.add('open');
             if (!authSession) {
                 resetAuthCaptcha();
@@ -6052,6 +7206,9 @@ function normalizeNickname(value) {
             }
 
             renderProfileSearchResults(profileSearchResults);
+            if (document.getElementById('community-panel')?.classList.contains('open')) {
+                renderCommunityPosts();
+            }
             updateDesktopBuildTimerAnchor();
         }
 
@@ -6198,6 +7355,7 @@ function normalizeNickname(value) {
             setAuthStatus(strings.authWorking);
 
             try {
+                await ensureSupabaseAuthReady();
                 const result = authMode === 'register'
                     ? await client.auth.signUp({ email, password })
                     : await client.auth.signInWithPassword({ email, password });
@@ -6238,7 +7396,7 @@ function normalizeNickname(value) {
                     setAuthStatus(strings.authLoginSuccess, 'success');
                 }
             } catch (error) {
-                setAuthStatus(error.message || strings.authFillFields, 'error');
+                setAuthStatus(getAuthErrorMessage(error, strings, strings.authFillFields), 'error');
             } finally {
                 if (submit) submit.disabled = false;
             }
@@ -6515,7 +7673,11 @@ function normalizeNickname(value) {
         function isSupabaseConnectionError(error) {
             if (!error) return false;
             const message = `${error.name || ''} ${error.message || ''}`.toLowerCase();
-            return message.includes('failed to fetch') || message.includes('fetch failed') || message.includes('networkerror') || message.includes('load failed');
+            return error.webbreakAuthCode === 'connection'
+                || message.includes('failed to fetch')
+                || message.includes('fetch failed')
+                || message.includes('networkerror')
+                || message.includes('load failed');
         }
 
         function getProfileSearchErrorMessage(error, strings, fallback) {
@@ -7172,6 +8334,950 @@ function normalizeNickname(value) {
             }
         }
 
+        function setCommunityStatus(message, type = '') {
+            const status = document.getElementById('community-status');
+            if (!status) return;
+            status.textContent = message || '';
+            status.classList.toggle('error', type === 'error');
+            status.classList.toggle('success', type === 'success');
+        }
+
+        function setCommunityComposeStatus(message, type = '') {
+            const status = document.getElementById('community-compose-status');
+            if (!status) return;
+            status.textContent = message || '';
+            status.classList.toggle('error', type === 'error');
+            status.classList.toggle('success', type === 'success');
+        }
+
+        function sanitizeCommunityText(value, maxLength) {
+            return String(value || '')
+                .replace(/[\u0000-\u001f\u007f]/g, ' ')
+                .replace(/\s+\n/g, '\n')
+                .replace(/\n{4,}/g, '\n\n\n')
+                .replace(/[<>]/g, '')
+                .trim()
+                .slice(0, maxLength);
+        }
+
+        function sanitizeCommunityCode(value) {
+            return String(value || '').replace(/[<>]/g, '').trim().slice(0, 24000);
+        }
+
+        function getCommunityUser() {
+            return authSession && authSession.user ? authSession.user : null;
+        }
+
+        function getCommunityProfile() {
+            const user = getCommunityUser();
+            return user ? (authProfile || buildFallbackProfile(user)) : null;
+        }
+
+        function getCommunityDisplayName() {
+            const user = getCommunityUser();
+            const profile = getCommunityProfile();
+            return normalizeNickname(profile && profile.nickname) || getDefaultNickname(user) || 'Player';
+        }
+
+        function getCommunityAccountId() {
+            const profile = getCommunityProfile();
+            return profile && profile.account_id ? Number(profile.account_id) : null;
+        }
+
+        function isCommunityAdmin() {
+            const user = getCommunityUser();
+            const accountId = getCommunityAccountId();
+            const email = user && user.email ? String(user.email).toLowerCase() : '';
+            return isCurrentUserAdmin()
+                || COMMUNITY_ADMIN_ACCOUNT_IDS.includes(Number(accountId))
+                || (email && COMMUNITY_ADMIN_EMAILS.map(item => String(item).toLowerCase()).includes(email));
+        }
+
+        function isCommunityMod() {
+            const accountId = getCommunityAccountId();
+            return isCommunityAdmin() || COMMUNITY_MOD_ACCOUNT_IDS.includes(Number(accountId));
+        }
+
+        function getCommunityAuthorRole(accountId, email = '') {
+            const normalizedEmail = String(email || '').toLowerCase();
+            if (COMMUNITY_ADMIN_ACCOUNT_IDS.includes(Number(accountId)) || COMMUNITY_ADMIN_EMAILS.map(item => String(item).toLowerCase()).includes(normalizedEmail)) {
+                return 'admin';
+            }
+            if (COMMUNITY_MOD_ACCOUNT_IDS.includes(Number(accountId))) {
+                return 'mod';
+            }
+            return '';
+        }
+
+        function requireCommunityUser() {
+            const strings = getAuthStrings();
+            const user = getCommunityUser();
+            if (user) return user;
+            setCommunityStatus(strings.communitySignInRequired, 'error');
+            openAuthPanel();
+            return null;
+        }
+
+        function canUseCommunityAction(key) {
+            const now = performance.now();
+            if (now - (communityActionCooldowns[key] || 0) < COMMUNITY_ACTION_COOLDOWN_MS) return false;
+            communityActionCooldowns[key] = now;
+            return true;
+        }
+
+        function normalizeCommunityPost(row) {
+            const accountId = row.author_account_id || row.account_id || null;
+            const role = row.author_role || getCommunityAuthorRole(accountId, row.author_email);
+            return {
+                id: String(row.id),
+                author_id: row.author_id || row.user_id || '',
+                author_account_id: accountId,
+                username: sanitizeCommunityText(row.username || row.nickname || 'Builder', 32),
+                author_role: role,
+                title: sanitizeCommunityText(row.title, 80),
+                description: sanitizeCommunityText(row.description, 700),
+                build_code: sanitizeCommunityCode(row.build_code || row.code),
+                featured: !!row.featured,
+                pinned: !!row.pinned,
+                hidden: !!row.hidden,
+                comments_locked: !!row.comments_locked,
+                is_announcement: !!row.is_announcement,
+                created_at: row.created_at || new Date().toISOString(),
+                updated_at: row.updated_at || row.created_at || new Date().toISOString(),
+                likes_count: Math.max(0, Number(row.likes_count) || 0),
+                comments_count: Math.max(0, Number(row.comments_count) || 0),
+                likedBy: Array.isArray(row.likedBy) ? row.likedBy.map(String) : [],
+                my_liked: !!row.my_liked || !!(getCommunityUser() && Array.isArray(row.likedBy) && row.likedBy.map(String).includes(String(getCommunityUser().id))),
+                comments: Array.isArray(row.comments) ? row.comments.map(normalizeCommunityComment) : []
+            };
+        }
+
+        function normalizeCommunityComment(row) {
+            const accountId = row.author_account_id || row.account_id || null;
+            return {
+                id: String(row.id),
+                post_id: String(row.post_id),
+                author_id: row.author_id || row.user_id || '',
+                author_account_id: accountId,
+                username: sanitizeCommunityText(row.username || row.nickname || 'Builder', 32),
+                author_role: row.author_role || getCommunityAuthorRole(accountId, row.author_email),
+                body: sanitizeCommunityText(row.body || row.comment || '', 360),
+                created_at: row.created_at || new Date().toISOString()
+            };
+        }
+
+        function readCommunityLocalPosts() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(COMMUNITY_LOCAL_STORAGE_KEY) || '[]');
+                return Array.isArray(parsed) ? parsed.map(normalizeCommunityPost) : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function writeCommunityLocalPosts(posts) {
+            try {
+                localStorage.setItem(COMMUNITY_LOCAL_STORAGE_KEY, JSON.stringify(posts));
+            } catch (error) {
+                setCommunityStatus(getAuthStrings().communityInvalidPost, 'error');
+            }
+        }
+
+        function sortCommunityPosts(posts) {
+            return [...posts].sort((a, b) => {
+                if (!!b.pinned !== !!a.pinned) return Number(b.pinned) - Number(a.pinned);
+                if (!!b.featured !== !!a.featured) return Number(b.featured) - Number(a.featured);
+                return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+            });
+        }
+
+        function filterCommunityLocalPosts(posts) {
+            const user = getCommunityUser();
+            const query = communitySearchQuery.toLowerCase();
+            return sortCommunityPosts(posts).filter(post => {
+                if (post.hidden) return false;
+                if (communityFilter === 'featured' && !post.featured) return false;
+                if (communityFilter === 'mine' && (!user || post.author_id !== user.id)) return false;
+                if (!query) return true;
+                return `${post.title} ${post.description} ${post.username}`.toLowerCase().includes(query);
+            });
+        }
+
+        function isCommunitySetupError(error) {
+            const message = getErrorText(error);
+            return message.includes('community_posts') || message.includes('community_comments') || message.includes('community_likes') || message.includes('relation') || message.includes('does not exist');
+        }
+
+        function getCommunityErrorMessage(error) {
+            const strings = getAuthStrings();
+            if (isCommunitySetupError(error)) return strings.communityTableMissing;
+            if (isSupabaseConnectionError(error)) return strings.communityConnectionError;
+            return error && error.message ? error.message : strings.communityTableMissing;
+        }
+
+        function getCommunitySearchQuery() {
+            const input = document.getElementById('community-search-input');
+            return sanitizeCommunityText(input ? input.value : '', 80);
+        }
+
+        function updateCommunityFilterTabs() {
+            ['all', 'featured', 'mine'].forEach(filter => {
+                const button = document.getElementById(`community-filter-${filter}`);
+                if (button) button.classList.toggle('active', communityFilter === filter);
+            });
+        }
+
+        function renderCommunityPlaceholders() {
+            const feed = document.getElementById('community-feed');
+            if (!feed) return;
+            feed.innerHTML = '';
+            for (let index = 0; index < 4; index++) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'community-placeholder';
+                feed.appendChild(placeholder);
+            }
+        }
+
+        function formatCommunityTime(value) {
+            try {
+                return new Date(value).toLocaleString(currentLang === 'ru' ? 'ru-RU' : 'en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (error) {
+                return '';
+            }
+        }
+
+        function openCommunityPanel() {
+            const panel = document.getElementById('community-panel');
+            if (!panel) return;
+            closeLangMenu();
+            closeAuthPanel();
+            closeChangelogPanel();
+            panel.classList.add('open');
+            panel.setAttribute('aria-hidden', 'false');
+            if (communityPosts.length === 0) {
+                refreshCommunityFeed(true);
+            } else {
+                renderCommunityPosts();
+            }
+        }
+
+        function closeCommunityPanel() {
+            const panel = document.getElementById('community-panel');
+            if (!panel) return;
+            panel.classList.remove('open');
+            panel.setAttribute('aria-hidden', 'true');
+        }
+
+        function toggleCommunityComposer(postId = null) {
+            const user = requireCommunityUser();
+            if (!user) return;
+            const form = document.getElementById('community-compose');
+            if (!form) return;
+            if (postId) {
+                beginEditCommunityPost(postId);
+                return;
+            }
+            communityEditingPostId = null;
+            form.classList.toggle('collapsed');
+            updateCommunityComposerMode();
+        }
+
+        function updateCommunityComposerMode() {
+            const title = document.getElementById('community-compose-title');
+            const submit = document.getElementById('community-post-submit');
+            const strings = getAuthStrings();
+            if (title) title.textContent = communityEditingPostId ? strings.communityEditTitle : strings.communityComposeTitle;
+            if (submit) submit.textContent = communityEditingPostId ? strings.communitySaveEdit : strings.communitySubmitPost;
+        }
+
+        function resetCommunityComposer() {
+            communityEditingPostId = null;
+            ['community-post-title', 'community-post-description', 'community-post-code'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.value = '';
+            });
+            const form = document.getElementById('community-compose');
+            if (form) form.classList.add('collapsed');
+            setCommunityComposeStatus('');
+            updateCommunityComposerMode();
+        }
+
+        function getCommunityPostById(postId) {
+            return communityPosts.find(post => post.id === String(postId)) || null;
+        }
+
+        function isCommunityPostOwner(post) {
+            const user = getCommunityUser();
+            return !!(user && post && post.author_id === user.id);
+        }
+
+        function beginEditCommunityPost(postId) {
+            const strings = getAuthStrings();
+            const post = getCommunityPostById(postId);
+            if (!post || !isCommunityPostOwner(post)) return;
+            communityEditingPostId = String(postId);
+            const form = document.getElementById('community-compose');
+            const title = document.getElementById('community-post-title');
+            const description = document.getElementById('community-post-description');
+            const code = document.getElementById('community-post-code');
+            if (form) form.classList.remove('collapsed');
+            if (title) title.value = post.title;
+            if (description) description.value = post.description;
+            if (code) code.value = post.build_code;
+            setCommunityComposeStatus('');
+            updateCommunityComposerMode();
+            setCommunityStatus(strings.communityEditTitle);
+        }
+
+        async function fetchCommunityStats(posts) {
+            const client = getSupabaseClient();
+            const ids = posts.map(post => post.id);
+            const currentUserId = getCommunityUser() ? getCommunityUser().id : null;
+            if (!client || ids.length === 0) return posts;
+
+            try {
+                const { data: likes, error: likesError } = await client
+                    .from('community_likes')
+                    .select('post_id, user_id')
+                    .in('post_id', ids);
+                if (likesError) throw likesError;
+
+                const { data: comments, error: commentsError } = await client
+                    .from('community_comments')
+                    .select('*')
+                    .in('post_id', ids)
+                    .order('created_at', { ascending: true });
+                if (commentsError) throw commentsError;
+
+                const likesByPost = {};
+                (likes || []).forEach(like => {
+                    const postId = String(like.post_id);
+                    if (!likesByPost[postId]) likesByPost[postId] = { count: 0, myLiked: false };
+                    likesByPost[postId].count += 1;
+                    if (currentUserId && like.user_id === currentUserId) likesByPost[postId].myLiked = true;
+                });
+
+                const commentsByPost = {};
+                (comments || []).map(normalizeCommunityComment).forEach(comment => {
+                    if (!commentsByPost[comment.post_id]) commentsByPost[comment.post_id] = [];
+                    commentsByPost[comment.post_id].push(comment);
+                });
+
+                return posts.map(post => Object.assign({}, post, {
+                    likes_count: likesByPost[post.id] ? likesByPost[post.id].count : post.likes_count,
+                    my_liked: likesByPost[post.id] ? likesByPost[post.id].myLiked : false,
+                    comments_count: commentsByPost[post.id] ? commentsByPost[post.id].length : post.comments_count,
+                    comments: commentsByPost[post.id] || []
+                }));
+            } catch (error) {
+                return posts;
+            }
+        }
+
+        async function loadCommunityPosts({ append = false } = {}) {
+            const strings = getAuthStrings();
+            const client = getSupabaseClient();
+            const requestId = ++communityRequestId;
+            communityLoading = true;
+            updateCommunityFilterTabs();
+            if (!append) {
+                renderCommunityPlaceholders();
+                setCommunityStatus(strings.communityLoading);
+            }
+
+            if (!client || communityUsingLocalFallback) {
+                const filtered = filterCommunityLocalPosts(readCommunityLocalPosts());
+                const start = communityPage * COMMUNITY_PAGE_SIZE;
+                const pagePosts = filtered.slice(start, start + COMMUNITY_PAGE_SIZE);
+                communityHasMore = start + COMMUNITY_PAGE_SIZE < filtered.length;
+                communityPosts = append ? communityPosts.concat(pagePosts) : pagePosts;
+                communityLoading = false;
+                renderCommunityPosts();
+                setCommunityStatus(communityUsingLocalFallback ? strings.communityLocalMode : '');
+                return;
+            }
+
+            try {
+                let query = client
+                    .from('community_posts')
+                    .select('*')
+                    .eq('hidden', false);
+
+                if (communityFilter === 'featured') {
+                    query = query.eq('featured', true);
+                } else if (communityFilter === 'mine') {
+                    const user = requireCommunityUser();
+                    if (!user) {
+                        communityPosts = [];
+                        communityHasMore = false;
+                        communityLoading = false;
+                        renderCommunityPosts();
+                        return;
+                    }
+                    query = query.eq('author_id', user.id);
+                }
+
+                if (communitySearchQuery) {
+                    const safeQuery = communitySearchQuery.replace(/[%,()]/g, ' ').trim();
+                    if (safeQuery) {
+                        query = query.or(`title.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%,username.ilike.%${safeQuery}%`);
+                    }
+                }
+
+                const from = communityPage * COMMUNITY_PAGE_SIZE;
+                const to = from + COMMUNITY_PAGE_SIZE - 1;
+                const { data, error } = await query
+                    .order('pinned', { ascending: false })
+                    .order('featured', { ascending: false })
+                    .order('created_at', { ascending: false })
+                    .range(from, to);
+
+                if (error) throw error;
+                if (requestId !== communityRequestId) return;
+
+                const pagePosts = await fetchCommunityStats((data || []).map(normalizeCommunityPost));
+                communityHasMore = pagePosts.length === COMMUNITY_PAGE_SIZE;
+                communityPosts = append ? communityPosts.concat(pagePosts) : pagePosts;
+                communityLoading = false;
+                renderCommunityPosts();
+                setCommunityStatus('');
+            } catch (error) {
+                if (requestId !== communityRequestId) return;
+                communityUsingLocalFallback = true;
+                setCommunityStatus(getCommunityErrorMessage(error), 'error');
+                await loadCommunityPosts({ append });
+            }
+        }
+
+        function refreshCommunityFeed(reset = true) {
+            if (reset) communityPage = 0;
+            communitySearchQuery = getCommunitySearchQuery();
+            loadCommunityPosts({ append: false });
+        }
+
+        function loadMoreCommunityPosts() {
+            if (communityLoading || !communityHasMore) return;
+            communityPage += 1;
+            loadCommunityPosts({ append: true });
+        }
+
+        function setCommunityFilter(filter) {
+            communityFilter = ['all', 'featured', 'mine'].includes(filter) ? filter : 'all';
+            communityPage = 0;
+            refreshCommunityFeed(false);
+        }
+
+        function handleCommunitySearchSubmit(event) {
+            event.preventDefault();
+            communityPage = 0;
+            refreshCommunityFeed(false);
+        }
+
+        function renderCommunityFeaturedStrip() {
+            const strip = document.getElementById('community-featured-strip');
+            if (!strip) return;
+            const strings = getAuthStrings();
+            strip.innerHTML = '';
+            const featured = communityPosts.filter(post => post.featured || post.pinned || post.is_announcement).slice(0, 3);
+            if (featured.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'community-featured-mini';
+                empty.textContent = strings.communityFeaturedBadge;
+                strip.appendChild(empty);
+                return;
+            }
+
+            featured.forEach(post => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'community-featured-mini interactive';
+                button.addEventListener('click', () => {
+                    const card = document.getElementById(`community-post-${post.id}`);
+                    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+                const title = document.createElement('div');
+                title.className = 'community-featured-title';
+                title.textContent = post.title;
+                const meta = document.createElement('div');
+                meta.className = 'community-meta';
+                meta.textContent = `${post.likes_count} ${strings.communityLikesLabel} // ${post.comments_count} ${strings.communityCommentsLabel}`;
+                button.append(title, meta);
+                strip.appendChild(button);
+            });
+        }
+
+        function appendCommunityBadge(parent, text, className = '') {
+            const badge = document.createElement('span');
+            badge.className = `community-badge ${className}`.trim();
+            badge.textContent = text;
+            parent.appendChild(badge);
+        }
+
+        function createCommunityActionButton(label, handler, className = '') {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `terminal-simple-action-button interactive ${className}`.trim();
+            button.textContent = label;
+            button.addEventListener('click', handler);
+            return button;
+        }
+
+        function renderCommunityPosts() {
+            const feed = document.getElementById('community-feed');
+            const loadMore = document.getElementById('community-load-more');
+            const indicator = document.getElementById('community-page-indicator');
+            const strings = getAuthStrings();
+            if (!feed) return;
+            renderCommunityFeaturedStrip();
+            feed.innerHTML = '';
+
+            if (communityPosts.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'community-card';
+                empty.textContent = strings.communityEmpty;
+                feed.appendChild(empty);
+            } else {
+                communityPosts.forEach(post => feed.appendChild(renderCommunityPostCard(post)));
+            }
+
+            if (loadMore) {
+                loadMore.disabled = !communityHasMore || communityLoading;
+                loadMore.style.display = communityHasMore ? 'inline-flex' : 'none';
+            }
+            if (indicator) {
+                indicator.textContent = `${communityPosts.length} / ${communityHasMore ? '+' : communityPosts.length}`;
+            }
+        }
+
+        function renderCommunityPostCard(post) {
+            const strings = getAuthStrings();
+            const isOwner = isCommunityPostOwner(post);
+            const isMod = isCommunityMod();
+            const card = document.createElement('article');
+            card.id = `community-post-${post.id}`;
+            card.className = `community-card${post.pinned ? ' pinned' : ''}${post.featured ? ' featured' : ''}`;
+
+            const head = document.createElement('div');
+            head.className = 'community-card-head';
+            const author = document.createElement('div');
+            author.className = 'community-author';
+            const name = document.createElement('span');
+            name.className = 'community-author-name';
+            name.textContent = post.username || 'Builder';
+            author.appendChild(name);
+            if (post.author_role === 'admin') appendCommunityBadge(author, strings.communityAdminBadge, 'admin');
+            if (post.author_role === 'mod') appendCommunityBadge(author, strings.communityModBadge, 'mod');
+            if (post.featured) appendCommunityBadge(author, strings.communityFeaturedBadge, 'featured');
+            if (post.pinned) appendCommunityBadge(author, strings.communityPinnedBadge, 'pinned');
+            if (post.is_announcement) appendCommunityBadge(author, strings.communityAnnouncement, 'featured');
+            const meta = document.createElement('div');
+            meta.className = 'community-meta';
+            meta.textContent = formatCommunityTime(post.created_at);
+            head.append(author, meta);
+
+            const title = document.createElement('div');
+            title.className = 'community-card-title';
+            title.textContent = post.title;
+
+            const description = document.createElement('div');
+            description.className = 'community-card-description';
+            description.textContent = post.description;
+
+            const codeBox = document.createElement('div');
+            codeBox.className = 'community-code-box';
+            const codeLabel = document.createElement('div');
+            codeLabel.className = 'community-code-label';
+            codeLabel.textContent = strings.communityCodeLabel;
+            const code = document.createElement('div');
+            code.className = 'community-code';
+            code.textContent = post.build_code;
+            codeBox.append(codeLabel, code);
+
+            const actions = document.createElement('div');
+            actions.className = 'community-card-actions';
+            const leftActions = document.createElement('div');
+            leftActions.className = 'community-card-actions';
+            const likeButton = createCommunityActionButton(`${post.my_liked ? '♥' : '♡'} ${post.likes_count} ${strings.communityLikesLabel}`, () => toggleCommunityLike(post.id), post.my_liked ? 'active' : '');
+            const commentCount = document.createElement('span');
+            commentCount.className = 'community-count';
+            commentCount.textContent = `${post.comments_count} ${strings.communityCommentsLabel}`;
+            leftActions.append(likeButton, commentCount);
+
+            const rightActions = document.createElement('div');
+            rightActions.className = 'community-card-actions';
+            rightActions.append(
+                createCommunityActionButton(strings.communityLoadBuild, () => loadCommunityBuild(post.id)),
+                createCommunityActionButton(strings.communityCopyCode, () => copyCommunityPostCode(post.id))
+            );
+            if (isOwner) {
+                rightActions.append(
+                    createCommunityActionButton(strings.communityEditPost, () => beginEditCommunityPost(post.id)),
+                    createCommunityActionButton(strings.communityDeletePost, () => deleteCommunityPost(post.id))
+                );
+            }
+            actions.append(leftActions, rightActions);
+
+            const comments = renderCommunityComments(post);
+            card.append(head, title, description, codeBox, actions, comments);
+
+            if (isMod) {
+                const admin = document.createElement('div');
+                admin.className = 'community-card-actions';
+                admin.append(
+                    createCommunityActionButton(post.featured ? strings.communityUnfeaturePost : strings.communityFeaturePost, () => updateCommunityPostFlags(post.id, { featured: !post.featured })),
+                    createCommunityActionButton(post.pinned ? strings.communityUnpinPost : strings.communityPinPost, () => updateCommunityPostFlags(post.id, { pinned: !post.pinned })),
+                    createCommunityActionButton(post.comments_locked ? strings.communityUnlockComments : strings.communityLockComments, () => updateCommunityPostFlags(post.id, { comments_locked: !post.comments_locked })),
+                    createCommunityActionButton(post.is_announcement ? strings.communityUnmarkAnnouncement : strings.communityMarkAnnouncement, () => updateCommunityPostFlags(post.id, { is_announcement: !post.is_announcement })),
+                    createCommunityActionButton(strings.communityHidePost, () => hideCommunityPost(post.id), 'profile-admin-danger')
+                );
+                card.appendChild(admin);
+            }
+
+            return card;
+        }
+
+        function renderCommunityComments(post) {
+            const strings = getAuthStrings();
+            const wrap = document.createElement('div');
+            wrap.className = 'community-comments';
+            const comments = (post.comments || []).slice(-6);
+            comments.forEach(comment => {
+                const row = document.createElement('div');
+                row.className = 'community-comment';
+                const head = document.createElement('div');
+                head.className = 'community-comment-head';
+                const author = document.createElement('div');
+                author.className = 'community-author';
+                const name = document.createElement('span');
+                name.className = 'community-author-name';
+                name.textContent = comment.username;
+                author.appendChild(name);
+                if (comment.author_role === 'admin') appendCommunityBadge(author, strings.communityAdminBadge, 'admin');
+                if (comment.author_role === 'mod') appendCommunityBadge(author, strings.communityModBadge, 'mod');
+                const meta = document.createElement('span');
+                meta.className = 'community-meta';
+                meta.textContent = formatCommunityTime(comment.created_at);
+                head.append(author, meta);
+                const body = document.createElement('div');
+                body.className = 'community-comment-body';
+                body.textContent = comment.body;
+                row.append(head, body);
+                if (isCommunityMod() || (getCommunityUser() && getCommunityUser().id === comment.author_id)) {
+                    row.appendChild(createCommunityActionButton(strings.communityDeletePost, () => deleteCommunityComment(post.id, comment.id), 'profile-admin-danger'));
+                }
+                wrap.appendChild(row);
+            });
+
+            if (post.comments_locked && !isCommunityMod()) {
+                const locked = document.createElement('div');
+                locked.className = 'community-status';
+                locked.textContent = strings.communityCommentsLocked;
+                wrap.appendChild(locked);
+                return wrap;
+            }
+
+            const form = document.createElement('form');
+            form.className = 'community-comment-form';
+            const input = document.createElement('input');
+            input.className = 'community-input interactive';
+            input.maxLength = 360;
+            input.placeholder = strings.communityCommentPlaceholder;
+            const button = document.createElement('button');
+            button.type = 'submit';
+            button.className = 'terminal-simple-action-button interactive';
+            button.textContent = strings.communityCommentButton;
+            form.append(input, button);
+            form.addEventListener('submit', event => handleCommunityCommentSubmit(event, post.id, input));
+            wrap.appendChild(form);
+            return wrap;
+        }
+
+        async function handleCommunityPostSubmit(event) {
+            event.preventDefault();
+            const strings = getAuthStrings();
+            const user = requireCommunityUser();
+            if (!user || !canUseCommunityAction('post')) return;
+            const title = sanitizeCommunityText(document.getElementById('community-post-title')?.value, 80);
+            const description = sanitizeCommunityText(document.getElementById('community-post-description')?.value, 700);
+            const buildCode = sanitizeCommunityCode(document.getElementById('community-post-code')?.value);
+
+            try {
+                decodeBuildSaveCode(buildCode);
+            } catch (error) {
+                setCommunityComposeStatus(strings.communityInvalidPost, 'error');
+                return;
+            }
+            if (!title || !description || !buildCode) {
+                setCommunityComposeStatus(strings.communityInvalidPost, 'error');
+                return;
+            }
+
+            const profile = getCommunityProfile();
+            const payload = {
+                author_id: user.id,
+                author_account_id: profile && profile.account_id ? profile.account_id : null,
+                username: getCommunityDisplayName(),
+                author_role: getCommunityAuthorRole(profile && profile.account_id, user.email),
+                title,
+                description,
+                build_code: buildCode,
+                updated_at: new Date().toISOString()
+            };
+
+            try {
+                if (communityUsingLocalFallback || !getSupabaseClient()) {
+                    saveCommunityPostLocal(payload);
+                } else if (communityEditingPostId) {
+                    const { error } = await getSupabaseClient()
+                        .from('community_posts')
+                        .update({ title, description, build_code: buildCode, updated_at: payload.updated_at })
+                        .eq('id', communityEditingPostId)
+                        .eq('author_id', user.id);
+                    if (error) throw error;
+                } else {
+                    const { error } = await getSupabaseClient()
+                        .from('community_posts')
+                        .insert(Object.assign({}, payload, {
+                            featured: false,
+                            pinned: false,
+                            hidden: false,
+                            comments_locked: false,
+                            is_announcement: false
+                        }));
+                    if (error) throw error;
+                }
+                setCommunityComposeStatus(communityEditingPostId ? strings.communityPostUpdated : strings.communityPostCreated, 'success');
+                resetCommunityComposer();
+                refreshCommunityFeed(true);
+            } catch (error) {
+                communityUsingLocalFallback = true;
+                saveCommunityPostLocal(payload);
+                setCommunityComposeStatus(getCommunityErrorMessage(error), 'error');
+                refreshCommunityFeed(true);
+            }
+        }
+
+        function saveCommunityPostLocal(payload) {
+            const user = getCommunityUser();
+            const posts = readCommunityLocalPosts();
+            if (communityEditingPostId) {
+                const index = posts.findIndex(post => post.id === communityEditingPostId && post.author_id === user.id);
+                if (index >= 0) {
+                    posts[index] = Object.assign({}, posts[index], payload, {
+                        id: posts[index].id,
+                        created_at: posts[index].created_at
+                    });
+                }
+            } else {
+                posts.unshift(normalizeCommunityPost(Object.assign({}, payload, {
+                    id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+                    created_at: new Date().toISOString(),
+                    comments: [],
+                    likedBy: [],
+                    likes_count: 0,
+                    comments_count: 0,
+                    my_liked: false
+                })));
+            }
+            writeCommunityLocalPosts(posts);
+        }
+
+        async function toggleCommunityLike(postId) {
+            const strings = getAuthStrings();
+            const user = requireCommunityUser();
+            if (!user || !canUseCommunityAction(`like-${postId}`)) return;
+            const post = getCommunityPostById(postId);
+            if (!post) return;
+            const nextLiked = !post.my_liked;
+
+            try {
+                if (communityUsingLocalFallback || !getSupabaseClient()) {
+                    const posts = readCommunityLocalPosts();
+                    const target = posts.find(item => item.id === String(postId));
+                    if (target) {
+                        const likedBy = new Set(target.likedBy || []);
+                        if (nextLiked) likedBy.add(user.id); else likedBy.delete(user.id);
+                        target.likedBy = Array.from(likedBy);
+                        target.likes_count = target.likedBy.length;
+                        writeCommunityLocalPosts(posts);
+                    }
+                } else if (nextLiked) {
+                    const { error } = await getSupabaseClient()
+                        .from('community_likes')
+                        .upsert({ post_id: postId, user_id: user.id }, { onConflict: 'post_id,user_id' });
+                    if (error) throw error;
+                } else {
+                    const { error } = await getSupabaseClient()
+                        .from('community_likes')
+                        .delete()
+                        .eq('post_id', postId)
+                        .eq('user_id', user.id);
+                    if (error) throw error;
+                }
+                post.my_liked = nextLiked;
+                post.likes_count = Math.max(0, post.likes_count + (nextLiked ? 1 : -1));
+                renderCommunityPosts();
+                setCommunityStatus(strings.communityLikeSaved, 'success');
+            } catch (error) {
+                setCommunityStatus(getCommunityErrorMessage(error), 'error');
+            }
+        }
+
+        async function handleCommunityCommentSubmit(event, postId, input) {
+            event.preventDefault();
+            const strings = getAuthStrings();
+            const user = requireCommunityUser();
+            if (!user || !canUseCommunityAction(`comment-${postId}`)) return;
+            const post = getCommunityPostById(postId);
+            if (!post) return;
+            if (post.comments_locked && !isCommunityMod()) {
+                setCommunityStatus(strings.communityCommentsLocked, 'error');
+                return;
+            }
+            const body = sanitizeCommunityText(input ? input.value : '', 360);
+            if (!body) {
+                setCommunityStatus(strings.communityCommentEmpty, 'error');
+                return;
+            }
+
+            const profile = getCommunityProfile();
+            const payload = {
+                post_id: postId,
+                author_id: user.id,
+                author_account_id: profile && profile.account_id ? profile.account_id : null,
+                username: getCommunityDisplayName(),
+                author_role: getCommunityAuthorRole(profile && profile.account_id, user.email),
+                body
+            };
+
+            try {
+                if (communityUsingLocalFallback || !getSupabaseClient()) {
+                    const posts = readCommunityLocalPosts();
+                    const target = posts.find(item => item.id === String(postId));
+                    if (target) {
+                        target.comments = target.comments || [];
+                        target.comments.push(Object.assign({}, payload, { id: `comment-${Date.now()}`, created_at: new Date().toISOString() }));
+                        target.comments_count = target.comments.length;
+                        writeCommunityLocalPosts(posts);
+                    }
+                } else {
+                    const { error } = await getSupabaseClient()
+                        .from('community_comments')
+                        .insert(payload);
+                    if (error) throw error;
+                }
+                if (input) input.value = '';
+                setCommunityStatus(strings.communityCommentAdded, 'success');
+                refreshCommunityFeed(false);
+            } catch (error) {
+                setCommunityStatus(getCommunityErrorMessage(error), 'error');
+            }
+        }
+
+        async function deleteCommunityComment(postId, commentId) {
+            const strings = getAuthStrings();
+            const user = requireCommunityUser();
+            if (!user) return;
+            try {
+                if (communityUsingLocalFallback || !getSupabaseClient()) {
+                    const posts = readCommunityLocalPosts();
+                    const post = posts.find(item => item.id === String(postId));
+                    if (post) {
+                        post.comments = (post.comments || []).filter(comment => String(comment.id) !== String(commentId));
+                        post.comments_count = post.comments.length;
+                        writeCommunityLocalPosts(posts);
+                    }
+                } else {
+                    let query = getSupabaseClient().from('community_comments').delete().eq('id', commentId).eq('post_id', postId);
+                    if (!isCommunityMod()) query = query.eq('author_id', user.id);
+                    const { error } = await query;
+                    if (error) throw error;
+                }
+                setCommunityStatus(strings.communityCommentDeleted, 'success');
+                refreshCommunityFeed(false);
+            } catch (error) {
+                setCommunityStatus(getCommunityErrorMessage(error), 'error');
+            }
+        }
+
+        async function deleteCommunityPost(postId) {
+            const strings = getAuthStrings();
+            const user = requireCommunityUser();
+            if (!user || !window.confirm(strings.communityConfirmDelete)) return;
+            try {
+                if (communityUsingLocalFallback || !getSupabaseClient()) {
+                    writeCommunityLocalPosts(readCommunityLocalPosts().filter(post => !(post.id === String(postId) && (post.author_id === user.id || isCommunityMod()))));
+                } else {
+                    let query = getSupabaseClient().from('community_posts').delete().eq('id', postId);
+                    if (!isCommunityMod()) query = query.eq('author_id', user.id);
+                    const { error } = await query;
+                    if (error) throw error;
+                }
+                setCommunityStatus(strings.communityPostDeleted, 'success');
+                refreshCommunityFeed(true);
+            } catch (error) {
+                setCommunityStatus(getCommunityErrorMessage(error), 'error');
+            }
+        }
+
+        async function updateCommunityPostFlags(postId, patch) {
+            const strings = getAuthStrings();
+            if (!isCommunityMod()) return;
+            try {
+                if (communityUsingLocalFallback || !getSupabaseClient()) {
+                    const posts = readCommunityLocalPosts();
+                    const post = posts.find(item => item.id === String(postId));
+                    if (post) Object.assign(post, patch, { updated_at: new Date().toISOString() });
+                    writeCommunityLocalPosts(posts);
+                } else {
+                    const { error } = await getSupabaseClient()
+                        .from('community_posts')
+                        .update(Object.assign({}, patch, { updated_at: new Date().toISOString() }))
+                        .eq('id', postId);
+                    if (error) throw error;
+                }
+                setCommunityStatus(strings.communityPostModerated, 'success');
+                refreshCommunityFeed(false);
+            } catch (error) {
+                setCommunityStatus(getCommunityErrorMessage(error), 'error');
+            }
+        }
+
+        function hideCommunityPost(postId) {
+            const strings = getAuthStrings();
+            if (!isCommunityMod() || !window.confirm(strings.communityConfirmHide)) return;
+            updateCommunityPostFlags(postId, { hidden: true });
+        }
+
+        function copyCommunityPostCode(postId) {
+            const post = getCommunityPostById(postId);
+            if (!post) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(post.build_code).catch(() => {});
+            }
+            setCommunityStatus(getAuthStrings().saveExported, 'success');
+        }
+
+        function loadCommunityBuild(postId) {
+            const strings = getAuthStrings();
+            const post = getCommunityPostById(postId);
+            if (!post) return;
+            if (!window.confirm(strings.communityConfirmLoad)) return;
+            try {
+                const snapshot = decodeBuildSaveCode(post.build_code);
+                closeCommunityPanel();
+                startBuildingExperience();
+                loadBuildSnapshot(snapshot, { skipConfirm: true });
+            } catch (error) {
+                setCommunityStatus(strings.saveImportInvalid, 'error');
+            }
+        }
+
         // Global click to close
         document.addEventListener('click', (e) => {
             if (!e.target.closest('#lang-toggle-container')) {
@@ -7185,6 +9291,9 @@ function normalizeNickname(value) {
             }
             if (!e.target.closest('#auth-panel') && !e.target.closest('#account-btn') && !e.target.closest('.auth-trigger')) {
                 closeAuthPanel();
+            }
+            if (!e.target.closest('#community-panel') && !e.target.closest('.community-trigger')) {
+                closeCommunityPanel();
             }
         });
 
@@ -7707,7 +9816,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
 
         function isSpawnMarqueeBlockedTarget(target) {
             if (!target || typeof target.closest !== 'function') return false;
-            if (target.closest('.spawn-object, #spawn-edit-panel, #spawn-edit-toolbar, #spawn-edit-shortcut, #terminal-panel, #controls-container, #mobile-building-controls-toggle, #mobile-terminal-dock, #changelog-panel, #auth-panel, #captcha-puzzle')) {
+            if (target.closest('.spawn-object, #spawn-edit-panel, #spawn-edit-toolbar, #spawn-edit-shortcut, #terminal-panel, #controls-container, #mobile-building-controls-toggle, #mobile-terminal-dock, #changelog-panel, #auth-panel, #community-panel, #captcha-puzzle')) {
                 return true;
             }
 
@@ -8090,6 +10199,15 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             } else if (action === 'fling') {
                 writeTerminalLine('> fling', 'themed-text');
                 flingSpawnObjects(strings);
+            } else if (action === 'save') {
+                writeTerminalLine('> save', 'themed-text');
+                openSaveBuildModal('save');
+            } else if (action === 'load') {
+                writeTerminalLine('> load', 'themed-text');
+                openSaveBuildModal('load');
+            } else if (action === 'chaos') {
+                writeTerminalLine('> chaos tools', 'themed-text');
+                toggleChaosPanel();
             } else if (action === 'limit') {
                 writeTerminalLine('> increase limit', 'themed-text');
                 increaseSpawnLimit(strings);
@@ -8818,13 +10936,907 @@ function buildSwordElement() {
             return element;
         }
 
+        function isSpawnBodyNearViewport(body, padding = 420) {
+            if (!body) return false;
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
+            const halfWidth = (body.width || 0) / 2;
+            const halfHeight = (body.height || 0) / 2;
+            return body.x + halfWidth >= -padding
+                && body.x - halfWidth <= viewportWidth + padding
+                && body.y + halfHeight >= -padding
+                && body.y - halfHeight <= viewportHeight + padding;
+        }
+
         function renderSpawnObject(body) {
+            if (!body || !body.element) return;
+            const shouldRender = body.dragging || body.selectedForEdit || isSpawnBodyNearViewport(body);
+            if (!shouldRender) {
+                if (body.element.style.visibility !== 'hidden') {
+                    body.element.style.visibility = 'hidden';
+                }
+                return;
+            }
+
+            if (body.element.style.visibility === 'hidden') {
+                body.element.style.visibility = '';
+            }
+
             const transform = `translate3d(${(body.x - body.width / 2).toFixed(2)}px, ${(body.y - body.height / 2).toFixed(2)}px, 0) rotate(${body.angle.toFixed(4)}rad)`;
             if (body.lastTransform !== transform) {
                 body.element.style.transform = transform;
                 body.lastTransform = transform;
             }
         }
+
+        /* --- Save / Load system, effect pooling, and chaos tools --- */
+        const WEBBREAK_SAVE_STORAGE_KEY = 'webbreak.saveSlots.v2';
+        const WEBBREAK_SAVE_CODE_PREFIX = 'WB1:';
+        const WEBBREAK_MAX_SAVE_SLOTS = 8;
+        const WEBBREAK_PARTICLE_POOL_LIMIT = 90;
+        const WEBBREAK_MAX_IMPORT_OBJECTS = 125;
+        const CHAOS_BLACK_HOLE_DURATION = 1350;
+        const CHAOS_SLOW_MOTION_DURATION = 5200;
+        const CHAOS_COOLDOWN_MS = 1100;
+        const chaosFields = [];
+        const webbreakParticlePool = [];
+        const chaosCooldowns = { blackhole: 0, explosion: 0, slowmo: 0 };
+        let chaosToolsUnlocked = false;
+        let chaosSlowMotionUntil = 0;
+        let chaosPhysicsOverrideUntil = 0;
+        let lastImpactEffectTime = 0;
+        let spawnCollisionEffectsHooked = false;
+        let webbreakQualityLevel = 1;
+
+        function roundSaveNumber(value, digits = 2) {
+            const number = Number(value);
+            if (!Number.isFinite(number)) return 0;
+            const factor = Math.pow(10, digits);
+            return Math.round(number * factor) / factor;
+        }
+
+        function sanitizeSaveName(name) {
+            const strings = getTerminalStrings();
+            const normalized = String(name || '').replace(/\s+/g, ' ').trim();
+            return normalized ? normalized.slice(0, 36) : strings.saveUnnamedBuild;
+        }
+
+        function encodeUtf8Base64(text) {
+            const bytes = new TextEncoder().encode(String(text));
+            let binary = '';
+            bytes.forEach(byte => {
+                binary += String.fromCharCode(byte);
+            });
+            return btoa(binary);
+        }
+
+        function decodeUtf8Base64(text) {
+            const binary = atob(String(text));
+            const bytes = new Uint8Array(binary.length);
+            for (let index = 0; index < binary.length; index++) {
+                bytes[index] = binary.charCodeAt(index);
+            }
+            return new TextDecoder().decode(bytes);
+        }
+
+        function serializeSpawnBody(body) {
+            return {
+                type: body.type,
+                color: body.color || '',
+                material: body.material || '',
+                x: roundSaveNumber(body.x),
+                y: roundSaveNumber(body.y),
+                angle: roundSaveNumber(body.angle || 0, 4),
+                vx: roundSaveNumber(body.vx || 0),
+                vy: roundSaveNumber(body.vy || 0),
+                av: roundSaveNumber(body.av || 0, 4),
+                sizeMultiplier: roundSaveNumber(body.sizeMultiplier || 1, 3),
+                baseMass: roundSaveNumber(body.baseMass || body.mass || 1, 4),
+                isStatic: !!body.isStatic,
+                editMass: body.editMass !== undefined ? roundSaveNumber(body.editMass, 4) : null,
+                editFriction: body.editFriction !== undefined ? roundSaveNumber(body.editFriction, 4) : null,
+                editRestitution: body.editRestitution !== undefined ? roundSaveNumber(body.editRestitution, 4) : null,
+                customProperties: {
+                    glass: isSpawnGlassBlock(body),
+                    selected: !!body.selectedForEdit
+                }
+            };
+        }
+
+        function compactBuildSave(snapshot) {
+            return {
+                v: 2,
+                n: snapshot.name,
+                t: snapshot.updatedAt || snapshot.createdAt,
+                g: snapshot.gravity,
+                l: snapshot.limit,
+                vw: snapshot.viewport && snapshot.viewport.width,
+                vh: snapshot.viewport && snapshot.viewport.height,
+                o: snapshot.objects.map(object => ({
+                    t: object.type,
+                    c: object.color,
+                    m: object.material,
+                    x: object.x,
+                    y: object.y,
+                    a: object.angle,
+                    vx: object.vx,
+                    vy: object.vy,
+                    av: object.av,
+                    s: object.sizeMultiplier,
+                    bm: object.baseMass,
+                    st: object.isStatic ? 1 : 0,
+                    em: object.editMass,
+                    ef: object.editFriction,
+                    er: object.editRestitution,
+                    cp: object.customProperties
+                }))
+            };
+        }
+
+        function expandBuildSave(data) {
+            if (!data || typeof data !== 'object') return null;
+            if (Array.isArray(data.objects)) return data;
+            if (!Array.isArray(data.o)) return null;
+            return {
+                version: data.v || 1,
+                name: sanitizeSaveName(data.n),
+                createdAt: data.t || Date.now(),
+                updatedAt: data.t || Date.now(),
+                gravity: Number.isFinite(Number(data.g)) ? Number(data.g) : spawnGravitySetting,
+                limit: Number.isFinite(Number(data.l)) ? Number(data.l) : DEFAULT_SPAWN_OBJECT_LIMIT,
+                viewport: {
+                    width: Number(data.vw) || window.innerWidth || 800,
+                    height: Number(data.vh) || window.innerHeight || 600
+                },
+                objects: data.o.map(object => ({
+                    type: object.t,
+                    color: object.c || '',
+                    material: object.m || '',
+                    x: Number(object.x),
+                    y: Number(object.y),
+                    angle: Number(object.a) || 0,
+                    vx: Number(object.vx) || 0,
+                    vy: Number(object.vy) || 0,
+                    av: Number(object.av) || 0,
+                    sizeMultiplier: Number(object.s) || 1,
+                    baseMass: Number(object.bm) || 0,
+                    isStatic: !!object.st,
+                    editMass: object.em === null || object.em === undefined ? null : Number(object.em),
+                    editFriction: object.ef === null || object.ef === undefined ? null : Number(object.ef),
+                    editRestitution: object.er === null || object.er === undefined ? null : Number(object.er),
+                    customProperties: object.cp || {}
+                }))
+            };
+        }
+
+        function validateBuildSave(snapshot) {
+            if (!snapshot || !Array.isArray(snapshot.objects)) return null;
+            const safeObjects = snapshot.objects
+                .slice(0, WEBBREAK_MAX_IMPORT_OBJECTS)
+                .filter(object => object && ['sword', 'block', 'door'].includes(object.type))
+                .map(object => Object.assign({}, object, {
+                    x: Number.isFinite(Number(object.x)) ? Number(object.x) : window.innerWidth / 2,
+                    y: Number.isFinite(Number(object.y)) ? Number(object.y) : 120,
+                    angle: Number(object.angle) || 0,
+                    vx: clamp(Number(object.vx) || 0, -SPAWN_MAX_SPEED, SPAWN_MAX_SPEED),
+                    vy: clamp(Number(object.vy) || 0, -SPAWN_MAX_SPEED, SPAWN_MAX_SPEED),
+                    av: clamp(Number(object.av) || 0, -SPAWN_MAX_ANGULAR_SPEED, SPAWN_MAX_ANGULAR_SPEED),
+                    sizeMultiplier: clamp(Number(object.sizeMultiplier) || 1, 0.35, SPAWN_EDIT_MAX_SIZE_MULTIPLIER)
+                }));
+
+            return {
+                version: 2,
+                name: sanitizeSaveName(snapshot.name),
+                createdAt: Number(snapshot.createdAt) || Date.now(),
+                updatedAt: Number(snapshot.updatedAt) || Date.now(),
+                gravity: clamp(Number(snapshot.gravity) || spawnGravitySetting, SPAWN_GRAVITY_MIN, SPAWN_GRAVITY_MAX),
+                limit: clamp(Number(snapshot.limit) || Math.max(DEFAULT_SPAWN_OBJECT_LIMIT, safeObjects.length), DEFAULT_SPAWN_OBJECT_LIMIT, INCREASED_SPAWN_OBJECT_LIMIT),
+                viewport: snapshot.viewport || {
+                    width: window.innerWidth || 800,
+                    height: window.innerHeight || 600
+                },
+                objects: safeObjects
+            };
+        }
+
+        function encodeBuildSave(snapshot) {
+            const safeSnapshot = validateBuildSave(snapshot);
+            if (!safeSnapshot) throw new Error('Invalid save data');
+            return `${WEBBREAK_SAVE_CODE_PREFIX}${encodeUtf8Base64(JSON.stringify(compactBuildSave(safeSnapshot)))}`;
+        }
+
+        function decodeBuildSaveCode(code) {
+            const trimmed = String(code || '').trim();
+            const payload = trimmed.startsWith(WEBBREAK_SAVE_CODE_PREFIX)
+                ? trimmed.slice(WEBBREAK_SAVE_CODE_PREFIX.length)
+                : trimmed;
+            const parsed = JSON.parse(decodeUtf8Base64(payload));
+            const expanded = expandBuildSave(parsed);
+            const validated = validateBuildSave(expanded);
+            if (!validated) throw new Error('Invalid save data');
+            return validated;
+        }
+
+        function readBuildSaveSlots() {
+            try {
+                const raw = localStorage.getItem(WEBBREAK_SAVE_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                if (!Array.isArray(parsed)) return [];
+                return parsed.filter(slot => slot && slot.id && slot.payload);
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function writeBuildSaveSlots(slots) {
+            try {
+                localStorage.setItem(WEBBREAK_SAVE_STORAGE_KEY, JSON.stringify(slots.slice(0, WEBBREAK_MAX_SAVE_SLOTS)));
+                return true;
+            } catch (error) {
+                setSaveModalStatus(getTerminalStrings().saveImportInvalid, 'error');
+                return false;
+            }
+        }
+
+        function createBuildSnapshot(name) {
+            const objects = spawnedObjects
+                .filter(body => body && !body.voiding)
+                .map(serializeSpawnBody);
+            if (objects.length === 0) return null;
+            const now = Date.now();
+            return {
+                version: 2,
+                name: sanitizeSaveName(name),
+                createdAt: now,
+                updatedAt: now,
+                gravity: spawnGravitySetting,
+                limit: spawnObjectLimit,
+                viewport: {
+                    width: window.innerWidth || document.documentElement.clientWidth || 800,
+                    height: window.innerHeight || document.documentElement.clientHeight || 600
+                },
+                objects
+            };
+        }
+
+        function setSaveModalStatus(message, tone = '') {
+            const status = document.getElementById('save-modal-status');
+            if (!status) return;
+            status.textContent = message || '';
+            status.classList.toggle('error', tone === 'error');
+            status.classList.toggle('success', tone === 'success');
+        }
+
+        function formatSaveTimestamp(timestamp) {
+            try {
+                return new Date(timestamp).toLocaleString(currentLang === 'ru' ? 'ru-RU' : 'en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (error) {
+                return '';
+            }
+        }
+
+        function renderSaveSlots() {
+            const list = document.getElementById('save-slot-list');
+            if (!list) return;
+            const strings = getTerminalStrings();
+            const slots = readBuildSaveSlots().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+            list.innerHTML = '';
+
+            if (slots.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'save-slot-card save-slot-empty';
+                empty.textContent = strings.saveEmptySlot;
+                list.appendChild(empty);
+                return;
+            }
+
+            slots.forEach(slot => {
+                const card = document.createElement('div');
+                card.className = 'save-slot-card';
+
+                const name = document.createElement('div');
+                name.className = 'save-slot-name';
+                name.textContent = slot.name || strings.saveUnnamedBuild;
+
+                const meta = document.createElement('div');
+                meta.className = 'save-slot-meta';
+                meta.textContent = `${slot.count || 0} ${strings.saveSlotObjects} // ${strings.saveSlotUpdated} ${formatSaveTimestamp(slot.updatedAt)}`;
+
+                const actions = document.createElement('div');
+                actions.className = 'save-slot-actions';
+
+                const loadButton = document.createElement('button');
+                loadButton.type = 'button';
+                loadButton.className = 'terminal-simple-action-button interactive';
+                loadButton.textContent = strings.saveLoadButton;
+                loadButton.addEventListener('click', () => loadBuildSaveSlot(slot.id));
+
+                const exportButton = document.createElement('button');
+                exportButton.type = 'button';
+                exportButton.className = 'terminal-simple-action-button interactive';
+                exportButton.textContent = strings.saveExportButton;
+                exportButton.addEventListener('click', () => exportBuildSaveSlot(slot.id));
+
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'terminal-simple-action-button interactive';
+                deleteButton.textContent = strings.saveDeleteButton;
+                deleteButton.addEventListener('click', () => deleteBuildSaveSlot(slot.id));
+
+                actions.append(loadButton, exportButton, deleteButton);
+                card.append(name, meta, actions);
+                list.appendChild(card);
+            });
+        }
+
+        function openSaveBuildModal(mode = 'save') {
+            const modal = document.getElementById('save-build-modal');
+            const input = document.getElementById('save-build-name');
+            if (!modal) return;
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+            setSaveModalStatus('');
+            if (input && mode === 'save' && !input.value.trim()) {
+                input.value = `${getTerminalStrings().saveUnnamedBuild} ${readBuildSaveSlots().length + 1}`;
+            }
+            renderSaveSlots();
+            setTimeout(() => {
+                if (mode === 'save' && input) input.focus();
+            }, 60);
+        }
+
+        function closeSaveBuildModal() {
+            const modal = document.getElementById('save-build-modal');
+            if (!modal) return;
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        function saveCurrentBuildFromModal() {
+            const strings = getTerminalStrings();
+            const nameInput = document.getElementById('save-build-name');
+            const codeInput = document.getElementById('save-code-input');
+            const snapshot = createBuildSnapshot(nameInput ? nameInput.value : '');
+            if (!snapshot) {
+                setSaveModalStatus(strings.saveNoObjects, 'error');
+                return;
+            }
+
+            try {
+                const slots = readBuildSaveSlots();
+                const normalizedName = snapshot.name.toLowerCase();
+                const existingIndex = slots.findIndex(slot => String(slot.name || '').toLowerCase() === normalizedName);
+                if (existingIndex >= 0 && !window.confirm(strings.saveOverwriteConfirm)) return;
+
+                const payload = encodeBuildSave(snapshot);
+                const slot = {
+                    id: existingIndex >= 0 ? slots[existingIndex].id : `slot-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+                    name: snapshot.name,
+                    updatedAt: snapshot.updatedAt,
+                    count: snapshot.objects.length,
+                    payload
+                };
+
+                if (existingIndex >= 0) {
+                    slots[existingIndex] = slot;
+                } else {
+                    slots.unshift(slot);
+                }
+
+                slots.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+                if (!writeBuildSaveSlots(slots)) return;
+                if (codeInput) codeInput.value = payload;
+                renderSaveSlots();
+                setSaveModalStatus(strings.saveSaved, 'success');
+                writeTerminalLine(strings.saveSaved, 'terminal-quiet');
+            } catch (error) {
+                setSaveModalStatus(strings.saveImportInvalid, 'error');
+            }
+        }
+
+        function clearSpawnObjectsImmediate() {
+            spawnedObjects.forEach(body => {
+                removeSpawnMatterBody(body);
+                if (body.element && typeof body.element.remove === 'function') {
+                    body.element.remove();
+                }
+            });
+            spawnedObjects = [];
+            activeSpawnDrag = null;
+            spawnSelectionMarquee = null;
+            cleanupSpawnMatterBodies();
+        }
+
+        function getDefaultMassForSerializedObject(state) {
+            if (state.type === 'block') {
+                return state.material === 'glass' || state.color === 'glass' ? SPAWN_GLASS_MASS : SPAWN_BLOCK_MASS;
+            }
+            return state.type === 'door' ? SPAWN_DOOR_MASS : SPAWN_SWORD_MASS;
+        }
+
+        function createSpawnBodyFromSerialized(state, index = 0) {
+            const layer = getSpawnLayer();
+            if (!layer) return null;
+
+            const type = ['sword', 'block', 'door'].includes(state.type) ? state.type : 'sword';
+            const safeColor = type === 'block' && SPAWN_BLOCK_COLORS[state.color] ? state.color : (state.material === 'glass' ? 'glass' : 'red');
+            const element = type === 'block'
+                ? buildColorBlockElement(safeColor)
+                : type === 'door'
+                    ? buildDoorElement()
+                    : buildSwordElement();
+            const metrics = getSpawnMetrics(type);
+            const baseMass = Number(state.baseMass) > 0 ? Number(state.baseMass) : getDefaultMassForSerializedObject(Object.assign({}, state, { type, color: safeColor }));
+            const body = {
+                id: ++spawnObjectId,
+                type,
+                color: type === 'block' ? safeColor : '',
+                material: type === 'block' ? (SPAWN_BLOCK_COLORS[safeColor].material || 'wool') : '',
+                element,
+                x: Number(state.x) || (window.innerWidth || 800) / 2 + index * 4,
+                y: Number(state.y) || 120 + index * 4,
+                vx: Number(state.vx) || 0,
+                vy: Number(state.vy) || 0,
+                angle: Number(state.angle) || 0,
+                av: Number(state.av) || 0,
+                width: metrics.width,
+                height: metrics.height,
+                length: metrics.length,
+                hitboxes: metrics.hitboxes,
+                scale: metrics.scale,
+                sizeMultiplier: clamp(Number(state.sizeMultiplier) || 1, 0.35, SPAWN_EDIT_MAX_SIZE_MULTIPLIER),
+                baseMass,
+                mass: baseMass,
+                invMass: baseMass > 0 ? 1 / baseMass : 0,
+                inertia: 0,
+                invInertia: 0,
+                dragging: false,
+                voiding: false,
+                sleeping: false,
+                selectedForEdit: false,
+                isStatic: !!state.isStatic,
+                restFrames: 0,
+                pointerId: null,
+                dragOffsetX: 0,
+                dragOffsetY: 0,
+                pointerHistory: []
+            };
+
+            if (state.editMass !== null && state.editMass !== undefined && Number.isFinite(Number(state.editMass))) {
+                body.editMass = Number(state.editMass);
+                body.baseMass = body.editMass;
+            }
+            if (state.editFriction !== null && state.editFriction !== undefined && Number.isFinite(Number(state.editFriction))) {
+                body.editFriction = clamp(Number(state.editFriction), 0, 1);
+            }
+            if (state.editRestitution !== null && state.editRestitution !== undefined && Number.isFinite(Number(state.editRestitution))) {
+                body.editRestitution = clamp(Number(state.editRestitution), 0, 1);
+            }
+
+            applySpawnBodyMetrics(body);
+            applySpawnBounds(body);
+            clampSpawnVelocity(body);
+            element.style.zIndex = String(1 + (body.id % 30));
+            element.style.width = `${body.width}px`;
+            element.style.height = `${body.height}px`;
+            element.addEventListener('pointerdown', event => beginSpawnDrag(event, body));
+            layer.appendChild(element);
+            spawnedObjects.push(body);
+            renderSpawnObject(body);
+            return body;
+        }
+
+        function loadBuildSnapshot(snapshot, options = {}) {
+            const strings = getTerminalStrings();
+            const safeSnapshot = validateBuildSave(snapshot);
+            if (!safeSnapshot) {
+                setSaveModalStatus(strings.saveImportInvalid, 'error');
+                return false;
+            }
+
+            if (!options.skipConfirm && spawnedObjects.some(body => !body.voiding) && !window.confirm(strings.saveLoadConfirm)) {
+                return false;
+            }
+
+            clearSpawnObjectsImmediate();
+            spawnGravitySetting = safeSnapshot.gravity;
+            spawnObjectLimit = clamp(Math.max(safeSnapshot.limit, safeSnapshot.objects.length, DEFAULT_SPAWN_OBJECT_LIMIT), DEFAULT_SPAWN_OBJECT_LIMIT, INCREASED_SPAWN_OBJECT_LIMIT);
+            safeSnapshot.objects.slice(0, spawnObjectLimit).forEach((object, index) => createSpawnBodyFromSerialized(object, index));
+            if (spawnedObjects.length > 0) unlockSpawnEditShortcut();
+            updateTerminalSimpleState();
+            requestSpawnPhysics();
+            setSaveModalStatus(strings.saveLoaded, 'success');
+            writeTerminalLine(`${strings.saveLoaded} ${spawnedObjects.length}/${spawnObjectLimit}`, 'terminal-quiet');
+            return true;
+        }
+
+        function loadBuildSaveSlot(slotId) {
+            const strings = getTerminalStrings();
+            const slot = readBuildSaveSlots().find(item => item.id === slotId);
+            if (!slot) return;
+            try {
+                const snapshot = decodeBuildSaveCode(slot.payload);
+                loadBuildSnapshot(snapshot);
+            } catch (error) {
+                setSaveModalStatus(strings.saveImportInvalid, 'error');
+            }
+        }
+
+        function deleteBuildSaveSlot(slotId) {
+            const strings = getTerminalStrings();
+            if (!window.confirm(strings.saveDeleteConfirm)) return;
+            const slots = readBuildSaveSlots().filter(slot => slot.id !== slotId);
+            if (!writeBuildSaveSlots(slots)) return;
+            renderSaveSlots();
+            setSaveModalStatus(strings.saveDeleted, 'success');
+        }
+
+        function exportBuildSaveSlot(slotId) {
+            const strings = getTerminalStrings();
+            const slot = readBuildSaveSlots().find(item => item.id === slotId);
+            const codeInput = document.getElementById('save-code-input');
+            if (!slot || !codeInput) return;
+            codeInput.value = slot.payload;
+            codeInput.focus();
+            codeInput.select();
+            setSaveModalStatus(strings.saveExported, 'success');
+        }
+
+        function importBuildSaveCodeFromModal() {
+            const strings = getTerminalStrings();
+            const codeInput = document.getElementById('save-code-input');
+            try {
+                const snapshot = decodeBuildSaveCode(codeInput ? codeInput.value : '');
+                if (loadBuildSnapshot(snapshot)) {
+                    setSaveModalStatus(strings.saveImported, 'success');
+                }
+            } catch (error) {
+                setSaveModalStatus(strings.saveImportInvalid, 'error');
+            }
+        }
+
+        function copySaveCodeToClipboard() {
+            const codeInput = document.getElementById('save-code-input');
+            if (!codeInput || !codeInput.value.trim()) return;
+            codeInput.select();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(codeInput.value).catch(() => document.execCommand('copy'));
+            } else {
+                document.execCommand('copy');
+            }
+            setSaveModalStatus(getTerminalStrings().saveExported, 'success');
+        }
+
+        function clearSaveCodeInput() {
+            const codeInput = document.getElementById('save-code-input');
+            if (codeInput) codeInput.value = '';
+            setSaveModalStatus('');
+        }
+
+        function updateChaosToolsUi() {
+            const panel = document.getElementById('chaos-panel');
+            const button = document.getElementById('terminal-simple-chaos-btn');
+            if (button) button.classList.toggle('hidden', !chaosToolsUnlocked);
+            if (panel) {
+                panel.classList.toggle('unlocked', chaosToolsUnlocked);
+                panel.setAttribute('aria-hidden', chaosToolsUnlocked && panel.classList.contains('open') ? 'false' : 'true');
+            }
+        }
+
+        function unlockChaosTools() {
+            chaosToolsUnlocked = true;
+            updateChaosToolsUi();
+            openChaosPanel();
+            setChaosStatus(getTerminalStrings().chaosUnlocked);
+            writeTerminalLine(getTerminalStrings().chaosUnlocked, 'terminal-warning');
+        }
+
+        function setChaosStatus(message) {
+            const status = document.getElementById('chaos-status');
+            if (status) status.textContent = message || '';
+        }
+
+        function openChaosPanel() {
+            if (!chaosToolsUnlocked) {
+                writeTerminalLine(getTerminalStrings().chaosLockedHint, 'terminal-warning');
+                return;
+            }
+            const panel = document.getElementById('chaos-panel');
+            if (!panel) return;
+            panel.classList.add('unlocked', 'open');
+            panel.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeChaosPanel() {
+            const panel = document.getElementById('chaos-panel');
+            if (!panel) return;
+            panel.classList.remove('open');
+            panel.setAttribute('aria-hidden', 'true');
+        }
+
+        function toggleChaosPanel() {
+            const panel = document.getElementById('chaos-panel');
+            if (panel && panel.classList.contains('open')) {
+                closeChaosPanel();
+            } else {
+                openChaosPanel();
+            }
+        }
+
+        function getChaosSetting(id, fallback, min, max) {
+            const input = document.getElementById(id);
+            return clamp(Number(input && input.value) || fallback, min, max);
+        }
+
+        function getChaosCenter() {
+            return {
+                x: (window.innerWidth || document.documentElement.clientWidth || 800) / 2,
+                y: (window.innerHeight || document.documentElement.clientHeight || 600) / 2
+            };
+        }
+
+        function canUseChaosTool(tool) {
+            const now = performance.now();
+            if ((chaosCooldowns[tool] || 0) > now) {
+                setChaosStatus(getTerminalStrings().chaosCooldown);
+                return false;
+            }
+            chaosCooldowns[tool] = now + CHAOS_COOLDOWN_MS;
+            return true;
+        }
+
+        function spawnScreenShake(strength = 1) {
+            if (isWebBreakLowEndMode() && strength < 1.2) return;
+            document.body.classList.remove('screen-shake');
+            void document.body.offsetWidth;
+            document.body.classList.add('screen-shake');
+            setTimeout(() => document.body.classList.remove('screen-shake'), 390);
+        }
+
+        function getEffectsLayer() {
+            return document.getElementById('effects-layer');
+        }
+
+        function emitWebBreakSoundHook(type, detail = {}) {
+            window.dispatchEvent(new CustomEvent('webbreak:sound', {
+                detail: Object.assign({ type }, detail)
+            }));
+        }
+
+        function acquireParticleElement(className = 'chaos-particle') {
+            const layer = getEffectsLayer();
+            if (!layer) return null;
+            const pooled = webbreakParticlePool.pop();
+            const element = pooled || document.createElement('span');
+            element.className = className;
+            layer.appendChild(element);
+            return element;
+        }
+
+        function releaseParticleElement(element) {
+            if (!element) return;
+            element.remove();
+            element.removeAttribute('style');
+            if (webbreakParticlePool.length < WEBBREAK_PARTICLE_POOL_LIMIT) {
+                webbreakParticlePool.push(element);
+            }
+        }
+
+        function spawnChaosParticles(x, y, options = {}) {
+            const lowQuality = isWebBreakLowEndMode() || webbreakQualityLevel < 0.75;
+            const baseCount = options.count || 20;
+            const count = Math.max(4, Math.round(baseCount * (lowQuality ? 0.42 : webbreakQualityLevel)));
+            const color = options.color || 'var(--btn-hover-border)';
+            const speed = options.speed || 120;
+
+            for (let index = 0; index < count; index++) {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = speed * (0.35 + Math.random() * 0.95);
+                const particle = acquireParticleElement('chaos-particle');
+                if (!particle) return;
+                particle.style.setProperty('--particle-x', `${x}px`);
+                particle.style.setProperty('--particle-y', `${y}px`);
+                particle.style.setProperty('--particle-dx', `${Math.cos(angle) * distance}px`);
+                particle.style.setProperty('--particle-dy', `${Math.sin(angle) * distance}px`);
+                particle.style.setProperty('--particle-size', `${Math.max(3, (options.size || 6) * (0.65 + Math.random() * 0.7))}px`);
+                particle.style.setProperty('--particle-color', color);
+                setTimeout(() => releaseParticleElement(particle), 760);
+            }
+        }
+
+        function spawnImpactFlash(x, y, size = 42) {
+            if (isWebBreakLowEndMode() && performance.now() - lastImpactEffectTime < 260) return;
+            const flash = acquireParticleElement('impact-flash');
+            if (!flash) return;
+            flash.style.setProperty('--impact-x', `${x}px`);
+            flash.style.setProperty('--impact-y', `${y}px`);
+            flash.style.setProperty('--impact-size', `${size}px`);
+            setTimeout(() => releaseParticleElement(flash), 420);
+        }
+
+        function spawnChaosSingularity(x, y, radius) {
+            const element = acquireParticleElement('chaos-singularity');
+            if (!element) return;
+            element.style.setProperty('--chaos-x', `${x}px`);
+            element.style.setProperty('--chaos-y', `${y}px`);
+            element.style.setProperty('--chaos-size', `${Math.max(130, radius * 0.92)}px`);
+            setTimeout(() => releaseParticleElement(element), 1180);
+        }
+
+        function applyVelocityToSpawnBody(body, vxDelta, vyDelta, avDelta = 0) {
+            if (!body || body.voiding || body.dragging) return;
+            body.vx = (body.vx || 0) + vxDelta;
+            body.vy = (body.vy || 0) + vyDelta;
+            body.av = (body.av || 0) + avDelta;
+            wakeSpawnBody(body);
+            clampSpawnVelocity(body);
+            syncSpawnMatterFromWrapper(body, { force: true, velocity: true });
+        }
+
+        function isChaosPhysicsOverrideActive() {
+            return chaosFields.length > 0 || performance.now() < chaosPhysicsOverrideUntil;
+        }
+
+        function triggerChaosBlackHole() {
+            if (!chaosToolsUnlocked) return openChaosPanel();
+            if (!canUseChaosTool('blackhole')) return;
+            const strings = getTerminalStrings();
+            const targets = spawnedObjects.filter(body => !body.voiding);
+            if (targets.length === 0) {
+                setChaosStatus(strings.chaosNoObjects);
+                return;
+            }
+            const radius = getChaosSetting('chaos-radius-input', 320, 80, 900);
+            const power = getChaosSetting('chaos-power-input', 6, 1, 10);
+            const center = getChaosCenter();
+            chaosPhysicsOverrideUntil = performance.now() + CHAOS_BLACK_HOLE_DURATION + 400;
+            chaosFields.push({
+                type: 'blackhole',
+                x: center.x,
+                y: center.y,
+                radius,
+                power,
+                startedAt: performance.now(),
+                duration: CHAOS_BLACK_HOLE_DURATION
+            });
+            spawnChaosSingularity(center.x, center.y, radius);
+            spawnChaosParticles(center.x, center.y, { count: 32, speed: radius * 0.34, size: 5, color: '#ffffff' });
+            spawnScreenShake(power / 8);
+            emitWebBreakSoundHook('blackhole', { power, radius });
+            setChaosStatus(strings.chaosBlackHoleStatus);
+            requestSpawnPhysics();
+        }
+
+        function triggerChaosExplosion() {
+            if (!chaosToolsUnlocked) return openChaosPanel();
+            if (!canUseChaosTool('explosion')) return;
+            const strings = getTerminalStrings();
+            const targets = spawnedObjects.filter(body => !body.voiding);
+            if (targets.length === 0) {
+                setChaosStatus(strings.chaosNoObjects);
+                return;
+            }
+            const radius = getChaosSetting('chaos-radius-input', 320, 80, 900);
+            const power = getChaosSetting('chaos-power-input', 6, 1, 10);
+            const center = getChaosCenter();
+            let affected = 0;
+            chaosPhysicsOverrideUntil = performance.now() + 1100;
+
+            targets.forEach(body => {
+                const dx = body.x - center.x;
+                const dy = body.y - center.y;
+                const distance = Math.max(1, Math.hypot(dx, dy));
+                if (distance > radius) return;
+                const falloff = 1 - distance / radius;
+                const impulse = (380 + power * 105) * falloff;
+                applyVelocityToSpawnBody(body, (dx / distance) * impulse, (dy / distance) * impulse - power * 18, (Math.random() - 0.5) * power * 2.4 * falloff);
+                affected++;
+            });
+
+            spawnImpactFlash(center.x, center.y, Math.min(220, radius * 0.58));
+            spawnChaosParticles(center.x, center.y, { count: 44, speed: radius * 0.48, size: 7, color: '#ffcc66' });
+            spawnScreenShake(power / 5);
+            emitWebBreakSoundHook('explosion', { power, radius, affected });
+            setChaosStatus(`${strings.chaosExplosionStatus} ${affected}`);
+            requestSpawnPhysics();
+        }
+
+        function triggerChaosSlowMotion() {
+            if (!chaosToolsUnlocked) return openChaosPanel();
+            if (!canUseChaosTool('slowmo')) return;
+            chaosSlowMotionUntil = performance.now() + CHAOS_SLOW_MOTION_DURATION;
+            document.body.classList.add('slow-motion-active');
+            setTimeout(() => {
+                if (performance.now() >= chaosSlowMotionUntil) {
+                    document.body.classList.remove('slow-motion-active');
+                }
+            }, CHAOS_SLOW_MOTION_DURATION + 80);
+            emitWebBreakSoundHook('slowmotion', { duration: CHAOS_SLOW_MOTION_DURATION });
+            setChaosStatus(getTerminalStrings().chaosSlowMotionStatus);
+            requestSpawnPhysics();
+        }
+
+        function updateChaosFields(now, frameDt) {
+            for (let index = chaosFields.length - 1; index >= 0; index--) {
+                const field = chaosFields[index];
+                const age = now - field.startedAt;
+                if (age > field.duration) {
+                    chaosFields.splice(index, 1);
+                    continue;
+                }
+
+                const strengthTime = 1 - age / field.duration;
+                spawnedObjects.forEach(body => {
+                    if (!body || body.voiding || body.dragging) return;
+                    const dx = field.x - body.x;
+                    const dy = field.y - body.y;
+                    const distance = Math.max(18, Math.hypot(dx, dy));
+                    if (distance > field.radius) return;
+                    const falloff = (1 - distance / field.radius) * strengthTime;
+                    const impulse = field.power * falloff * (frameDt / 16.67) * 42;
+                    applyVelocityToSpawnBody(body, (dx / distance) * impulse, (dy / distance) * impulse, field.power * 0.025 * falloff);
+                });
+            }
+        }
+
+        function updateWebBreakPerformanceMode() {
+            const count = spawnedObjects.length;
+            const lowEnd = isWebBreakLowEndMode();
+            const stress = lowEnd || count > 70 || chaosFields.length > 0;
+            webbreakQualityLevel = lowEnd ? 0.45 : count > 96 ? 0.5 : count > 64 ? 0.7 : 1;
+            document.documentElement.classList.toggle('physics-stress-mode', stress);
+        }
+
+        function tuneSpawnMatterPerformance() {
+            if (!spawnMatterEngine) return;
+            const count = spawnedObjects.length;
+            const lowEnd = isWebBreakLowEndMode();
+            const stress = lowEnd || count > 70 || chaosFields.length > 0;
+            const positionIterations = stress ? 7 : count > 38 ? 12 : 20;
+            const velocityIterations = stress ? 5 : count > 38 ? 9 : 16;
+            const constraintIterations = stress ? 2 : 8;
+            if (spawnMatterEngine.positionIterations !== positionIterations) {
+                spawnMatterEngine.positionIterations = positionIterations;
+                spawnMatterEngine.velocityIterations = velocityIterations;
+                spawnMatterEngine.constraintIterations = constraintIterations;
+            }
+        }
+
+        function hookSpawnCollisionEffects() {
+            const MatterApi = getSpawnMatterApi();
+            if (!MatterApi || !spawnMatterEngine || spawnCollisionEffectsHooked) return;
+            spawnCollisionEffectsHooked = true;
+            MatterApi.Events.on(spawnMatterEngine, 'collisionStart', event => {
+                const now = performance.now();
+                const throttle = isWebBreakLowEndMode() ? 240 : 110;
+                if (now - lastImpactEffectTime < throttle) return;
+
+                const pair = (event.pairs || []).find(candidate => {
+                    const a = candidate.bodyA && candidate.bodyA.plugin && candidate.bodyA.plugin.webbreakSpawnBody;
+                    const b = candidate.bodyB && candidate.bodyB.plugin && candidate.bodyB.plugin.webbreakSpawnBody;
+                    if (!a && !b) return false;
+                    const avx = candidate.bodyA && candidate.bodyA.velocity ? candidate.bodyA.velocity.x : 0;
+                    const avy = candidate.bodyA && candidate.bodyA.velocity ? candidate.bodyA.velocity.y : 0;
+                    const bvx = candidate.bodyB && candidate.bodyB.velocity ? candidate.bodyB.velocity.x : 0;
+                    const bvy = candidate.bodyB && candidate.bodyB.velocity ? candidate.bodyB.velocity.y : 0;
+                    return Math.hypot(avx - bvx, avy - bvy) > (isWebBreakLowEndMode() ? 3.8 : 2.4);
+                });
+
+                if (!pair || !pair.collision) return;
+                const support = pair.collision.supports && pair.collision.supports[0];
+                const x = support ? support.x : (pair.bodyA.position.x + pair.bodyB.position.x) / 2;
+                const y = support ? support.y : (pair.bodyA.position.y + pair.bodyB.position.y) / 2;
+                lastImpactEffectTime = now;
+                spawnImpactFlash(x, y, 34);
+                spawnChaosParticles(x, y, { count: 7, speed: 48, size: 4, color: 'var(--btn-hover-border)' });
+            });
+        }
+
 
         function spawnSwords(requestedCount) {
             const layer = getSpawnLayer();
@@ -9406,6 +12418,7 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
                 }
                 syncSpawnMatterGravity();
                 rebuildSpawnMatterBounds();
+                hookSpawnCollisionEffects();
             }
 
             return spawnMatterEngine;
@@ -9584,6 +12597,7 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
             return !!body
                 && !body.voiding
                 && !body.dragging
+                && !isChaosPhysicsOverrideActive()
                 && (body.isStatic || (!spawnFlingLoopActive
                 && !spawnHelicopterModeActive
                 && (isSpawnBuildModeActive() || (spawnEditModeActive && body.selectedForEdit))));
@@ -9738,17 +12752,25 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
             }
 
             syncSpawnMatterGravity();
+            updateWebBreakPerformanceMode();
+            tuneSpawnMatterPerformance();
 
             const lowEndMode = isWebBreakLowEndMode();
             const frameDt = Math.min(lowEndMode ? 1000 / 24 : 1000 / 30, Math.max(lowEndMode ? 1000 / 45 : 1000 / 120, now - lastSpawnFrameTime || 1000 / 60));
             lastSpawnFrameTime = now;
+            const slowMotionActive = now < chaosSlowMotionUntil;
+            const scaledFrameDt = frameDt * (slowMotionActive ? 0.38 : 1);
+            if (!slowMotionActive) {
+                document.body.classList.remove('slow-motion-active');
+            }
 
             updateSpawnFlingLoop(now);
             updateSpawnHelicopterMode(now);
+            updateChaosFields(now, scaledFrameDt);
 
-            const stepCount = lowEndMode || spawnedObjects.length > 42 ? 1 : 2;
+            const stepCount = lowEndMode || spawnedObjects.length > 42 || webbreakQualityLevel < 0.8 ? 1 : 2;
             for (let step = 0; step < stepCount; step++) {
-                MatterApi.Engine.update(engine, frameDt / stepCount);
+                MatterApi.Engine.update(engine, scaledFrameDt / stepCount);
             }
 
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
@@ -9779,7 +12801,7 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
                 updateSpawnEditToolbar();
             }
 
-            if (!spawnedObjects.some(isSpawnPhysicsActiveBody)) {
+            if (!spawnedObjects.some(isSpawnPhysicsActiveBody) && chaosFields.length === 0 && !slowMotionActive) {
                 spawnAnimationRunning = false;
                 return;
             }
@@ -10428,6 +13450,20 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                 ensureTerminalIntro();
             } else if (command === 'clear objects') {
                 clearSpawnObjectsToVoid(strings);
+            } else if (command === 'save' || command === 'save build') {
+                openSaveBuildModal('save');
+            } else if (command === 'load' || command === 'load build') {
+                openSaveBuildModal('load');
+            } else if (command === 'webreak' || command === 'webbreak') {
+                unlockChaosTools();
+            } else if (command === 'chaos' || command === 'chaos tools') {
+                toggleChaosPanel();
+            } else if (command === 'blackhole' || command === 'black hole') {
+                triggerChaosBlackHole();
+            } else if (command === 'explosion' || command === 'explode') {
+                triggerChaosExplosion();
+            } else if (command === 'slowmo' || command === 'slow motion') {
+                triggerChaosSlowMotion();
             } else if (command === 'fling') {
                 flingSpawnObjects(strings);
             } else if (command === 'flingloop') {
@@ -11425,6 +14461,7 @@ function handleConfirm(action) {
 
             closeChangelogPanel();
             closeAuthPanel();
+            closeCommunityPanel();
             card.classList.add('first-page-fading');
             card.style.pointerEvents = 'none';
             showBuildingControls();
@@ -11451,6 +14488,7 @@ function handleConfirm(action) {
 
             closeTerminal();
             closeChangelogPanel();
+            closeCommunityPanel();
             card.classList.remove('first-page-hidden');
             card.style.pointerEvents = '';
             questionContainer.classList.add('active', 'categories-open');
@@ -11864,6 +14902,41 @@ function handleConfirm(action) {
             }
             .auth-panel .auth-profile-line {
                 gap: 6px !important;
+            }
+            .community-panel {
+                top: calc(env(safe-area-inset-top) + 56px) !important;
+                right: max(8px, env(safe-area-inset-right)) !important;
+                left: max(8px, env(safe-area-inset-left)) !important;
+                bottom: max(8px, env(safe-area-inset-bottom)) !important;
+                width: auto !important;
+                max-height: none !important;
+                padding: 10px !important;
+            }
+            .community-head,
+            .community-toolbar,
+            .community-status-row,
+            .community-card-head,
+            .community-card-actions,
+            .community-form-actions {
+                align-items: stretch !important;
+                flex-direction: column !important;
+            }
+            .community-shell {
+                grid-template-columns: 1fr !important;
+                overflow-y: auto !important;
+            }
+            .community-featured-strip {
+                grid-template-columns: 1fr !important;
+            }
+            .community-feed {
+                min-height: 260px !important;
+                max-height: 56dvh !important;
+            }
+            .community-filter-tabs {
+                grid-template-columns: 1fr 1fr 1fr !important;
+            }
+            .community-comment-form {
+                grid-template-columns: 1fr !important;
             }
             body.building-mode #spawn-edit-panel {
                 top: calc(env(safe-area-inset-top) + 56px) !important;
