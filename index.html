@@ -1387,6 +1387,130 @@
             gap: 10px;
         }
 
+        .featured-build-shell {
+            width: min(720px, 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .featured-build-status {
+            min-height: 16px;
+            color: var(--text-muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        .featured-build-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            width: 100%;
+            max-height: min(46vh, 420px);
+            overflow-y: auto;
+            padding: 2px 2px 6px;
+        }
+
+        .featured-build-card {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            min-height: 210px;
+            padding: 11px;
+            border: 1px solid var(--btn-border);
+            background: color-mix(in srgb, var(--btn-bg) 82%, transparent);
+            box-shadow: 4px 4px 0 var(--card-shadow);
+            text-align: left;
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .featured-build-card:hover,
+        .featured-build-card:focus-within {
+            transform: translate(-2px, -2px);
+            border-color: var(--btn-hover-border);
+            box-shadow: 7px 7px 0 color-mix(in srgb, var(--btn-border) 74%, transparent);
+        }
+
+        .featured-build-preview {
+            position: relative;
+            height: 74px;
+            overflow: hidden;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 72%, transparent);
+            background:
+                linear-gradient(color-mix(in srgb, var(--btn-border) 11%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 11%, transparent) 1px, transparent 1px),
+                color-mix(in srgb, #000000 7%, var(--btn-bg));
+            background-size: 18px 18px;
+        }
+
+        .featured-preview-piece {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 1px solid currentColor;
+            background: currentColor;
+            box-shadow: 0 0 10px color-mix(in srgb, currentColor 42%, transparent);
+        }
+
+        .featured-preview-piece.glass {
+            background: color-mix(in srgb, #9ee9ff 36%, transparent);
+            color: #7dd3fc;
+        }
+
+        .featured-preview-piece.sword {
+            width: 46px;
+            height: 6px;
+            color: #f8fafc;
+            transform-origin: center;
+        }
+
+        .featured-build-title {
+            color: var(--text-main);
+            font-size: 15px;
+            font-weight: 900;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+
+        .featured-build-description,
+        .featured-build-meta {
+            color: var(--text-muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .featured-build-meta {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .featured-build-load {
+            margin-top: auto;
+            min-height: 34px;
+            border: 1px solid var(--btn-border);
+            background: transparent;
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+        }
+
+        .featured-build-load:hover,
+        .featured-build-load:focus-visible {
+            border-color: var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-hover-bg) 76%, transparent);
+            color: var(--btn-hover-text);
+            outline: none;
+        }
+
         .profile-search-form {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 42px;
@@ -1793,29 +1917,37 @@
             text-align: center;
         }
 
-        .community-panel {
-            position: fixed;
-            inset: 4.5rem 1rem 1rem auto;
-            z-index: 176;
-            width: min(920px, calc(100vw - 2rem));
+        .community-zone-panel {
+            justify-content: flex-start;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .community-tab-surface {
+            width: min(900px, 100%);
+            min-height: 0;
+            max-height: min(62vh, 620px);
             display: flex;
             flex-direction: column;
             gap: 12px;
             overflow: hidden;
-            transform: translateY(14px) scale(0.985);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            border: 1px solid var(--card-border);
-            box-shadow: 12px 12px 0px var(--card-shadow);
-            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, visibility 0.2s;
-        }
-
-        .community-panel.open {
-            transform: translateY(0) scale(1);
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+            transform: none;
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
+        }
+
+        .community-tab-surface .community-shell {
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .community-tab-surface .community-feed {
+            flex: 1 1 auto;
+            min-height: 0;
         }
 
         .community-head,
@@ -1878,7 +2010,6 @@
         }
 
         .community-compose,
-        .community-featured-strip,
         .community-feed {
             border: 1px solid color-mix(in srgb, var(--btn-border) 82%, transparent);
             background: color-mix(in srgb, var(--btn-bg) 72%, transparent);
@@ -1966,28 +2097,6 @@
             gap: 10px;
         }
 
-        .community-featured-strip {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            padding: 8px;
-        }
-
-        .community-featured-mini {
-            min-height: 72px;
-            padding: 9px;
-            border: 1px solid color-mix(in srgb, var(--btn-hover-border) 38%, var(--btn-border));
-            background: linear-gradient(135deg, color-mix(in srgb, var(--btn-hover-bg) 14%, transparent), color-mix(in srgb, var(--btn-bg) 86%, transparent));
-            text-align: left;
-            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-        }
-
-        .community-featured-mini:hover {
-            transform: translate(-2px, -2px);
-            border-color: var(--btn-hover-border);
-            box-shadow: 5px 5px 0 var(--card-shadow);
-        }
-
         .community-card {
             display: flex;
             flex-direction: column;
@@ -2010,10 +2119,6 @@
             border-color: color-mix(in srgb, #f59e0b 70%, var(--btn-border));
         }
 
-        .community-card.featured {
-            box-shadow: 5px 5px 0 var(--card-shadow), 0 0 24px color-mix(in srgb, var(--btn-hover-border) 16%, transparent);
-        }
-
         .community-author {
             display: flex;
             align-items: center;
@@ -2022,8 +2127,7 @@
         }
 
         .community-author-name,
-        .community-card-title,
-        .community-featured-title {
+        .community-card-title {
             color: var(--text-main);
             font-weight: 900;
             overflow-wrap: anywhere;
@@ -2064,10 +2168,24 @@
             color: #7dd3fc;
         }
 
-        .community-badge.featured,
-        .community-badge.pinned {
+        .community-badge.pinned,
+        .community-badge.announcement {
             border-color: rgba(245, 158, 11, 0.66);
             color: #fbbf24;
+        }
+
+        .community-empty-card {
+            display: flex;
+            align-items: center;
+            min-height: 88px;
+            padding: 14px;
+            border: 1px solid var(--btn-border);
+            background: color-mix(in srgb, var(--btn-bg) 88%, transparent);
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.3;
+            box-shadow: none;
         }
 
         .community-code-box {
@@ -3364,6 +3482,8 @@
         }
 
         .chaos-panel {
+            --chaos-x: 0px;
+            --chaos-y: 0px;
             position: fixed;
             right: 1rem;
             bottom: 1rem;
@@ -3374,7 +3494,7 @@
             flex-direction: column;
             gap: 12px;
             opacity: 0;
-            transform: translateY(16px) scale(0.98);
+            transform: translate(var(--chaos-x), calc(16px + var(--chaos-y))) scale(0.98);
             pointer-events: none;
             transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -3385,8 +3505,16 @@
 
         .chaos-panel.open {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translate(var(--chaos-x), var(--chaos-y)) scale(1);
             pointer-events: auto;
+        }
+
+        .chaos-panel.dragging-chaos {
+            transition: none;
+        }
+
+        .chaos-panel.dragging-chaos .chaos-panel-head {
+            cursor: grabbing;
         }
 
         .chaos-panel::before {
@@ -3402,6 +3530,11 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 8px;
+        }
+
+        .chaos-panel-head {
+            cursor: grab;
+            touch-action: none;
         }
 
         .chaos-tool-row {
@@ -3529,7 +3662,46 @@
             .chaos-panel {
                 right: max(10px, env(safe-area-inset-right));
                 bottom: max(10px, env(safe-area-inset-bottom));
-                width: min(300px, calc(100vw - 20px));
+                width: min(276px, calc(100vw - 20px));
+                padding: 9px;
+                gap: 8px;
+            }
+
+            .chaos-panel-head {
+                gap: 8px;
+            }
+
+            .chaos-panel-title {
+                font-size: 10px;
+                letter-spacing: 0.16em;
+            }
+
+            .chaos-tool-meta {
+                font-size: 9px;
+                letter-spacing: 0.08em;
+                line-height: 1.25;
+            }
+
+            .chaos-tool-grid {
+                gap: 6px;
+            }
+
+            .chaos-number-input {
+                height: 30px;
+                font-size: 11px;
+            }
+
+            .chaos-panel .terminal-simple-action-button {
+                min-height: 30px;
+                height: 30px;
+                padding: 5px 7px;
+                font-size: 9px;
+                letter-spacing: 0.035em;
+            }
+
+            .chaos-panel .w-8 {
+                width: 30px !important;
+                height: 30px !important;
             }
         }
 
@@ -3956,6 +4128,16 @@
 
             .profile-search-results {
                 max-height: 42vh;
+            }
+
+            .featured-build-grid {
+                grid-template-columns: 1fr;
+                max-height: none;
+                overflow: visible;
+            }
+
+            .featured-build-card {
+                min-height: 0;
             }
 
             .first-page-tip-text {
@@ -4603,7 +4785,7 @@
                     <button id="question-zone-main-tab" type="button" class="question-zone-tab active interactive" onclick="setQuestionZoneTab('main')" data-i18n="firstPageMainTab">Dashboard</button>
                     <button id="question-zone-search-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('search')" data-i18n="firstPageSearchTab">Find</button>
                     <button id="question-zone-featured-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('featured')" data-i18n="firstPageFeaturedTab">Registry</button>
-                    <button id="question-zone-more-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('more')" data-i18n="firstPageMoreTab">System</button>
+                    <button id="question-zone-community-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('community')" data-i18n="communityButton">Community</button>
                 </nav>
 
                 <div class="first-page-content">
@@ -4624,8 +4806,8 @@
                             <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive" onclick="setQuestionZoneTab('search')">
                                 <span data-i18n="firstPageProfilesButton">Profiles</span>
                             </button>
-                            <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive community-trigger" onclick="openCommunityPanel()">
-                                <span data-i18n="communityButton">Community</span>
+                            <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive changelog-trigger" onclick="toggleChangelogPanel()">
+                                <span data-i18n="changelogButton">Changelogs</span>
                             </button>
                         </div>
                     </div>
@@ -4662,37 +4844,69 @@
                     </div>
 
                     <div id="first-page-featured-panel" class="question-zone-panel">
-                        <span data-i18n="firstPageFeaturedEyebrow" class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] themed-muted block leading-relaxed">
-                            Featured
-                        </span>
-                        <h2 data-i18n="firstPageFeaturedTitle" class="text-3xl sm:text-4xl font-light tracking-tight themed-text leading-snug">
-                            Top builders live in Search.
-                        </h2>
-                        <p data-i18n="firstPageFeaturedBody" class="themed-muted text-[13px] sm:text-[14px] leading-relaxed max-w-[520px]">
-                            Open the leaderboard-style search list to see builders sorted by likes.
-                        </p>
-                        <button type="button" class="first-page-action interactive" onclick="openFeaturedBuilders()">
-                            <span data-i18n="firstPageFeaturedButton">Open featured builders</span>
-                        </button>
+                        <div class="featured-build-shell text-animate delay-50">
+                            <span data-i18n="firstPageFeaturedEyebrow" class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] themed-muted block leading-relaxed">
+                                Featured
+                            </span>
+                            <h2 data-i18n="firstPageFeaturedTitle" class="text-3xl sm:text-4xl font-light tracking-tight themed-text leading-snug">
+                                Featured buildings
+                            </h2>
+                            <p data-i18n="firstPageFeaturedBody" class="themed-muted text-[13px] sm:text-[14px] leading-relaxed max-w-[520px]">
+                                Load selected builds directly into the sandbox.
+                            </p>
+                            <div id="featured-build-status" class="featured-build-status" aria-live="polite"></div>
+                            <div id="featured-build-list" class="featured-build-grid"></div>
+                        </div>
                     </div>
 
-                    <div id="first-page-more-panel" class="question-zone-panel">
-                        <span data-i18n="firstPageMoreEyebrow" class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] themed-muted block leading-relaxed">
-                            More
-                        </span>
-                        <h2 data-i18n="firstPageMoreTitle" class="text-3xl sm:text-4xl font-light tracking-tight themed-text leading-snug">
-                            Quick tools
-                        </h2>
-                        <div class="first-page-tool-grid">
-                            <button type="button" class="first-page-action auth-trigger interactive" onclick="openAuthPanel()">
-                                <span data-i18n="authTitle">Account</span>
-                            </button>
-                            <button type="button" class="first-page-action changelog-trigger interactive" onclick="toggleChangelogPanel()">
-                                <span data-i18n="changelogButton">Changelogs</span>
-                            </button>
-                            <button type="button" class="first-page-action community-trigger interactive" onclick="openCommunityPanel()">
-                                <span data-i18n="communityButton">Community</span>
-                            </button>
+                    <div id="first-page-community-panel" class="question-zone-panel community-zone-panel">
+                        <div id="community-panel" class="community-tab-surface" aria-hidden="true">
+                            <div class="community-head">
+                                <div>
+                                    <div class="community-title" data-i18n="communityTitle">Community</div>
+                                    <div class="community-subtitle" data-i18n="communitySubtitle">Share builds, like posts, and inspect creation codes.</div>
+                                </div>
+                            </div>
+
+                            <div class="community-toolbar">
+                                <form class="community-search-form" onsubmit="handleCommunitySearchSubmit(event)">
+                                    <input id="community-search-input" class="community-search-input interactive" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="communitySearchPlaceholder" placeholder="Search posts">
+                                    <button type="submit" class="profile-search-submit interactive" data-i18n-aria-label="communitySearchAria" aria-label="Search community">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                    </button>
+                                </form>
+                                <button type="button" class="terminal-simple-action-button interactive" onclick="toggleCommunityComposer()" data-i18n="communityCreateButton">Create Post</button>
+                                <button type="button" class="terminal-simple-action-button interactive" onclick="refreshCommunityFeed(true)" data-i18n="communityRefreshButton">Refresh</button>
+                            </div>
+
+                            <div class="community-filter-tabs">
+                                <button id="community-filter-all" type="button" class="terminal-simple-action-button active interactive" onclick="setCommunityFilter('all')" data-i18n="communityFilterAll">All</button>
+                                <button id="community-filter-mine" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('mine')" data-i18n="communityFilterMine">Mine</button>
+                            </div>
+
+                            <div class="community-shell">
+                                <aside class="community-side">
+                                    <form id="community-compose" class="community-compose collapsed" onsubmit="handleCommunityPostSubmit(event)">
+                                        <div class="community-title" id="community-compose-title" data-i18n="communityComposeTitle">New Post</div>
+                                        <input id="community-post-title" class="community-input interactive" maxlength="80" autocomplete="off" data-i18n-placeholder="communityPostTitlePlaceholder" placeholder="Title">
+                                        <textarea id="community-post-description" class="community-textarea interactive" maxlength="700" autocomplete="off" data-i18n-placeholder="communityPostDescriptionPlaceholder" placeholder="Description"></textarea>
+                                        <textarea id="community-post-code" class="community-textarea community-code-input interactive" autocomplete="off" spellcheck="false" data-i18n-placeholder="communityPostCodePlaceholder" placeholder="WB1: exported build code"></textarea>
+                                        <div class="community-form-actions">
+                                            <button id="community-post-submit" type="submit" class="terminal-simple-action-button interactive" data-i18n="communitySubmitPost">Post</button>
+                                            <button type="button" class="terminal-simple-action-button interactive" onclick="resetCommunityComposer()" data-i18n="communityCancelEdit">Cancel</button>
+                                        </div>
+                                        <div id="community-compose-status" class="community-status" aria-live="polite"></div>
+                                    </form>
+                                </aside>
+
+                                <section class="community-feed-wrap">
+                                    <div class="community-status-row">
+                                        <div id="community-status" class="community-status" aria-live="polite"></div>
+                                    </div>
+                                    <div id="community-feed" class="community-feed"></div>
+                                    <button id="community-load-more" type="button" class="terminal-simple-action-button interactive" onclick="loadMoreCommunityPosts()" data-i18n="communityLoadMore">Load More</button>
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4959,62 +5173,6 @@
             <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosSlowMotion()" data-i18n="chaosSlowMotionButton">Slow Motion</button>
         </div>
         <div id="chaos-status" class="chaos-tool-meta" aria-live="polite"></div>
-    </div>
-
-    <div id="community-panel" class="community-panel glass-card rounded-[2px] p-4 transition-all duration-300" aria-hidden="true">
-        <div class="community-head">
-            <div>
-                <div class="community-title" data-i18n="communityTitle">Community</div>
-                <div class="community-subtitle" data-i18n="communitySubtitle">Share builds, like posts, and inspect creation codes.</div>
-            </div>
-            <button onclick="closeCommunityPanel()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" data-i18n-aria-label="communityCloseAria" aria-label="Close community panel">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-        </div>
-
-        <div class="community-toolbar">
-            <form class="community-search-form" onsubmit="handleCommunitySearchSubmit(event)">
-                <input id="community-search-input" class="community-search-input interactive" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="communitySearchPlaceholder" placeholder="Search posts">
-                <button type="submit" class="profile-search-submit interactive" data-i18n-aria-label="communitySearchAria" aria-label="Search community">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                </button>
-            </form>
-            <button type="button" class="terminal-simple-action-button interactive" onclick="toggleCommunityComposer()" data-i18n="communityCreateButton">Create Post</button>
-            <button type="button" class="terminal-simple-action-button interactive" onclick="refreshCommunityFeed(true)" data-i18n="communityRefreshButton">Refresh</button>
-        </div>
-
-        <div class="community-filter-tabs">
-            <button id="community-filter-all" type="button" class="terminal-simple-action-button active interactive" onclick="setCommunityFilter('all')" data-i18n="communityFilterAll">All</button>
-            <button id="community-filter-featured" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('featured')" data-i18n="communityFilterFeatured">Featured</button>
-            <button id="community-filter-mine" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('mine')" data-i18n="communityFilterMine">Mine</button>
-        </div>
-
-        <div class="community-shell">
-            <aside class="community-side">
-                <form id="community-compose" class="community-compose collapsed" onsubmit="handleCommunityPostSubmit(event)">
-                    <div class="community-title" id="community-compose-title" data-i18n="communityComposeTitle">New Post</div>
-                    <input id="community-post-title" class="community-input interactive" maxlength="80" autocomplete="off" data-i18n-placeholder="communityPostTitlePlaceholder" placeholder="Title">
-                    <textarea id="community-post-description" class="community-textarea interactive" maxlength="700" autocomplete="off" data-i18n-placeholder="communityPostDescriptionPlaceholder" placeholder="Description"></textarea>
-                    <textarea id="community-post-code" class="community-textarea community-code-input interactive" autocomplete="off" spellcheck="false" data-i18n-placeholder="communityPostCodePlaceholder" placeholder="WB1: exported build code"></textarea>
-                    <div class="community-form-actions">
-                        <button id="community-post-submit" type="submit" class="terminal-simple-action-button interactive" data-i18n="communitySubmitPost">Post</button>
-                        <button type="button" class="terminal-simple-action-button interactive" onclick="resetCommunityComposer()" data-i18n="communityCancelEdit">Cancel</button>
-                    </div>
-                    <div id="community-compose-status" class="community-status" aria-live="polite"></div>
-                </form>
-
-                <div class="community-featured-strip" id="community-featured-strip"></div>
-            </aside>
-
-            <section class="community-feed-wrap">
-                <div class="community-status-row">
-                    <div id="community-status" class="community-status" aria-live="polite"></div>
-                    <div id="community-page-indicator" class="community-count"></div>
-                </div>
-                <div id="community-feed" class="community-feed"></div>
-                <button id="community-load-more" type="button" class="terminal-simple-action-button interactive" onclick="loadMoreCommunityPosts()" data-i18n="communityLoadMore">Load More</button>
-            </section>
-        </div>
     </div>
 
     <div id="auth-panel" class="auth-panel glass-card border rounded-[2px] p-4 transition-all duration-300">
@@ -5450,7 +5608,6 @@
             firstPageMainTab: "Main",
             firstPageSearchTab: "Search",
             firstPageFeaturedTab: "Featured",
-            firstPageMoreTab: "More",
             firstPageMainEyebrow: "WebBreak.ru",
             firstPageMainTitle: "Build, test, and break your physics creations.",
             firstPageMainBody: "Spawn wool blocks and swords, stack them into builds, edit sizes, and see what survives.",
@@ -5458,11 +5615,23 @@
             firstPageContinueBuildingButton: "Continue building",
             firstPageProfilesButton: "Profiles",
             firstPageFeaturedEyebrow: "Featured",
-            firstPageFeaturedTitle: "Top builders live in Search.",
-            firstPageFeaturedBody: "Open the leaderboard-style search list to see builders sorted by likes.",
-            firstPageFeaturedButton: "Open featured builders",
-            firstPageMoreEyebrow: "More",
-            firstPageMoreTitle: "Quick tools",
+            firstPageFeaturedTitle: "Featured buildings",
+            firstPageFeaturedBody: "Load selected builds directly into the sandbox.",
+            firstPageFeaturedButton: "Load build",
+            featuredBuildLoading: "Loading featured buildings...",
+            featuredBuildBuiltInStatus: "Curated local builds are ready.",
+            featuredBuildCommunityStatus: "Community featured builds are ready.",
+            featuredBuildEmpty: "No featured buildings yet.",
+            featuredBuildLoadButton: "Load build",
+            featuredBuildObjectLabel: "objects",
+            featuredBuildSourceBuiltIn: "Curated",
+            featuredBuildSourceCommunity: "Community",
+            featuredBuildGlassGateTitle: "Glass Gate",
+            featuredBuildGlassGateBody: "A clean glass frame with a door core for quick break tests.",
+            featuredBuildSwordShrineTitle: "Sword Shrine",
+            featuredBuildSwordShrineBody: "Crossed blades over a compact wool base.",
+            featuredBuildWoolStackTitle: "Wool Stack",
+            featuredBuildWoolStackBody: "A colorful block tower tuned for gravity experiments.",
             buildBackAria: "Back to main page",
             firstPageTipLabel: "Tip",
             firstPageTips: [
@@ -5822,7 +5991,6 @@
             firstPageMainTab: "Главная",
             firstPageSearchTab: "Поиск",
             firstPageFeaturedTab: "Лучшие",
-            firstPageMoreTab: "Ещё",
             firstPageMainEyebrow: "WebBreak.ru",
             firstPageMainTitle: "Стройте, тестируйте и ломайте физические постройки.",
             firstPageMainBody: "Спавните шерсть и мечи, складывайте постройки, склеивайте объекты, меняйте размеры и проверяйте, что выдержит.",
@@ -5830,11 +5998,23 @@
             firstPageContinueBuildingButton: "Продолжить строительство",
             firstPageProfilesButton: "Профили",
             firstPageFeaturedEyebrow: "Лучшие",
-            firstPageFeaturedTitle: "Лучшие строители находятся в Поиске.",
-            firstPageFeaturedBody: "Откройте список поиска, чтобы увидеть строителей, отсортированных по лайкам.",
-            firstPageFeaturedButton: "Открыть лучших строителей",
-            firstPageMoreEyebrow: "Ещё",
-            firstPageMoreTitle: "Быстрые инструменты",
+            firstPageFeaturedTitle: "\u0418\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            firstPageFeaturedBody: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0439\u0442\u0435 \u043e\u0442\u043e\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0431\u0438\u043b\u0434\u044b \u0441\u0440\u0430\u0437\u0443 \u0432 \u043f\u0435\u0441\u043e\u0447\u043d\u0438\u0446\u0443.",
+            firstPageFeaturedButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
+            featuredBuildLoading: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u044e \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438...",
+            featuredBuildBuiltInStatus: "\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0431\u0438\u043b\u0434\u044b \u0433\u043e\u0442\u043e\u0432\u044b.",
+            featuredBuildCommunityStatus: "\u0418\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0431\u0438\u043b\u0434\u044b \u0438\u0437 Community \u0433\u043e\u0442\u043e\u0432\u044b.",
+            featuredBuildEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a.",
+            featuredBuildLoadButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
+            featuredBuildObjectLabel: "\u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432",
+            featuredBuildSourceBuiltIn: "\u041f\u043e\u0434\u0431\u043e\u0440\u043a\u0430",
+            featuredBuildSourceCommunity: "Community",
+            featuredBuildGlassGateTitle: "\u0421\u0442\u0435\u043a\u043b\u044f\u043d\u043d\u044b\u0435 \u0432\u043e\u0440\u043e\u0442\u0430",
+            featuredBuildGlassGateBody: "\u0427\u0438\u0441\u0442\u0430\u044f \u0441\u0442\u0435\u043a\u043b\u044f\u043d\u043d\u0430\u044f \u0440\u0430\u043c\u0430 \u0441 \u0434\u0432\u0435\u0440\u044c\u044e \u0434\u043b\u044f \u0431\u044b\u0441\u0442\u0440\u044b\u0445 \u0442\u0435\u0441\u0442\u043e\u0432.",
+            featuredBuildSwordShrineTitle: "\u0425\u0440\u0430\u043c \u043c\u0435\u0447\u0435\u0439",
+            featuredBuildSwordShrineBody: "\u0421\u043a\u0440\u0435\u0449\u0451\u043d\u043d\u044b\u0435 \u043a\u043b\u0438\u043d\u043a\u0438 \u043d\u0430\u0434 \u043a\u043e\u043c\u043f\u0430\u043a\u0442\u043d\u043e\u0439 \u0448\u0435\u0440\u0441\u0442\u044f\u043d\u043e\u0439 \u0431\u0430\u0437\u043e\u0439.",
+            featuredBuildWoolStackTitle: "\u0428\u0435\u0440\u0441\u0442\u044f\u043d\u0430\u044f \u0431\u0430\u0448\u043d\u044f",
+            featuredBuildWoolStackBody: "\u0426\u0432\u0435\u0442\u043d\u0430\u044f \u0431\u0430\u0448\u043d\u044f \u0431\u043b\u043e\u043a\u043e\u0432 \u0434\u043b\u044f \u0433\u0440\u0430\u0432\u0438\u0442\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0445 \u0442\u0435\u0441\u0442\u043e\u0432.",
             buildBackAria: "Вернуться на главную",
             firstPageTipLabel: "Совет",
             firstPageTips: [
@@ -5968,7 +6148,6 @@
             communityCreateButton: "Create Post",
             communityRefreshButton: "Refresh",
             communityFilterAll: "All",
-            communityFilterFeatured: "Featured",
             communityFilterMine: "Mine",
             communityComposeTitle: "New Post",
             communityEditTitle: "Edit Post",
@@ -6001,8 +6180,6 @@
             communityCopyCode: "Copy Code",
             communityEditPost: "Edit",
             communityDeletePost: "Delete",
-            communityFeaturePost: "Feature",
-            communityUnfeaturePost: "Unfeature",
             communityPinPost: "Pin",
             communityUnpinPost: "Unpin",
             communityLockComments: "Lock",
@@ -6011,7 +6188,6 @@
             communityAnnouncement: "Announcement",
             communityMarkAnnouncement: "Announce",
             communityUnmarkAnnouncement: "Unannounce",
-            communityFeaturedBadge: "Featured",
             communityPinnedBadge: "Pinned",
             communityAdminBadge: "Admin",
             communityModBadge: "Mod",
@@ -6034,7 +6210,6 @@
             communityCreateButton: "\u0421\u043e\u0437\u0434\u0430\u0442\u044c",
             communityRefreshButton: "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c",
             communityFilterAll: "\u0412\u0441\u0435",
-            communityFilterFeatured: "\u041b\u0443\u0447\u0448\u0438\u0435",
             communityFilterMine: "\u041c\u043e\u0438",
             communityComposeTitle: "\u041d\u043e\u0432\u044b\u0439 \u043f\u043e\u0441\u0442",
             communityEditTitle: "\u041f\u0440\u0430\u0432\u043a\u0430 \u043f\u043e\u0441\u0442\u0430",
@@ -6067,8 +6242,6 @@
             communityCopyCode: "\u041a\u043e\u043f\u0438\u044f",
             communityEditPost: "\u041f\u0440\u0430\u0432\u043a\u0430",
             communityDeletePost: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
-            communityFeaturePost: "\u0412 \u043b\u0443\u0447\u0448\u0438\u0435",
-            communityUnfeaturePost: "\u0423\u0431\u0440\u0430\u0442\u044c",
             communityPinPost: "\u0417\u0430\u043a\u0440\u0435\u043f",
             communityUnpinPost: "\u041e\u0442\u043a\u0440\u0435\u043f",
             communityLockComments: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c",
@@ -6077,7 +6250,6 @@
             communityAnnouncement: "\u0410\u043d\u043e\u043d\u0441",
             communityMarkAnnouncement: "\u0410\u043d\u043e\u043d\u0441",
             communityUnmarkAnnouncement: "\u041d\u0435 \u0430\u043d\u043e\u043d\u0441",
-            communityFeaturedBadge: "\u041b\u0443\u0447\u0448\u0435\u0435",
             communityPinnedBadge: "\u0417\u0430\u043a\u0440\u0435\u043f",
             communityAdminBadge: "Admin",
             communityModBadge: "Mod",
@@ -6100,6 +6272,91 @@
         let firstPageTipOrder = [];
         let firstPageTipOrderCursor = 0;
         let firstPageTipSignature = '';
+        let featuredBuildCards = [];
+        let featuredBuildsLoaded = false;
+        let featuredBuildsLoading = false;
+        const BUILT_IN_FEATURED_BUILDS = [
+            {
+                id: 'glass-gate',
+                titleKey: 'featuredBuildGlassGateTitle',
+                descriptionKey: 'featuredBuildGlassGateBody',
+                source: 'built-in',
+                preview: 'glass',
+                snapshot: {
+                    version: 2,
+                    name: 'Glass Gate',
+                    createdAt: 1778870000000,
+                    updatedAt: 1778870000000,
+                    gravity: 145,
+                    limit: 15,
+                    viewport: { width: 1000, height: 650 },
+                    objects: [
+                        { type: 'block', color: 'glass', material: 'glass', x: 405, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 405, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 405, y: 210, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 595, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 595, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 595, y: 210, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 465, y: 165, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 2.15, isStatic: true },
+                        { type: 'block', color: 'glass', material: 'glass', x: 525, y: 165, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 2.15, isStatic: true },
+                        { type: 'door', color: '', material: '', x: 500, y: 305, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.2, isStatic: true }
+                    ]
+                }
+            },
+            {
+                id: 'sword-shrine',
+                titleKey: 'featuredBuildSwordShrineTitle',
+                descriptionKey: 'featuredBuildSwordShrineBody',
+                source: 'built-in',
+                preview: 'sword',
+                snapshot: {
+                    version: 2,
+                    name: 'Sword Shrine',
+                    createdAt: 1778870000000,
+                    updatedAt: 1778870000000,
+                    gravity: 145,
+                    limit: 15,
+                    viewport: { width: 1000, height: 650 },
+                    objects: [
+                        { type: 'block', color: 'black', material: 'wool', x: 410, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'purple', material: 'wool', x: 470, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'purple', material: 'wool', x: 530, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'black', material: 'wool', x: 590, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'white', material: 'wool', x: 500, y: 325, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 0.95, baseMass: 3.8, isStatic: true },
+                        { type: 'sword', color: '', material: '', x: 470, y: 265, angle: -0.72, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 1.35, isStatic: true },
+                        { type: 'sword', color: '', material: '', x: 530, y: 265, angle: 0.72, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 1.35, isStatic: true }
+                    ]
+                }
+            },
+            {
+                id: 'wool-stack',
+                titleKey: 'featuredBuildWoolStackTitle',
+                descriptionKey: 'featuredBuildWoolStackBody',
+                source: 'built-in',
+                preview: 'wool',
+                snapshot: {
+                    version: 2,
+                    name: 'Wool Stack',
+                    createdAt: 1778870000000,
+                    updatedAt: 1778870000000,
+                    gravity: 145,
+                    limit: 15,
+                    viewport: { width: 1000, height: 650 },
+                    objects: [
+                        { type: 'block', color: 'red', material: 'wool', x: 410, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'orange', material: 'wool', x: 470, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'yellow', material: 'wool', x: 530, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'green', material: 'wool', x: 590, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'cyan', material: 'wool', x: 440, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'blue', material: 'wool', x: 500, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'purple', material: 'wool', x: 560, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'pink', material: 'wool', x: 470, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'white', material: 'wool', x: 530, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
+                        { type: 'block', color: 'black', material: 'wool', x: 500, y: 210, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true }
+                    ]
+                }
+            }
+        ];
                 
         let supabaseClient = null;
         let supabaseAuthConfigCheck = null;
@@ -6531,6 +6788,7 @@
             updateChaosToolsUi();
             renderCommunityPosts();
             updateCommunityComposerMode();
+            renderFeaturedBuildCards(featuredBuildCards);
             updateFirstPageTip(false);
             renderProfileSearchResults(profileSearchResults);
             document.documentElement.lang = currentLang;
@@ -6687,7 +6945,6 @@
             if (!panel) return;
             closeLangMenu();
             closeChangelogPanel();
-            closeCommunityPanel();
             panel.classList.add('open');
             if (!authSession) {
                 resetAuthCaptcha();
@@ -7206,7 +7463,7 @@ function normalizeNickname(value) {
             }
 
             renderProfileSearchResults(profileSearchResults);
-            if (document.getElementById('community-panel')?.classList.contains('open')) {
+            if (questionZoneTab === 'community') {
                 renderCommunityPosts();
             }
             updateDesktopBuildTimerAnchor();
@@ -7591,20 +7848,21 @@ function normalizeNickname(value) {
 
         function updateQuestionZoneTabs() {
             const strings = getTerminalStrings();
-            const normalizedTab = ['main', 'search', 'featured', 'more'].includes(questionZoneTab) ? questionZoneTab : 'main';
+            const normalizedTab = ['main', 'search', 'featured', 'community'].includes(questionZoneTab) ? questionZoneTab : 'main';
             const questionContainer = document.getElementById('question-container');
             const tabs = {
                 main: document.getElementById('question-zone-main-tab'),
                 search: document.getElementById('question-zone-search-tab'),
                 featured: document.getElementById('question-zone-featured-tab'),
-                more: document.getElementById('question-zone-more-tab')
+                community: document.getElementById('question-zone-community-tab')
             };
             const panels = {
                 main: document.getElementById('question-main-panel'),
                 search: document.getElementById('profile-search-panel'),
                 featured: document.getElementById('first-page-featured-panel'),
-                more: document.getElementById('first-page-more-panel')
+                community: document.getElementById('first-page-community-panel')
             };
+            const communityPanel = document.getElementById('community-panel');
 
             if (questionContainer) questionContainer.dataset.category = normalizedTab;
             Object.entries(tabs).forEach(([key, tab]) => {
@@ -7613,6 +7871,9 @@ function normalizeNickname(value) {
             Object.entries(panels).forEach(([key, panel]) => {
                 if (panel) panel.classList.toggle('active', key === normalizedTab);
             });
+            if (communityPanel) {
+                communityPanel.setAttribute('aria-hidden', normalizedTab === 'community' ? 'false' : 'true');
+            }
 
             // Update Start/Continue Building button text
             const startBtn = document.getElementById('first-page-start-building-btn');
@@ -7623,7 +7884,7 @@ function normalizeNickname(value) {
         }
 
         function setQuestionZoneTab(tab) {
-            questionZoneTab = ['main', 'search', 'featured', 'more'].includes(tab) ? tab : 'main';
+            questionZoneTab = ['main', 'search', 'featured', 'community'].includes(tab) ? tab : 'main';
             updateQuestionZoneTabs();
 
             if (questionZoneTab === 'main') {
@@ -7639,14 +7900,238 @@ function normalizeNickname(value) {
                     if (input) input.focus();
                 }, 60);
             }
+
+            if (questionZoneTab === 'featured') {
+                loadFeaturedBuilds();
+            }
+
+            if (questionZoneTab === 'community') {
+                if (communityPosts.length === 0 && !communityLoading) {
+                    refreshCommunityFeed(true);
+                } else {
+                    renderCommunityPosts();
+                }
+            }
         }
 
         function openFeaturedBuilders() {
-            const input = document.getElementById('profile-search-input');
-            if (input) input.value = '';
-            profileSearchPage = 0;
-            setQuestionZoneTab('search');
-            searchProfiles();
+            setQuestionZoneTab('featured');
+            loadFeaturedBuilds(true);
+        }
+
+        function setFeaturedBuildStatus(message = '') {
+            const status = document.getElementById('featured-build-status');
+            if (status) status.textContent = message || '';
+        }
+
+        function getBuiltInFeaturedBuildCards() {
+            return BUILT_IN_FEATURED_BUILDS.map(build => ({
+                id: build.id,
+                titleKey: build.titleKey,
+                descriptionKey: build.descriptionKey,
+                source: 'built-in',
+                preview: build.preview,
+                snapshot: build.snapshot,
+                objectCount: build.snapshot && Array.isArray(build.snapshot.objects) ? build.snapshot.objects.length : 0
+            }));
+        }
+
+        function getFeaturedBuildTitle(build) {
+            const strings = getAuthStrings();
+            if (build.titleKey && strings[build.titleKey]) return strings[build.titleKey];
+            return sanitizeCommunityText(build.title || '', 80) || 'Featured build';
+        }
+
+        function getFeaturedBuildDescription(build) {
+            const strings = getAuthStrings();
+            if (build.descriptionKey && strings[build.descriptionKey]) return strings[build.descriptionKey];
+            return sanitizeCommunityText(build.description || '', 140);
+        }
+
+        function getFeaturedBuildSnapshot(build) {
+            if (!build) return null;
+            if (build.buildCode) {
+                return decodeBuildSaveCode(build.buildCode);
+            }
+            if (build.snapshot) {
+                const snapshot = JSON.parse(JSON.stringify(build.snapshot));
+                const sourceViewport = snapshot.viewport || { width: 1000, height: 650 };
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || sourceViewport.width || 1000;
+                const viewportHeight = window.innerHeight || document.documentElement.clientHeight || sourceViewport.height || 650;
+                const sourceWidth = Number(sourceViewport.width) || 1000;
+                const sourceHeight = Number(sourceViewport.height) || 650;
+                const scale = clamp(Math.min(viewportWidth / sourceWidth, (viewportHeight * 0.88) / sourceHeight), 0.58, 1.08);
+                const sourceCenterX = sourceWidth / 2;
+                const targetCenterX = viewportWidth / 2;
+                const minY = Math.min(...snapshot.objects.map(object => Number(object.y) || 0));
+                const targetTop = clamp(viewportHeight * 0.16, 72, 132);
+
+                snapshot.viewport = { width: viewportWidth, height: viewportHeight };
+                snapshot.objects = snapshot.objects.map(object => Object.assign({}, object, {
+                    x: roundSaveNumber(targetCenterX + ((Number(object.x) || sourceCenterX) - sourceCenterX) * scale),
+                    y: roundSaveNumber(targetTop + ((Number(object.y) || minY) - minY) * scale),
+                    sizeMultiplier: roundSaveNumber((Number(object.sizeMultiplier) || 1) * clamp(scale, 0.72, 1), 3)
+                }));
+                return snapshot;
+            }
+            return null;
+        }
+
+        async function fetchCommunityFeaturedBuildCards() {
+            const client = getSupabaseClient();
+            if (!client) return [];
+
+            const { data, error } = await client
+                .from('community_posts')
+                .select('id,title,description,build_code,username,created_at,pinned,featured,is_announcement,hidden')
+                .eq('hidden', false)
+                .or('featured.eq.true,pinned.eq.true,is_announcement.eq.true')
+                .order('pinned', { ascending: false })
+                .order('featured', { ascending: false })
+                .order('created_at', { ascending: false })
+                .limit(6);
+            if (error) throw error;
+
+            return (data || []).map(row => {
+                try {
+                    const snapshot = decodeBuildSaveCode(row.build_code);
+                    return {
+                        id: `community-${row.id}`,
+                        title: row.title,
+                        description: row.description,
+                        source: 'community',
+                        preview: 'community',
+                        buildCode: row.build_code,
+                        objectCount: snapshot.objects.length
+                    };
+                } catch (error) {
+                    return null;
+                }
+            }).filter(Boolean);
+        }
+
+        async function loadFeaturedBuilds(force = false) {
+            const strings = getAuthStrings();
+            if (featuredBuildsLoading) return;
+            if (featuredBuildsLoaded && !force) {
+                renderFeaturedBuildCards(featuredBuildCards);
+                return;
+            }
+
+            featuredBuildsLoading = true;
+            setFeaturedBuildStatus(strings.featuredBuildLoading);
+
+            try {
+                const communityCards = await fetchCommunityFeaturedBuildCards();
+                featuredBuildCards = communityCards.length > 0 ? communityCards : getBuiltInFeaturedBuildCards();
+                featuredBuildsLoaded = true;
+                renderFeaturedBuildCards(featuredBuildCards);
+                setFeaturedBuildStatus(communityCards.length > 0 ? strings.featuredBuildCommunityStatus : strings.featuredBuildBuiltInStatus);
+            } catch (error) {
+                featuredBuildCards = getBuiltInFeaturedBuildCards();
+                featuredBuildsLoaded = true;
+                renderFeaturedBuildCards(featuredBuildCards);
+                setFeaturedBuildStatus(strings.featuredBuildBuiltInStatus);
+            } finally {
+                featuredBuildsLoading = false;
+            }
+        }
+
+        function appendFeaturedPreviewPiece(parent, options) {
+            const piece = document.createElement('span');
+            piece.className = `featured-preview-piece ${options.className || ''}`.trim();
+            piece.style.left = `${options.left}px`;
+            piece.style.top = `${options.top}px`;
+            if (options.color) piece.style.color = options.color;
+            if (options.rotate !== undefined) piece.style.transform = `rotate(${options.rotate}deg)`;
+            parent.appendChild(piece);
+        }
+
+        function renderFeaturedBuildPreview(build) {
+            const preview = document.createElement('div');
+            preview.className = 'featured-build-preview';
+            const kind = build.preview || 'wool';
+
+            if (kind === 'glass') {
+                [16, 40, 64].forEach(top => appendFeaturedPreviewPiece(preview, { className: 'glass', left: 28, top }));
+                [16, 40, 64].forEach(top => appendFeaturedPreviewPiece(preview, { className: 'glass', left: 96, top }));
+                [52, 76].forEach(left => appendFeaturedPreviewPiece(preview, { className: 'glass', left, top: 8 }));
+            } else if (kind === 'sword') {
+                appendFeaturedPreviewPiece(preview, { className: 'sword', left: 38, top: 34, rotate: -38 });
+                appendFeaturedPreviewPiece(preview, { className: 'sword', left: 76, top: 34, rotate: 38 });
+                ['#111827', '#a855f7', '#a855f7', '#111827'].forEach((color, index) => {
+                    appendFeaturedPreviewPiece(preview, { left: 28 + index * 26, top: 54, color });
+                });
+            } else {
+                ['#ef4444', '#f59e0b', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#ec4899', '#f8fafc'].forEach((color, index) => {
+                    const row = Math.floor(index / 4);
+                    const col = index % 4;
+                    appendFeaturedPreviewPiece(preview, { left: 24 + col * 28 + row * 12, top: 46 - row * 22, color });
+                });
+            }
+
+            return preview;
+        }
+
+        function renderFeaturedBuildCards(cards = featuredBuildCards) {
+            const list = document.getElementById('featured-build-list');
+            if (!list) return;
+            const strings = getAuthStrings();
+            list.innerHTML = '';
+
+            if (!cards || cards.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'featured-build-card';
+                empty.textContent = strings.featuredBuildEmpty;
+                list.appendChild(empty);
+                return;
+            }
+
+            cards.forEach(build => {
+                const card = document.createElement('article');
+                card.className = 'featured-build-card';
+
+                const title = document.createElement('div');
+                title.className = 'featured-build-title';
+                title.textContent = getFeaturedBuildTitle(build);
+
+                const description = document.createElement('div');
+                description.className = 'featured-build-description';
+                description.textContent = getFeaturedBuildDescription(build);
+
+                const meta = document.createElement('div');
+                meta.className = 'featured-build-meta';
+                const source = build.source === 'community' ? strings.featuredBuildSourceCommunity : strings.featuredBuildSourceBuiltIn;
+                meta.textContent = `${source} // ${build.objectCount || 0} ${strings.featuredBuildObjectLabel}`;
+
+                const loadButton = document.createElement('button');
+                loadButton.type = 'button';
+                loadButton.className = 'featured-build-load interactive';
+                loadButton.textContent = strings.featuredBuildLoadButton || strings.firstPageFeaturedButton;
+                loadButton.addEventListener('click', () => loadFeaturedBuild(build.id));
+
+                card.append(renderFeaturedBuildPreview(build), title, description, meta, loadButton);
+                list.appendChild(card);
+            });
+        }
+
+        function loadFeaturedBuild(buildId) {
+            const strings = getAuthStrings();
+            const build = featuredBuildCards.find(item => item.id === buildId)
+                || getBuiltInFeaturedBuildCards().find(item => item.id === buildId);
+            if (!build) return;
+
+            try {
+                const snapshot = getFeaturedBuildSnapshot(build);
+                if (!snapshot) throw new Error('Invalid featured build');
+                if (loadBuildSnapshot(snapshot)) {
+                    setFeaturedBuildStatus(`${getFeaturedBuildTitle(build)} // ${strings.saveLoaded || 'Loaded'}`);
+                    setSpawnBuildMode(true, getTerminalStrings(), false);
+                    startBuildingExperience();
+                }
+            } catch (error) {
+                setFeaturedBuildStatus(strings.featuredBuildEmpty);
+            }
         }
 
         function setProfileSearchStatus(message, type = '') {
@@ -8486,7 +8971,6 @@ function normalizeNickname(value) {
         function sortCommunityPosts(posts) {
             return [...posts].sort((a, b) => {
                 if (!!b.pinned !== !!a.pinned) return Number(b.pinned) - Number(a.pinned);
-                if (!!b.featured !== !!a.featured) return Number(b.featured) - Number(a.featured);
                 return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
             });
         }
@@ -8496,7 +8980,6 @@ function normalizeNickname(value) {
             const query = communitySearchQuery.toLowerCase();
             return sortCommunityPosts(posts).filter(post => {
                 if (post.hidden) return false;
-                if (communityFilter === 'featured' && !post.featured) return false;
                 if (communityFilter === 'mine' && (!user || post.author_id !== user.id)) return false;
                 if (!query) return true;
                 return `${post.title} ${post.description} ${post.username}`.toLowerCase().includes(query);
@@ -8521,7 +9004,7 @@ function normalizeNickname(value) {
         }
 
         function updateCommunityFilterTabs() {
-            ['all', 'featured', 'mine'].forEach(filter => {
+            ['all', 'mine'].forEach(filter => {
                 const button = document.getElementById(`community-filter-${filter}`);
                 if (button) button.classList.toggle('active', communityFilter === filter);
             });
@@ -8557,20 +9040,16 @@ function normalizeNickname(value) {
             closeLangMenu();
             closeAuthPanel();
             closeChangelogPanel();
-            panel.classList.add('open');
-            panel.setAttribute('aria-hidden', 'false');
-            if (communityPosts.length === 0) {
-                refreshCommunityFeed(true);
-            } else {
-                renderCommunityPosts();
-            }
+            setQuestionZoneTab('community');
         }
 
         function closeCommunityPanel() {
             const panel = document.getElementById('community-panel');
-            if (!panel) return;
-            panel.classList.remove('open');
-            panel.setAttribute('aria-hidden', 'true');
+            if (panel) panel.setAttribute('aria-hidden', 'true');
+            if (questionZoneTab === 'community') {
+                questionZoneTab = 'main';
+                updateQuestionZoneTabs();
+            }
         }
 
         function toggleCommunityComposer(postId = null) {
@@ -8708,9 +9187,7 @@ function normalizeNickname(value) {
                     .select('*')
                     .eq('hidden', false);
 
-                if (communityFilter === 'featured') {
-                    query = query.eq('featured', true);
-                } else if (communityFilter === 'mine') {
+                if (communityFilter === 'mine') {
                     const user = requireCommunityUser();
                     if (!user) {
                         communityPosts = [];
@@ -8733,7 +9210,6 @@ function normalizeNickname(value) {
                 const to = from + COMMUNITY_PAGE_SIZE - 1;
                 const { data, error } = await query
                     .order('pinned', { ascending: false })
-                    .order('featured', { ascending: false })
                     .order('created_at', { ascending: false })
                     .range(from, to);
 
@@ -8767,7 +9243,7 @@ function normalizeNickname(value) {
         }
 
         function setCommunityFilter(filter) {
-            communityFilter = ['all', 'featured', 'mine'].includes(filter) ? filter : 'all';
+            communityFilter = ['all', 'mine'].includes(filter) ? filter : 'all';
             communityPage = 0;
             refreshCommunityFeed(false);
         }
@@ -8776,39 +9252,6 @@ function normalizeNickname(value) {
             event.preventDefault();
             communityPage = 0;
             refreshCommunityFeed(false);
-        }
-
-        function renderCommunityFeaturedStrip() {
-            const strip = document.getElementById('community-featured-strip');
-            if (!strip) return;
-            const strings = getAuthStrings();
-            strip.innerHTML = '';
-            const featured = communityPosts.filter(post => post.featured || post.pinned || post.is_announcement).slice(0, 3);
-            if (featured.length === 0) {
-                const empty = document.createElement('div');
-                empty.className = 'community-featured-mini';
-                empty.textContent = strings.communityFeaturedBadge;
-                strip.appendChild(empty);
-                return;
-            }
-
-            featured.forEach(post => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'community-featured-mini interactive';
-                button.addEventListener('click', () => {
-                    const card = document.getElementById(`community-post-${post.id}`);
-                    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                });
-                const title = document.createElement('div');
-                title.className = 'community-featured-title';
-                title.textContent = post.title;
-                const meta = document.createElement('div');
-                meta.className = 'community-meta';
-                meta.textContent = `${post.likes_count} ${strings.communityLikesLabel} // ${post.comments_count} ${strings.communityCommentsLabel}`;
-                button.append(title, meta);
-                strip.appendChild(button);
-            });
         }
 
         function appendCommunityBadge(parent, text, className = '') {
@@ -8830,15 +9273,13 @@ function normalizeNickname(value) {
         function renderCommunityPosts() {
             const feed = document.getElementById('community-feed');
             const loadMore = document.getElementById('community-load-more');
-            const indicator = document.getElementById('community-page-indicator');
             const strings = getAuthStrings();
             if (!feed) return;
-            renderCommunityFeaturedStrip();
             feed.innerHTML = '';
 
             if (communityPosts.length === 0) {
                 const empty = document.createElement('div');
-                empty.className = 'community-card';
+                empty.className = 'community-empty-card';
                 empty.textContent = strings.communityEmpty;
                 feed.appendChild(empty);
             } else {
@@ -8849,9 +9290,6 @@ function normalizeNickname(value) {
                 loadMore.disabled = !communityHasMore || communityLoading;
                 loadMore.style.display = communityHasMore ? 'inline-flex' : 'none';
             }
-            if (indicator) {
-                indicator.textContent = `${communityPosts.length} / ${communityHasMore ? '+' : communityPosts.length}`;
-            }
         }
 
         function renderCommunityPostCard(post) {
@@ -8860,7 +9298,7 @@ function normalizeNickname(value) {
             const isMod = isCommunityMod();
             const card = document.createElement('article');
             card.id = `community-post-${post.id}`;
-            card.className = `community-card${post.pinned ? ' pinned' : ''}${post.featured ? ' featured' : ''}`;
+            card.className = `community-card${post.pinned ? ' pinned' : ''}`;
 
             const head = document.createElement('div');
             head.className = 'community-card-head';
@@ -8872,9 +9310,8 @@ function normalizeNickname(value) {
             author.appendChild(name);
             if (post.author_role === 'admin') appendCommunityBadge(author, strings.communityAdminBadge, 'admin');
             if (post.author_role === 'mod') appendCommunityBadge(author, strings.communityModBadge, 'mod');
-            if (post.featured) appendCommunityBadge(author, strings.communityFeaturedBadge, 'featured');
             if (post.pinned) appendCommunityBadge(author, strings.communityPinnedBadge, 'pinned');
-            if (post.is_announcement) appendCommunityBadge(author, strings.communityAnnouncement, 'featured');
+            if (post.is_announcement) appendCommunityBadge(author, strings.communityAnnouncement, 'announcement');
             const meta = document.createElement('div');
             meta.className = 'community-meta';
             meta.textContent = formatCommunityTime(post.created_at);
@@ -8929,7 +9366,6 @@ function normalizeNickname(value) {
                 const admin = document.createElement('div');
                 admin.className = 'community-card-actions';
                 admin.append(
-                    createCommunityActionButton(post.featured ? strings.communityUnfeaturePost : strings.communityFeaturePost, () => updateCommunityPostFlags(post.id, { featured: !post.featured })),
                     createCommunityActionButton(post.pinned ? strings.communityUnpinPost : strings.communityPinPost, () => updateCommunityPostFlags(post.id, { pinned: !post.pinned })),
                     createCommunityActionButton(post.comments_locked ? strings.communityUnlockComments : strings.communityLockComments, () => updateCommunityPostFlags(post.id, { comments_locked: !post.comments_locked })),
                     createCommunityActionButton(post.is_announcement ? strings.communityUnmarkAnnouncement : strings.communityMarkAnnouncement, () => updateCommunityPostFlags(post.id, { is_announcement: !post.is_announcement })),
@@ -9292,13 +9728,13 @@ function normalizeNickname(value) {
             if (!e.target.closest('#auth-panel') && !e.target.closest('#account-btn') && !e.target.closest('.auth-trigger')) {
                 closeAuthPanel();
             }
-            if (!e.target.closest('#community-panel') && !e.target.closest('.community-trigger')) {
-                closeCommunityPanel();
-            }
         });
 
         let terminalInitialized = false;
         let terminalDrag = null;
+        let chaosPanelDrag = null;
+        let chaosPanelOffsetX = 0;
+        let chaosPanelOffsetY = 0;
         let captchaWindowDrag = null;
         let terminalHintTimer = null;
         let terminalOffsetX = 0;
@@ -9816,7 +10252,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
 
         function isSpawnMarqueeBlockedTarget(target) {
             if (!target || typeof target.closest !== 'function') return false;
-            if (target.closest('.spawn-object, #spawn-edit-panel, #spawn-edit-toolbar, #spawn-edit-shortcut, #terminal-panel, #controls-container, #mobile-building-controls-toggle, #mobile-terminal-dock, #changelog-panel, #auth-panel, #community-panel, #captcha-puzzle')) {
+            if (target.closest('.spawn-object, #spawn-edit-panel, #spawn-edit-toolbar, #spawn-edit-shortcut, #terminal-panel, #controls-container, #mobile-building-controls-toggle, #mobile-terminal-dock, #changelog-panel, #auth-panel, #community-panel, #chaos-panel, #captcha-puzzle')) {
                 return true;
             }
 
@@ -10388,6 +10824,99 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             terminalDrag = null;
         }
 
+        function setChaosPanelOffset(x, y) {
+            const panel = document.getElementById('chaos-panel');
+            if (!panel) return;
+
+            chaosPanelOffsetX = x;
+            chaosPanelOffsetY = y;
+            panel.style.setProperty('--chaos-x', `${x}px`);
+            panel.style.setProperty('--chaos-y', `${y}px`);
+        }
+
+        function beginChaosPanelDrag(event) {
+            if (event.button !== undefined && event.button !== 0) return;
+
+            const panel = document.getElementById('chaos-panel');
+            const header = panel ? panel.querySelector('.chaos-panel-head') : null;
+            if (!panel || !header || !panel.classList.contains('open') || chaosPanelDrag) return;
+
+            const rect = panel.getBoundingClientRect();
+            const edgeSize = 14;
+            const onEdge = event.clientX - rect.left <= edgeSize
+                || rect.right - event.clientX <= edgeSize
+                || event.clientY - rect.top <= edgeSize
+                || rect.bottom - event.clientY <= edgeSize;
+            const inHeader = header.contains(event.target);
+            const inControl = event.target && event.target.closest('button, input, textarea, select, a');
+
+            if (!inHeader && !onEdge) return;
+            if (inControl && !onEdge) return;
+
+            panel.classList.add('dragging-chaos');
+            panel.style.transition = 'none';
+
+            chaosPanelDrag = {
+                pointerId: event.pointerId,
+                startPointerX: event.clientX,
+                startPointerY: event.clientY,
+                startOffsetX: chaosPanelOffsetX,
+                startOffsetY: chaosPanelOffsetY,
+                startRect: rect,
+                captureTarget: onEdge ? panel : header
+            };
+
+            if (chaosPanelDrag.captureTarget.setPointerCapture) {
+                chaosPanelDrag.captureTarget.setPointerCapture(event.pointerId);
+            }
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        function updateChaosPanelDrag(event) {
+            if (!chaosPanelDrag || chaosPanelDrag.pointerId !== event.pointerId) return;
+
+            const offset = clampDragOffset(
+                chaosPanelDrag.startRect,
+                chaosPanelDrag.startOffsetX,
+                chaosPanelDrag.startOffsetY,
+                chaosPanelDrag.startOffsetX + event.clientX - chaosPanelDrag.startPointerX,
+                chaosPanelDrag.startOffsetY + event.clientY - chaosPanelDrag.startPointerY
+            );
+
+            setChaosPanelOffset(offset.x, offset.y);
+            event.preventDefault();
+        }
+
+        function finishChaosPanelDrag(event) {
+            if (!chaosPanelDrag || chaosPanelDrag.pointerId !== event.pointerId) return;
+
+            const panel = document.getElementById('chaos-panel');
+            if (panel) {
+                panel.classList.remove('dragging-chaos');
+                requestAnimationFrame(() => {
+                    panel.style.transition = '';
+                });
+            }
+            const captureTarget = chaosPanelDrag.captureTarget;
+            if (captureTarget && captureTarget.releasePointerCapture) {
+                try {
+                    captureTarget.releasePointerCapture(event.pointerId);
+                } catch (error) {}
+            }
+
+            chaosPanelDrag = null;
+        }
+
+        function clampChaosPanelToViewport() {
+            const panel = document.getElementById('chaos-panel');
+            if (!panel || !panel.classList.contains('open')) return;
+
+            const rect = panel.getBoundingClientRect();
+            const offset = clampDragOffset(rect, chaosPanelOffsetX, chaosPanelOffsetY, chaosPanelOffsetX, chaosPanelOffsetY);
+            setChaosPanelOffset(offset.x, offset.y);
+        }
+
         let editSettingsDrag = null;
         let editSettingsOffsetX = 0;
         let editSettingsOffsetY = 0;
@@ -10474,10 +11003,17 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         if (terminalPanelElement) {
             terminalPanelElement.addEventListener('pointerdown', beginTerminalDrag);
         }
+        const chaosPanelElement = document.getElementById('chaos-panel');
+        if (chaosPanelElement) {
+            chaosPanelElement.addEventListener('pointerdown', beginChaosPanelDrag);
+        }
 
         document.addEventListener('pointermove', updateTerminalDrag, { passive: false });
         document.addEventListener('pointerup', finishTerminalDrag);
         document.addEventListener('pointercancel', finishTerminalDrag);
+        document.addEventListener('pointermove', updateChaosPanelDrag, { passive: false });
+        document.addEventListener('pointerup', finishChaosPanelDrag);
+        document.addEventListener('pointercancel', finishChaosPanelDrag);
 
         const editSettingsHeaderElement = document.getElementById('edit-settings-header');
         if (editSettingsHeaderElement) {
@@ -10492,6 +11028,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             positionTerminalHintArrow();
             updateMobileBuildingControlsToggle();
             updateDesktopBuildTimerAnchor();
+            clampChaosPanelToViewport();
 
             const panel = document.getElementById('terminal-panel');
             if (!panel || !panel.classList.contains('terminal-moved')) return;
@@ -11550,6 +12087,7 @@ function buildSwordElement() {
             if (!panel) return;
             panel.classList.add('unlocked', 'open');
             panel.setAttribute('aria-hidden', 'false');
+            requestAnimationFrame(clampChaosPanelToViewport);
         }
 
         function closeChaosPanel() {
@@ -14521,7 +15059,7 @@ function handleConfirm(action) {
             questionContainer.style.opacity = '';
             questionContainer.style.transition = '';
             questionContainer.style.pointerEvents = '';
-            if (!['main', 'search', 'featured', 'more'].includes(questionZoneTab)) {
+            if (!['main', 'search', 'featured', 'community'].includes(questionZoneTab)) {
                 questionZoneTab = 'main';
             }
             updateQuestionZoneTabs();
@@ -14855,13 +15393,14 @@ function handleConfirm(action) {
                 top: calc(env(safe-area-inset-top) + 56px) !important;
                 right: max(8px, env(safe-area-inset-right)) !important;
                 left: auto !important;
-                width: min(310px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 52px)) !important;
-                max-height: min(360px, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 72px)) !important;
+                width: min(320px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 36px)) !important;
+                max-height: min(480px, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 68px)) !important;
                 padding: 10px !important;
             }
             body.building-mode .auth-panel {
-                right: calc(env(safe-area-inset-right) + 58px) !important;
-                width: min(300px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 82px)) !important;
+                right: calc(env(safe-area-inset-right) + 54px) !important;
+                width: min(320px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 72px)) !important;
+                max-height: min(470px, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 66px)) !important;
             }
             .auth-panel .auth-tabs {
                 gap: 6px !important;
@@ -14903,14 +15442,13 @@ function handleConfirm(action) {
             .auth-panel .auth-profile-line {
                 gap: 6px !important;
             }
-            .community-panel {
-                top: calc(env(safe-area-inset-top) + 56px) !important;
-                right: max(8px, env(safe-area-inset-right)) !important;
-                left: max(8px, env(safe-area-inset-left)) !important;
-                bottom: max(8px, env(safe-area-inset-bottom)) !important;
-                width: auto !important;
+            .community-tab-surface {
+                width: 100% !important;
                 max-height: none !important;
-                padding: 10px !important;
+                padding: 0 !important;
+                overflow-x: hidden !important;
+                overflow-y: visible !important;
+                -webkit-overflow-scrolling: touch !important;
             }
             .community-head,
             .community-toolbar,
@@ -14921,22 +15459,68 @@ function handleConfirm(action) {
                 align-items: stretch !important;
                 flex-direction: column !important;
             }
-            .community-shell {
-                grid-template-columns: 1fr !important;
-                overflow-y: auto !important;
+            .community-toolbar {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+                gap: 7px !important;
             }
-            .community-featured-strip {
-                grid-template-columns: 1fr !important;
+            .community-toolbar .community-search-form {
+                grid-column: 1 / -1 !important;
+            }
+            .community-shell {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                min-height: auto !important;
+                overflow: visible !important;
+            }
+            .community-side,
+            .community-feed-wrap {
+                min-height: auto !important;
+                overflow: visible !important;
+            }
+            .community-compose {
+                padding: 8px !important;
+                gap: 7px !important;
+            }
+            .community-textarea {
+                min-height: 58px !important;
+                max-height: 96px !important;
+            }
+            .community-code-input {
+                min-height: 70px !important;
+                max-height: 90px !important;
+            }
+            .community-form-actions {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+                gap: 7px !important;
             }
             .community-feed {
-                min-height: 260px !important;
-                max-height: 56dvh !important;
+                min-height: 0 !important;
+                max-height: none !important;
+                overflow: visible !important;
+                padding: 8px !important;
+                gap: 8px !important;
             }
             .community-filter-tabs {
-                grid-template-columns: 1fr 1fr 1fr !important;
+                grid-template-columns: 1fr 1fr !important;
             }
             .community-comment-form {
                 grid-template-columns: 1fr !important;
+            }
+            .community-empty-card {
+                min-height: 62px !important;
+                padding: 10px !important;
+                font-size: 15px !important;
+            }
+            .community-card {
+                padding: 10px !important;
+                box-shadow: 3px 3px 0 var(--card-shadow) !important;
+            }
+            .community-card:hover {
+                transform: none !important;
+                box-shadow: 3px 3px 0 var(--card-shadow) !important;
             }
             body.building-mode #spawn-edit-panel {
                 top: calc(env(safe-area-inset-top) + 56px) !important;
