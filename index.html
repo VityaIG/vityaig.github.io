@@ -54,8 +54,11 @@
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "f688f353-a9f1-412c-88f5-e154c4a1fdab",
+    serviceWorkerParam: { scope: './' },
+        serviceWorkerPath: 'OneSignalSDKWorker.js'
     });
-  });
+});
+
 </script>
     <script>
         // Supabase Config
