@@ -6,15 +6,28 @@
     <title>WebBreak.ru</title>
     <meta name="description" content="WebBreak.ru is an interactive physics sandbox where you can spawn blocks, swords, doors, and glass, build structures, edit objects, and break your creations with gravity.">
     <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
+    <link rel="manifest" href="site.webmanifest?v=2">
+    <meta name="apple-mobile-web-app-title" content="WebBreak">
+    <meta name="application-name" content="WebBreak">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://webbreak.ru/">
     <meta property="og:site_name" content="WebBreak.ru">
     <meta property="og:title" content="WebBreak.ru">
     <meta property="og:description" content="An interactive physics sandbox for building, editing, and breaking object-based creations with gravity.">
+    <meta property="og:image" content="https://webbreak.ru/icon-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
     <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="WebBreak.ru">
     <meta name="twitter:description" content="Build structures, spawn objects, edit them, and watch physics decide what survives.">
+    <meta name="twitter:image" content="https://webbreak.ru/icon-512.png">
     <script>
         (function () {
             const cores = navigator.hardwareConcurrency || 8;
@@ -31,6 +44,7 @@
     <link rel="preconnect" href="https://raw.githubusercontent.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://raw.githubusercontent.com/VityaIG/vityaig.github.io/refs/heads/main/sword.png" as="image">
+    <link rel="preload" href="whitewool.png?v=2" as="image">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1263,6 +1277,9 @@
         }
 
         .question-zone-tab {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             min-height: 42px;
             width: 100%;
             padding: 0 14px;
@@ -1277,6 +1294,13 @@
             text-transform: uppercase;
             text-align: left;
             transition: background 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, color 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .question-zone-tab-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            line-height: 1.05;
         }
 
         .question-zone-tab.active,
@@ -1305,6 +1329,11 @@
 
         .question-zone-panel.active {
             display: flex;
+        }
+
+        #question-container[data-category="community"] .first-page-content {
+            align-items: flex-start;
+            overflow-y: auto;
         }
 
         .first-page-content {
@@ -1387,14 +1416,16 @@
             gap: 10px;
         }
 
-        .featured-build-shell {
+        .featured-build-shell,
+        .build-library-shell {
             width: min(720px, 100%);
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .featured-build-status {
+        .featured-build-status,
+        .build-library-status {
             min-height: 16px;
             color: var(--text-muted);
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -1405,7 +1436,8 @@
             text-transform: uppercase;
         }
 
-        .featured-build-grid {
+        .featured-build-grid,
+        .build-library-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 10px;
@@ -1415,7 +1447,12 @@
             padding: 2px 2px 6px;
         }
 
-        .featured-build-card {
+        .build-library-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .featured-build-card,
+        .build-library-card {
             display: flex;
             flex-direction: column;
             gap: 9px;
@@ -1429,13 +1466,16 @@
         }
 
         .featured-build-card:hover,
-        .featured-build-card:focus-within {
+        .featured-build-card:focus-within,
+        .build-library-card:hover,
+        .build-library-card:focus-within {
             transform: translate(-2px, -2px);
             border-color: var(--btn-hover-border);
             box-shadow: 7px 7px 0 color-mix(in srgb, var(--btn-border) 74%, transparent);
         }
 
-        .featured-build-preview {
+        .featured-build-preview,
+        .build-library-banner {
             position: relative;
             height: 74px;
             overflow: hidden;
@@ -1445,6 +1485,34 @@
                 linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 11%, transparent) 1px, transparent 1px),
                 color-mix(in srgb, #000000 7%, var(--btn-bg));
             background-size: 18px 18px;
+        }
+
+        .build-library-banner {
+            height: 92px;
+        }
+
+        .build-library-piece {
+            position: absolute;
+            left: var(--preview-left, 50%);
+            top: var(--preview-top, 50%);
+            width: var(--preview-width, 18px);
+            height: var(--preview-height, 18px);
+            border: 1px solid color-mix(in srgb, var(--preview-color, #ffffff) 88%, var(--btn-border));
+            background: color-mix(in srgb, var(--preview-color, #ffffff) 82%, transparent);
+            box-shadow: 0 0 10px color-mix(in srgb, var(--preview-color, #ffffff) 30%, transparent);
+            transform: translate(-50%, -50%) rotate(var(--preview-rotate, 0deg));
+            transform-origin: center;
+        }
+
+        .build-library-piece.sword {
+            border-radius: 999px;
+            height: max(5px, var(--preview-height, 6px));
+        }
+
+        .build-library-piece.door {
+            background:
+                linear-gradient(90deg, transparent 48%, color-mix(in srgb, var(--btn-border) 56%, transparent) 49% 51%, transparent 52%),
+                color-mix(in srgb, var(--preview-color, #9a6a3f) 82%, transparent);
         }
 
         .featured-preview-piece {
@@ -1468,7 +1536,8 @@
             transform-origin: center;
         }
 
-        .featured-build-title {
+        .featured-build-title,
+        .build-library-title {
             color: var(--text-main);
             font-size: 15px;
             font-weight: 900;
@@ -1477,20 +1546,30 @@
         }
 
         .featured-build-description,
-        .featured-build-meta {
+        .featured-build-meta,
+        .build-library-meta {
             color: var(--text-muted);
             font-size: 11px;
             line-height: 1.4;
         }
 
-        .featured-build-meta {
+        .featured-build-meta,
+        .build-library-meta {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
             font-weight: 800;
             letter-spacing: 0.06em;
             text-transform: uppercase;
         }
 
-        .featured-build-load {
+        .build-library-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .featured-build-load,
+        .build-library-action {
             margin-top: auto;
             min-height: 34px;
             border: 1px solid var(--btn-border);
@@ -1504,11 +1583,18 @@
         }
 
         .featured-build-load:hover,
-        .featured-build-load:focus-visible {
+        .featured-build-load:focus-visible,
+        .build-library-action:hover,
+        .build-library-action:focus-visible {
             border-color: var(--btn-hover-border);
             background: color-mix(in srgb, var(--btn-hover-bg) 76%, transparent);
             color: var(--btn-hover-text);
             outline: none;
+        }
+
+        .build-library-action.delete {
+            border-color: color-mix(in srgb, #ff3366 54%, var(--btn-border));
+            color: #ff4f76;
         }
 
         .profile-search-form {
@@ -1926,11 +2012,12 @@
         .community-tab-surface {
             width: min(900px, 100%);
             min-height: 0;
-            max-height: min(62vh, 620px);
+            max-height: min(74vh, 740px);
             display: flex;
             flex-direction: column;
             gap: 12px;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             border: 0;
             background: transparent;
             box-shadow: none;
@@ -1942,12 +2029,12 @@
 
         .community-tab-surface .community-shell {
             flex: 1 1 auto;
-            min-height: 0;
+            min-height: clamp(360px, 52vh, 560px);
         }
 
         .community-tab-surface .community-feed {
             flex: 1 1 auto;
-            min-height: 0;
+            min-height: clamp(340px, 50vh, 520px);
         }
 
         .community-head,
@@ -1995,9 +2082,14 @@
         }
 
         .community-shell {
-            min-height: 0;
-            display: grid;
-            grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.45fr);
+            min-height: clamp(360px, 52vh, 560px);
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            transition: gap 0.32s ease;
+        }
+
+        .community-shell.composer-open {
             gap: 12px;
         }
 
@@ -2007,6 +2099,32 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+        }
+
+        .community-side {
+            flex: 0 0 0;
+            width: 0;
+            max-width: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(-14px);
+            pointer-events: none;
+            transition: flex-basis 0.32s cubic-bezier(0.16, 1, 0.3, 1), width 0.32s cubic-bezier(0.16, 1, 0.3, 1), max-width 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .community-shell.composer-open .community-side {
+            flex-basis: 320px;
+            width: 320px;
+            max-width: 36%;
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .community-feed-wrap {
+            flex: 1 1 auto;
+            min-width: 0;
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .community-compose,
@@ -2020,6 +2138,7 @@
             flex-direction: column;
             gap: 8px;
             padding: 10px;
+            min-height: clamp(340px, 50vh, 520px);
         }
 
         .community-compose.collapsed {
@@ -2048,8 +2167,8 @@
         }
 
         .community-textarea {
-            min-height: 74px;
-            max-height: 160px;
+            min-height: 88px;
+            max-height: 190px;
             padding: 9px 10px;
             resize: vertical;
             font-size: 12px;
@@ -2057,7 +2176,7 @@
         }
 
         .community-code-input {
-            min-height: 92px;
+            min-height: 118px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
             font-size: 11px;
         }
@@ -2089,7 +2208,7 @@
         }
 
         .community-feed {
-            min-height: 280px;
+            min-height: clamp(340px, 50vh, 520px);
             overflow-y: auto;
             padding: 10px;
             display: flex;
@@ -2871,6 +2990,115 @@
             letter-spacing: 0.12em;
         }
 
+        /* High-contrast badge colors for the light/day palettes. */
+        html:not([data-theme]) .auth-account-id,
+        [data-theme="light"] .auth-account-id,
+        html:not([data-theme]) .captcha-panel-badge,
+        [data-theme="light"] .captcha-panel-badge {
+            border-color: #111827;
+            background: #f7f7ef;
+            color: #111827;
+            box-shadow: 2px 2px 0 rgba(17, 24, 39, 0.22);
+        }
+
+        html:not([data-theme]) .profile-admin-badge,
+        [data-theme="light"] .profile-admin-badge,
+        html:not([data-theme]) .community-badge.admin,
+        [data-theme="light"] .community-badge.admin {
+            border-color: #b91c1c;
+            background: #ffd7d7;
+            color: #7f1d1d;
+            box-shadow: 0 0 0 1px rgba(127, 29, 29, 0.18), 2px 2px 0 rgba(127, 29, 29, 0.12);
+        }
+
+        html:not([data-theme]) .profile-rank-badge.rank-1,
+        [data-theme="light"] .profile-rank-badge.rank-1,
+        html:not([data-theme]) .community-badge.pinned,
+        html:not([data-theme]) .community-badge.announcement,
+        [data-theme="light"] .community-badge.pinned,
+        [data-theme="light"] .community-badge.announcement {
+            border-color: #b45309;
+            background: #ffe08a;
+            color: #78350f;
+            box-shadow: 0 0 0 1px rgba(120, 53, 15, 0.18), 2px 2px 0 rgba(120, 53, 15, 0.12);
+        }
+
+        html:not([data-theme]) .profile-rank-badge.rank-2,
+        [data-theme="light"] .profile-rank-badge.rank-2,
+        html:not([data-theme]) .community-badge.mod,
+        [data-theme="light"] .community-badge.mod {
+            border-color: #475569;
+            background: #dbe5ef;
+            color: #1f2937;
+            box-shadow: 0 0 0 1px rgba(31, 41, 55, 0.16), 2px 2px 0 rgba(31, 41, 55, 0.11);
+        }
+
+        html:not([data-theme]) .profile-rank-badge.rank-3,
+        [data-theme="light"] .profile-rank-badge.rank-3 {
+            border-color: #9a3412;
+            background: #ffc98b;
+            color: #7c2d12;
+            box-shadow: 0 0 0 1px rgba(124, 45, 18, 0.16), 2px 2px 0 rgba(124, 45, 18, 0.11);
+        }
+
+        html:not([data-theme]) .community-badge,
+        [data-theme="light"] .community-badge,
+        html:not([data-theme]) .changelog-badge,
+        [data-theme="light"] .changelog-badge {
+            border-color: #111827;
+            background: #f3f4f6;
+            color: #111827;
+            box-shadow: 2px 2px 0 rgba(17, 24, 39, 0.14);
+        }
+
+        [data-theme="sunset"] .auth-account-id,
+        [data-theme="sunset"] .captcha-panel-badge {
+            border-color: #4a1a00;
+            background: #f1d3bf;
+            color: #4a1a00;
+            box-shadow: 2px 2px 0 rgba(74, 26, 0, 0.22);
+        }
+
+        [data-theme="sunset"] .profile-admin-badge,
+        [data-theme="sunset"] .community-badge.admin {
+            border-color: #9f1239;
+            background: #ffc2bd;
+            color: #701a25;
+            box-shadow: 0 0 0 1px rgba(112, 26, 37, 0.18), 2px 2px 0 rgba(112, 26, 37, 0.12);
+        }
+
+        [data-theme="sunset"] .profile-rank-badge.rank-1,
+        [data-theme="sunset"] .community-badge.pinned,
+        [data-theme="sunset"] .community-badge.announcement {
+            border-color: #92400e;
+            background: #f8cf7a;
+            color: #5f2607;
+            box-shadow: 0 0 0 1px rgba(95, 38, 7, 0.17), 2px 2px 0 rgba(95, 38, 7, 0.12);
+        }
+
+        [data-theme="sunset"] .profile-rank-badge.rank-2,
+        [data-theme="sunset"] .community-badge.mod {
+            border-color: #3f4b5f;
+            background: #d5d8df;
+            color: #202938;
+            box-shadow: 0 0 0 1px rgba(32, 41, 56, 0.15), 2px 2px 0 rgba(32, 41, 56, 0.11);
+        }
+
+        [data-theme="sunset"] .profile-rank-badge.rank-3 {
+            border-color: #9a3412;
+            background: #efb16f;
+            color: #64210b;
+            box-shadow: 0 0 0 1px rgba(100, 33, 11, 0.15), 2px 2px 0 rgba(100, 33, 11, 0.11);
+        }
+
+        [data-theme="sunset"] .community-badge,
+        [data-theme="sunset"] .changelog-badge {
+            border-color: #4a1a00;
+            background: #f1d3bf;
+            color: #4a1a00;
+            box-shadow: 2px 2px 0 rgba(74, 26, 0, 0.14);
+        }
+
         .captcha-prompt {
             color: var(--text-main);
             font-size: 13px;
@@ -3481,6 +3709,96 @@
             color: #3ddc97;
         }
 
+        .ios-install-prompt {
+            position: fixed;
+            left: max(14px, env(safe-area-inset-left));
+            right: max(14px, env(safe-area-inset-right));
+            bottom: calc(max(14px, env(safe-area-inset-bottom)) + 8px);
+            z-index: 260;
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            gap: 12px;
+            width: min(430px, calc(100vw - 28px));
+            margin: 0 auto;
+            padding: 12px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(18px) scale(0.98);
+            transition: opacity 0.24s ease, visibility 0.24s ease, transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 8px 8px 0 color-mix(in srgb, var(--card-shadow) 82%, transparent);
+        }
+
+        .ios-install-prompt.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .ios-install-icon {
+            width: 54px;
+            height: 54px;
+            flex: 0 0 auto;
+            border: 1px solid var(--btn-border);
+            border-radius: 12px;
+            background-image: url("apple-touch-icon.png?v=2");
+            background-size: cover;
+            background-position: center;
+            image-rendering: auto;
+            box-shadow: 0 0 18px color-mix(in srgb, var(--btn-hover-border) 20%, transparent);
+        }
+
+        .ios-install-copy {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .ios-install-title {
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        .ios-install-text,
+        .ios-install-steps {
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.45;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .ios-install-steps {
+            display: grid;
+            gap: 4px;
+            margin: 0;
+            padding-left: 16px;
+        }
+
+        .ios-install-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .ios-install-actions .terminal-simple-action-button {
+            min-height: 30px;
+            padding: 6px 9px;
+            font-size: 9px;
+        }
+
+        .ios-install-close {
+            width: 30px;
+            height: 30px;
+            align-self: start;
+        }
+
         .chaos-panel {
             --chaos-x: 0px;
             --chaos-y: 0px;
@@ -3646,6 +3964,43 @@
                 max-height: 76vh;
                 padding: 12px;
                 gap: 10px;
+            }
+
+            .ios-install-prompt {
+                grid-template-columns: auto minmax(0, 1fr);
+                gap: 10px;
+                padding: 10px;
+                bottom: calc(max(12px, env(safe-area-inset-bottom)) + 6px);
+                width: calc(100vw - 20px);
+            }
+
+            .ios-install-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 11px;
+            }
+
+            .ios-install-close {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 28px;
+                height: 28px;
+            }
+
+            .ios-install-copy {
+                padding-right: 32px;
+            }
+
+            .ios-install-title {
+                font-size: 11px;
+                letter-spacing: 0.12em;
+            }
+
+            .ios-install-text,
+            .ios-install-steps {
+                font-size: 9px;
+                letter-spacing: 0.06em;
             }
 
             .save-build-controls,
@@ -4089,7 +4444,7 @@
             .question-zone-tabs {
                 flex: 0 0 auto;
                 display: grid;
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns: repeat(3, minmax(0, 1fr));
                 width: 100%;
                 justify-content: stretch;
                 align-items: center;
@@ -4101,9 +4456,12 @@
             .question-zone-tab {
                 width: 100%;
                 min-width: 0;
+                justify-content: center;
                 text-align: center;
                 padding: 0 8px;
+                font-size: 9px;
                 letter-spacing: 0.08em;
+                line-height: 1.08;
             }
 
             .question-zone-tab.active,
@@ -4136,7 +4494,17 @@
                 overflow: visible;
             }
 
+            .build-library-grid {
+                grid-template-columns: 1fr;
+                max-height: none;
+                overflow: visible;
+            }
+
             .featured-build-card {
+                min-height: 0;
+            }
+
+            .build-library-card {
                 min-height: 0;
             }
 
@@ -4785,6 +5153,12 @@
                     <button id="question-zone-main-tab" type="button" class="question-zone-tab active interactive" onclick="setQuestionZoneTab('main')" data-i18n="firstPageMainTab">Dashboard</button>
                     <button id="question-zone-search-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('search')" data-i18n="firstPageSearchTab">Find</button>
                     <button id="question-zone-featured-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('featured')" data-i18n="firstPageFeaturedTab">Registry</button>
+                    <button id="question-zone-library-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('library')">
+                        <span class="question-zone-tab-lines">
+                            <span data-i18n="firstPageLibraryTabLineOne">My</span>
+                            <span data-i18n="firstPageLibraryTabLineTwo">Library</span>
+                        </span>
+                    </button>
                     <button id="question-zone-community-tab" type="button" class="question-zone-tab interactive" onclick="setQuestionZoneTab('community')" data-i18n="communityButton">Community</button>
                 </nav>
 
@@ -4856,6 +5230,22 @@
                             </p>
                             <div id="featured-build-status" class="featured-build-status" aria-live="polite"></div>
                             <div id="featured-build-list" class="featured-build-grid"></div>
+                        </div>
+                    </div>
+
+                    <div id="first-page-library-panel" class="question-zone-panel">
+                        <div class="build-library-shell text-animate delay-50">
+                            <span data-i18n="firstPageLibraryEyebrow" class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] themed-muted block leading-relaxed">
+                                My Library
+                            </span>
+                            <h2 data-i18n="firstPageLibraryTitle" class="text-3xl sm:text-4xl font-light tracking-tight themed-text leading-snug">
+                                Saved builds
+                            </h2>
+                            <p data-i18n="firstPageLibraryBody" class="themed-muted text-[13px] sm:text-[14px] leading-relaxed max-w-[520px]">
+                                Your local saved creations with quick previews.
+                            </p>
+                            <div id="build-library-status" class="build-library-status" aria-live="polite"></div>
+                            <div id="build-library-list" class="build-library-grid"></div>
                         </div>
                     </div>
 
@@ -5145,6 +5535,25 @@
                 <button type="button" class="terminal-simple-action-button interactive" onclick="clearSaveCodeInput()" data-i18n="saveClearCodeButton">Clear Code</button>
             </div>
         </div>
+    </div>
+
+    <div id="ios-install-prompt" class="ios-install-prompt glass-card border rounded-[2px]" aria-hidden="true" role="dialog" aria-live="polite" aria-labelledby="ios-install-title">
+        <div class="ios-install-icon" aria-hidden="true"></div>
+        <div class="ios-install-copy">
+            <div id="ios-install-title" class="ios-install-title" data-i18n="iosInstallTitle">Like WebBreak?</div>
+            <div class="ios-install-text" data-i18n="iosInstallText">Save it to your Home Screen so it opens like an app.</div>
+            <ol class="ios-install-steps">
+                <li data-i18n="iosInstallStepShare">Tap Share in Safari.</li>
+                <li data-i18n="iosInstallStepAdd">Choose Add to Home Screen.</li>
+            </ol>
+            <div class="ios-install-actions">
+                <button type="button" class="terminal-simple-action-button interactive" onclick="dismissIosInstallPrompt(false)" data-i18n="iosInstallOk">Got it</button>
+                <button type="button" class="terminal-simple-action-button interactive" onclick="dismissIosInstallPrompt(true)" data-i18n="iosInstallDontShow">Don't show again</button>
+            </div>
+        </div>
+        <button type="button" class="ios-install-close flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" onclick="dismissIosInstallPrompt(false)" data-i18n-aria-label="iosInstallCloseAria" aria-label="Close Home Screen tip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
     </div>
 
     <div id="chaos-panel" class="chaos-panel glass-card border rounded-[2px]" aria-hidden="true">
@@ -5608,6 +6017,8 @@
             firstPageMainTab: "Main",
             firstPageSearchTab: "Search",
             firstPageFeaturedTab: "Featured",
+            firstPageLibraryTabLineOne: "My",
+            firstPageLibraryTabLineTwo: "Library",
             firstPageMainEyebrow: "WebBreak.ru",
             firstPageMainTitle: "Build, test, and break your physics creations.",
             firstPageMainBody: "Spawn wool blocks and swords, stack them into builds, edit sizes, and see what survives.",
@@ -5616,22 +6027,23 @@
             firstPageProfilesButton: "Profiles",
             firstPageFeaturedEyebrow: "Featured",
             firstPageFeaturedTitle: "Featured buildings",
-            firstPageFeaturedBody: "Load selected builds directly into the sandbox.",
+            firstPageFeaturedBody: "Load admin-featured community builds directly into the sandbox.",
             firstPageFeaturedButton: "Load build",
             featuredBuildLoading: "Loading featured buildings...",
-            featuredBuildBuiltInStatus: "Curated local builds are ready.",
             featuredBuildCommunityStatus: "Community featured builds are ready.",
             featuredBuildEmpty: "No featured buildings yet.",
             featuredBuildLoadButton: "Load build",
             featuredBuildObjectLabel: "objects",
-            featuredBuildSourceBuiltIn: "Curated",
             featuredBuildSourceCommunity: "Community",
-            featuredBuildGlassGateTitle: "Glass Gate",
-            featuredBuildGlassGateBody: "A clean glass frame with a door core for quick break tests.",
-            featuredBuildSwordShrineTitle: "Sword Shrine",
-            featuredBuildSwordShrineBody: "Crossed blades over a compact wool base.",
-            featuredBuildWoolStackTitle: "Wool Stack",
-            featuredBuildWoolStackBody: "A colorful block tower tuned for gravity experiments.",
+            firstPageLibraryEyebrow: "My Library",
+            firstPageLibraryTitle: "Saved builds",
+            firstPageLibraryBody: "Your local saved creations with quick visual banners.",
+            libraryEmpty: "No saved builds yet.",
+            libraryStatus: "Saved builds:",
+            libraryViewButton: "View",
+            libraryDeleteButton: "Delete",
+            libraryCorrupted: "Save code damaged",
+            librarySavedAt: "saved",
             buildBackAria: "Back to main page",
             firstPageTipLabel: "Tip",
             firstPageTips: [
@@ -6265,7 +6677,65 @@
         i18n.en.terminalHelp = "Available commands: help, clear, clear objects, save, load, WEBREAK, blackhole, explosion, slowmo, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn sword <count>, spawn door <count>, spawn glass <count>, spawn <color>block <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, helicoptermode, unhelicoptermode, about.";
         i18n.ru.terminalHelp = "\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b: help, clear, clear objects, save, load, WEBREAK, blackhole, explosion, slowmo, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn sword <count>, spawn door <count>, spawn glass <count>, spawn <color>block <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, helicoptermode, unhelicoptermode, about.";
 
+        Object.assign(i18n.en, {
+            iosInstallTitle: "Like WebBreak?",
+            iosInstallText: "Save it to your Home Screen so it opens like an app.",
+            iosInstallStepShare: "Tap Share in Safari.",
+            iosInstallStepAdd: "Choose Add to Home Screen.",
+            iosInstallOk: "Got it",
+            iosInstallDontShow: "Don't show again",
+            iosInstallCloseAria: "Close Home Screen tip"
+        });
+
+        Object.assign(i18n.ru, {
+            iosInstallTitle: "\u041f\u043e\u043d\u0440\u0430\u0432\u0438\u043b\u0441\u044f \u0441\u0430\u0439\u0442?",
+            iosInstallText: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u0435 WebBreak \u043d\u0430 \u0440\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b, \u0447\u0442\u043e\u0431\u044b \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0442\u044c \u0435\u0433\u043e \u043a\u0430\u043a \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435.",
+            iosInstallStepShare: "\u041d\u0430\u0436\u043c\u0438\u0442\u0435 Share / \u041f\u043e\u0434\u0435\u043b\u0438\u0442\u044c\u0441\u044f \u0432 Safari.",
+            iosInstallStepAdd: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u00ab\u041d\u0430 \u044d\u043a\u0440\u0430\u043d \u0414\u043e\u043c\u043e\u0439\u00bb / Add to Home Screen.",
+            iosInstallOk: "\u041f\u043e\u043d\u044f\u043b",
+            iosInstallDontShow: "\u0411\u043e\u043b\u044c\u0448\u0435 \u043d\u0435 \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c",
+            iosInstallCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0441\u043e\u0432\u0435\u0442 \u043f\u043e \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0435"
+        });
+
+        Object.assign(i18n.en, {
+            firstPageLibraryTabLineOne: "My",
+            firstPageLibraryTabLineTwo: "Library",
+            firstPageFeaturedBody: "Load admin-featured community builds directly into the sandbox.",
+            featuredBuildEmpty: "No featured community buildings yet.",
+            firstPageLibraryEyebrow: "My Library",
+            firstPageLibraryTitle: "Saved builds",
+            firstPageLibraryBody: "Your local saved creations with quick visual banners.",
+            libraryEmpty: "No saved builds yet.",
+            libraryStatus: "Saved builds:",
+            libraryViewButton: "View",
+            libraryDeleteButton: "Delete",
+            libraryCorrupted: "Save code damaged",
+            librarySavedAt: "saved"
+        });
+
+        Object.assign(i18n.ru, {
+            firstPageLibraryTabLineOne: "\u041c\u043e\u044f",
+            firstPageLibraryTabLineTwo: "\u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430",
+            firstPageFeaturedBody: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u0439\u0442\u0435 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 Community-\u0431\u0438\u043b\u0434\u044b, \u043e\u0442\u043c\u0435\u0447\u0435\u043d\u043d\u044b\u0435 \u0430\u0434\u043c\u0438\u043d\u043e\u043c.",
+            featuredBuildEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445 Community-\u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a.",
+            firstPageLibraryEyebrow: "\u041c\u043e\u044f \u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430",
+            firstPageLibraryTitle: "\u0421\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
+            firstPageLibraryBody: "\u0412\u0430\u0448\u0438 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0435\u0439\u0432\u044b \u0441 \u0431\u0430\u043d\u043d\u0435\u0440\u0430\u043c\u0438-\u043f\u0440\u0435\u0432\u044c\u044e.",
+            libraryEmpty: "\u0421\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0445 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a \u043f\u043e\u043a\u0430 \u043d\u0435\u0442.",
+            libraryStatus: "\u0421\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e:",
+            libraryViewButton: "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c",
+            libraryDeleteButton: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
+            libraryCorrupted: "\u0421\u0435\u0439\u0432 \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0451\u043d",
+            librarySavedAt: "\u0441\u043e\u0445\u0440."
+        });
+
         let currentLang = 'en';
+        const QUESTION_ZONE_TABS = ['main', 'search', 'featured', 'library', 'community'];
+        const IOS_INSTALL_PROMPT_DELAY_MS = 180000;
+        const IOS_INSTALL_PROMPT_DISMISSED_KEY = 'webbreak.iosInstallPromptDismissed.v1';
+        const IOS_INSTALL_PROMPT_LAST_SHOWN_KEY = 'webbreak.iosInstallPromptLastShown.v1';
+        const IOS_INSTALL_PROMPT_SNOOZE_MS = 24 * 60 * 60 * 1000;
+        let iosInstallPromptTimer = null;
         const FIRST_PAGE_TIP_INTERVAL_MS = 10000;
         let firstPageTipIndex = 0;
         let firstPageTipTimer = null;
@@ -6275,89 +6745,6 @@
         let featuredBuildCards = [];
         let featuredBuildsLoaded = false;
         let featuredBuildsLoading = false;
-        const BUILT_IN_FEATURED_BUILDS = [
-            {
-                id: 'glass-gate',
-                titleKey: 'featuredBuildGlassGateTitle',
-                descriptionKey: 'featuredBuildGlassGateBody',
-                source: 'built-in',
-                preview: 'glass',
-                snapshot: {
-                    version: 2,
-                    name: 'Glass Gate',
-                    createdAt: 1778870000000,
-                    updatedAt: 1778870000000,
-                    gravity: 145,
-                    limit: 15,
-                    viewport: { width: 1000, height: 650 },
-                    objects: [
-                        { type: 'block', color: 'glass', material: 'glass', x: 405, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 405, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 405, y: 210, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 595, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 595, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 595, y: 210, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.22, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 465, y: 165, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 2.15, isStatic: true },
-                        { type: 'block', color: 'glass', material: 'glass', x: 525, y: 165, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 2.15, isStatic: true },
-                        { type: 'door', color: '', material: '', x: 500, y: 305, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.2, isStatic: true }
-                    ]
-                }
-            },
-            {
-                id: 'sword-shrine',
-                titleKey: 'featuredBuildSwordShrineTitle',
-                descriptionKey: 'featuredBuildSwordShrineBody',
-                source: 'built-in',
-                preview: 'sword',
-                snapshot: {
-                    version: 2,
-                    name: 'Sword Shrine',
-                    createdAt: 1778870000000,
-                    updatedAt: 1778870000000,
-                    gravity: 145,
-                    limit: 15,
-                    viewport: { width: 1000, height: 650 },
-                    objects: [
-                        { type: 'block', color: 'black', material: 'wool', x: 410, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'purple', material: 'wool', x: 470, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'purple', material: 'wool', x: 530, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'black', material: 'wool', x: 590, y: 380, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.15, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'white', material: 'wool', x: 500, y: 325, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 0.95, baseMass: 3.8, isStatic: true },
-                        { type: 'sword', color: '', material: '', x: 470, y: 265, angle: -0.72, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 1.35, isStatic: true },
-                        { type: 'sword', color: '', material: '', x: 530, y: 265, angle: 0.72, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.08, baseMass: 1.35, isStatic: true }
-                    ]
-                }
-            },
-            {
-                id: 'wool-stack',
-                titleKey: 'featuredBuildWoolStackTitle',
-                descriptionKey: 'featuredBuildWoolStackBody',
-                source: 'built-in',
-                preview: 'wool',
-                snapshot: {
-                    version: 2,
-                    name: 'Wool Stack',
-                    createdAt: 1778870000000,
-                    updatedAt: 1778870000000,
-                    gravity: 145,
-                    limit: 15,
-                    viewport: { width: 1000, height: 650 },
-                    objects: [
-                        { type: 'block', color: 'red', material: 'wool', x: 410, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'orange', material: 'wool', x: 470, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'yellow', material: 'wool', x: 530, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'green', material: 'wool', x: 590, y: 390, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'cyan', material: 'wool', x: 440, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'blue', material: 'wool', x: 500, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'purple', material: 'wool', x: 560, y: 330, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'pink', material: 'wool', x: 470, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'white', material: 'wool', x: 530, y: 270, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true },
-                        { type: 'block', color: 'black', material: 'wool', x: 500, y: 210, angle: 0, vx: 0, vy: 0, av: 0, sizeMultiplier: 1.05, baseMass: 3.8, isStatic: true }
-                    ]
-                }
-            }
-        ];
-                
         let supabaseClient = null;
         let supabaseAuthConfigCheck = null;
         let authSession = null;
@@ -6785,6 +7172,7 @@
             updateMobileBuildingControlsToggle();
             updateDesktopBuildTimerAnchor();
             renderSaveSlots();
+            renderBuildLibrary();
             updateChaosToolsUi();
             renderCommunityPosts();
             updateCommunityComposerMode();
@@ -7848,18 +8236,20 @@ function normalizeNickname(value) {
 
         function updateQuestionZoneTabs() {
             const strings = getTerminalStrings();
-            const normalizedTab = ['main', 'search', 'featured', 'community'].includes(questionZoneTab) ? questionZoneTab : 'main';
+            const normalizedTab = QUESTION_ZONE_TABS.includes(questionZoneTab) ? questionZoneTab : 'main';
             const questionContainer = document.getElementById('question-container');
             const tabs = {
                 main: document.getElementById('question-zone-main-tab'),
                 search: document.getElementById('question-zone-search-tab'),
                 featured: document.getElementById('question-zone-featured-tab'),
+                library: document.getElementById('question-zone-library-tab'),
                 community: document.getElementById('question-zone-community-tab')
             };
             const panels = {
                 main: document.getElementById('question-main-panel'),
                 search: document.getElementById('profile-search-panel'),
                 featured: document.getElementById('first-page-featured-panel'),
+                library: document.getElementById('first-page-library-panel'),
                 community: document.getElementById('first-page-community-panel')
             };
             const communityPanel = document.getElementById('community-panel');
@@ -7884,7 +8274,7 @@ function normalizeNickname(value) {
         }
 
         function setQuestionZoneTab(tab) {
-            questionZoneTab = ['main', 'search', 'featured', 'community'].includes(tab) ? tab : 'main';
+            questionZoneTab = QUESTION_ZONE_TABS.includes(tab) ? tab : 'main';
             updateQuestionZoneTabs();
 
             if (questionZoneTab === 'main') {
@@ -7905,6 +8295,10 @@ function normalizeNickname(value) {
                 loadFeaturedBuilds();
             }
 
+            if (questionZoneTab === 'library') {
+                renderBuildLibrary();
+            }
+
             if (questionZoneTab === 'community') {
                 if (communityPosts.length === 0 && !communityLoading) {
                     refreshCommunityFeed(true);
@@ -7922,18 +8316,6 @@ function normalizeNickname(value) {
         function setFeaturedBuildStatus(message = '') {
             const status = document.getElementById('featured-build-status');
             if (status) status.textContent = message || '';
-        }
-
-        function getBuiltInFeaturedBuildCards() {
-            return BUILT_IN_FEATURED_BUILDS.map(build => ({
-                id: build.id,
-                titleKey: build.titleKey,
-                descriptionKey: build.descriptionKey,
-                source: 'built-in',
-                preview: build.preview,
-                snapshot: build.snapshot,
-                objectCount: build.snapshot && Array.isArray(build.snapshot.objects) ? build.snapshot.objects.length : 0
-            }));
         }
 
         function getFeaturedBuildTitle(build) {
@@ -7985,9 +8367,7 @@ function normalizeNickname(value) {
                 .from('community_posts')
                 .select('id,title,description,build_code,username,created_at,pinned,featured,is_announcement,hidden')
                 .eq('hidden', false)
-                .or('featured.eq.true,pinned.eq.true,is_announcement.eq.true')
-                .order('pinned', { ascending: false })
-                .order('featured', { ascending: false })
+                .eq('featured', true)
                 .order('created_at', { ascending: false })
                 .limit(6);
             if (error) throw error;
@@ -8023,15 +8403,15 @@ function normalizeNickname(value) {
 
             try {
                 const communityCards = await fetchCommunityFeaturedBuildCards();
-                featuredBuildCards = communityCards.length > 0 ? communityCards : getBuiltInFeaturedBuildCards();
+                featuredBuildCards = communityCards;
                 featuredBuildsLoaded = true;
                 renderFeaturedBuildCards(featuredBuildCards);
-                setFeaturedBuildStatus(communityCards.length > 0 ? strings.featuredBuildCommunityStatus : strings.featuredBuildBuiltInStatus);
+                setFeaturedBuildStatus(communityCards.length > 0 ? strings.featuredBuildCommunityStatus : strings.featuredBuildEmpty);
             } catch (error) {
-                featuredBuildCards = getBuiltInFeaturedBuildCards();
+                featuredBuildCards = [];
                 featuredBuildsLoaded = true;
                 renderFeaturedBuildCards(featuredBuildCards);
-                setFeaturedBuildStatus(strings.featuredBuildBuiltInStatus);
+                setFeaturedBuildStatus(strings.featuredBuildEmpty);
             } finally {
                 featuredBuildsLoading = false;
             }
@@ -8101,7 +8481,7 @@ function normalizeNickname(value) {
 
                 const meta = document.createElement('div');
                 meta.className = 'featured-build-meta';
-                const source = build.source === 'community' ? strings.featuredBuildSourceCommunity : strings.featuredBuildSourceBuiltIn;
+                const source = strings.featuredBuildSourceCommunity || 'Community';
                 meta.textContent = `${source} // ${build.objectCount || 0} ${strings.featuredBuildObjectLabel}`;
 
                 const loadButton = document.createElement('button');
@@ -8117,8 +8497,7 @@ function normalizeNickname(value) {
 
         function loadFeaturedBuild(buildId) {
             const strings = getAuthStrings();
-            const build = featuredBuildCards.find(item => item.id === buildId)
-                || getBuiltInFeaturedBuildCards().find(item => item.id === buildId);
+            const build = featuredBuildCards.find(item => item.id === buildId);
             if (!build) return;
 
             try {
@@ -9072,6 +9451,14 @@ function normalizeNickname(value) {
             const strings = getAuthStrings();
             if (title) title.textContent = communityEditingPostId ? strings.communityEditTitle : strings.communityComposeTitle;
             if (submit) submit.textContent = communityEditingPostId ? strings.communitySaveEdit : strings.communitySubmitPost;
+            syncCommunityComposerLayout();
+        }
+
+        function syncCommunityComposerLayout() {
+            const shell = document.querySelector('.community-shell');
+            const form = document.getElementById('community-compose');
+            const isOpen = !!(form && !form.classList.contains('collapsed'));
+            if (shell) shell.classList.toggle('composer-open', isOpen);
         }
 
         function resetCommunityComposer() {
@@ -11174,7 +11561,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             pink: { base: '#d88198', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}pink_wool.png` },
             cyan: { base: '#169c9c', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}cyan_wool.png` },
             orange: { base: '#f9801d', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}orange_wool.png` },
-            white: { base: '#e9ecec', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}white_wool.png` },
+            white: { base: '#e9ecec', texture: 'whitewool.png' },
             black: { base: '#1d1d21', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}black_wool.png` }
         };
         const SPAWN_BLOCK_COLOR_KEYS = Object.keys(SPAWN_BLOCK_COLORS).filter(colorKey => SPAWN_BLOCK_COLORS[colorKey].material !== 'glass');
@@ -11811,6 +12198,159 @@ function buildSwordElement() {
             });
         }
 
+        function setBuildLibraryStatus(message = '') {
+            const status = document.getElementById('build-library-status');
+            if (status) status.textContent = message || '';
+        }
+
+        function getBuildLibraryPieceColor(object) {
+            if (!object) return '#f8fafc';
+            if (object.type === 'sword') return '#f8fafc';
+            if (object.type === 'door') return '#9a6a3f';
+            const key = object.material === 'glass' ? 'glass' : (object.color || 'red');
+            return SPAWN_BLOCK_COLORS[key] ? SPAWN_BLOCK_COLORS[key].base : '#f8fafc';
+        }
+
+        function getBuildLibraryPieceSize(object) {
+            const size = clamp(Number(object && object.sizeMultiplier) || 1, 0.35, 3.2);
+            if (object && object.type === 'sword') return { width: 88 * size, height: 10 * size };
+            if (object && object.type === 'door') return { width: 38 * size, height: 68 * size };
+            return { width: 52 * size, height: 52 * size };
+        }
+
+        function renderBuildLibraryBanner(snapshot) {
+            const banner = document.createElement('div');
+            banner.className = 'build-library-banner';
+            const objects = snapshot && Array.isArray(snapshot.objects) ? snapshot.objects.slice(0, 28) : [];
+            if (objects.length === 0) return banner;
+
+            const measured = objects.map(object => {
+                const size = getBuildLibraryPieceSize(object);
+                const x = Number(object.x) || 0;
+                const y = Number(object.y) || 0;
+                return { object, size, x, y };
+            });
+
+            const bounds = measured.reduce((acc, item) => {
+                acc.minX = Math.min(acc.minX, item.x - item.size.width / 2);
+                acc.maxX = Math.max(acc.maxX, item.x + item.size.width / 2);
+                acc.minY = Math.min(acc.minY, item.y - item.size.height / 2);
+                acc.maxY = Math.max(acc.maxY, item.y + item.size.height / 2);
+                return acc;
+            }, { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+
+            const rangeX = Math.max(1, bounds.maxX - bounds.minX);
+            const rangeY = Math.max(1, bounds.maxY - bounds.minY);
+            const scale = Math.min(1.2, 88 / rangeX, 58 / rangeY);
+
+            measured.forEach(item => {
+                const piece = document.createElement('span');
+                piece.className = `build-library-piece ${item.object.type || 'block'}`;
+                const left = 8 + ((item.x - bounds.minX) / rangeX) * 84;
+                const top = 12 + ((item.y - bounds.minY) / rangeY) * 76;
+                const width = clamp(item.size.width * scale, item.object.type === 'sword' ? 22 : 10, item.object.type === 'sword' ? 78 : 38);
+                const height = clamp(item.size.height * scale, item.object.type === 'sword' ? 5 : 10, item.object.type === 'door' ? 56 : 38);
+                piece.style.setProperty('--preview-left', `${left.toFixed(2)}%`);
+                piece.style.setProperty('--preview-top', `${top.toFixed(2)}%`);
+                piece.style.setProperty('--preview-width', `${width.toFixed(1)}px`);
+                piece.style.setProperty('--preview-height', `${height.toFixed(1)}px`);
+                piece.style.setProperty('--preview-rotate', `${((Number(item.object.angle) || 0) * 180 / Math.PI).toFixed(2)}deg`);
+                piece.style.setProperty('--preview-color', getBuildLibraryPieceColor(item.object));
+                banner.appendChild(piece);
+            });
+
+            return banner;
+        }
+
+        function renderBuildLibrary(statusOverride = '') {
+            const list = document.getElementById('build-library-list');
+            if (!list) return;
+            const strings = getTerminalStrings();
+            const slots = readBuildSaveSlots().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+            list.innerHTML = '';
+
+            if (slots.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'build-library-card';
+                empty.textContent = strings.libraryEmpty || strings.saveEmptySlot;
+                list.appendChild(empty);
+                setBuildLibraryStatus(statusOverride || (strings.libraryEmpty || strings.saveEmptySlot));
+                return;
+            }
+
+            slots.forEach(slot => {
+                let snapshot = null;
+                try {
+                    snapshot = decodeBuildSaveCode(slot.payload);
+                } catch (error) {
+                    snapshot = null;
+                }
+
+                const card = document.createElement('article');
+                card.className = 'build-library-card';
+
+                const banner = renderBuildLibraryBanner(snapshot);
+
+                const title = document.createElement('div');
+                title.className = 'build-library-title';
+                title.textContent = slot.name || (strings.saveUnnamedBuild || 'Untitled Build');
+
+                const meta = document.createElement('div');
+                meta.className = 'build-library-meta';
+                const objectCount = snapshot && Array.isArray(snapshot.objects) ? snapshot.objects.length : (slot.count || 0);
+                meta.textContent = snapshot
+                    ? `${objectCount} ${strings.saveSlotObjects || strings.featuredBuildObjectLabel || 'objects'} // ${strings.librarySavedAt || 'saved'} ${formatSaveTimestamp(slot.updatedAt)}`
+                    : strings.libraryCorrupted || strings.saveImportInvalid;
+
+                const actions = document.createElement('div');
+                actions.className = 'build-library-actions';
+
+                const viewButton = document.createElement('button');
+                viewButton.type = 'button';
+                viewButton.className = 'build-library-action interactive';
+                viewButton.textContent = strings.libraryViewButton || strings.saveLoadButton || 'View';
+                viewButton.disabled = !snapshot;
+                viewButton.addEventListener('click', () => viewBuildLibrarySlot(slot.id));
+
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'build-library-action delete interactive';
+                deleteButton.textContent = strings.libraryDeleteButton || strings.saveDeleteButton || 'Delete';
+                deleteButton.addEventListener('click', () => deleteBuildLibrarySlot(slot.id));
+
+                actions.append(viewButton, deleteButton);
+                card.append(banner, title, meta, actions);
+                list.appendChild(card);
+            });
+
+            setBuildLibraryStatus(statusOverride || `${strings.libraryStatus || 'Saved builds:'} ${slots.length}`);
+        }
+
+        function viewBuildLibrarySlot(slotId) {
+            const strings = getTerminalStrings();
+            const slot = readBuildSaveSlots().find(item => item.id === slotId);
+            if (!slot) return;
+
+            try {
+                const snapshot = decodeBuildSaveCode(slot.payload);
+                if (loadBuildSnapshot(snapshot)) {
+                    setSpawnBuildMode(true, strings, false);
+                    startBuildingExperience();
+                }
+            } catch (error) {
+                setBuildLibraryStatus(strings.saveImportInvalid, 'error');
+            }
+        }
+
+        function deleteBuildLibrarySlot(slotId) {
+            const strings = getTerminalStrings();
+            if (!window.confirm(strings.saveDeleteConfirm)) return;
+            const slots = readBuildSaveSlots().filter(slot => slot.id !== slotId);
+            if (!writeBuildSaveSlots(slots)) return;
+            renderSaveSlots();
+            renderBuildLibrary(strings.saveDeleted);
+        }
+
         function openSaveBuildModal(mode = 'save') {
             const modal = document.getElementById('save-build-modal');
             const input = document.getElementById('save-build-name');
@@ -11869,6 +12409,7 @@ function buildSwordElement() {
                 if (!writeBuildSaveSlots(slots)) return;
                 if (codeInput) codeInput.value = payload;
                 renderSaveSlots();
+                renderBuildLibrary();
                 setSaveModalStatus(strings.saveSaved, 'success');
                 writeTerminalLine(strings.saveSaved, 'terminal-quiet');
             } catch (error) {
@@ -12010,6 +12551,7 @@ function buildSwordElement() {
             const slots = readBuildSaveSlots().filter(slot => slot.id !== slotId);
             if (!writeBuildSaveSlots(slots)) return;
             renderSaveSlots();
+            renderBuildLibrary(strings.saveDeleted);
             setSaveModalStatus(strings.saveDeleted, 'success');
         }
 
@@ -15059,7 +15601,7 @@ function handleConfirm(action) {
             questionContainer.style.opacity = '';
             questionContainer.style.transition = '';
             questionContainer.style.pointerEvents = '';
-            if (!['main', 'search', 'featured', 'community'].includes(questionZoneTab)) {
+            if (!QUESTION_ZONE_TABS.includes(questionZoneTab)) {
                 questionZoneTab = 'main';
             }
             updateQuestionZoneTabs();
@@ -15103,6 +15645,67 @@ function handleConfirm(action) {
             }
         }
 
+        function isIosInstallDevice() {
+            const ua = navigator.userAgent || '';
+            const platform = navigator.platform || '';
+            const touchMac = platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+            return /iPad|iPhone|iPod/.test(ua) || touchMac;
+        }
+
+        function isWebBreakStandalone() {
+            return Boolean(window.navigator.standalone) ||
+                (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+        }
+
+        function canShowIosInstallPrompt() {
+            if (!isIosInstallDevice() || isWebBreakStandalone()) return false;
+            if (localStorage.getItem(IOS_INSTALL_PROMPT_DISMISSED_KEY) === 'true') return false;
+
+            const lastShown = Number(localStorage.getItem(IOS_INSTALL_PROMPT_LAST_SHOWN_KEY) || 0);
+            if (lastShown && Date.now() - lastShown < IOS_INSTALL_PROMPT_SNOOZE_MS) return false;
+
+            return true;
+        }
+
+        function showIosInstallPrompt() {
+            if (!canShowIosInstallPrompt()) return;
+
+            const prompt = document.getElementById('ios-install-prompt');
+            if (!prompt) return;
+
+            prompt.classList.add('open');
+            prompt.setAttribute('aria-hidden', 'false');
+            localStorage.setItem(IOS_INSTALL_PROMPT_LAST_SHOWN_KEY, String(Date.now()));
+        }
+
+        function dismissIosInstallPrompt(permanent = false) {
+            const prompt = document.getElementById('ios-install-prompt');
+            if (prompt) {
+                prompt.classList.remove('open');
+                prompt.setAttribute('aria-hidden', 'true');
+            }
+
+            if (permanent) {
+                localStorage.setItem(IOS_INSTALL_PROMPT_DISMISSED_KEY, 'true');
+            } else {
+                localStorage.setItem(IOS_INSTALL_PROMPT_LAST_SHOWN_KEY, String(Date.now()));
+            }
+        }
+
+        function scheduleIosInstallPrompt() {
+            if (iosInstallPromptTimer) {
+                clearTimeout(iosInstallPromptTimer);
+                iosInstallPromptTimer = null;
+            }
+
+            if (!canShowIosInstallPrompt()) return;
+
+            iosInstallPromptTimer = setTimeout(() => {
+                iosInstallPromptTimer = null;
+                showIosInstallPrompt();
+            }, IOS_INSTALL_PROMPT_DELAY_MS);
+        }
+
         function initApp() {
             window.scrollTo(0, 0);
             document.documentElement.scrollTop = 0;
@@ -15113,6 +15716,7 @@ function handleConfirm(action) {
             startFirstPageTipCycle();
             setTheme(getPreferredTheme());
             initializeAuth();
+            scheduleIosInstallPrompt();
             setTimeout(() => {
                 showInitialEntryState();
             }, 50);
@@ -15328,6 +15932,12 @@ function handleConfirm(action) {
             body.building-mode.mobile-controls-hidden .spawn-edit-shortcut {
                 left: calc(env(safe-area-inset-left) + 104px) !important;
             }
+            body.building-mode.mobile-controls-hidden #build-timer {
+                top: calc(max(10px, env(safe-area-inset-top)) + 46px) !important;
+                left: max(10px, env(safe-area-inset-left)) !important;
+                right: auto !important;
+                transition: none !important;
+            }
             .terminal-panel {
                 width: min(340px, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 52px)) !important;
                 height: min(320px, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 104px)) !important;
@@ -15474,14 +16084,24 @@ function handleConfirm(action) {
                 min-height: auto !important;
                 overflow: visible !important;
             }
+            .community-shell:not(.composer-open) .community-side {
+                display: none !important;
+            }
             .community-side,
             .community-feed-wrap {
+                width: 100% !important;
+                max-width: none !important;
+                flex: 0 0 auto !important;
                 min-height: auto !important;
+                opacity: 1 !important;
+                transform: none !important;
+                pointer-events: auto !important;
                 overflow: visible !important;
             }
             .community-compose {
                 padding: 8px !important;
                 gap: 7px !important;
+                min-height: auto !important;
             }
             .community-textarea {
                 min-height: 58px !important;
