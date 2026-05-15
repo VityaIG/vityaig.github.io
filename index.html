@@ -56,8 +56,9 @@
       appId: "f688f353-a9f1-412c-88f5-e154c4a1fdab", //
     serviceWorkerParam: { scope: './' },
         serviceWorkerPath: 'OneSignalSDKWorker.js'
+            });
+        await OneSignal.Notifications.requestPermission();
     });
-});
 
 </script>
     <script>
