@@ -42,7 +42,9 @@
     </script>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
     <link rel="preload" href="sword.png?v=2" as="image">
     <link rel="preload" href="whitewool.png?v=2" as="image">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -68,10 +70,13 @@
         const SUPABASE_URL = 'https://cqwsbupsmybjcuejkwrz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxd3NidXBzbXliamN1ZWprd3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MDU5MjAsImV4cCI6MjA5NDA4MTkyMH0.mQFmIlhgjFVKzimh6Gr9avgW0m_u4PQz6N-CYKs4Rg0';
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Fira+Code:wght@500;700&family=Inter:wght@300;400;500;600;700;800;900&family=Unbounded:wght@900&display=swap" rel="stylesheet">
     <style>
         :root {
             --font-comfort: 'Comfortaa', cursive;
+            --font-interface: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --font-hero-latin: 'Clash Display', 'Unbounded', 'Inter', sans-serif;
+            --font-hero-cyrillic: 'Unbounded', 'Inter', sans-serif;
 
             /* Minimalist Light Theme */
             --bg-from: #DADAD2;
@@ -90,6 +95,12 @@
             --btn-hover-bg: #1C1C1A;
             --btn-hover-text: #F4F4EC;
             --selection-bg: #BFC0B8;
+            --terminal-text: #20231F;
+            --terminal-muted: #565A52;
+            --terminal-warning: #7A4A00;
+            --terminal-warning-bg: rgba(122, 74, 0, 0.09);
+            --terminal-success: #176A3A;
+            --terminal-error: #A42222;
         }
 
         [data-theme="sunset"] {
@@ -110,6 +121,12 @@
             --btn-hover-bg: #4A1A00;
             --btn-hover-text: #F6E7DD;
             --selection-bg: #C89474;
+            --terminal-text: #4A1A00;
+            --terminal-muted: #68442F;
+            --terminal-warning: #7D3B00;
+            --terminal-warning-bg: rgba(125, 59, 0, 0.11);
+            --terminal-success: #245F32;
+            --terminal-error: #9C1E2D;
         }
 
         [data-theme="dark"] {
@@ -130,6 +147,12 @@
             --btn-hover-bg: #FFFFFF;
             --btn-hover-text: #000000;
             --selection-bg: #222222;
+            --terminal-text: #F4F4F4;
+            --terminal-muted: #A5A5A5;
+            --terminal-warning: #FACC15;
+            --terminal-warning-bg: rgba(250, 204, 21, 0.12);
+            --terminal-success: #4ADE80;
+            --terminal-error: #FB7185;
         }
 
         [data-theme="midnight"] {
@@ -150,6 +173,12 @@
             --btn-hover-bg: #FFFFFF;
             --btn-hover-text: #000000;
             --selection-bg: #1A1A40;
+            --terminal-text: #E8ECFF;
+            --terminal-muted: #9EAAE8;
+            --terminal-warning: #FFD166;
+            --terminal-warning-bg: rgba(255, 209, 102, 0.12);
+            --terminal-success: #7DFFB2;
+            --terminal-error: #FF8AA7;
         }
 
         body {
@@ -344,6 +373,7 @@
             background: var(--btn-bg);
             color: var(--btn-text);
             border-radius: 0px !important;
+            font-family: var(--font-interface);
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.05em;
@@ -626,9 +656,9 @@
         }
 
         body.building-mode .spawn-edit-shortcut {
-            left: 1rem;
-            bottom: 1rem;
-            top: auto;
+            left: calc(1rem + 52px);
+            top: 1rem;
+            bottom: auto;
         }
 
         .spawn-edit-shortcut.active {
@@ -1664,6 +1694,150 @@
             background: color-mix(in srgb, var(--btn-bg) 62%, transparent);
             padding: clamp(18px, 4vw, 44px);
             overflow: hidden;
+        }
+
+        #question-container[data-category="main"] .first-page-content {
+            border-color: var(--btn-border);
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--card-bg) 88%, transparent), color-mix(in srgb, var(--btn-bg) 78%, transparent)),
+                var(--card-bg);
+            color: var(--text-main);
+        }
+
+        #question-container[data-category="main"] .first-page-tip,
+        #question-container[data-category="main"] .question-zone-tab {
+            border-color: var(--btn-border);
+            box-shadow: none;
+        }
+
+        .hero-title {
+            display: block;
+            width: 100%;
+            min-height: 6.4rem;
+            margin-bottom: 0.9rem;
+            color: var(--text-main);
+            font-family: var(--font-hero-latin);
+            font-size: 2.72rem;
+            font-weight: 900;
+            line-height: 0.94;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            text-wrap: balance;
+            overflow-wrap: anywhere;
+            font-synthesis: none;
+            text-shadow:
+                0.035em 0.035em 0 color-mix(in srgb, var(--btn-hover-border) 28%, transparent),
+                -0.02em -0.02em 0 color-mix(in srgb, var(--bg-to) 30%, transparent);
+        }
+
+        html[lang="ru"] .hero-title,
+        .hero-title[data-hero-language="ru"] {
+            font-family: var(--font-hero-cyrillic);
+        }
+
+        .hero-title::after {
+            content: "\2588";
+            display: inline-block;
+            margin-left: 0.08em;
+            color: currentColor;
+            transform: translateY(-0.03em);
+            animation: heroTitleCursorBlink 0.74s steps(2) infinite;
+        }
+
+        @keyframes heroTitleCursorBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .hero-subtitle {
+            max-width: 420px;
+            color: var(--text-muted) !important;
+            font-family: var(--font-interface);
+            font-size: 0.82rem;
+            font-weight: 500;
+            line-height: 1.65;
+            letter-spacing: 0;
+        }
+
+        .buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 220px;
+        }
+
+        .btn-main {
+            min-height: 46px;
+            border: 1px solid var(--btn-hover-border);
+            border-radius: 0 !important;
+            background: var(--btn-hover-bg);
+            color: var(--btn-hover-text);
+            font-family: var(--font-interface);
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            transition: background-color 0.12s steps(1), color 0.12s steps(1), border-color 0.12s steps(1);
+        }
+
+        .btn-main:hover,
+        .btn-main:focus-visible {
+            border-color: var(--btn-hover-border);
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            outline: none;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-main:active {
+            transform: translateY(1px);
+        }
+
+        .sidebar button.active,
+        .question-zone-tab.active {
+            border-color: var(--btn-hover-border);
+            background: var(--btn-hover-bg);
+            color: var(--btn-hover-text);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .question-zone-tabs .question-zone-tab {
+            font-family: var(--font-interface);
+        }
+
+        .first-page-shell,
+        .question-zone-panel,
+        .settings-shell,
+        .terminal-simple-action-button,
+        .auth-panel,
+        .changelog-panel,
+        .community-zone-panel {
+            font-family: var(--font-interface);
+        }
+
+        .question-zone-panel h2,
+        .settings-card-title {
+            letter-spacing: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                min-height: 5.2rem;
+                font-size: 1.42rem;
+                line-height: 1;
+            }
+
+            .hero-subtitle {
+                max-width: 100%;
+                font-size: 0.78rem;
+                line-height: 1.55;
+            }
+
+            .buttons-group {
+                max-width: 100%;
+            }
         }
 
         .first-page-action-row,
@@ -3451,7 +3625,7 @@
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
             font-size: 12px;
             line-height: 1.65;
-            color: var(--text-sub);
+            color: var(--terminal-text, var(--text-sub));
         }
 
         .terminal-output div {
@@ -3742,15 +3916,22 @@
         }
 
         .terminal-quiet {
-            color: var(--text-muted);
-            opacity: 0.62;
+            color: var(--terminal-muted, var(--text-muted));
+            opacity: 0.88;
         }
 
         .terminal-warning {
-            color: #eab308;
+            color: var(--terminal-warning, #eab308);
             display: flex;
             align-items: flex-start;
             gap: 7px;
+            width: fit-content;
+            max-width: 100%;
+            margin: 2px 0;
+            padding: 2px 6px 2px 4px;
+            border: 1px solid color-mix(in srgb, var(--terminal-warning, #eab308) 42%, transparent);
+            background: var(--terminal-warning-bg, rgba(234, 179, 8, 0.1));
+            font-weight: 700;
         }
 
         .terminal-warning::before {
@@ -3767,6 +3948,16 @@
             font-size: 10px;
             font-weight: 800;
             line-height: 1;
+        }
+
+        .terminal-success {
+            color: var(--terminal-success, #22c55e);
+            font-weight: 700;
+        }
+
+        .terminal-error {
+            color: var(--terminal-error, #ef4444);
+            font-weight: 700;
         }
 
         .terminal-input {
@@ -4233,6 +4424,533 @@
 
         #verify-btn {
             justify-self: stretch;
+        }
+
+        /* Captcha visual system: unified scanner-style panels for every challenge. */
+        .captcha-entry-wrap {
+            max-width: 360px;
+        }
+
+        .captcha-main-box {
+            position: relative;
+            overflow: hidden;
+            min-height: 86px;
+            padding: 16px;
+            isolation: isolate;
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--card-bg) 92%, var(--btn-hover-border)), var(--card-bg)),
+                repeating-linear-gradient(90deg, transparent 0 18px, color-mix(in srgb, var(--btn-border) 8%, transparent) 18px 19px);
+            box-shadow: 7px 7px 0 var(--card-shadow), inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 12%, transparent);
+        }
+
+        .captcha-main-box::before,
+        .captcha-main-box::after,
+        .captcha-panel::before,
+        .auth-captcha-block::before {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .captcha-main-box::before,
+        .captcha-panel::before,
+        .auth-captcha-block::before {
+            inset: 0;
+            background:
+                linear-gradient(color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px);
+            background-size: 18px 18px;
+            opacity: 0.62;
+            z-index: 0;
+        }
+
+        .captcha-main-box::after {
+            right: 13px;
+            bottom: 13px;
+            width: 34px;
+            height: 1px;
+            background: var(--btn-hover-border);
+            opacity: 0.65;
+            z-index: 0;
+        }
+
+        .captcha-main-box > *,
+        .captcha-panel > *,
+        .auth-captcha-block > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .captcha-checkbox-box,
+        .auth-captcha-check {
+            background: color-mix(in srgb, var(--btn-bg) 80%, transparent);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 12%, transparent);
+            transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+        }
+
+        .captcha-main-box:hover .captcha-checkbox-box,
+        .captcha-main-box:focus-visible .captcha-checkbox-box {
+            transform: scale(0.94);
+        }
+
+        .captcha-main-title,
+        .captcha-panel-title,
+        .auth-captcha-head,
+        .captcha-action,
+        .captcha-text-input,
+        .auth-captcha-status {
+            font-family: var(--font-interface);
+        }
+
+        .captcha-main-title {
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .captcha-main-mark,
+        .captcha-panel-badge {
+            background: color-mix(in srgb, var(--btn-bg) 76%, transparent);
+            color: var(--text-main);
+        }
+
+        .captcha-main-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            min-height: 28px;
+            padding: 0 7px;
+            border: 1px solid var(--btn-border);
+            box-shadow: 3px 3px 0 var(--card-shadow);
+            opacity: 1;
+        }
+
+        .captcha-panel {
+            position: absolute;
+            width: min(390px, calc(100dvw - 24px));
+            padding: 16px;
+            overflow: hidden;
+            isolation: isolate;
+            background:
+                linear-gradient(145deg, color-mix(in srgb, var(--card-bg) 94%, var(--btn-hover-border)), var(--card-bg) 62%),
+                repeating-linear-gradient(0deg, transparent 0 20px, color-mix(in srgb, var(--btn-border) 8%, transparent) 20px 21px);
+            box-shadow: 9px 9px 0 var(--card-shadow), inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 13%, transparent);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .captcha-panel-head {
+            padding-bottom: 11px;
+        }
+
+        .captcha-panel-title {
+            letter-spacing: 0.14em;
+        }
+
+        .captcha-panel-title::before {
+            width: 11px;
+            height: 11px;
+            background:
+                linear-gradient(var(--btn-hover-border), var(--btn-hover-border)) center / 100% 2px no-repeat,
+                linear-gradient(90deg, var(--btn-hover-border), var(--btn-hover-border)) center / 2px 100% no-repeat;
+        }
+
+        .captcha-prompt {
+            padding: 10px 11px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 76%, transparent);
+            background: color-mix(in srgb, var(--btn-bg) 68%, transparent);
+            color: var(--text-main);
+            font-family: var(--font-interface);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: grab;
+        }
+
+        .dragging-captcha .captcha-prompt {
+            cursor: grabbing;
+        }
+
+        .captcha-visual-box {
+            width: 100%;
+        }
+
+        .captcha-visual-token {
+            position: relative;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--btn-border);
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-bg) 80%, transparent), color-mix(in srgb, var(--card-bg) 92%, var(--btn-hover-border))),
+                linear-gradient(color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px);
+            background-size: auto, 14px 14px, 14px 14px;
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 12%, transparent);
+            color: var(--text-main);
+        }
+
+        .captcha-visual-token::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 1px dashed color-mix(in srgb, var(--btn-hover-border) 34%, transparent);
+            opacity: 0.72;
+            pointer-events: none;
+        }
+
+        .captcha-visual-token::after {
+            content: "";
+            position: absolute;
+            left: -12%;
+            right: -12%;
+            top: 50%;
+            height: 2px;
+            background: color-mix(in srgb, var(--btn-hover-border) 40%, transparent);
+            transform: rotate(-4deg);
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .captcha-visual-value {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-interface);
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 color-mix(in srgb, var(--card-shadow) 54%, transparent);
+        }
+
+        .captcha-visual-code {
+            letter-spacing: 0.28em;
+            transform: skewX(-5deg);
+        }
+
+        .captcha-noise-line {
+            position: absolute;
+            left: -8%;
+            right: -8%;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.28;
+            pointer-events: none;
+        }
+
+        .captcha-noise-line-a {
+            top: 34%;
+            transform: rotate(9deg);
+        }
+
+        .captcha-noise-line-b {
+            bottom: 28%;
+            transform: rotate(-6deg);
+        }
+
+        .captcha-grid {
+            gap: 7px;
+        }
+
+        .captcha-btn {
+            border-radius: 0;
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-bg) 76%, transparent), color-mix(in srgb, var(--card-bg) 92%, transparent)),
+                linear-gradient(color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px);
+            background-size: auto, 12px 12px, 12px 12px;
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 9%, transparent);
+            transform: translateZ(0);
+            transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .captcha-btn::before {
+            content: "";
+            position: absolute;
+            inset: 7px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 20%, transparent);
+            pointer-events: none;
+        }
+
+        .captcha-btn:hover,
+        .captcha-btn:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 4px 4px 0 var(--card-shadow), inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 20%, transparent);
+        }
+
+        .captcha-btn.selected {
+            box-shadow: 0 0 0 1px var(--btn-hover-border), 4px 4px 0 var(--card-shadow);
+        }
+
+        .captcha-btn .shape-svg {
+            width: 42px;
+            height: 42px;
+            filter: drop-shadow(2px 2px 0 color-mix(in srgb, var(--card-shadow) 48%, transparent));
+        }
+
+        .captcha-overlay {
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-hover-border) 18%, transparent), transparent 58%),
+                color-mix(in srgb, var(--btn-hover-bg) 24%, transparent);
+        }
+
+        .captcha-check {
+            top: 7px;
+            right: 7px;
+            width: 19px;
+            height: 19px;
+            background: var(--btn-hover-bg);
+            color: var(--btn-hover-text);
+            border: 1px solid var(--btn-hover-border);
+        }
+
+        .captcha-text-input {
+            min-height: 46px;
+            border-radius: 0;
+            background:
+                linear-gradient(color-mix(in srgb, var(--btn-border) 9%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 9%, transparent) 1px, transparent 1px),
+                color-mix(in srgb, var(--btn-bg) 76%, transparent);
+            background-size: 14px 14px, 14px 14px, auto;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+        .captcha-action {
+            min-height: 42px;
+            background: color-mix(in srgb, var(--btn-bg) 58%, transparent);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 7%, transparent);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .captcha-action:hover,
+        .captcha-action:focus-visible,
+        .captcha-action.primary {
+            box-shadow: 4px 4px 0 var(--card-shadow);
+        }
+
+        .captcha-footer-error {
+            padding-left: 2px;
+            font-family: var(--font-interface);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .auth-captcha-block {
+            position: relative;
+            overflow: hidden;
+            padding: 14px;
+            background:
+                linear-gradient(145deg, color-mix(in srgb, var(--card-bg) 90%, var(--btn-hover-border)), var(--card-bg)),
+                repeating-linear-gradient(90deg, transparent 0 16px, color-mix(in srgb, var(--btn-border) 8%, transparent) 16px 17px);
+            box-shadow: 5px 5px 0 var(--card-shadow), inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 10%, transparent);
+            isolation: isolate;
+        }
+
+        .auth-captcha-head {
+            min-height: 42px;
+            padding: 8px 10px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 70%, transparent);
+            background: color-mix(in srgb, var(--btn-bg) 64%, transparent);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .auth-captcha-options {
+            gap: 7px;
+        }
+
+        .auth-captcha-option {
+            position: relative;
+            min-height: 46px;
+            overflow: hidden;
+            border-radius: 0;
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-bg) 74%, transparent), color-mix(in srgb, var(--card-bg) 92%, transparent)),
+                linear-gradient(color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 10%, transparent) 1px, transparent 1px);
+            background-size: auto, 12px 12px, 12px 12px;
+            font-family: var(--font-interface);
+            font-size: 0;
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 9%, transparent);
+        }
+
+        .auth-captcha-option::before {
+            content: "";
+            position: absolute;
+            inset: 6px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 20%, transparent);
+            pointer-events: none;
+        }
+
+        .auth-captcha-option:hover,
+        .auth-captcha-option:focus-visible,
+        .auth-captcha-option.selected {
+            box-shadow: 3px 3px 0 var(--card-shadow), inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 18%, transparent);
+        }
+
+        .auth-shape-svg {
+            position: relative;
+            z-index: 1;
+            width: 27px;
+            height: 27px;
+            color: currentColor;
+            filter: drop-shadow(1px 1px 0 color-mix(in srgb, var(--card-shadow) 44%, transparent));
+        }
+
+        .auth-captcha-row {
+            grid-template-columns: minmax(0, 1fr) minmax(102px, auto);
+        }
+
+        .auth-captcha-status {
+            min-height: 17px;
+            padding-left: 2px;
+            letter-spacing: 0.035em;
+            text-transform: uppercase;
+        }
+
+        .geometry-stage {
+            height: 132px;
+            border: 1px solid var(--btn-border);
+            border-radius: 0;
+            background:
+                linear-gradient(180deg, color-mix(in srgb, var(--btn-hover-border) 12%, transparent), transparent 50%),
+                linear-gradient(color-mix(in srgb, var(--btn-border) 14%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 14%, transparent) 1px, transparent 1px),
+                color-mix(in srgb, var(--btn-bg) 78%, var(--card-bg));
+            background-size: auto, 20px 20px, 20px 20px, auto;
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--btn-hover-border) 10%, transparent);
+        }
+
+        .geometry-stage::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 1px dashed color-mix(in srgb, var(--btn-hover-border) 28%, transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .geometry-track {
+            height: 3px;
+            background: var(--btn-hover-border);
+            opacity: 0.46;
+        }
+
+        .geometry-floor-tiles {
+            opacity: 0.2;
+        }
+
+        .geometry-player {
+            border: 2px solid var(--btn-hover-border);
+            background: var(--btn-hover-bg);
+            box-shadow: 0 0 0 1px var(--card-bg), 4px 4px 0 var(--card-shadow);
+        }
+
+        .geometry-player.wave {
+            background: var(--btn-hover-border);
+            box-shadow: 0 0 0 1px var(--card-bg), 0 0 14px color-mix(in srgb, var(--btn-hover-border) 32%, transparent);
+        }
+
+        .geometry-obstacle {
+            background: var(--btn-hover-border);
+            opacity: 0.9;
+        }
+
+        .geometry-obstacle.block {
+            border-color: var(--btn-hover-border);
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-hover-border) 20%, transparent), transparent 44%),
+                linear-gradient(color-mix(in srgb, var(--btn-border) 12%, transparent) 1px, transparent 1px),
+                linear-gradient(90deg, color-mix(in srgb, var(--btn-border) 12%, transparent) 1px, transparent 1px),
+                var(--btn-bg);
+            background-size: auto, 10px 10px, 10px 10px, auto;
+        }
+
+        .geometry-progress-shell {
+            top: 10px;
+            height: 4px;
+            background: color-mix(in srgb, var(--btn-border) 26%, transparent);
+        }
+
+        .geometry-progress {
+            background: var(--btn-hover-border);
+            opacity: 0.95;
+        }
+
+        .geometry-message,
+        .geometry-mode-label {
+            font-family: var(--font-interface);
+            font-weight: 800;
+        }
+
+        @media (max-width: 640px) {
+            .captcha-entry-wrap {
+                max-width: min(340px, calc(100dvw - 28px));
+            }
+
+            .captcha-main-box {
+                min-height: 76px;
+                padding: 12px;
+            }
+
+            .captcha-main-left {
+                gap: 9px;
+            }
+
+            .captcha-panel {
+                width: min(336px, calc(100dvw - 18px));
+                padding: 12px;
+            }
+
+            .captcha-prompt {
+                padding: 8px 9px;
+                font-size: 10px;
+            }
+
+            .captcha-grid,
+            .auth-captcha-options {
+                gap: 6px;
+            }
+
+            .captcha-btn .shape-svg {
+                width: 34px;
+                height: 34px;
+            }
+
+            .captcha-visual-token {
+                min-height: 50px;
+            }
+
+            .captcha-visual-value {
+                font-size: 18px;
+            }
+
+            .auth-captcha-block {
+                padding: 10px;
+            }
+
+            .auth-captcha-head {
+                min-height: 38px;
+                font-size: 10px;
+            }
+
+            .auth-captcha-row {
+                grid-template-columns: 1fr;
+            }
+
+            #auth-captcha-verify {
+                min-height: 38px;
+            }
+
+            .geometry-stage {
+                height: 112px;
+            }
         }
 
         #spawn-layer {
@@ -4937,6 +5655,93 @@
             pointer-events: none;
         }
 
+        .black-hole-anomaly {
+            position: fixed;
+            left: var(--black-hole-x, 50vw);
+            top: var(--black-hole-y, 50vh);
+            width: var(--black-hole-size, 220px);
+            height: var(--black-hole-size, 220px);
+            z-index: 139;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            overflow: visible;
+            contain: layout style paint;
+            opacity: 1;
+            filter:
+                drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
+                drop-shadow(0 0 16px rgba(255, 255, 255, 0.7))
+                drop-shadow(0 0 34px color-mix(in srgb, var(--btn-hover-border) 42%, transparent));
+            transition: transform 0.22s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.22s ease, filter 0.22s ease;
+        }
+
+        .black-hole-core {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 27%;
+            height: 27%;
+            border-radius: 50%;
+            background: #000000;
+            transform: translate(-50%, -50%);
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.88),
+                0 0 0 5px rgba(0, 0, 0, 0.92),
+                0 0 28px rgba(255, 255, 255, 0.72),
+                0 0 74px color-mix(in srgb, var(--btn-hover-border) 46%, transparent);
+        }
+
+        .black-hole-core::before {
+            content: '';
+            position: absolute;
+            inset: -52%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            background:
+                radial-gradient(circle, transparent 0 42%, rgba(255,255,255,0.38) 45%, transparent 54%),
+                conic-gradient(from 0deg, transparent, rgba(255,255,255,0.7), transparent, color-mix(in srgb, var(--btn-hover-border) 58%, rgba(255,255,255,0.35)), transparent);
+            opacity: 0.92;
+            animation: blackHoleDiskSpin 1.4s linear infinite;
+        }
+
+        .black-hole-core::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 270%;
+            height: 42%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            background:
+                radial-gradient(ellipse at center, rgba(255,255,255,0.88) 0 12%, color-mix(in srgb, var(--btn-hover-border) 58%, rgba(255,255,255,0.36)) 13% 32%, transparent 68%);
+            filter: blur(0.3px);
+            opacity: 0.86;
+            mix-blend-mode: normal;
+        }
+
+        .black-hole-dust {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: var(--dust-size, 2px);
+            height: var(--dust-size, 2px);
+            border-radius: 50%;
+            background: color-mix(in srgb, #ffffff 82%, var(--btn-hover-border));
+            box-shadow:
+                0 0 4px rgba(0, 0, 0, 0.68),
+                0 0 10px rgba(255, 255, 255, 0.92);
+            opacity: var(--dust-opacity, 0.55);
+            transform: translate(-50%, -50%);
+            will-change: transform, opacity;
+        }
+
+        .black-hole-anomaly.collapsing {
+            opacity: 0.98;
+            filter:
+                drop-shadow(0 0 5px rgba(255, 255, 255, 0.95))
+                drop-shadow(0 0 44px color-mix(in srgb, var(--btn-hover-border) 68%, transparent));
+        }
+
         .chaos-particle {
             position: fixed;
             left: var(--particle-x, 50vw);
@@ -4965,43 +5770,60 @@
             animation: impactFlash 360ms ease-out forwards;
         }
 
-        .spawn-ground-platform {
+        .tnt-shockwave {
             position: fixed;
-            left: 0;
-            top: var(--spawn-ground-top, 100vh);
-            width: 100vw;
-            height: var(--spawn-ground-height, 48px);
-            z-index: 129;
+            left: var(--shockwave-x, 50vw);
+            top: var(--shockwave-y, 50vh);
+            z-index: 140;
+            width: var(--shockwave-size, 260px);
+            height: var(--shockwave-size, 260px);
+            border: 2px solid rgba(245, 245, 245, 0.95);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0.08);
             pointer-events: none;
             opacity: 0;
-            visibility: hidden;
-            transform: translateY(12px);
-            background-color: #9b6530;
-            background-image:
-                var(--spawn-ground-texture, none),
-                repeating-linear-gradient(0deg, rgba(58, 34, 13, 0.5) 0 2px, transparent 2px 16px),
-                repeating-linear-gradient(90deg, rgba(70, 38, 13, 0.34) 0 2px, transparent 2px 16px),
-                linear-gradient(90deg, #8f5a28 0 18%, #c58a41 18% 38%, #a66d32 38% 58%, #d0954b 58% 78%, #7b451f 78% 100%);
-            background-size: 48px 48px, 48px 16px, 16px 48px, 48px 48px;
-            background-repeat: repeat;
-            image-rendering: pixelated;
-            border-top: 2px solid color-mix(in srgb, var(--btn-hover-border) 70%, #ffffff);
-            box-shadow: 0 -10px 24px color-mix(in srgb, var(--btn-hover-border) 18%, transparent), inset 0 2px 0 rgba(255,255,255,0.22);
-            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 18px rgba(255, 255, 255, 0.26), inset 0 0 12px rgba(255, 255, 255, 0.18);
+            animation: tntShockwave 360ms cubic-bezier(0.08, 0.8, 0.22, 1) forwards;
         }
 
-        @media (max-width: 820px) {
-            body.building-mode.ground-platform-visible .spawn-ground-platform {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
-            }
+        .tnt-explosion-flash {
+            position: fixed;
+            left: var(--flash-x, 50vw);
+            top: var(--flash-y, 50vh);
+            z-index: 139;
+            width: var(--flash-size, 220px);
+            height: var(--flash-size, 220px);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0.35);
+            background:
+                radial-gradient(circle, rgba(255, 255, 255, 0.94) 0 12%, rgba(245, 245, 245, 0.72) 13% 24%, rgba(255, 204, 102, 0.34) 25% 38%, transparent 66%);
+            filter: blur(0.2px);
+            pointer-events: none;
+            opacity: 0;
+            animation: tntExplosionFlash 260ms steps(3) forwards;
+        }
+
+        .tnt-debris-particle {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 141;
+            width: var(--debris-size, 7px);
+            height: var(--debris-size, 7px);
+            background: var(--debris-color, #d7d7d7);
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.24);
+            transform: translate3d(var(--debris-x, 0px), var(--debris-y, 0px), 0) rotate(var(--debris-rotate, 0rad));
+            opacity: var(--debris-opacity, 1);
+            pointer-events: none;
+            will-change: transform, opacity;
         }
 
         .trash-drop-zone {
             position: fixed;
-            right: calc(max(14px, env(safe-area-inset-right)) + 2px);
-            bottom: calc(max(14px, env(safe-area-inset-bottom)) + 12px);
+            right: max(1rem, env(safe-area-inset-right));
+            top: calc(1rem + 52px);
+            bottom: auto;
             z-index: 210;
             width: 54px;
             height: 54px;
@@ -5058,24 +5880,6 @@
             display: none;
         }
 
-        .tornado-vortex {
-            position: fixed;
-            left: var(--tornado-x, 50vw);
-            top: var(--tornado-y, 50vh);
-            width: var(--tornado-size, 260px);
-            height: var(--tornado-size, 260px);
-            z-index: 137;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            opacity: 0.72;
-            background:
-                radial-gradient(circle, transparent 0 32%, color-mix(in srgb, var(--btn-hover-border) 18%, transparent) 33% 35%, transparent 36%),
-                conic-gradient(from 0deg, transparent, color-mix(in srgb, var(--btn-hover-border) 62%, transparent), transparent, rgba(255,255,255,0.16), transparent);
-            filter: drop-shadow(0 0 20px color-mix(in srgb, var(--btn-hover-border) 28%, transparent));
-            animation: tornadoSpin 1.1s linear infinite;
-        }
-
         .panel-minimize-button {
             width: 32px;
             height: 32px;
@@ -5102,114 +5906,24 @@
             margin-bottom: 0 !important;
         }
 
-        .mobile-bottom-dock {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 170;
-            display: none;
-            height: var(--mobile-bottom-dock-height, 112px);
-            min-height: 76px;
-            max-height: min(42dvh, 260px);
-            padding: 16px max(12px, env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
-            border-top: 1px solid color-mix(in srgb, var(--btn-border) 74%, transparent);
-            background:
-                linear-gradient(180deg, color-mix(in srgb, var(--card-bg) 82%, transparent), color-mix(in srgb, var(--btn-bg) 94%, #000000)),
-                var(--card-bg);
-            box-shadow: 0 -12px 30px rgba(0,0,0,0.34), inset 0 1px 0 color-mix(in srgb, var(--btn-hover-border) 18%, transparent);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transform: translateY(calc(100% - 18px));
-            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        body.building-mode .mobile-bottom-dock {
-            display: none;
-        }
-
-        body.building-mode.mobile-bottom-dock-open .mobile-bottom-dock {
-            transform: translateY(0);
-        }
-
-        @media (max-width: 640px) {
-            body.building-mode .mobile-bottom-dock {
-                display: block;
-            }
-        }
-
-        .mobile-bottom-dock-handle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: none;
-            cursor: ns-resize;
-        }
-
-        .mobile-bottom-dock-handle::before,
-        .mobile-bottom-dock-handle::after {
-            content: '';
-            position: absolute;
-            width: 58px;
-            height: 2px;
-            background: color-mix(in srgb, var(--btn-hover-border) 70%, var(--text-main));
-            box-shadow: 0 0 12px color-mix(in srgb, var(--btn-hover-border) 28%, transparent);
-        }
-
-        .mobile-bottom-dock-handle::before {
-            transform: translateY(-3px);
-        }
-
-        .mobile-bottom-dock-handle::after {
-            transform: translateY(4px);
-            opacity: 0.68;
-        }
-
-        .mobile-bottom-dock-grid {
-            height: 100%;
-            display: none;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 8px;
-            align-content: start;
-            padding-top: 14px;
-            overflow: hidden;
-        }
-
-        .mobile-bottom-dock-button {
-            min-height: 42px;
-            border: 1px solid var(--btn-border);
-            background: color-mix(in srgb, var(--btn-bg) 88%, transparent);
-            color: var(--btn-text);
-            font-size: 10px;
-            font-weight: 900;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
-        }
-
-        .mobile-bottom-dock-button:active,
-        .mobile-bottom-dock-button:hover,
-        .mobile-bottom-dock-button:focus-visible {
-            transform: translateY(-1px);
-            border-color: var(--btn-hover-border);
-            background: var(--btn-hover-bg);
-            color: var(--btn-hover-text);
-            outline: none;
-        }
-
         body.screen-shake #spawn-layer,
         body.screen-shake #effects-layer,
         body.screen-shake .ambient-bg {
-            animation: webbreakScreenShake 360ms cubic-bezier(.36,.07,.19,.97) both;
+            animation: webbreakScreenShake 280ms linear both;
         }
 
         body.slow-motion-active .spawn-object {
             filter: drop-shadow(0 0 14px color-mix(in srgb, var(--btn-hover-border) 36%, transparent)) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.26));
+        }
+
+        .spawn-object.black-hole-warping {
+            opacity: var(--chaos-absorb-opacity, 1);
+            filter:
+                blur(var(--black-hole-blur, 0px))
+                brightness(var(--black-hole-brightness, 1))
+                saturate(var(--black-hole-saturate, 1.05))
+                drop-shadow(0 0 12px color-mix(in srgb, var(--btn-hover-border) 42%, transparent));
+            transition: filter 0.1s linear, opacity 0.1s linear;
         }
 
         html.physics-stress-mode .chaos-particle,
@@ -5245,13 +5959,28 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
         }
 
+        @keyframes tntShockwave {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.08); }
+            48% { opacity: 0.72; border-color: rgba(255, 255, 255, 0.86); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); border-color: rgba(190, 190, 190, 0); }
+        }
+
+        @keyframes tntExplosionFlash {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.28); }
+            35% { opacity: 0.94; transform: translate(-50%, -50%) scale(0.86); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.28); }
+        }
+
         @keyframes webbreakScreenShake {
             0%, 100% { transform: translate3d(0, 0, 0); }
-            15% { transform: translate3d(-5px, 3px, 0); }
-            30% { transform: translate3d(6px, -3px, 0); }
-            45% { transform: translate3d(-4px, -4px, 0); }
-            60% { transform: translate3d(4px, 3px, 0); }
-            75% { transform: translate3d(-3px, 2px, 0); }
+            8% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * -1), calc(var(--screen-shake-strength, 7px) * 0.42), 0); }
+            16% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * 0.9), calc(var(--screen-shake-strength, 7px) * -0.54), 0); }
+            24% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * -0.72), calc(var(--screen-shake-strength, 7px) * -0.48), 0); }
+            32% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * 0.74), calc(var(--screen-shake-strength, 7px) * 0.38), 0); }
+            42% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * -0.52), calc(var(--screen-shake-strength, 7px) * 0.28), 0); }
+            54% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * 0.4), calc(var(--screen-shake-strength, 7px) * -0.24), 0); }
+            68% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * -0.22), calc(var(--screen-shake-strength, 7px) * 0.14), 0); }
+            82% { transform: translate3d(calc(var(--screen-shake-strength, 7px) * 0.1), calc(var(--screen-shake-strength, 7px) * -0.08), 0); }
         }
 
         @keyframes tntSkyDrop {
@@ -5260,8 +5989,8 @@
             100% { top: var(--tnt-target-y, 55vh); transform: translate(-50%, -50%) rotate(0deg) scale(1.06); }
         }
 
-        @keyframes tornadoSpin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes blackHoleDiskSpin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 640px) {
@@ -6364,7 +7093,6 @@
 
     <div id="spawn-layer"></div>
     <div id="effects-layer" aria-hidden="true"></div>
-    <div id="spawn-ground-platform" class="spawn-ground-platform" aria-hidden="true"></div>
     <div id="spawn-trash-zone" class="trash-drop-zone" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M3 6h18"/>
@@ -6374,11 +7102,6 @@
             <path d="M14 11v6"/>
         </svg>
     </div>
-    <div id="mobile-bottom-dock" class="mobile-bottom-dock" aria-hidden="true">
-        <div id="mobile-bottom-dock-handle" class="mobile-bottom-dock-handle" onpointerdown="beginMobileBottomDockResize(event)" aria-label="Resize menu"></div>
-        <div class="mobile-bottom-dock-grid" aria-hidden="true"></div>
-    </div>
-
     <div id="community-banner-picker" class="community-banner-picker" aria-hidden="true">
         <div class="community-banner-picker-hint" data-i18n="communityBannerPrompt">Choose the banner area for this post.</div>
         <div id="community-banner-frame" class="community-banner-frame" onpointerdown="beginCommunityBannerDrag(event)" aria-hidden="true">
@@ -6620,14 +7343,14 @@
                         <span data-i18n="firstPageMainEyebrow" class="text-[9px] font-comfort font-black uppercase tracking-[0.3em] themed-muted block leading-relaxed mb-4">
                             Core Interface
                         </span>
-                        <h2 data-i18n="firstPageMainTitle" class="text-4xl sm:text-5xl font-black tracking-tighter themed-text leading-[0.95] mb-8 uppercase">
-                            Build, test, and break your physics creations.
+                        <h2 data-i18n="firstPageMainTitle" class="hero-title themed-text">
+                            Physical environment simulation and destructive testing.
                         </h2>
-                        <p data-i18n="firstPageMainBody" class="themed-muted text-[11px] leading-relaxed max-w-[420px] mb-10 uppercase tracking-widest font-medium opacity-70">
-                            Spawn wool blocks and swords, stack them into builds, edit sizes, and see what survives.
+                        <p data-i18n="firstPageMainBody" class="hero-subtitle themed-muted mb-10 uppercase opacity-70">
+                            Object generation • Geometry modification • Structure bonding • Gravitational trigger simulation
                         </p>
-                        <div class="flex flex-col gap-3 w-full max-w-[200px]">
-                            <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive" onclick="startBuildingExperience()">
+                        <div class="buttons-group">
+                            <button type="button" class="btn-main w-full px-4 py-3 border themed-btn text-[12px] font-black uppercase focus:outline-none interactive" onclick="startBuildingExperience()">
                                 <span id="first-page-start-building-btn" data-i18n="firstPageStartBuildingButton">Construct</span>
                             </button>
                             <button type="button" class="w-full px-4 py-3 border themed-btn text-[12px] font-black tracking-[0.1em] uppercase focus:outline-none interactive" onclick="setQuestionZoneTab('search')">
@@ -7013,7 +7736,6 @@
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('fling')" data-i18n="terminalSimpleFlingButton">Fling All Objects</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('save')" data-i18n="saveBuildButton">Save Build</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('load')" data-i18n="loadBuildButton">Load Build</button>
-                        <button id="terminal-simple-chaos-btn" type="button" class="terminal-simple-action-button wide interactive hidden" onclick="handleTerminalSimpleAction('chaos')" data-i18n="chaosToolsButton">Chaos Tools</button>
                         <button type="button" class="terminal-simple-action-button wide interactive" onclick="handleTerminalSimpleAction('limit')" data-i18n="terminalSimpleLimitButton">Increase Limit to 125 Objects</button>
                     </div>
                 </div>
@@ -7149,14 +7871,14 @@
     <div id="chaos-panel" class="chaos-panel glass-card border rounded-[2px]" aria-hidden="true">
         <div class="chaos-panel-head">
             <div>
-                <div class="chaos-panel-title" data-i18n="chaosToolsTitle">Chaos Tools</div>
-                <div class="chaos-tool-meta" data-i18n="chaosToolsSubtitle">WEBREAK protocol armed.</div>
+                <div class="chaos-panel-title" data-i18n="chaosToolsTitle">Hidden</div>
+                <div class="chaos-tool-meta" data-i18n="chaosToolsSubtitle">Tools armed.</div>
             </div>
             <div class="terminal-header-actions">
-                <button type="button" class="panel-minimize-button flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" onclick="togglePanelMinimized('chaos-panel')" aria-label="Minimize chaos tools">
+                <button type="button" class="panel-minimize-button flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" onclick="togglePanelMinimized('chaos-panel')" aria-label="Minimize protocol">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg>
                 </button>
-                <button onclick="closeChaosPanel()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" data-i18n-aria-label="chaosCloseAria" aria-label="Close chaos tools">
+                <button onclick="closeChaosPanel()" class="w-8 h-8 flex items-center justify-center rounded-sm border themed-btn focus:outline-none interactive" data-i18n-aria-label="chaosCloseAria" aria-label="Close hidden tools">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
@@ -7175,7 +7897,6 @@
             <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosBlackHole()" data-i18n="chaosBlackHoleButton">Black Hole</button>
             <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosExplosion()" data-i18n="chaosExplosionButton">Explosion</button>
             <button type="button" class="terminal-simple-action-button interactive" onclick="triggerChaosSlowMotion()" data-i18n="chaosSlowMotionButton">Slow Motion</button>
-            <button id="chaos-tornado-button" type="button" class="terminal-simple-action-button interactive" onclick="toggleChaosTornado()" data-i18n="chaosTornadoButton">Tornado</button>
         </div>
         <div id="chaos-status" class="chaos-tool-meta" aria-live="polite"></div>
     </div>
@@ -7616,8 +8337,8 @@
             firstPageLibraryTabLineOne: "My",
             firstPageLibraryTabLineTwo: "Library",
             firstPageMainEyebrow: "WebBreak.ru",
-            firstPageMainTitle: "Build, test, and break your physics creations.",
-            firstPageMainBody: "Spawn wool blocks and swords, stack them into builds, edit sizes, and see what survives.",
+            firstPageMainTitle: "PHYSICAL ENVIRONMENT SIMULATION AND DESTRUCTIVE TESTING.",
+            firstPageMainBody: "OBJECT GENERATION • GEOMETRY MODIFICATION • GRAVITATIONAL TRIGGER SIMULATION",
             firstPageStartBuildingButton: "Start building",
             firstPageContinueBuildingButton: "Continue building",
             firstPageProfilesButton: "Profiles",
@@ -7661,7 +8382,7 @@
                 "Hide buttons on mobile Build Mode when you need more screen space.",
                 "Duplicate selected objects in Edit Mode to build faster.",
                 "Try diagonal swords as braces, ramps, or decoration.",
-                "Type WEBREAK in the Terminal when you want controlled chaos."
+                "Some experiments are hidden. Keep exploring."
             ],
             terminalSimpleEditTitle: "Edit",
             terminalSimpleEditButtonOn: "Edit Mode: On",
@@ -8016,8 +8737,8 @@
             firstPageSearchTab: "Поиск",
             firstPageFeaturedTab: "Лучшие",
             firstPageMainEyebrow: "WebBreak.ru",
-            firstPageMainTitle: "Стройте, тестируйте и ломайте физические постройки.",
-            firstPageMainBody: "Спавните шерсть и мечи, складывайте постройки, склеивайте объекты, меняйте размеры и проверяйте, что выдержит.",
+            firstPageMainTitle: "СИМУЛЯЦИЯ ФИЗИЧЕСКИХ СРЕД И ДЕСТРУКТИВНОЕ ТЕСТИРОВАНИЕ.",
+            firstPageMainBody: "СПАВН ОБЪЕКТОВ • ГЕОМЕТРИЧЕСКАЯ МОДИФИКАЦИЯ • СИМУЛЯЦИЯ ГРАВИТАЦИОННЫХ ТРИГГЕРОВ",
             firstPageStartBuildingButton: "Начать строительство",
             firstPageContinueBuildingButton: "Продолжить строительство",
             firstPageProfilesButton: "Профили",
@@ -8059,7 +8780,7 @@
                 "\u041d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435 \u0441\u043f\u0440\u044f\u0447\u044c\u0442\u0435 \u043a\u043d\u043e\u043f\u043a\u0438 \u0432 \u0440\u0435\u0436\u0438\u043c\u0435 \u0441\u0442\u0440\u043e\u0439\u043a\u0438, \u0447\u0442\u043e\u0431\u044b \u043e\u0441\u0432\u043e\u0431\u043e\u0434\u0438\u0442\u044c \u044d\u043a\u0440\u0430\u043d.",
                 "\u0412 \u041f\u0440\u0430\u0432\u043a\u0435 \u0434\u0443\u0431\u043b\u0438\u0440\u0443\u0439\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b, \u0447\u0442\u043e\u0431\u044b \u0441\u0442\u0440\u043e\u0438\u0442\u044c \u0431\u044b\u0441\u0442\u0440\u0435\u0435.",
                 "\u041c\u0435\u0447\u0438 \u043f\u043e\u0434 \u0443\u0433\u043b\u043e\u043c \u043f\u043e\u0434\u0445\u043e\u0434\u044f\u0442 \u0434\u043b\u044f \u043f\u043e\u0434\u043f\u043e\u0440\u043e\u043a, \u0440\u0430\u043c\u043f \u0438 \u0434\u0435\u043a\u043e\u0440\u0430.",
-                "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 WEBREAK \u0432 Terminal, \u0435\u0441\u043b\u0438 \u0445\u043e\u0442\u0438\u0442\u0435 \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u043c\u044b\u0439 \u0445\u0430\u043e\u0441."
+                "\u041d\u0435\u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u044b \u0441\u043a\u0440\u044b\u0442\u044b. \u0418\u0449\u0438\u0442\u0435 \u0438\u0445 \u0441\u0430\u043c\u0438."
             ]
         });
 
@@ -8116,22 +8837,22 @@
             saveDeleteConfirm: "Delete this save?",
             saveSlotObjects: "objects",
             saveSlotUpdated: "updated",
-            chaosToolsButton: "Chaos Tools",
-            chaosToolsTitle: "Chaos Tools",
-            chaosToolsSubtitle: "WEBREAK protocol armed.",
-            chaosCloseAria: "Close chaos tools",
+            chaosToolsButton: "Hidden",
+            chaosToolsTitle: "Hidden",
+            chaosToolsSubtitle: "Tools armed.",
+            chaosCloseAria: "Close hidden tools",
             chaosRadiusLabel: "Radius",
             chaosPowerLabel: "Power",
             chaosBlackHoleButton: "Black Hole",
             chaosExplosionButton: "Explosion",
             chaosSlowMotionButton: "Slow Motion",
-            chaosUnlocked: "CHAOS TOOLS UNLOCKED. WEBREAK is armed.",
-            chaosLockedHint: "Type WEBREAK in the terminal to arm Chaos Tools.",
+            chaosUnlocked: "ACCESS GRANTED.",
+            chaosLockedHint: "Locked.",
             chaosCooldown: "Tool cooling down.",
             chaosNoObjects: "No objects for chaos.",
             chaosBlackHoleStatus: "Black hole deployed.",
             chaosExplosionStatus: "Explosion triggered.",
-            chaosSlowMotionStatus: "Slow motion engaged."
+            chaosSlowMotionStatus: "Slow motion locked."
         });
 
         Object.assign(i18n.ru, {
@@ -8171,22 +8892,22 @@
             saveDeleteConfirm: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u0441\u0435\u0439\u0432?",
             saveSlotObjects: "\u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432",
             saveSlotUpdated: "\u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d",
-            chaosToolsButton: "\u0425\u0430\u043e\u0441",
-            chaosToolsTitle: "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0445\u0430\u043e\u0441\u0430",
-            chaosToolsSubtitle: "\u041f\u0440\u043e\u0442\u043e\u043a\u043e\u043b WEBREAK \u0432\u043a\u043b\u044e\u0447\u0435\u043d.",
-            chaosCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0445\u0430\u043e\u0441",
+            chaosToolsButton: "\u0421\u043a\u0440\u044b\u0442\u043e",
+            chaosToolsTitle: "\u0421\u043a\u0440\u044b\u0442\u043e",
+            chaosToolsSubtitle: "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u044b.",
+            chaosCloseAria: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c \u0441\u043a\u0440\u044b\u0442\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b",
             chaosRadiusLabel: "\u0420\u0430\u0434\u0438\u0443\u0441",
             chaosPowerLabel: "\u0421\u0438\u043b\u0430",
             chaosBlackHoleButton: "\u0427\u0435\u0440\u043d\u0430\u044f \u0434\u044b\u0440\u0430",
             chaosExplosionButton: "\u0412\u0437\u0440\u044b\u0432",
             chaosSlowMotionButton: "\u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435",
-            chaosUnlocked: "\u0425\u0410\u041e\u0421 \u041e\u0422\u041a\u0420\u042b\u0422. WEBREAK \u0432\u043a\u043b\u044e\u0447\u0435\u043d.",
-            chaosLockedHint: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 WEBREAK \u0432 \u0442\u0435\u0440\u043c\u0438\u043d\u0430\u043b\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0445\u0430\u043e\u0441.",
+            chaosUnlocked: "\u0414\u041e\u0421\u0422\u0423\u041f \u041e\u0422\u041a\u0420\u042b\u0422.",
+            chaosLockedHint: "\u0417\u0430\u043a\u0440\u044b\u0442\u043e.",
             chaosCooldown: "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442 \u043d\u0430 \u043f\u0435\u0440\u0435\u0437\u0430\u0440\u044f\u0434\u043a\u0435.",
             chaosNoObjects: "\u041d\u0435\u0442 \u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432 \u0434\u043b\u044f \u0445\u0430\u043e\u0441\u0430.",
             chaosBlackHoleStatus: "\u0427\u0435\u0440\u043d\u0430\u044f \u0434\u044b\u0440\u0430 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u0430.",
             chaosExplosionStatus: "\u0412\u0437\u0440\u044b\u0432 \u0437\u0430\u043f\u0443\u0449\u0435\u043d.",
-            chaosSlowMotionStatus: "\u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e."
+            chaosSlowMotionStatus: "\u0417\u0430\u043c\u0435\u0434\u043b\u0435\u043d\u0438\u0435 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e \u043d\u0430\u0432\u0441\u0435\u0433\u0434\u0430."
         });
 
         Object.assign(i18n.en, {
@@ -8361,8 +9082,8 @@
             communityConfirmLoad: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u044d\u0442\u0443 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0443 \u0438 \u0437\u0430\u043c\u0435\u043d\u0438\u0442\u044c \u0442\u0435\u043a\u0443\u0449\u0438\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b?"
         });
 
-        i18n.en.terminalHelp = "Commands: help, clear, clear objects, save, load, WEBREAK, chaos, blackhole, explosion, tornado, slowmo, show ground, hideground, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, helicoptermode, unhelicoptermode, about.";
-        i18n.ru.terminalHelp = "\u041a\u043e\u043c\u0430\u043d\u0434\u044b: help, clear, clear objects, save, load, WEBREAK, chaos, blackhole, explosion, tornado, slowmo, show ground, hideground, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, helicoptermode, unhelicoptermode, about.";
+        i18n.en.terminalHelp = "Commands: help, clear, clear objects, save, load, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, helicoptermode, unhelicoptermode, about.";
+        i18n.ru.terminalHelp = "\u041a\u043e\u043c\u0430\u043d\u0434\u044b: help, clear, clear objects, save, load, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, helicoptermode, unhelicoptermode, about.";
 
         Object.assign(i18n.en, {
             terminalIntroLines: [
@@ -8370,17 +9091,10 @@
                 "Purpose: build, modify, test materials, save creations, share builds, and run satisfying destruction sequences in an HTML5 2D Matter.js world.",
                 "Core: spawn objects, drag them, throw them, switch Build/Edit modes, save/load builds, and use pinch with two fingers for camera zoom/pan.",
                 "Shortcuts: save/load opens local build memory; spawn <object> <count> creates swords, doors, glass, or wool; gravity set <0-200> changes the world.",
-                "Chaos: type WEBREAK to unlock Black Hole, TNT Explosion, Slow Motion, and Tornado.",
-                "Mobile: use show ground to raise the floor above the iPhone home bar; use hideground to restore the default floor."
+                "Advanced experiments are hidden and unlock through discovery."
             ],
-            terminalGroundShown: "Raised oak ground is visible. Objects now land above the mobile home bar.",
-            terminalGroundHidden: "Raised ground hidden. Default bottom boundary restored.",
-            terminalGroundMobileOnly: "Raised ground is mobile-only. Desktop keeps the normal full-height floor.",
             terminalTrashDeleted: "Object deleted.",
             terminalAutosaveRestored: "Autosave restored.",
-            chaosTornadoButton: "Tornado",
-            chaosTornadoOn: "Tornado vortex active.",
-            chaosTornadoOff: "Tornado vortex stopped.",
             chaosExplosionDropping: "TNT dropping...",
             chaosExplosionStatus: "TNT detonated. Objects affected:",
             terminalCameraHint: "Two-finger pinch/drag controls camera zoom and pan."
@@ -8392,17 +9106,10 @@
                 "\u0417\u0430\u0434\u0430\u0447\u0430: \u0441\u0442\u0440\u043e\u0438\u0442\u044c, \u043c\u0435\u043d\u044f\u0442\u044c, \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u044b, \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0442\u044c \u0431\u0438\u043b\u0434\u044b \u0438 \u043a\u0440\u0430\u0441\u0438\u0432\u043e \u0432\u0441\u0435 \u043b\u043e\u043c\u0430\u0442\u044c \u0432 HTML5 2D Matter.js \u043c\u0438\u0440\u0435.",
                 "\u041e\u0441\u043d\u043e\u0432\u0430: spawn \u0441\u043e\u0437\u0434\u0430\u0435\u0442 \u043e\u0431\u044a\u0435\u043a\u0442\u044b, Build \u043f\u043e\u043c\u043e\u0433\u0430\u0435\u0442 \u0441\u0442\u0430\u0432\u0438\u0442\u044c, Edit \u043c\u0435\u043d\u044f\u0435\u0442, save/load \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0441 \u0441\u0435\u0439\u0432\u0430\u043c\u0438.",
                 "\u041a\u0430\u043c\u0435\u0440\u0430: \u0434\u0432\u0443\u043c\u044f \u043f\u0430\u043b\u044c\u0446\u0430\u043c\u0438 \u043c\u043e\u0436\u043d\u043e \u043f\u0440\u0438\u0431\u043b\u0438\u0436\u0430\u0442\u044c \u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u044c \u043c\u0438\u0440 \u0431\u0435\u0437 \u0441\u0431\u0438\u0442\u044b\u0445 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0430\u0442.",
-                "Chaos: \u0432\u0432\u0435\u0434\u0438\u0442\u0435 WEBREAK, \u0447\u0442\u043e\u0431\u044b \u043e\u0442\u043a\u0440\u044b\u0442\u044c Black Hole, TNT Explosion, Slow Motion \u0438 Tornado.",
-                "\u0422\u0435\u043b\u0435\u0444\u043e\u043d: show ground \u043f\u043e\u0434\u043d\u0438\u043c\u0430\u0435\u0442 \u043f\u043e\u043b \u043d\u0430\u0434 Home Bar; hideground \u0432\u0435\u0440\u043d\u0435\u0442 \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u043f\u043e\u043b."
+                "\u0421\u043a\u0440\u044b\u0442\u044b\u0435 \u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u044b \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u044e\u0442\u0441\u044f \u0447\u0435\u0440\u0435\u0437 \u043d\u0430\u0445\u043e\u0434\u043a\u0438."
             ],
-            terminalGroundShown: "\u041f\u043e\u0434\u043d\u044f\u0442\u044b\u0439 \u0434\u0443\u0431\u043e\u0432\u044b\u0439 \u043f\u043e\u043b \u0432\u0438\u0434\u0435\u043d. \u041e\u0431\u044a\u0435\u043a\u0442\u044b \u043f\u0430\u0434\u0430\u044e\u0442 \u0432\u044b\u0448\u0435 Home Bar.",
-            terminalGroundHidden: "\u041f\u043e\u0434\u043d\u044f\u0442\u044b\u0439 \u043f\u043e\u043b \u0441\u043a\u0440\u044b\u0442. \u041d\u0438\u0436\u043d\u044f\u044f \u0433\u0440\u0430\u043d\u0438\u0446\u0430 \u0432\u0435\u0440\u043d\u0443\u0442\u0430.",
-            terminalGroundMobileOnly: "\u041f\u043e\u0434\u043d\u044f\u0442\u044b\u0439 \u043f\u043e\u043b \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430. \u041d\u0430 \u041f\u041a \u043e\u0441\u0442\u0430\u0435\u0442\u0441\u044f \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u043f\u043e\u043b.",
             terminalTrashDeleted: "\u041e\u0431\u044a\u0435\u043a\u0442 \u0443\u0434\u0430\u043b\u0435\u043d.",
             terminalAutosaveRestored: "\u0410\u0432\u0442\u043e\u0441\u0435\u0439\u0432 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d.",
-            chaosTornadoButton: "Tornado",
-            chaosTornadoOn: "\u0422\u043e\u0440\u043d\u0430\u0434\u043e \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e.",
-            chaosTornadoOff: "\u0422\u043e\u0440\u043d\u0430\u0434\u043e \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043e.",
             chaosExplosionDropping: "TNT \u043f\u0430\u0434\u0430\u0435\u0442...",
             chaosExplosionStatus: "TNT \u0432\u0437\u043e\u0440\u0432\u0430\u043d. \u0417\u0430\u0434\u0435\u0442\u043e:",
             terminalCameraHint: "\u041a\u0430\u043c\u0435\u0440\u0430: \u0434\u0432\u0430 \u043f\u0430\u043b\u044c\u0446\u0430 \u0434\u043b\u044f zoom/pan."
@@ -8550,33 +9257,33 @@
             settingsEyebrow: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
             settingsTitle: "\u041f\u0430\u043d\u0435\u043b\u044c \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f",
             settingsBody: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u0442\u0435 \u043f\u0440\u0438\u0432\u0430\u0442\u043d\u043e\u0441\u0442\u044c, \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0438 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0443\u044e \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c.",
-            settingsVisibilityTitle: "Account Visibility",
-            settingsVisibilityBody: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435, \u043a\u0430\u043a \u043f\u0440\u043e\u0444\u0438\u043b\u044c \u0434\u043e\u043b\u0436\u0435\u043d \u0432\u044b\u0433\u043b\u044f\u0434\u0435\u0442\u044c \u0432 \u043f\u0443\u0431\u043b\u0438\u043a\u0435.",
-            settingsVisibilityPublic: "Public",
-            settingsVisibilityPrivate: "Private",
-            settingsPushTitle: "Push Notification",
-            settingsPushBody: "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u0435 \u043d\u043e\u0432\u043e\u0441\u0442\u0438 \u043e \u0440\u0435\u043b\u0438\u0437\u0430\u0445 \u0438 Community \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.",
-            settingsPushOn: "On",
-            settingsPushOff: "Off",
-            settingsPushTest: "Test Push",
-            settingsPerformanceTitle: "Performance Mode",
-            settingsPerformanceBody: "Lite \u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u0442 glow \u0438 \u0447\u0430\u0441\u0442\u0438\u0446\u044b \u043d\u0430 \u0441\u043b\u0430\u0431\u044b\u0445 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430\u0445.",
-            settingsPerformanceAuto: "Auto",
-            settingsPerformanceLite: "Lite",
+            settingsVisibilityTitle: "Видимость аккаунта",
+            settingsVisibilityBody: "Выберите, как публичный профиль будет виден другим пользователям.",
+            settingsVisibilityPublic: "Публичный",
+            settingsVisibilityPrivate: "Приватный",
+            settingsPushTitle: "Уведомления",
+            settingsPushBody: "Включите новости о релизах и событиях сообщества для этого браузера.",
+            settingsPushOn: "Вкл",
+            settingsPushOff: "Выкл",
+            settingsPushTest: "Тест",
+            settingsPerformanceTitle: "Режим производительности",
+            settingsPerformanceBody: "Лёгкий режим уменьшает свечение и количество частиц на слабых устройствах.",
+            settingsPerformanceAuto: "Авто",
+            settingsPerformanceLite: "Лёгкий",
             settingsPromptTitle: "\u041f\u043e\u0434\u0441\u043a\u0430\u0437\u043a\u0438",
             settingsPromptBody: "\u0421\u0431\u0440\u043e\u0441\u044c\u0442\u0435 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u043d\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u043d\u0438\u044f \u043e \u0441\u0430\u0439\u0442\u0435 \u0438 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f\u0445.",
             settingsPromptReset: "\u0421\u0431\u0440\u043e\u0441",
             settingsStorageTitle: "\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0434\u0430\u043d\u043d\u044b\u0435",
             settingsSaved: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u044b.",
             settingsSynced: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u044b \u0438 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u044b.",
-            settingsPushOffSaved: "Push \u0432\u044b\u043a\u043b\u044e\u0447\u0435\u043d \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.",
+            settingsPushOffSaved: "Уведомления выключены для этого браузера.",
             settingsPushTestSent: "\u0422\u0435\u0441\u0442\u043e\u0432\u043e\u0435 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0435 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e.",
-            settingsPushNeedOn: "\u0421\u043d\u0430\u0447\u0430\u043b\u0430 \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u0435 Push.",
+            settingsPushNeedOn: "Сначала включите уведомления.",
             settingsPromptsReset: "\u041f\u043e\u0434\u0441\u043a\u0430\u0437\u043a\u0438 \u0441\u0431\u0440\u043e\u0448\u0435\u043d\u044b.",
-            settingsStorageSummary: "\u0421\u0435\u0439\u0432\u043e\u0432: {saves} // \u041b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u043f\u043e\u0441\u0442\u043e\u0432: {posts} // Push: {push}",
-            settingsPushGranted: "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d",
-            settingsPushDenied: "\u0437\u0430\u0431\u043b\u043e\u043a.",
-            settingsPushDefault: "\u043d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d",
+            settingsStorageSummary: "Сейвов: {saves} // Локальных постов: {posts} // Уведомления: {push}",
+            settingsPushGranted: "разрешены",
+            settingsPushDenied: "заблокированы",
+            settingsPushDefault: "не выбраны",
             settingsCustomThemeTitle: "\u0421\u0432\u043e\u044f \u0442\u0435\u043c\u0430",
             settingsCustomThemeBody: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0443\u044e \u043f\u0430\u043b\u0438\u0442\u0440\u0443 \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.",
             settingsCustomThemeOpen: "\u041d\u0430\u0441\u0442\u0440\u043e\u0438\u0442\u044c",
@@ -8624,7 +9331,13 @@
             '--btn-hover-border',
             '--btn-hover-bg',
             '--btn-hover-text',
-            '--selection-bg'
+            '--selection-bg',
+            '--terminal-text',
+            '--terminal-muted',
+            '--terminal-warning',
+            '--terminal-warning-bg',
+            '--terminal-success',
+            '--terminal-error'
         ];
         let iosInstallPromptTimer = null;
         let webbreakPushPromptTimer = null;
@@ -9079,6 +9792,58 @@
             firstPageTipTimer = window.setInterval(showNextFirstPageTip, FIRST_PAGE_TIP_INTERVAL_MS);
         }
 
+        let heroTitleTypingTimer = null;
+        const HERO_TITLE_TYPE_SPEED_MS = 20;
+
+        function getHeroTitleTypingText() {
+            const strings = i18n[currentLang] || i18n.en || {};
+            return String(strings.firstPageMainTitle || 'PHYSICAL ENVIRONMENT SIMULATION AND DESTRUCTIVE TESTING.').trim();
+        }
+
+        function updateHeroTitleLanguage(hero, text) {
+            if (!hero) return;
+            hero.dataset.heroLanguage = /[\u0400-\u04FF]/.test(text) ? 'ru' : 'en';
+        }
+
+        function runHeroTitleTyping(force = false) {
+            const hero = document.querySelector('.hero-title');
+            if (!hero) return;
+
+            const text = getHeroTitleTypingText();
+            updateHeroTitleLanguage(hero, text);
+            hero.setAttribute('aria-label', text);
+
+            if (!force && hero.dataset.heroTypedText === text && hero.dataset.heroTypingDone === 'true') {
+                hero.textContent = text;
+                return;
+            }
+
+            if (heroTitleTypingTimer) {
+                clearTimeout(heroTitleTypingTimer);
+                heroTitleTypingTimer = null;
+            }
+
+            hero.dataset.heroTypedText = text;
+            hero.dataset.heroTypingDone = 'false';
+            hero.textContent = '';
+
+            let index = 0;
+            const typeNextCharacter = () => {
+                index += 1;
+                hero.textContent = text.slice(0, index);
+
+                if (index >= text.length) {
+                    hero.dataset.heroTypingDone = 'true';
+                    heroTitleTypingTimer = null;
+                    return;
+                }
+
+                heroTitleTypingTimer = window.setTimeout(typeNextCharacter, HERO_TITLE_TYPE_SPEED_MS);
+            };
+
+            heroTitleTypingTimer = window.setTimeout(typeNextCharacter, 90);
+        }
+
         function updateTranslations() {
             const strings = i18n[currentLang];
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -9159,6 +9924,7 @@
             renderProfileSearchResults(profileSearchResults);
             if (questionZoneTab === 'settings') renderSettingsPanel();
             document.documentElement.lang = currentLang;
+            runHeroTitleTyping();
         }
 
         function setLang(lang) {
@@ -9575,17 +10341,26 @@ function setAuthCaptchaInputState({ inputMode = 'text', placeholder = null, read
             authCaptchaSelected = new Set();
             options.innerHTML = '';
             options.classList.add('show');
-            const shapes = ['○', '△', '□', '◇', '●', '▱'];
+            const shapes = [
+                { type: 'circle', svg: '<circle cx="18" cy="18" r="10" fill="currentColor"/>' },
+                { type: 'triangle', svg: '<path d="M18 6 31 30H5L18 6Z" fill="currentColor"/>' },
+                { type: 'square', svg: '<rect x="8" y="8" width="20" height="20" fill="currentColor"/>' },
+                { type: 'diamond', svg: '<path d="M18 5 31 18 18 31 5 18 18 5Z" fill="currentColor"/>' },
+                { type: 'circle', svg: '<circle cx="18" cy="18" r="11" fill="none" stroke="currentColor" stroke-width="3"/>' },
+                { type: 'cross', svg: '<path d="M9 9 27 27M27 9 9 27" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>' }
+            ];
             const shuffled = Array.from({ length: 6 }, (_, index) => ({
                 index,
-                symbol: shapes[index]
+                type: shapes[index].type,
+                svg: shapes[index].svg
             })).sort(() => Math.random() - 0.5);
 
             shuffled.forEach(item => {
                 const button = document.createElement('button');
                 button.type = 'button';
                 button.className = 'auth-captcha-option interactive';
-                button.textContent = item.symbol;
+                button.innerHTML = `<svg class="auth-shape-svg" viewBox="0 0 36 36" aria-hidden="true">${item.svg}</svg>`;
+                button.setAttribute('aria-label', item.type);
                 button.setAttribute('aria-pressed', 'false');
                 button.addEventListener('click', () => {
                     if (authCaptchaSolved) return;
@@ -14105,7 +14880,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
                 writeTerminalLine('> load', 'themed-text');
                 openSaveBuildModal('load');
             } else if (action === 'chaos') {
-                writeTerminalLine('> chaos tools', 'themed-text');
+                writeTerminalLine('> protocol', 'themed-text');
                 toggleChaosPanel();
             } else if (action === 'limit') {
                 writeTerminalLine('> increase limit', 'themed-text');
@@ -14213,52 +14988,6 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
                     }
                 });
             }
-        }
-
-        function setMobileBottomDockHeight(height, open = true) {
-            const maxHeight = Math.min((window.innerHeight || 600) * 0.42, 260);
-            const nextHeight = clamp(Number(height) || 112, 76, Math.max(92, maxHeight));
-            document.documentElement.style.setProperty('--mobile-bottom-dock-height', `${nextHeight}px`);
-            document.body.classList.toggle('mobile-bottom-dock-open', !!open);
-            const dock = document.getElementById('mobile-bottom-dock');
-            if (dock) dock.setAttribute('aria-hidden', open ? 'false' : 'true');
-        }
-
-        function beginMobileBottomDockResize(event) {
-            if (event.button !== undefined && event.button !== 0) return;
-            const dock = document.getElementById('mobile-bottom-dock');
-            if (!dock) return;
-            const rect = dock.getBoundingClientRect();
-            mobileBottomDockResize = {
-                pointerId: event.pointerId,
-                startY: event.clientY,
-                startHeight: rect.height || 112,
-                target: event.currentTarget || dock
-            };
-            if (mobileBottomDockResize.target && mobileBottomDockResize.target.setPointerCapture) {
-                mobileBottomDockResize.target.setPointerCapture(event.pointerId);
-            }
-            setMobileBottomDockHeight(rect.height || 112, true);
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        function updateMobileBottomDockResize(event) {
-            if (!mobileBottomDockResize || mobileBottomDockResize.pointerId !== event.pointerId) return;
-            const delta = mobileBottomDockResize.startY - event.clientY;
-            setMobileBottomDockHeight(mobileBottomDockResize.startHeight + delta, true);
-            event.preventDefault();
-        }
-
-        function finishMobileBottomDockResize(event) {
-            if (!mobileBottomDockResize || mobileBottomDockResize.pointerId !== event.pointerId) return;
-            const target = mobileBottomDockResize.target;
-            if (target && target.releasePointerCapture) {
-                try {
-                    target.releasePointerCapture(event.pointerId);
-                } catch (error) {}
-            }
-            mobileBottomDockResize = null;
         }
 
         function setTerminalOffset(x, y) {
@@ -14551,16 +15280,12 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         document.addEventListener('pointermove', updateEditSettingsDrag, { passive: false });
         document.addEventListener('pointerup', finishEditSettingsDrag);
         document.addEventListener('pointercancel', finishEditSettingsDrag);
-        document.addEventListener('pointermove', updateMobileBottomDockResize, { passive: false });
-        document.addEventListener('pointerup', finishMobileBottomDockResize);
-        document.addEventListener('pointercancel', finishMobileBottomDockResize);
 
         window.addEventListener('resize', () => {
             positionTerminalHintArrow();
             updateMobileBuildingControlsToggle();
             updateDesktopBuildTimerAnchor();
             clampChaosPanelToViewport();
-            updateSpawnGroundVisual();
             applySpawnCameraTransform();
 
             const panel = document.getElementById('terminal-panel');
@@ -14694,7 +15419,6 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             { ax: -40.5, ay: 82.5, bx: -40.5, by: -82.5, radius: 6.3 }
         ];
         const SPAWN_BLOCK_TEXTURE_ROOT = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21.8/assets/minecraft/textures/block/';
-        const SPAWN_OAK_PLANKS_TEXTURE = `${SPAWN_BLOCK_TEXTURE_ROOT}oak_planks.png`;
         const SPAWN_TNT_TEXTURE = `${SPAWN_BLOCK_TEXTURE_ROOT}tnt_side.png`;
         const SPAWN_DOOR_TEXTURES = {
             top: `${SPAWN_BLOCK_TEXTURE_ROOT}oak_door_top.png`,
@@ -14740,8 +15464,6 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         const SPAWN_HELICOPTER_INTERVAL = 10;
         const SPAWN_HELICOPTER_MIN_SPIN = 150.0;
         const SPAWN_HELICOPTER_MAX_SPIN = 250.0;
-        const SPAWN_RAISED_GROUND_HEIGHT = 48;
-        const SPAWN_RAISED_GROUND_CLEARANCE = 112;
         const SPAWN_AUTOSAVE_STORAGE_KEY = 'webbreak.activeAutosave.v1';
         const SPAWN_AUTOSAVE_INTERVAL_MS = 4200;
 
@@ -14759,10 +15481,8 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         let lastSpawnFrameTime = 0;
         let activeSpawnDrag = null;
         let spawnSelectionMarquee = null;
-        let spawnRaisedGroundEnabled = false;
         let spawnAutosaveTimer = null;
         let spawnAutosaveRestoreAttempted = false;
-        let mobileBottomDockResize = null;
         let spawnCameraGesture = null;
         const spawnCamera = { x: 0, y: 0, scale: 1 };
         const spawnCameraPointers = new Map();
@@ -14795,59 +15515,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
 
         function getSpawnGroundY() {
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
-            if (!spawnRaisedGroundEnabled || !isSpawnRaisedGroundAllowed()) return viewportHeight;
-            const safeBottom = SPAWN_RAISED_GROUND_CLEARANCE + SPAWN_RAISED_GROUND_HEIGHT;
-            return Math.max(180, viewportHeight - safeBottom);
-        }
-
-        function isSpawnRaisedGroundAllowed() {
-            return isSpawnCompactViewport();
-        }
-
-        function updateSpawnGroundVisual() {
-            const platform = document.getElementById('spawn-ground-platform');
-            if (!platform) return;
-            const groundWorldY = getSpawnGroundY();
-            const groundScreenY = spawnWorldToScreen(0, groundWorldY).y;
-            const groundScreenHeight = Math.max(36, Math.round(SPAWN_RAISED_GROUND_HEIGHT * (spawnCamera.scale || 1)));
-            platform.style.setProperty('--spawn-ground-top', `${groundScreenY}px`);
-            platform.style.setProperty('--spawn-ground-height', `${groundScreenHeight}px`);
-            platform.style.setProperty('--spawn-ground-texture', `url("${SPAWN_OAK_PLANKS_TEXTURE}")`);
-            document.body.classList.toggle('ground-platform-visible', spawnRaisedGroundEnabled && isSpawnRaisedGroundAllowed());
-        }
-
-        function setSpawnRaisedGround(enabled, announce = true) {
-            const nextEnabled = !!enabled;
-            if (nextEnabled && !isSpawnRaisedGroundAllowed()) {
-                spawnRaisedGroundEnabled = false;
-                updateSpawnGroundVisual();
-                rebuildSpawnMatterBounds();
-                if (announce) {
-                    const strings = getTerminalStrings();
-                    writeTerminalLine(strings.terminalGroundMobileOnly, 'terminal-warning');
-                    showWebBreakNotification(strings.terminalGroundMobileOnly, 'info', { duration: 2600 });
-                }
-                return;
-            }
-            spawnRaisedGroundEnabled = nextEnabled;
-            updateSpawnGroundVisual();
-            rebuildSpawnMatterBounds();
-            spawnedObjects.forEach(body => {
-                applySpawnBounds(body, false);
-                syncSpawnMatterFromWrapper(body, { force: true, velocity: true });
-                renderSpawnObject(body);
-            });
-            if (announce) {
-                const strings = getTerminalStrings();
-                writeTerminalLine(spawnRaisedGroundEnabled ? strings.terminalGroundShown : strings.terminalGroundHidden, 'terminal-warning');
-                showWebBreakNotification(spawnRaisedGroundEnabled ? strings.terminalGroundShown : strings.terminalGroundHidden, 'info', { duration: 2600 });
-            }
-            vibrateWebBreak(spawnRaisedGroundEnabled ? [16, 20, 28] : 14);
-            requestSpawnPhysics();
-        }
-
-        function toggleSpawnRaisedGround() {
-            setSpawnRaisedGround(!spawnRaisedGroundEnabled);
+            return viewportHeight;
         }
 
         function screenToSpawnWorld(clientX, clientY) {
@@ -14881,7 +15549,6 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             if (!layer) return;
             clampSpawnCamera();
             layer.style.transform = `translate3d(${spawnCamera.x.toFixed(2)}px, ${spawnCamera.y.toFixed(2)}px, 0) scale(${spawnCamera.scale.toFixed(4)})`;
-            updateSpawnGroundVisual();
         }
 
         function resetSpawnCamera() {
@@ -15160,6 +15827,12 @@ function buildSwordElement() {
 
         function renderSpawnObject(body) {
             if (!body || !body.element) return;
+            if (body.chaosAbsorbed) {
+                if (body.element.style.visibility !== 'hidden') {
+                    body.element.style.visibility = 'hidden';
+                }
+                return;
+            }
             const shouldRender = body.dragging || body.selectedForEdit || isSpawnBodyNearViewport(body);
             if (!shouldRender) {
                 if (body.element.style.visibility !== 'hidden') {
@@ -15172,36 +15845,62 @@ function buildSwordElement() {
                 body.element.style.visibility = '';
             }
 
-            const transform = `translate3d(${(body.x - body.width / 2).toFixed(2)}px, ${(body.y - body.height / 2).toFixed(2)}px, 0) rotate(${body.angle.toFixed(4)}rad)`;
+            const visualScale = Number.isFinite(body.chaosVisualScale) ? clamp(body.chaosVisualScale, 0.04, 1) : 1;
+            const scaleTransform = visualScale < 0.999 ? ` scale(${visualScale.toFixed(3)})` : '';
+            const transform = `translate3d(${(body.x - body.width / 2).toFixed(2)}px, ${(body.y - body.height / 2).toFixed(2)}px, 0) rotate(${body.angle.toFixed(4)}rad)${scaleTransform}`;
             if (body.lastTransform !== transform) {
                 body.element.style.transform = transform;
                 body.lastTransform = transform;
             }
         }
 
-        /* --- Save / Load system, effect pooling, and chaos tools --- */
+        /* --- Save / Load system, effect pooling, and hidden protocols --- */
         const WEBBREAK_SAVE_STORAGE_KEY = 'webbreak.saveSlots.v2';
         const WEBBREAK_SAVE_CODE_PREFIX = 'WB1:';
         const WEBBREAK_MAX_SAVE_SLOTS = 8;
         const WEBBREAK_PARTICLE_POOL_LIMIT = 90;
         const WEBBREAK_MAX_IMPORT_OBJECTS = 125;
-        const CHAOS_BLACK_HOLE_DURATION = 1350;
-        const CHAOS_SLOW_MOTION_DURATION = 5200;
+        const CHAOS_BLACK_HOLE_DURATION = 6200;
+        const CHAOS_BLACK_HOLE_COLLAPSE_MS = 300;
+        const CHAOS_BLACK_HOLE_ABSORB_MS = 2000;
         const CHAOS_COOLDOWN_MS = 1100;
         const CHAOS_TNT_DROP_DURATION = 760;
         const CHAOS_TNT_SIZE = 62;
         const CHAOS_TNT_DROP_TIMEOUT_MS = 5200;
+        const WEBBREAK_TNT_AUDIO_URL = 'https://github.com/VityaIG/vityaig.github.io/raw/refs/heads/main/explode.mp3';
+        const WEBBREAK_BLACK_HOLE_AUDIO_URL = 'https://github.com/VityaIG/vityaig.github.io/raw/refs/heads/main/explode2.mp3';
         const chaosFields = [];
         const webbreakParticlePool = [];
-        const chaosCooldowns = { blackhole: 0, explosion: 0, slowmo: 0, tornado: 0 };
+        const chaosVisualEffects = [];
+        const chaosCooldowns = { blackhole: 0, explosion: 0, slowmo: 0 };
         let chaosToolsUnlocked = false;
         let chaosSlowMotionUntil = 0;
         let chaosPhysicsOverrideUntil = 0;
         let lastImpactEffectTime = 0;
         let spawnCollisionEffectsHooked = false;
         let webbreakQualityLevel = 1;
-        let chaosTornadoActive = false;
-        let chaosTornadoVisual = null;
+        let chaosVisualFrame = null;
+        let lastChaosVisualFrameTime = 0;
+        const webbreakTntExplosionAudio = (() => {
+            try {
+                const audio = new Audio(WEBBREAK_TNT_AUDIO_URL);
+                audio.preload = 'auto';
+                audio.volume = 0.76;
+                return audio;
+            } catch (error) {
+                return null;
+            }
+        })();
+        const webbreakBlackHoleReleaseAudio = (() => {
+            try {
+                const audio = new Audio(WEBBREAK_BLACK_HOLE_AUDIO_URL);
+                audio.preload = 'auto';
+                audio.volume = 0.82;
+                return audio;
+            } catch (error) {
+                return null;
+            }
+        })();
 
         function roundSaveNumber(value, digits = 2) {
             const number = Number(value);
@@ -16023,8 +16722,6 @@ function buildSwordElement() {
 
         function updateChaosToolsUi() {
             const panel = document.getElementById('chaos-panel');
-            const button = document.getElementById('terminal-simple-chaos-btn');
-            if (button) button.classList.toggle('hidden', !chaosToolsUnlocked);
             if (panel) {
                 panel.classList.toggle('unlocked', chaosToolsUnlocked);
                 panel.setAttribute('aria-hidden', chaosToolsUnlocked && panel.classList.contains('open') ? 'false' : 'true');
@@ -16085,6 +16782,7 @@ function buildSwordElement() {
         }
 
         function canUseChaosTool(tool) {
+            if (tool === 'explosion') return true;
             const now = performance.now();
             if ((chaosCooldowns[tool] || 0) > now) {
                 setChaosStatus(getTerminalStrings().chaosCooldown);
@@ -16096,10 +16794,12 @@ function buildSwordElement() {
 
         function spawnScreenShake(strength = 1) {
             if (isWebBreakLowEndMode() && strength < 1.2) return;
+            const px = clamp(Math.round((Number(strength) || 1) * 7), 4, 18);
+            document.body.style.setProperty('--screen-shake-strength', `${px}px`);
             document.body.classList.remove('screen-shake');
             void document.body.offsetWidth;
             document.body.classList.add('screen-shake');
-            setTimeout(() => document.body.classList.remove('screen-shake'), 390);
+            setTimeout(() => document.body.classList.remove('screen-shake'), 290);
         }
 
         function getEffectsLayer() {
@@ -16118,6 +16818,7 @@ function buildSwordElement() {
             const pooled = webbreakParticlePool.pop();
             const element = pooled || document.createElement('span');
             element.className = className;
+            element.replaceChildren();
             layer.appendChild(element);
             return element;
         }
@@ -16125,9 +16826,143 @@ function buildSwordElement() {
         function releaseParticleElement(element) {
             if (!element) return;
             element.remove();
+            element.replaceChildren();
             element.removeAttribute('style');
+            delete element._blackHoleDust;
             if (webbreakParticlePool.length < WEBBREAK_PARTICLE_POOL_LIMIT) {
                 webbreakParticlePool.push(element);
+            }
+        }
+
+        function playTntExplosionAudio() {
+            if (!webbreakTntExplosionAudio) return;
+            try {
+                const audio = webbreakTntExplosionAudio.cloneNode(true);
+                audio.volume = webbreakTntExplosionAudio.volume;
+                audio.currentTime = 0;
+                const playback = audio.play();
+                if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+            } catch (error) {
+                try {
+                    webbreakTntExplosionAudio.currentTime = 0;
+                    const playback = webbreakTntExplosionAudio.play();
+                    if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+                } catch (fallbackError) {
+                    // Browser may block audio until the next user gesture.
+                }
+            }
+        }
+
+        function playBlackHoleReleaseAudio() {
+            if (!webbreakBlackHoleReleaseAudio) return;
+            try {
+                const audio = webbreakBlackHoleReleaseAudio.cloneNode(true);
+                audio.volume = webbreakBlackHoleReleaseAudio.volume;
+                audio.currentTime = 0;
+                const playback = audio.play();
+                if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+            } catch (error) {
+                try {
+                    webbreakBlackHoleReleaseAudio.currentTime = 0;
+                    const playback = webbreakBlackHoleReleaseAudio.play();
+                    if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+                } catch (fallbackError) {
+                    // Browser may block audio until the next user gesture.
+                }
+            }
+        }
+
+        function requestChaosVisualEffectsFrame() {
+            if (chaosVisualFrame) return;
+            chaosVisualFrame = requestAnimationFrame(updateChaosVisualEffectsFrame);
+        }
+
+        function addChaosVisualEffect(effect) {
+            if (!effect) return;
+            effect.startedAt = effect.startedAt || performance.now();
+            chaosVisualEffects.push(effect);
+            requestChaosVisualEffectsFrame();
+        }
+
+        function removeChaosVisualEffect(index) {
+            const effect = chaosVisualEffects[index];
+            if (effect && effect.element) releaseParticleElement(effect.element);
+            chaosVisualEffects.splice(index, 1);
+        }
+
+        function updateChaosDebrisParticle(effect, dt, now) {
+            effect.age = now - effect.startedAt;
+            const dtSeconds = dt / 1000;
+            const drag = Math.pow(effect.drag || 0.982, dt / 16.67);
+            effect.vx *= drag;
+            effect.vy = effect.vy * drag + (effect.gravity || 980) * dtSeconds;
+            effect.x += effect.vx * dtSeconds;
+            effect.y += effect.vy * dtSeconds;
+            effect.rotation += effect.spin * dtSeconds;
+            const progress = clamp(effect.age / effect.life, 0, 1);
+            const opacity = Math.max(0, 1 - Math.pow(progress, 1.7));
+            effect.element.style.setProperty('--debris-x', `${effect.x.toFixed(1)}px`);
+            effect.element.style.setProperty('--debris-y', `${effect.y.toFixed(1)}px`);
+            effect.element.style.setProperty('--debris-rotate', `${effect.rotation.toFixed(3)}rad`);
+            effect.element.style.setProperty('--debris-opacity', opacity.toFixed(3));
+            return effect.age < effect.life && effect.y < (window.innerHeight || 720) + 90;
+        }
+
+        function updateBlackHoleVisual(effect, dt, now) {
+            const age = now - effect.startedAt;
+            const screen = spawnWorldToScreen(effect.x, effect.y);
+            const collapseProgress = clamp((age - effect.duration) / CHAOS_BLACK_HOLE_COLLAPSE_MS, 0, 1);
+            const pulse = Math.sin(age * 0.012) * 0.035;
+            const baseSize = Math.max(170, effect.radius * 1.06 * spawnCamera.scale);
+            const size = baseSize * (1 + pulse) * (1 - collapseProgress * 0.84);
+            effect.element.style.setProperty('--black-hole-x', `${screen.x}px`);
+            effect.element.style.setProperty('--black-hole-y', `${screen.y}px`);
+            effect.element.style.setProperty('--black-hole-size', `${size}px`);
+            effect.element.classList.toggle('collapsing', collapseProgress > 0);
+            effect.element.style.opacity = `${Math.max(0, 1 - Math.max(0, collapseProgress - 0.28) * 1.38).toFixed(3)}`;
+
+            effect.dust.forEach(particle => {
+                const closeness = 1 - particle.r;
+                particle.theta += particle.speed * dt * 0.001 * (1 + closeness * 5.8 + collapseProgress * 9);
+                particle.r -= particle.inflow * dt * 0.001 * (1 + closeness * 2.4 + collapseProgress * 8);
+                if (particle.r < 0.13) {
+                    particle.r = collapseProgress > 0 ? 0.28 + Math.random() * 0.22 : 0.86 + Math.random() * 0.26;
+                    particle.theta = Math.random() * Math.PI * 2;
+                }
+
+                const orbit = particle.r * size * 0.5;
+                const x = Math.cos(particle.theta) * orbit * (1 - collapseProgress * 0.25);
+                const y = Math.sin(particle.theta) * orbit * (0.18 + particle.tilt * 0.2) + Math.sin(particle.theta * 2 + particle.seed + age * 0.007) * size * 0.015;
+                const stretch = 1 + (1 - particle.r) * 3.8 + collapseProgress * 4;
+                const opacity = clamp(0.2 + (1 - particle.r) * 0.86, 0.16, 1) * (1 - collapseProgress * 0.74);
+                particle.element.style.setProperty('--dust-opacity', opacity.toFixed(3));
+                particle.element.style.transform = `translate(-50%, -50%) translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${particle.theta.toFixed(3)}rad) scale(${stretch.toFixed(2)}, ${Math.max(0.38, 1 - (1 - particle.r) * 0.32).toFixed(2)})`;
+            });
+
+            return age < effect.duration + CHAOS_BLACK_HOLE_COLLAPSE_MS + 120;
+        }
+
+        function updateChaosVisualEffectsFrame(now) {
+            chaosVisualFrame = null;
+            const dt = Math.min(48, Math.max(8, now - (lastChaosVisualFrameTime || now - 16.67)));
+            lastChaosVisualFrameTime = now;
+
+            for (let index = chaosVisualEffects.length - 1; index >= 0; index--) {
+                const effect = chaosVisualEffects[index];
+                let alive = false;
+                if (effect.type === 'debris') {
+                    alive = updateChaosDebrisParticle(effect, dt, now);
+                } else if (effect.type === 'blackhole-visual') {
+                    alive = updateBlackHoleVisual(effect, dt, now);
+                }
+
+                if (!alive) removeChaosVisualEffect(index);
+            }
+
+            if (chaosVisualEffects.length > 0) {
+                requestChaosVisualEffectsFrame();
+            } else {
+                lastChaosVisualFrameTime = 0;
             }
         }
 
@@ -16163,37 +16998,87 @@ function buildSwordElement() {
             setTimeout(() => releaseParticleElement(flash), 420);
         }
 
-        function spawnChaosSingularity(x, y, radius) {
-            const element = acquireParticleElement('chaos-singularity');
+        function spawnTntExplosionVisuals(x, y, radius, power) {
+            const lowQuality = isWebBreakLowEndMode() || webbreakQualityLevel < 0.65;
+            const shockwave = acquireParticleElement('tnt-shockwave');
+            if (shockwave) {
+                shockwave.style.setProperty('--shockwave-x', `${x}px`);
+                shockwave.style.setProperty('--shockwave-y', `${y}px`);
+                shockwave.style.setProperty('--shockwave-size', `${Math.max(180, Math.min(620, radius * 1.18 * spawnCamera.scale))}px`);
+                setTimeout(() => releaseParticleElement(shockwave), 440);
+            }
+
+            const flash = acquireParticleElement('tnt-explosion-flash');
+            if (flash) {
+                flash.style.setProperty('--flash-x', `${x}px`);
+                flash.style.setProperty('--flash-y', `${y}px`);
+                flash.style.setProperty('--flash-size', `${Math.max(150, Math.min(420, radius * 0.72 * spawnCamera.scale))}px`);
+                setTimeout(() => releaseParticleElement(flash), 320);
+            }
+
+            const count = lowQuality ? 14 : clamp(20 + Math.round(power * 1.6), 20, 30);
+            const colors = ['#f5f5f5', '#d8d8d8', '#a8a8a8', '#ffcf70', '#6f3421'];
+            for (let index = 0; index < count; index++) {
+                const particle = acquireParticleElement('tnt-debris-particle');
+                if (!particle) continue;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = (360 + power * 82) * (0.45 + Math.random() * 0.95);
+                const size = (3 + Math.random() * 8) * (lowQuality ? 0.82 : 1);
+                particle.style.setProperty('--debris-size', `${size.toFixed(1)}px`);
+                particle.style.setProperty('--debris-color', colors[index % colors.length]);
+                addChaosVisualEffect({
+                    type: 'debris',
+                    element: particle,
+                    x,
+                    y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - (120 + Math.random() * 240),
+                    gravity: 760 + Math.random() * 520,
+                    drag: 0.977 - Math.random() * 0.01,
+                    spin: (Math.random() - 0.5) * 18,
+                    rotation: Math.random() * Math.PI,
+                    life: 900 + Math.random() * 560
+                });
+            }
+        }
+
+        function spawnChaosSingularity(worldX, worldY, radius, power = 6, duration = CHAOS_BLACK_HOLE_DURATION) {
+            const element = acquireParticleElement('black-hole-anomaly');
             if (!element) return;
-            element.style.setProperty('--chaos-x', `${x}px`);
-            element.style.setProperty('--chaos-y', `${y}px`);
-            element.style.setProperty('--chaos-size', `${Math.max(130, radius * 0.92)}px`);
-            setTimeout(() => releaseParticleElement(element), 1180);
-        }
+            const core = document.createElement('span');
+            core.className = 'black-hole-core';
+            element.appendChild(core);
 
-        function spawnTornadoVisual(center, radius) {
-            const screen = spawnWorldToScreen(center.x, center.y);
-            const element = acquireParticleElement('tornado-vortex');
-            if (!element) return null;
-            element.style.setProperty('--tornado-x', `${screen.x}px`);
-            element.style.setProperty('--tornado-y', `${screen.y}px`);
-            element.style.setProperty('--tornado-size', `${Math.max(160, radius * 0.9 * spawnCamera.scale)}px`);
-            return element;
-        }
+            const lowQuality = isWebBreakLowEndMode() || webbreakQualityLevel < 0.7;
+            const dustCount = lowQuality ? 58 : Math.round(104 * webbreakQualityLevel + 16);
+            const dust = [];
+            for (let index = 0; index < dustCount; index++) {
+                const dot = document.createElement('span');
+                dot.className = 'black-hole-dust';
+                const size = 1.2 + Math.random() * 2.8;
+                dot.style.setProperty('--dust-size', `${size.toFixed(2)}px`);
+                element.appendChild(dot);
+                dust.push({
+                    element: dot,
+                    theta: Math.random() * Math.PI * 2,
+                    r: 0.18 + Math.random() * 0.9,
+                    speed: (2.2 + Math.random() * 4.4) * (1 + power * 0.07),
+                    inflow: 0.025 + Math.random() * 0.052,
+                    tilt: Math.random(),
+                    seed: Math.random() * 100
+                });
+            }
 
-        function updateTornadoVisual(center, radius) {
-            if (!chaosTornadoVisual) return;
-            const screen = spawnWorldToScreen(center.x, center.y);
-            chaosTornadoVisual.style.setProperty('--tornado-x', `${screen.x}px`);
-            chaosTornadoVisual.style.setProperty('--tornado-y', `${screen.y}px`);
-            chaosTornadoVisual.style.setProperty('--tornado-size', `${Math.max(160, radius * 0.9 * spawnCamera.scale)}px`);
-        }
-
-        function stopTornadoVisual() {
-            if (!chaosTornadoVisual) return;
-            releaseParticleElement(chaosTornadoVisual);
-            chaosTornadoVisual = null;
+            addChaosVisualEffect({
+                type: 'blackhole-visual',
+                element,
+                x: worldX,
+                y: worldY,
+                radius,
+                power,
+                duration,
+                dust
+            });
         }
 
         function spawnTntDropVisual(worldX, worldY, duration = CHAOS_TNT_DROP_DURATION) {
@@ -16241,6 +17126,178 @@ function buildSwordElement() {
             syncSpawnMatterFromWrapper(body, { force: true, velocity: true });
         }
 
+        function setBlackHoleBodyWarp(body, intensity) {
+            if (!body || !body.element) return;
+            const amount = clamp(Number(intensity) || 0, 0, 1);
+            if (amount <= 0.015) {
+                clearBlackHoleBodyWarp(body);
+                return;
+            }
+            body.element.classList.add('black-hole-warping');
+            body.element.style.setProperty('--black-hole-blur', `${(amount * 2.6).toFixed(2)}px`);
+            body.element.style.setProperty('--black-hole-brightness', `${(1 + amount * 0.22).toFixed(3)}`);
+            body.element.style.setProperty('--black-hole-saturate', `${(1.05 + amount * 0.55).toFixed(3)}`);
+            body.element.style.setProperty('--chaos-absorb-opacity', `${Math.max(0, 1 - amount * 1.18).toFixed(3)}`);
+            body.chaosVisualScale = clamp(1 - amount * 0.86, 0.05, 1);
+            renderSpawnObject(body);
+        }
+
+        function clearBlackHoleBodyWarp(body) {
+            if (!body || !body.element) return;
+            body.element.classList.remove('black-hole-warping');
+            body.element.style.removeProperty('--black-hole-blur');
+            body.element.style.removeProperty('--black-hole-brightness');
+            body.element.style.removeProperty('--black-hole-saturate');
+            body.element.style.removeProperty('--chaos-absorb-opacity');
+            body.chaosVisualScale = 1;
+        }
+
+        function startBodyBlackHoleAbsorption(field, body, now) {
+            if (!field || !body || body.voiding || body.chaosAbsorbed) return false;
+            if (body.absorbingIntoBlackHole) return true;
+            if (!field.absorbingBodies) field.absorbingBodies = [];
+            if (!field.absorbingBodies.includes(body)) {
+                field.absorbingBodies.push(body);
+            }
+            body.absorbingIntoBlackHole = true;
+            body.blackHoleAbsorbField = field.startedAt || true;
+            body.blackHoleAbsorbStartedAt = now;
+            body.blackHoleAbsorbFromX = body.x;
+            body.blackHoleAbsorbFromY = body.y;
+            body.blackHoleAbsorbFromAngle = body.angle || 0;
+            body.blackHoleAbsorbSpin = (Math.random() < 0.5 ? -1 : 1) * (0.9 + Math.random() * 0.9);
+            body.dragging = false;
+            body.selectedForEdit = false;
+            body.pointerId = null;
+            body.vx = 0;
+            body.vy = 0;
+            body.av = 0;
+            removeSpawnMatterBody(body);
+            if (body.element) body.element.style.visibility = '';
+            return true;
+        }
+
+        function updateBodyBlackHoleAbsorption(field, body, now, dtScale) {
+            if (!field || !body || !body.absorbingIntoBlackHole) return false;
+            const elapsed = Math.max(0, now - (body.blackHoleAbsorbStartedAt || now));
+            const progress = clamp(elapsed / CHAOS_BLACK_HOLE_ABSORB_MS, 0, 1);
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+            const startX = Number.isFinite(body.blackHoleAbsorbFromX) ? body.blackHoleAbsorbFromX : body.x;
+            const startY = Number.isFinite(body.blackHoleAbsorbFromY) ? body.blackHoleAbsorbFromY : body.y;
+            const wobble = Math.sin(progress * Math.PI * 4 + body.id) * (1 - progress) * 12;
+            body.x = startX + (field.x - startX) * eased + wobble;
+            body.y = startY + (field.y - startY) * eased + Math.cos(progress * Math.PI * 4 + body.id) * (1 - progress) * 7;
+            body.angle = normalizeSpawnAngle((body.blackHoleAbsorbFromAngle || 0) + (body.blackHoleAbsorbSpin || 1) * progress * Math.PI * 3.2);
+            body.vx = 0;
+            body.vy = 0;
+            body.av = 0;
+            setBlackHoleBodyWarp(body, clamp(0.16 + progress * 0.9, 0, 1));
+            body.chaosVisualScale = clamp(1 - progress * 0.94, 0.05, 1);
+            renderSpawnObject(body);
+            if (progress >= 1) {
+                absorbBodyIntoBlackHole(field, body);
+                return true;
+            }
+            return false;
+        }
+
+        function absorbBodyIntoBlackHole(field, body) {
+            if (!field || !body || body.voiding) return;
+            if (!field.absorbedBodies) field.absorbedBodies = [];
+            if (!field.absorbedBodies.includes(body)) {
+                field.absorbedBodies.push(body);
+            }
+            body.absorbingIntoBlackHole = false;
+            body.blackHoleAbsorbField = null;
+            body.blackHoleAbsorbStartedAt = null;
+            body.blackHoleAbsorbFromX = null;
+            body.blackHoleAbsorbFromY = null;
+            body.blackHoleAbsorbFromAngle = null;
+            body.blackHoleAbsorbSpin = null;
+            body.chaosAbsorbed = true;
+            body.absorbedByBlackHole = field.startedAt || true;
+            body.dragging = false;
+            body.selectedForEdit = false;
+            body.pointerId = null;
+            body.x = field.x;
+            body.y = field.y;
+            body.vx = 0;
+            body.vy = 0;
+            body.av = 0;
+            setBlackHoleBodyWarp(body, 1);
+            removeSpawnMatterBody(body);
+            if (body.element) {
+                body.element.style.visibility = 'hidden';
+            }
+        }
+
+        function releaseAbsorbedBlackHoleBodies(field) {
+            const capturedBodies = [
+                ...((field && field.absorbedBodies) || []),
+                ...((field && field.absorbingBodies) || [])
+            ];
+            const absorbed = Array.from(new Set(capturedBodies))
+                .filter(body => body && spawnedObjects.includes(body) && (body.chaosAbsorbed || body.absorbingIntoBlackHole));
+            if (absorbed.length === 0) return 0;
+
+            absorbed.forEach((body, index) => {
+                const angle = (Math.PI * 2 * index / Math.max(1, absorbed.length)) + Math.random() * 0.72;
+                const strength = (520 + field.power * 140) * (0.82 + Math.random() * 0.36);
+                body.chaosAbsorbed = false;
+                body.absorbingIntoBlackHole = false;
+                body.absorbedByBlackHole = null;
+                body.blackHoleAbsorbField = null;
+                body.blackHoleAbsorbStartedAt = null;
+                body.blackHoleAbsorbFromX = null;
+                body.blackHoleAbsorbFromY = null;
+                body.blackHoleAbsorbFromAngle = null;
+                body.blackHoleAbsorbSpin = null;
+                body.voiding = false;
+                body.x = field.x + Math.cos(angle) * 14;
+                body.y = field.y + Math.sin(angle) * 14;
+                body.vx = Math.cos(angle) * strength;
+                body.vy = Math.sin(angle) * strength - (80 + Math.random() * 140);
+                body.av = (Math.random() - 0.5) * field.power * 7;
+                clearBlackHoleBodyWarp(body);
+                body.lastTransform = '';
+                if (body.element) {
+                    body.element.style.visibility = '';
+                    body.element.style.opacity = '';
+                }
+                wakeSpawnBody(body);
+                syncSpawnMatterFromWrapper(body, { force: true, velocity: true });
+                renderSpawnObject(body);
+            });
+
+            field.absorbedBodies = [];
+            field.absorbingBodies = [];
+            return absorbed.length;
+        }
+
+        function releaseBlackHoleField(field) {
+            if (!field || field.released) return;
+            field.released = true;
+            const screen = spawnWorldToScreen(field.x, field.y);
+            const affected = releaseAbsorbedBlackHoleBodies(field);
+            spawnedObjects.forEach(body => {
+                if (!body || body.voiding) return;
+                clearBlackHoleBodyWarp(body);
+            });
+            spawnImpactFlash(screen.x, screen.y, Math.min(260, field.radius * 0.58 * spawnCamera.scale));
+            spawnChaosParticles(screen.x, screen.y, { count: Math.max(10, affected * 3), speed: field.radius * 0.24, size: 4, color: '#ffffff' });
+            if (affected > 0) {
+                playBlackHoleReleaseAudio();
+                spawnScreenShake(field.power / 1.65);
+                vibrateWebBreak([18, 30, 48]);
+            } else {
+                vibrateWebBreak(14);
+            }
+            emitWebBreakSoundHook('blackhole-release', { power: field.power, radius: field.radius, affected });
+            requestSpawnPhysics();
+        }
+
         function isChaosPhysicsOverrideActive() {
             return chaosFields.length > 0 || performance.now() < chaosPhysicsOverrideUntil;
         }
@@ -16257,7 +17314,7 @@ function buildSwordElement() {
             const radius = getChaosSetting('chaos-radius-input', 320, 80, 900);
             const power = getChaosSetting('chaos-power-input', 6, 1, 10);
             const center = getChaosCenter();
-            chaosPhysicsOverrideUntil = performance.now() + CHAOS_BLACK_HOLE_DURATION + 400;
+            chaosPhysicsOverrideUntil = performance.now() + CHAOS_BLACK_HOLE_DURATION + CHAOS_BLACK_HOLE_COLLAPSE_MS + 900;
             chaosFields.push({
                 type: 'blackhole',
                 x: center.x,
@@ -16268,9 +17325,8 @@ function buildSwordElement() {
                 duration: CHAOS_BLACK_HOLE_DURATION
             });
             const visualCenter = spawnWorldToScreen(center.x, center.y);
-            spawnChaosSingularity(visualCenter.x, visualCenter.y, radius * spawnCamera.scale);
-            spawnChaosParticles(visualCenter.x, visualCenter.y, { count: 32, speed: radius * 0.34, size: 5, color: '#ffffff' });
-            spawnScreenShake(power / 8);
+            spawnChaosSingularity(center.x, center.y, radius, power, CHAOS_BLACK_HOLE_DURATION);
+            spawnChaosParticles(visualCenter.x, visualCenter.y, { count: 18, speed: radius * 0.2, size: 4, color: '#ffffff' });
             vibrateWebBreak([12, 24, 18]);
             emitWebBreakSoundHook('blackhole', { power, radius });
             setChaosStatus(strings.chaosBlackHoleStatus);
@@ -16430,63 +17486,23 @@ function buildSwordElement() {
 
             glassTargets.forEach(body => shatterSpawnGlassBody(body, centerX, centerY));
             const visualCenter = spawnWorldToScreen(centerX, centerY);
+            playTntExplosionAudio();
             spawnImpactFlash(visualCenter.x, visualCenter.y, Math.min(260, radius * 0.66 * spawnCamera.scale));
-            spawnChaosParticles(visualCenter.x, visualCenter.y, { count: 56, speed: radius * 0.56, size: 8, color: '#ffcc66' });
-            spawnScreenShake(power / 3.4);
+            spawnTntExplosionVisuals(visualCenter.x, visualCenter.y, radius, power);
+            spawnChaosParticles(visualCenter.x, visualCenter.y, { count: 18, speed: radius * 0.34, size: 5, color: '#ffcc66' });
+            spawnScreenShake(power / 2.7);
             vibrateWebBreak([28, 44, 38]);
             emitWebBreakSoundHook('explosion', { power, radius, affected });
             setChaosStatus(`${strings.chaosExplosionStatus} ${affected}`);
             requestSpawnPhysics();
         }
 
-        function toggleChaosTornado() {
-            if (!chaosToolsUnlocked) return openChaosPanel();
-            if (!canUseChaosTool('tornado')) return;
-            const strings = getTerminalStrings();
-            const radius = getChaosSetting('chaos-radius-input', 320, 80, 900);
-            const power = getChaosSetting('chaos-power-input', 6, 1, 10);
-            const center = getChaosCenter();
-
-            chaosTornadoActive = !chaosTornadoActive;
-            chaosFields.splice(0, chaosFields.length, ...chaosFields.filter(field => field.type !== 'tornado'));
-            stopTornadoVisual();
-
-            if (chaosTornadoActive) {
-                chaosFields.push({
-                    type: 'tornado',
-                    x: center.x,
-                    y: center.y,
-                    radius,
-                    power,
-                    startedAt: performance.now(),
-                    duration: Infinity
-                });
-                chaosTornadoVisual = spawnTornadoVisual(center, radius);
-                setChaosStatus(strings.chaosTornadoOn);
-                vibrateWebBreak([12, 18, 12]);
-                emitWebBreakSoundHook('tornado-on', { power, radius });
-            } else {
-                setChaosStatus(strings.chaosTornadoOff);
-                vibrateWebBreak(16);
-                emitWebBreakSoundHook('tornado-off', { power, radius });
-            }
-
-            const button = document.getElementById('chaos-tornado-button');
-            if (button) button.classList.toggle('active', chaosTornadoActive);
-            requestSpawnPhysics();
-        }
-
         function triggerChaosSlowMotion() {
             if (!chaosToolsUnlocked) return openChaosPanel();
             if (!canUseChaosTool('slowmo')) return;
-            chaosSlowMotionUntil = performance.now() + CHAOS_SLOW_MOTION_DURATION;
+            chaosSlowMotionUntil = Infinity;
             document.body.classList.add('slow-motion-active');
-            setTimeout(() => {
-                if (performance.now() >= chaosSlowMotionUntil) {
-                    document.body.classList.remove('slow-motion-active');
-                }
-            }, CHAOS_SLOW_MOTION_DURATION + 80);
-            emitWebBreakSoundHook('slowmotion', { duration: CHAOS_SLOW_MOTION_DURATION });
+            emitWebBreakSoundHook('slowmotion', { duration: 'infinite' });
             setChaosStatus(getTerminalStrings().chaosSlowMotionStatus);
             requestSpawnPhysics();
         }
@@ -16495,45 +17511,88 @@ function buildSwordElement() {
             for (let index = chaosFields.length - 1; index >= 0; index--) {
                 const field = chaosFields[index];
                 const age = now - field.startedAt;
+                if (field.type === 'blackhole' && age >= field.duration) {
+                    releaseBlackHoleField(field);
+                    chaosFields.splice(index, 1);
+                    continue;
+                }
                 if (age > field.duration) {
-                    if (field.type === 'tornado') {
-                        chaosTornadoActive = false;
-                        stopTornadoVisual();
+                    if (field.type === 'blackhole') {
+                        spawnedObjects.forEach(clearBlackHoleBodyWarp);
                     }
                     chaosFields.splice(index, 1);
                     continue;
                 }
+                if (field.type !== 'blackhole') continue;
 
-                const strengthTime = 1 - age / field.duration;
-                if (field.type === 'tornado') {
-                    const center = getChaosCenter();
-                    field.x = center.x;
-                    field.y = center.y;
-                    updateTornadoVisual(center, field.radius);
-                }
+                const dtScale = frameDt / 16.67;
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
+                const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
+                const cameraScale = Math.max(0.7, spawnCamera.scale || 1);
+                const worldReach = Math.hypot(viewportWidth, viewportHeight) / cameraScale;
+                const blackHoleEffectiveRadius = Math.max(field.radius * 2.2, worldReach * 1.35);
+                let absorbedCount = 0;
                 spawnedObjects.forEach(body => {
-                    if (!body || body.voiding || body.dragging) return;
+                    if (!body || body.voiding || body.dragging || body.chaosAbsorbed) return;
+                    if (body.absorbingIntoBlackHole) {
+                        if (body.blackHoleAbsorbField === (field.startedAt || true) && updateBodyBlackHoleAbsorption(field, body, now, dtScale)) {
+                            absorbedCount++;
+                        }
+                        return;
+                    }
+
                     const dx = field.x - body.x;
                     const dy = field.y - body.y;
-                    const distance = Math.max(18, Math.hypot(dx, dy));
-                    if (distance > field.radius) return;
-                    const falloff = (1 - distance / field.radius) * (Number.isFinite(strengthTime) ? strengthTime : 1);
-                    if (field.type === 'tornado') {
-                        const tangentX = -dy / distance;
-                        const tangentY = dx / distance;
-                        const impulse = field.power * falloff * (frameDt / 16.67) * 28;
-                        const centerPull = field.power * falloff * (frameDt / 16.67) * 9;
-                        applyVelocityToSpawnBody(
-                            body,
-                            tangentX * impulse + (dx / distance) * centerPull,
-                            tangentY * impulse + (dy / distance) * centerPull - field.power * 0.32 * falloff,
-                            field.power * 0.06 * falloff
-                        );
+                    const distance = Math.max(8, Math.hypot(dx, dy));
+                    if (distance > blackHoleEffectiveRadius * 1.14) {
+                        clearBlackHoleBodyWarp(body);
+                        return;
+                    }
+
+                    const absorbRadius = Math.max(44, Math.min(128, field.radius * 0.34));
+                    const absorbProgress = clamp(1 - (distance - absorbRadius) / Math.max(1, absorbRadius * 5.2), 0, 1);
+                    if (distance <= absorbRadius) {
+                        startBodyBlackHoleAbsorption(field, body, now);
+                        return;
+                    }
+
+                    const normalized = clamp(1 - distance / blackHoleEffectiveRadius, 0, 1);
+                    const timeRamp = clamp(age / 900, 0.34, 1);
+                    const falloff = Math.max(0.055, Math.pow(normalized, 0.38)) * timeRamp;
+                    const nearCore = Math.max(absorbProgress, clamp(1 - distance / Math.max(70, field.radius * 0.46), 0, 1));
+                    const radial = field.power * falloff * dtScale * (92 + nearCore * 255);
+                    const swirlFade = clamp((distance - absorbRadius * 2.15) / Math.max(1, absorbRadius * 4.2), 0, 1);
+                    const swirl = field.power * falloff * dtScale * (10 + nearCore * 34) * swirlFade;
+                    const tangentX = -dy / distance;
+                    const tangentY = dx / distance;
+                    applyVelocityToSpawnBody(
+                        body,
+                        (dx / distance) * radial + tangentX * swirl,
+                        (dy / distance) * radial + tangentY * swirl,
+                        field.power * 0.045 * falloff + nearCore * 0.16
+                    );
+
+                    if (nearCore > 0.08) {
+                        setBlackHoleBodyWarp(body, nearCore);
+                        body.vx *= (1 - 0.018 * nearCore * dtScale);
+                        body.vy *= (1 - 0.018 * nearCore * dtScale);
+                        wakeSpawnBody(body);
+                        syncSpawnMatterFromWrapper(body, { velocity: true });
                     } else {
-                        const impulse = field.power * falloff * (frameDt / 16.67) * 42;
-                        applyVelocityToSpawnBody(body, (dx / distance) * impulse, (dy / distance) * impulse, field.power * 0.025 * falloff);
+                        clearBlackHoleBodyWarp(body);
                     }
                 });
+
+                if (absorbedCount > 0) {
+                    const absorbScreen = spawnWorldToScreen(field.x, field.y);
+                    spawnChaosParticles(absorbScreen.x, absorbScreen.y, {
+                        count: Math.min(10, 3 + absorbedCount * 2),
+                        speed: field.radius * 0.08,
+                        size: 3,
+                        color: '#ffffff'
+                    });
+                    requestSpawnPhysics();
+                }
             }
         }
 
@@ -17123,7 +18182,7 @@ function rotateSpawnPoint(body, localX, localY) {
         function isSpawnCameraGestureTarget(target) {
             if (!document.body.classList.contains('building-mode')) return false;
             if (!target || typeof target.closest !== 'function') return false;
-            if (target.closest('.spawn-object, button, input, textarea, select, a, #spawn-edit-panel, #terminal-panel, #controls-container, #mobile-building-controls-toggle, #mobile-terminal-dock, #mobile-bottom-dock, #auth-panel, #changelog-panel, #community-panel, #chaos-panel, #captcha-puzzle, .webbreak-modal')) {
+            if (target.closest('.spawn-object, button, input, textarea, select, a, #spawn-edit-panel, #terminal-panel, #controls-container, #mobile-building-controls-toggle, #mobile-terminal-dock, #auth-panel, #changelog-panel, #community-panel, #chaos-panel, #captcha-puzzle, .webbreak-modal')) {
                 return false;
             }
             return true;
@@ -17622,9 +18681,18 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
                 return;
             }
 
+            const lowEndMode = isWebBreakLowEndMode();
+            const frameDt = Math.min(lowEndMode ? 1000 / 24 : 1000 / 30, Math.max(lowEndMode ? 1000 / 45 : 1000 / 120, now - lastSpawnFrameTime || 1000 / 60));
+            lastSpawnFrameTime = now;
+
             if (spawnedObjects.length === 0) {
                 cleanupSpawnMatterBodies();
-                spawnAnimationRunning = false;
+                updateChaosFields(now, frameDt);
+                if (chaosFields.length > 0) {
+                    scheduleSpawnPhysicsFrame(updateSpawnPhysics);
+                } else {
+                    spawnAnimationRunning = false;
+                }
                 return;
             }
 
@@ -17632,9 +18700,6 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
             updateWebBreakPerformanceMode();
             tuneSpawnMatterPerformance();
 
-            const lowEndMode = isWebBreakLowEndMode();
-            const frameDt = Math.min(lowEndMode ? 1000 / 24 : 1000 / 30, Math.max(lowEndMode ? 1000 / 45 : 1000 / 120, now - lastSpawnFrameTime || 1000 / 60));
-            lastSpawnFrameTime = now;
             const slowMotionActive = now < chaosSlowMotionUntil;
             const scaledFrameDt = frameDt * (slowMotionActive ? 0.38 : 1);
             if (!slowMotionActive) {
@@ -17680,7 +18745,7 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
                 updateSpawnEditToolbar();
             }
 
-            if (!spawnedObjects.some(isSpawnPhysicsActiveBody) && chaosFields.length === 0 && !slowMotionActive) {
+            if (!spawnedObjects.some(isSpawnPhysicsActiveBody) && chaosFields.length === 0) {
                 spawnAnimationRunning = false;
                 return;
             }
@@ -17731,7 +18796,8 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
             if (dx || dy) {
                 body.x += dx;
                 body.y += dy;
-                syncSpawnMatterFromWrapper(body, { force: true, velocity: false });
+                if (dy < 0 && (body.vy || 0) > 0) body.vy = 0;
+                syncSpawnMatterFromWrapper(body, { force: true, velocity: dy < 0 });
             }
         }
 
@@ -18240,13 +19306,7 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
         }
 
         function rotateSpawnDragWithWheel(event) {
-            if (event.ctrlKey && document.body.classList.contains('building-mode') && !activeSpawnDrag) {
-                const delta = clamp(-event.deltaY, -260, 260);
-                const scaleDelta = Math.exp(delta * 0.0016);
-                zoomSpawnCameraAt(event.clientX, event.clientY, scaleDelta);
-                event.preventDefault();
-                return;
-            }
+            if (event.ctrlKey || event.metaKey) return;
 
             const body = activeSpawnDrag;
             if (!body || !body.dragging || !canRotateSpawnBodyWithWheel(body) || body.voiding) return;
@@ -18373,7 +19433,6 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
         }
 
         window.addEventListener('resize', () => {
-            updateSpawnGroundVisual();
             applySpawnCameraTransform();
             if (!spawnMatterEngine) return;
             rebuildSpawnMatterBounds();
@@ -18420,20 +19479,12 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                 openSaveBuildModal('load');
             } else if (command === 'webreak' || command === 'webbreak') {
                 unlockChaosTools();
-            } else if (command === 'chaos' || command === 'chaos tools') {
-                toggleChaosPanel();
             } else if (command === 'blackhole' || command === 'black hole') {
                 triggerChaosBlackHole();
             } else if (command === 'explosion' || command === 'explode') {
                 triggerChaosExplosion();
             } else if (command === 'slowmo' || command === 'slow motion') {
                 triggerChaosSlowMotion();
-            } else if (command === 'tornado') {
-                toggleChaosTornado();
-            } else if (command === 'show ground' || command === 'showground' || command === 'ground on') {
-                setSpawnRaisedGround(true);
-            } else if (command === 'hideground' || command === 'hide ground' || command === 'ground off') {
-                setSpawnRaisedGround(false);
             } else if (command === 'reset camera' || command === 'camera reset') {
                 resetSpawnCamera();
                 writeTerminalLine(strings.terminalCameraHint, 'terminal-quiet');
@@ -18713,7 +19764,7 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
             prompt.setAttribute('data-i18n', 'captchaMath');
             
             const visual = document.getElementById('captcha-visual');
-            visual.innerHTML = `<span class="text-xl font-mono block tracking-widest bg-[var(--btn-bg)] p-2 text-center rounded border-[0.5px] border-[var(--btn-border)] text-[var(--text-main)]">${a} ${op} ${b} = ?</span>`;
+            visual.innerHTML = `<div class="captcha-visual-token"><span class="captcha-visual-value">${a} ${op} ${b} = ?</span></div>`;
             visual.classList.remove('hidden');
             
             updateTranslations();
@@ -18736,7 +19787,7 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
             prompt.setAttribute('data-i18n', 'captchaText');
             
             const visual = document.getElementById('captcha-visual');
-            visual.innerHTML = `<div class="relative bg-[var(--btn-bg)] h-12 flex items-center justify-center overflow-hidden rounded border-[0.5px] border-[var(--btn-border)] select-none pointer-events-none text-[var(--text-main)]"><span class="text-2xl font-mono tracking-[0.3em] font-bold italic opacity-60 mix-blend-difference">${str}</span><div class="absolute inset-0 opacity-30 flex flex-col justify-between"><div class="h-[1px] w-full bg-current rotate-12 -translate-y-2 text-[var(--text-main)]"></div><div class="h-[1px] w-full bg-current -rotate-6 translate-y-2 text-[var(--text-main)]"></div></div></div>`;
+            visual.innerHTML = `<div class="captcha-visual-token captcha-visual-token-noisy"><span class="captcha-visual-value captcha-visual-code">${str}</span><span class="captcha-noise-line captcha-noise-line-a"></span><span class="captcha-noise-line captcha-noise-line-b"></span></div>`;
             visual.classList.remove('hidden');
 
             updateTranslations();
@@ -18756,7 +19807,7 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
             prompt.setAttribute('data-i18n', 'captchaReverse');
             
             const visual = document.getElementById('captcha-visual');
-            visual.innerHTML = `<span class="text-xl font-mono block tracking-widest bg-[var(--btn-bg)] p-2 text-center rounded border-[0.5px] border-[var(--btn-border)] text-[var(--text-main)]">${word}</span>`;
+            visual.innerHTML = `<div class="captcha-visual-token"><span class="captcha-visual-value">${word}</span></div>`;
             visual.classList.remove('hidden');
 
             updateTranslations();
@@ -19427,12 +20478,6 @@ function handleConfirm(action) {
             const backButton = document.getElementById('build-back-btn');
             if (backButton) backButton.classList.add('show');
             setMobileBuildingControlsHidden(false);
-            if (isSpawnCompactViewport()) {
-                setMobileBottomDockHeight(112, false);
-            } else {
-                document.body.classList.remove('mobile-bottom-dock-open');
-            }
-            updateSpawnGroundVisual();
             updateDesktopBuildTimerAnchor();
         }
 
@@ -19446,7 +20491,6 @@ function handleConfirm(action) {
             const backButton = document.getElementById('build-back-btn');
             if (backButton) backButton.classList.remove('show');
             setMobileBuildingControlsHidden(false);
-            document.body.classList.remove('mobile-bottom-dock-open');
             hideTrashDropZone();
             updateDesktopBuildTimerAnchor();
         }
@@ -19575,6 +20619,7 @@ function handleConfirm(action) {
                 questionZoneTab = 'main';
             }
             updateQuestionZoneTabs();
+            runHeroTitleTyping(true);
 
             document.body.classList.remove('building-mode');
             card.classList.remove('first-page-hidden', 'first-page-fading');
@@ -19746,7 +20791,13 @@ function handleConfirm(action) {
                 '--btn-hover-border': textMain,
                 '--btn-hover-bg': textMain,
                 '--btn-hover-text': hoverText,
-                '--selection-bg': rgbToHexColor(mixRgbColors(base, isLight ? white : black, isLight ? 0.36 : 0.30))
+                '--selection-bg': rgbToHexColor(mixRgbColors(base, isLight ? white : black, isLight ? 0.36 : 0.30)),
+                '--terminal-text': textMain,
+                '--terminal-muted': rgbToHexColor(mixRgbColors(base, isLight ? black : white, isLight ? 0.5 : 0.58)),
+                '--terminal-warning': isLight ? '#7A4A00' : '#FFD166',
+                '--terminal-warning-bg': isLight ? 'rgba(122, 74, 0, 0.1)' : 'rgba(255, 209, 102, 0.12)',
+                '--terminal-success': isLight ? '#176A3A' : '#7DFFB2',
+                '--terminal-error': isLight ? '#A42222' : '#FF8AA7'
             };
         }
 
@@ -20247,7 +21298,6 @@ function handleConfirm(action) {
             startFirstPageTipCycle();
             setTheme(getPreferredTheme());
             applySpawnCameraTransform();
-            updateSpawnGroundVisual();
             initializeAuth();
             scheduleIosInstallPrompt();
             scheduleWebBreakPushPrompt();
@@ -20328,6 +21378,13 @@ function handleConfirm(action) {
                 white-space: nowrap !important;
                 opacity: 1 !important;
                 transform: translateY(0) !important;
+            }
+            body.building-mode .trash-drop-zone {
+                top: calc(max(10px, env(safe-area-inset-top)) + 48px) !important;
+                right: max(8px, env(safe-area-inset-right)) !important;
+                bottom: auto !important;
+                width: 42px !important;
+                height: 42px !important;
             }
             body.building-mode #controls-container {
                 position: fixed !important;
@@ -20915,6 +21972,7 @@ function handleConfirm(action) {
                 padding-top: calc(env(safe-area-inset-top) + 60px) !important;
             }
         }
+
     </style>
 </body>
 </html>
