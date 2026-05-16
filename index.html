@@ -580,6 +580,11 @@
             background: #030507;
         }
 
+        .theme-swatch-custom {
+            background:
+                linear-gradient(135deg, #ff3366 0 32%, #00f5ff 32% 64%, #f59e0b 64% 100%);
+        }
+
         .spawn-edit-shortcut {
             position: fixed;
             left: 1rem;
@@ -1874,6 +1879,57 @@
             overflow-wrap: anywhere;
         }
 
+        .build-library-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .build-library-title-row .build-library-title {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        .build-library-device-badge {
+            flex: 0 0 auto;
+            min-width: 54px;
+            padding: 4px 7px;
+            border: 1px solid var(--btn-border);
+            background: color-mix(in srgb, var(--btn-bg) 58%, transparent);
+            color: var(--text-main);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            line-height: 1;
+            text-align: center;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 0 color-mix(in srgb, var(--card-shadow) 80%, transparent);
+            cursor: help;
+            user-select: none;
+            touch-action: manipulation;
+            transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+        }
+
+        .build-library-device-badge:hover,
+        .build-library-device-badge:focus-visible {
+            background: color-mix(in srgb, var(--btn-hover-bg) 20%, var(--btn-bg));
+            border-color: var(--btn-hover-border);
+            outline: none;
+            transform: translateY(-1px);
+        }
+
+        .build-library-device-badge.mobile {
+            border-color: color-mix(in srgb, #00f5ff 74%, var(--btn-border));
+            color: color-mix(in srgb, #00f5ff 78%, var(--text-main));
+        }
+
+        .build-library-device-badge.pc {
+            border-color: color-mix(in srgb, #f59e0b 72%, var(--btn-border));
+            color: color-mix(in srgb, #f59e0b 80%, var(--text-main));
+        }
+
         .featured-build-description,
         .featured-build-meta,
         .build-library-meta {
@@ -1888,6 +1944,29 @@
             font-weight: 800;
             letter-spacing: 0.06em;
             text-transform: uppercase;
+        }
+
+        .featured-build-likes {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            width: fit-content;
+            min-height: 26px;
+            padding: 4px 8px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 78%, transparent);
+            color: var(--text-main);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            line-height: 1;
+            background: color-mix(in srgb, var(--btn-bg) 50%, transparent);
+        }
+
+        .featured-build-likes svg {
+            width: 14px;
+            height: 14px;
+            flex: 0 0 auto;
         }
 
         .build-library-actions {
@@ -2093,15 +2172,26 @@
             min-height: 48px;
             padding: 0;
             border: 1px solid var(--btn-border);
+            border-radius: 0;
             background: var(--btn-bg);
             cursor: pointer;
+            overflow: hidden;
+            appearance: none;
+            -webkit-appearance: none;
+            clip-path: inset(0);
         }
 
         .custom-theme-color-input::-webkit-color-swatch-wrapper {
             padding: 5px;
+            border-radius: 0;
         }
 
         .custom-theme-color-input::-webkit-color-swatch {
+            border: 1px solid var(--btn-border);
+            border-radius: 0;
+        }
+
+        .custom-theme-color-input::-moz-color-swatch {
             border: 1px solid var(--btn-border);
             border-radius: 0;
         }
@@ -6331,6 +6421,7 @@
                 <svg id="theme-icon-sunset" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 5-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
                 <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
                 <svg id="theme-icon-midnight" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9"/><path d="M19 3v4"/><path d="M21 5h-4"/><path d="M5 11v2"/><path d="M6 12H4"/><path d="M13 19v2"/><path d="M14 20h-2"/></svg>
+                <svg id="theme-icon-custom" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 22a10 10 0 1 1 10-10c0 2.2-1.8 4-4 4h-1.5a2 2 0 0 0-1.7 3l.2.3a1.8 1.8 0 0 1-1.5 2.7H12Z"/><circle cx="7.5" cy="10.5" r=".5"/><circle cx="10.5" cy="7.5" r=".5"/><circle cx="14" cy="7.5" r=".5"/><circle cx="16.5" cy="10.5" r=".5"/></svg>
             </button>
 
             <div id="theme-menu" class="theme-menu absolute right-0 top-12 w-40 glass-card border opacity-0 invisible transform translate-y-[-10px] transition-all duration-200" role="menu" data-i18n-aria-label="themeMenuLabel" aria-label="Theme">
@@ -6349,6 +6440,10 @@
                 <button type="button" data-theme-option="midnight" onclick="setTheme('midnight')" class="theme-menu-option interactive" role="menuitemradio">
                     <span class="theme-menu-swatch theme-swatch-midnight" aria-hidden="true"></span>
                     <span data-i18n="themeMidnight">Night</span>
+                </button>
+                <button type="button" data-theme-option="custom" onclick="setTheme('custom')" class="theme-menu-option interactive" role="menuitemradio">
+                    <span class="theme-menu-swatch theme-swatch-custom" aria-hidden="true"></span>
+                    <span data-i18n="themeCustom">Custom</span>
                 </button>
             </div>
         </div>
@@ -7268,12 +7363,12 @@
                 terminalHelp: "Available commands: help, clear, clear objects, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn <object> <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, delete <object>, helicoptermode, unhelicoptermode, about.",
                 terminalUnknown: "Unknown command. Type help.",
                 terminalAbout: "Access granted. This terminal is local to the page.",
-                terminalThemeList: "Current themes: light, dark, sunset, midnight",
+                terminalThemeList: "Current themes: light, dark, sunset, midnight, custom",
                 terminalThemeUsage: "Use \"theme set <name>\" to switch theme from the terminal.",
                 terminalThemeDescription: "Themes change the whole interface palette: background, glass card, text, buttons, captcha graphics, and terminal colors. Example: theme set midnight",
                 terminalThemeCurrent: "Current theme:",
                 terminalThemeChanged: "Theme changed to:",
-                terminalThemeInvalid: "Unknown theme. Available themes: light, dark, sunset, midnight.",
+                terminalThemeInvalid: "Unknown theme. Available themes: light, dark, sunset, midnight, custom.",
                 terminalLangList: "Current languages: en, ru",
                 terminalLangUsage: "Use \"lang set <name>\" to switch language from the terminal.",
                 terminalLangDescription: "Language changes the interface copy, captcha prompts, terminal messages, and the language indicator. Example: lang set ru",
@@ -7344,12 +7439,12 @@
                 terminalHelp: "Доступные команды: help, clear, clear objects, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn <object> <количество>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, delete <object>, helicoptermode, unhelicoptermode, about.",
                 terminalUnknown: "Неизвестная команда. Напишите help.",
                 terminalAbout: "Доступ разрешён. Этот терминал работает только внутри страницы.",
-                terminalThemeList: "Current themes: light, dark, sunset, midnight",
+                terminalThemeList: "Current themes: light, dark, sunset, midnight, custom",
                 terminalThemeUsage: "Используйте \"theme set <name>\", чтобы переключить тему из терминала.",
                 terminalThemeDescription: "Темы меняют всю палитру интерфейса: фон, glass-card, текст, кнопки, графику капчи и цвета терминала. Пример: theme set midnight",
                 terminalThemeCurrent: "Текущая тема:",
                 terminalThemeChanged: "Тема изменена на:",
-                terminalThemeInvalid: "Неизвестная тема. Доступные темы: light, dark, sunset, midnight.",
+                terminalThemeInvalid: "Неизвестная тема. Доступные темы: light, dark, sunset, midnight, custom.",
                 terminalLangList: "Доступные языки: en, ru",
                 terminalLangUsage: "Используйте \"lang set <name>\", чтобы переключить язык из терминала.",
                 terminalLangDescription: "Язык меняет текст интерфейса, подсказки капчи, сообщения терминала и индикатор языка. Пример: lang set en",
@@ -7441,12 +7536,12 @@
             terminalHelp: "Доступные команды: help, clear, clear objects, increase limit, theme, theme set <name>, lang, lang set <name>, spawn, spawn <object> <count>, gravity, gravity set <0-200>, build, build on, build off, edit, edit on, edit off, delete <object>, helicoptermode, unhelicoptermode, about.",
             terminalUnknown: "Неизвестная команда. Введите help.",
             terminalAbout: "Доступ получен. Этот терминал работает только на этой странице.",
-            terminalThemeList: "Текущие темы: light, dark, sunset, midnight",
+            terminalThemeList: "Текущие темы: light, dark, sunset, midnight, custom",
             terminalThemeUsage: "Используйте \"theme set <name>\", чтобы сменить тему через терминал.",
             terminalThemeDescription: "Темы меняют всю палитру интерфейса: фон, стеклянные панели, текст, кнопки, графику капчи и цвета терминала. Пример: theme set midnight",
             terminalThemeCurrent: "Текущая тема:",
             terminalThemeChanged: "Тема изменена на:",
-            terminalThemeInvalid: "Неизвестная тема. Доступные темы: light, dark, sunset, midnight.",
+            terminalThemeInvalid: "Неизвестная тема. Доступные темы: light, dark, sunset, midnight, custom.",
             terminalLangList: "Текущие языки: en, ru",
             terminalLangUsage: "Используйте \"lang set <name>\", чтобы сменить язык через терминал.",
             terminalLangDescription: "Язык меняет тексты интерфейса, подсказки капчи, сообщения терминала и индикатор языка. Пример: lang set ru",
@@ -7533,7 +7628,8 @@
             featuredBuildLoading: "Loading featured buildings...",
             featuredBuildCommunityStatus: "Community featured builds are ready.",
             featuredBuildEmpty: "No featured buildings yet.",
-            featuredBuildLoadButton: "Load build",
+            featuredBuildLoadButton: "View Post",
+            featuredBuildViewPostButton: "View Post",
             featuredBuildObjectLabel: "objects",
             featuredBuildSourceCommunity: "Community",
             firstPageLibraryEyebrow: "My Library",
@@ -7933,7 +8029,8 @@
             featuredBuildBuiltInStatus: "\u041b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0431\u0438\u043b\u0434\u044b \u0433\u043e\u0442\u043e\u0432\u044b.",
             featuredBuildCommunityStatus: "\u0418\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0431\u0438\u043b\u0434\u044b \u0438\u0437 Community \u0433\u043e\u0442\u043e\u0432\u044b.",
             featuredBuildEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a.",
-            featuredBuildLoadButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
+            featuredBuildLoadButton: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u043e\u0441\u0442",
+            featuredBuildViewPostButton: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u043e\u0441\u0442",
             featuredBuildObjectLabel: "\u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432",
             featuredBuildSourceBuiltIn: "\u041f\u043e\u0434\u0431\u043e\u0440\u043a\u0430",
             featuredBuildSourceCommunity: "Community",
@@ -7989,6 +8086,7 @@
             themeSunset: "Sunset",
             themeDark: "Dark",
             themeMidnight: "Night",
+            themeCustom: "Custom",
             terminalQuickSaveButton: "Save",
             saveBuildButton: "Save Build",
             loadBuildButton: "Load Build",
@@ -8043,6 +8141,7 @@
             themeSunset: "\u0417\u0430\u043a\u0430\u0442",
             themeDark: "\u0422\u0435\u043c\u043d\u0430\u044f",
             themeMidnight: "\u041d\u043e\u0447\u043d\u0430\u044f",
+            themeCustom: "\u0421\u0432\u043e\u044f",
             terminalQuickSaveButton: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
             saveBuildButton: "\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c",
             loadBuildButton: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c",
@@ -8350,6 +8449,8 @@
             firstPageLibraryTabLineTwo: "Library",
             firstPageFeaturedBody: "Best community builds selected by the admins.",
             featuredBuildEmpty: "No featured community buildings yet.",
+            featuredBuildLoadButton: "View Post",
+            featuredBuildViewPostButton: "View Post",
             firstPageLibraryEyebrow: "My Library",
             firstPageLibraryTitle: "Saved builds",
             firstPageLibraryBody: "Your local saved creations with quick visual banners.",
@@ -8359,7 +8460,13 @@
             libraryCopyCodeButton: "Copy code",
             libraryDeleteButton: "Delete",
             libraryCorrupted: "Save code damaged",
-            librarySavedAt: "saved"
+            librarySavedAt: "saved",
+            libraryDevicePc: "PC",
+            libraryDeviceMobile: "Mobile",
+            libraryDevicePcTitle: "Created on PC",
+            libraryDeviceMobileTitle: "Created on mobile",
+            libraryDevicePcHint: "Created on PC. On mobile, this build can shift because the screen is narrower.",
+            libraryDeviceMobileHint: "Created on mobile. On PC, spacing and scale may look different."
         });
 
         Object.assign(i18n.ru, {
@@ -8367,6 +8474,8 @@
             firstPageLibraryTabLineTwo: "\u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430",
             firstPageFeaturedBody: "\u041b\u0443\u0447\u0448\u0438\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0430, \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0430\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0435\u0439.",
             featuredBuildEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445 Community-\u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043a.",
+            featuredBuildLoadButton: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u043e\u0441\u0442",
+            featuredBuildViewPostButton: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u043e\u0441\u0442",
             firstPageLibraryEyebrow: "\u041c\u043e\u044f \u0431\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430",
             firstPageLibraryTitle: "\u0421\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438",
             firstPageLibraryBody: "\u0412\u0430\u0448\u0438 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0435\u0439\u0432\u044b \u0441 \u0431\u0430\u043d\u043d\u0435\u0440\u0430\u043c\u0438-\u043f\u0440\u0435\u0432\u044c\u044e.",
@@ -8376,7 +8485,13 @@
             libraryCopyCodeButton: "\u041a\u043e\u0434",
             libraryDeleteButton: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
             libraryCorrupted: "\u0421\u0435\u0439\u0432 \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0451\u043d",
-            librarySavedAt: "\u0441\u043e\u0445\u0440."
+            librarySavedAt: "\u0441\u043e\u0445\u0440.",
+            libraryDevicePc: "\u041f\u041a",
+            libraryDeviceMobile: "\u0422\u0435\u043b\u0435\u0444\u043e\u043d",
+            libraryDevicePcTitle: "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u043d\u0430 \u041f\u041a",
+            libraryDeviceMobileTitle: "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u043d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435",
+            libraryDevicePcHint: "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u043d\u0430 \u041f\u041a. \u041d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u043c\u043e\u0436\u0435\u0442 \u0441\u044a\u0435\u0445\u0430\u0442\u044c \u0438\u0437-\u0437\u0430 \u0443\u0437\u043a\u043e\u0433\u043e \u044d\u043a\u0440\u0430\u043d\u0430.",
+            libraryDeviceMobileHint: "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u043d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435. \u041d\u0430 \u041f\u041a \u043e\u0442\u0441\u0442\u0443\u043f\u044b \u0438 \u043c\u0430\u0441\u0448\u0442\u0430\u0431 \u043c\u043e\u0433\u0443\u0442 \u0432\u044b\u0433\u043b\u044f\u0434\u0435\u0442\u044c \u0438\u043d\u0430\u0447\u0435."
         });
 
         Object.assign(i18n.en, {
@@ -8602,8 +8717,13 @@
 
         /* --- Theme Logic --- */
         function getPreferredTheme() {
+            const settings = readWebBreakSettings();
             const savedTheme = localStorage.getItem('preferredTheme');
-            if (savedTheme && ['light', 'sunset', 'dark', 'midnight'].includes(savedTheme)) {
+            if (settings.customThemeEnabled === true) {
+                return 'custom';
+            }
+            if (savedTheme && ['light', 'sunset', 'dark', 'midnight', 'custom'].includes(savedTheme)) {
+                if (savedTheme === 'custom') return 'light';
                 return savedTheme;
             }
             const hour = new Date().getHours();
@@ -8612,14 +8732,15 @@
             return 'light';
         }
 
-        function setTheme(theme) {
-            const normalizedTheme = ['light', 'sunset', 'dark', 'midnight'].includes(theme) ? theme : 'light';
+        function setTheme(theme, options = {}) {
+            const normalizedTheme = ['light', 'sunset', 'dark', 'midnight', 'custom'].includes(theme) ? theme : 'light';
             const root = document.documentElement;
             const darkIcon = document.getElementById('theme-icon-dark');
             const lightIcon = document.getElementById('theme-icon-light');
             const sunsetIcon = document.getElementById('theme-icon-sunset');
             const midnightIcon = document.getElementById('theme-icon-midnight');
-            const icons = [lightIcon, sunsetIcon, darkIcon, midnightIcon];
+            const customIcon = document.getElementById('theme-icon-custom');
+            const icons = [lightIcon, sunsetIcon, darkIcon, midnightIcon, customIcon];
 
             icons.forEach(icon => {
                 if (!icon) return;
@@ -8627,18 +8748,40 @@
                 icon.classList.remove('block');
             });
 
+            if (normalizedTheme === 'custom') {
+                const settings = readWebBreakSettings();
+                const color = normalizeCustomThemeColor(settings.customThemeColor) || DEFAULT_CUSTOM_THEME_COLOR;
+                writeWebBreakSettings({ customThemeEnabled: true, customThemeColor: color });
+                if (customIcon) {
+                    customIcon.classList.remove('hidden');
+                    customIcon.classList.add('block');
+                } else if (lightIcon) {
+                    lightIcon.classList.remove('hidden');
+                    lightIcon.classList.add('block');
+                }
+                localStorage.setItem('preferredTheme', 'custom');
+                updateThemeMenu('custom');
+                renderSettingsPanel();
+                closeThemeMenu();
+                return;
+            }
+
+            if (options.disableCustom !== false) {
+                writeWebBreakSettings({ customThemeEnabled: false });
+            }
+
             if (normalizedTheme === 'dark') {
                 root.setAttribute('data-theme', 'dark');
-                darkIcon.classList.remove('hidden'); darkIcon.classList.add('block');
+                if (darkIcon) { darkIcon.classList.remove('hidden'); darkIcon.classList.add('block'); }
             } else if (normalizedTheme === 'sunset') {
                 root.setAttribute('data-theme', 'sunset');
-                sunsetIcon.classList.remove('hidden'); sunsetIcon.classList.add('block');
+                if (sunsetIcon) { sunsetIcon.classList.remove('hidden'); sunsetIcon.classList.add('block'); }
             } else if (normalizedTheme === 'midnight') {
                 root.setAttribute('data-theme', 'midnight');
-                midnightIcon.classList.remove('hidden'); midnightIcon.classList.add('block');
+                if (midnightIcon) { midnightIcon.classList.remove('hidden'); midnightIcon.classList.add('block'); }
             } else {
                 root.removeAttribute('data-theme');
-                lightIcon.classList.remove('hidden'); lightIcon.classList.add('block');
+                if (lightIcon) { lightIcon.classList.remove('hidden'); lightIcon.classList.add('block'); }
             }
             localStorage.setItem('preferredTheme', normalizedTheme);
             updateThemeMenu(normalizedTheme);
@@ -10393,17 +10536,54 @@ function normalizeNickname(value) {
                 .limit(6);
             if (error) throw error;
 
-            return (data || []).map(row => {
+            const rows = data || [];
+            const ids = rows.map(row => row.id);
+            const likeCounts = {};
+            if (ids.length > 0) {
+                try {
+                    const reactionSelect = communityReactionColumnAvailable === false ? 'post_id' : 'post_id,reaction';
+                    const likesResult = await client
+                        .from('community_likes')
+                        .select(reactionSelect)
+                        .in('post_id', ids);
+                    if (likesResult.error && communityReactionColumnAvailable !== false && isCommunityReactionColumnError(likesResult.error)) {
+                        communityReactionColumnAvailable = false;
+                        const fallbackLikes = await client
+                            .from('community_likes')
+                            .select('post_id')
+                            .in('post_id', ids);
+                        if (fallbackLikes.error) throw fallbackLikes.error;
+                        (fallbackLikes.data || []).forEach(like => {
+                            const postId = String(like.post_id);
+                            likeCounts[postId] = (likeCounts[postId] || 0) + 1;
+                        });
+                    } else if (!likesResult.error) {
+                        communityReactionColumnAvailable = reactionSelect.includes('reaction');
+                        (likesResult.data || []).forEach(like => {
+                            if (communityReactionColumnAvailable !== false && Number(like.reaction) < 0) return;
+                            const postId = String(like.post_id);
+                            likeCounts[postId] = (likeCounts[postId] || 0) + 1;
+                        });
+                    }
+                } catch (error) {
+                    // Likes are decorative here; keep featured posts visible if counts fail.
+                }
+            }
+
+            return rows.map(row => {
                 try {
                     const snapshot = decodeBuildSaveCode(row.build_code);
                     return {
                         id: `community-${row.id}`,
+                        postId: String(row.id),
                         title: row.title,
                         description: row.description,
+                        username: row.username || 'Builder',
                         source: 'community',
                         preview: 'community',
                         buildCode: row.build_code,
-                        objectCount: snapshot.objects.length
+                        objectCount: snapshot.objects.length,
+                        likesCount: Math.max(0, Number(likeCounts[String(row.id)]) || 0)
                     };
                 } catch (error) {
                     return null;
@@ -10449,6 +10629,12 @@ function normalizeNickname(value) {
         }
 
         function renderFeaturedBuildPreview(build) {
+            if (build && build.buildCode) {
+                const banner = renderCommunityBuildBanner({ build_code: build.buildCode });
+                banner.classList.add('featured-build-preview');
+                return banner;
+            }
+
             const preview = document.createElement('div');
             preview.className = 'featured-build-preview';
             const kind = build.preview || 'wool';
@@ -10494,7 +10680,8 @@ function normalizeNickname(value) {
 
                 const title = document.createElement('div');
                 title.className = 'featured-build-title';
-                title.textContent = getFeaturedBuildTitle(build);
+                const author = sanitizeCommunityText(build.username || '', 32);
+                title.textContent = author ? `${getFeaturedBuildTitle(build)} by ${author}` : getFeaturedBuildTitle(build);
 
                 const description = document.createElement('div');
                 description.className = 'featured-build-description';
@@ -10505,15 +10692,65 @@ function normalizeNickname(value) {
                 const source = strings.featuredBuildSourceCommunity || 'Community';
                 meta.textContent = `${source} // ${build.objectCount || 0} ${strings.featuredBuildObjectLabel}`;
 
+                const likes = document.createElement('div');
+                likes.className = 'featured-build-likes';
+                likes.append(
+                    createSvgIcon('<path d="M7 10v11"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/>'),
+                    document.createTextNode(String(Math.max(0, Number(build.likesCount) || 0)))
+                );
+
                 const loadButton = document.createElement('button');
                 loadButton.type = 'button';
                 loadButton.className = 'featured-build-load interactive';
-                loadButton.textContent = strings.featuredBuildLoadButton || strings.firstPageFeaturedButton;
-                loadButton.addEventListener('click', () => loadFeaturedBuild(build.id));
+                loadButton.textContent = strings.featuredBuildViewPostButton || strings.featuredBuildLoadButton || strings.communityViewPost;
+                loadButton.addEventListener('click', () => viewFeaturedBuildPost(build.id));
 
-                card.append(renderFeaturedBuildPreview(build), title, description, meta, loadButton);
+                card.append(renderFeaturedBuildPreview(build), title, description, meta, likes, loadButton);
                 list.appendChild(card);
             });
+        }
+
+        async function viewFeaturedBuildPost(buildId) {
+            const strings = getAuthStrings();
+            const build = featuredBuildCards.find(item => item.id === buildId);
+            if (!build || !build.postId) return;
+
+            communityFilter = 'all';
+            communityProfileTarget = null;
+            communityProfileResults = [];
+            communityDetailPostId = String(build.postId);
+            questionZoneTab = 'community';
+            updateQuestionZoneTabs();
+
+            let post = getCommunityPostById(build.postId);
+            if (!post && getSupabaseClient() && !communityUsingLocalFallback) {
+                try {
+                    const { data, error } = await getSupabaseClient()
+                        .from('community_posts')
+                        .select('*')
+                        .eq('id', build.postId)
+                        .eq('hidden', false)
+                        .single();
+                    if (error) throw error;
+                    const enriched = await fetchCommunityStats([normalizeCommunityPost(data)]);
+                    post = enriched[0] || null;
+                } catch (error) {
+                    post = null;
+                }
+            }
+
+            if (post) {
+                communityPosts = [post].concat(communityPosts.filter(item => String(item.id) !== String(post.id)));
+                communityLoading = false;
+                communityHasMore = false;
+                renderCommunityPosts();
+                const feed = document.getElementById('community-feed');
+                if (feed) feed.scrollTop = 0;
+                setCommunityStatus('');
+            } else {
+                setQuestionZoneTab('community');
+                setCommunityStatus(strings.featuredBuildEmpty, 'error');
+            }
         }
 
         function loadFeaturedBuild(buildId) {
@@ -12257,6 +12494,9 @@ function normalizeNickname(value) {
                     createCommunityActionButton(post.is_announcement ? strings.communityUnmarkAnnouncement : strings.communityMarkAnnouncement, () => updateCommunityPostFlags(post.id, { is_announcement: !post.is_announcement })),
                     createCommunityActionButton(strings.communityHidePost, () => hideCommunityPost(post.id), 'profile-admin-danger')
                 );
+                if (!isOwner) {
+                    admin.appendChild(createCommunityActionButton(strings.communityDeletePost, () => deleteCommunityPost(post.id), 'profile-admin-danger'));
+                }
                 card.appendChild(admin);
             }
 
@@ -12355,11 +12595,21 @@ function normalizeNickname(value) {
             };
         }
 
+        function getCommunityBannerVerticalLimits(frameHeight = COMMUNITY_BANNER_MIN_HEIGHT) {
+            const viewport = getCommunityBannerViewport();
+            const margin = 8;
+            const visualTop = window.visualViewport ? window.visualViewport.offsetTop : 0;
+            const topLimit = Math.max(64, margin + visualTop);
+            const bottomLimit = Math.max(topLimit + frameHeight, viewport.height - 2);
+            return { topLimit, bottomLimit };
+        }
+
         function getCommunityBannerFrameSize() {
             const viewport = getCommunityBannerViewport();
             const zoom = communityBannerDraft ? communityBannerDraft.zoom : 1;
             const maxWidth = Math.max(COMMUNITY_BANNER_MIN_WIDTH, viewport.width - 36);
-            const maxHeight = Math.max(COMMUNITY_BANNER_MIN_HEIGHT, viewport.height - 170);
+            const limits = getCommunityBannerVerticalLimits(COMMUNITY_BANNER_MIN_HEIGHT);
+            const maxHeight = Math.max(COMMUNITY_BANNER_MIN_HEIGHT, limits.bottomLimit - limits.topLimit);
             const width = clamp(
                 communityBannerDraft && Number.isFinite(Number(communityBannerDraft.frameWidth))
                     ? Number(communityBannerDraft.frameWidth)
@@ -12382,8 +12632,7 @@ function normalizeNickname(value) {
             const viewport = getCommunityBannerViewport();
             const size = getCommunityBannerFrameSize();
             const margin = 12;
-            const topLimit = Math.max(64, margin + (window.visualViewport ? window.visualViewport.offsetTop : 0));
-            const bottomLimit = Math.max(topLimit + size.height, viewport.height - 96);
+            const { topLimit, bottomLimit } = getCommunityBannerVerticalLimits(size.height);
             communityBannerDraft.frameWidth = size.width;
             communityBannerDraft.frameHeight = size.height;
             communityBannerDraft.centerX = clamp(communityBannerDraft.centerX, margin + size.width / 2, viewport.width - margin - size.width / 2);
@@ -12417,7 +12666,7 @@ function normalizeNickname(value) {
                 centerX: defaultCrop.x,
                 centerY: defaultCrop.y,
                 frameWidth: clamp(defaultCrop.w || COMMUNITY_BANNER_BASE_WIDTH, COMMUNITY_BANNER_MIN_WIDTH, Math.max(COMMUNITY_BANNER_MIN_WIDTH, viewport.width - 36)),
-                frameHeight: clamp(defaultCrop.h || COMMUNITY_BANNER_BASE_WIDTH / COMMUNITY_BANNER_ASPECT, COMMUNITY_BANNER_MIN_HEIGHT, Math.max(COMMUNITY_BANNER_MIN_HEIGHT, viewport.height - 170)),
+                frameHeight: clamp(defaultCrop.h || COMMUNITY_BANNER_BASE_WIDTH / COMMUNITY_BANNER_ASPECT, COMMUNITY_BANNER_MIN_HEIGHT, Math.max(COMMUNITY_BANNER_MIN_HEIGHT, getCommunityBannerVerticalLimits().bottomLimit - getCommunityBannerVerticalLimits().topLimit)),
                 submitting: false
             });
             closeLangMenu();
@@ -12431,6 +12680,7 @@ function normalizeNickname(value) {
                 picker.classList.add('open');
                 picker.setAttribute('aria-hidden', 'false');
             }
+            document.body.classList.add('community-banner-selecting');
             setCommunityBannerPickerStatus(strings.communityBannerSelecting);
             applyCommunityBannerFrame();
         }
@@ -12443,6 +12693,7 @@ function normalizeNickname(value) {
             }
             communityBannerDrag = null;
             setCommunityBannerPickerStatus('');
+            document.body.classList.remove('community-banner-selecting');
             if (clearDraft) communityBannerDraft = null;
         }
 
@@ -12484,8 +12735,7 @@ function normalizeNickname(value) {
             if (communityBannerDrag.mode === 'resize') {
                 const viewport = getCommunityBannerViewport();
                 const margin = 12;
-                const topLimit = Math.max(64, margin + (window.visualViewport ? window.visualViewport.offsetTop : 0));
-                const bottomLimit = Math.max(topLimit + COMMUNITY_BANNER_MIN_HEIGHT, viewport.height - 96);
+                const { topLimit, bottomLimit } = getCommunityBannerVerticalLimits(COMMUNITY_BANNER_MIN_HEIGHT);
                 const edge = communityBannerDrag.edge || '';
                 let left = communityBannerDrag.centerX - communityBannerDrag.width / 2;
                 let right = communityBannerDrag.centerX + communityBannerDrag.width / 2;
@@ -12845,6 +13095,8 @@ function normalizeNickname(value) {
                     if (error) throw error;
                 }
                 setCommunityStatus(strings.communityPostDeleted, 'success');
+                featuredBuildsLoaded = false;
+                featuredBuildCards = [];
                 refreshCommunityFeed(true);
             } catch (error) {
                 setCommunityStatus(getCommunityErrorMessage(error), 'error');
@@ -14544,7 +14796,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         function getSpawnGroundY() {
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
             if (!spawnRaisedGroundEnabled || !isSpawnRaisedGroundAllowed()) return viewportHeight;
-            const safeBottom = SPAWN_RAISED_GROUND_CLEARANCE;
+            const safeBottom = SPAWN_RAISED_GROUND_CLEARANCE + SPAWN_RAISED_GROUND_HEIGHT;
             return Math.max(180, viewportHeight - safeBottom);
         }
 
@@ -14964,6 +15216,24 @@ function buildSwordElement() {
             return normalized ? normalized.slice(0, 36) : strings.saveUnnamedBuild;
         }
 
+        function normalizeBuildDeviceType(value) {
+            const normalized = String(value || '').trim().toLowerCase();
+            if (normalized === 'mobile' || normalized === 'phone') return 'mobile';
+            if (normalized === 'pc' || normalized === 'desktop') return 'pc';
+            return '';
+        }
+
+        function inferBuildDeviceType(snapshot) {
+            const explicit = normalizeBuildDeviceType(snapshot && (snapshot.deviceType || snapshot.device || snapshot.d));
+            if (explicit) return explicit;
+            const viewport = snapshot && snapshot.viewport ? snapshot.viewport : {};
+            const width = Number(viewport.width) || 0;
+            const height = Number(viewport.height) || 0;
+            if (width > 0 && width <= 700) return 'mobile';
+            if (width > 0 && height > width && width <= 920) return 'mobile';
+            return 'pc';
+        }
+
         function encodeUtf8Base64(text) {
             const bytes = new TextEncoder().encode(String(text));
             let binary = '';
@@ -15015,6 +15285,7 @@ function buildSwordElement() {
                 l: snapshot.limit,
                 vw: snapshot.viewport && snapshot.viewport.width,
                 vh: snapshot.viewport && snapshot.viewport.height,
+                d: snapshot.deviceType,
                 b: snapshot.banner ? {
                     x: snapshot.banner.x,
                     y: snapshot.banner.y,
@@ -15058,6 +15329,7 @@ function buildSwordElement() {
                     width: Number(data.vw) || window.innerWidth || 800,
                     height: Number(data.vh) || window.innerHeight || 600
                 },
+                deviceType: normalizeBuildDeviceType(data.d),
                 banner: data.b || null,
                 objects: data.o.map(object => ({
                     type: object.t,
@@ -15097,6 +15369,10 @@ function buildSwordElement() {
 
         function validateBuildSave(snapshot) {
             if (!snapshot || !Array.isArray(snapshot.objects)) return null;
+            const viewport = snapshot.viewport || {
+                width: window.innerWidth || 800,
+                height: window.innerHeight || 600
+            };
             const safeObjects = snapshot.objects
                 .slice(0, WEBBREAK_MAX_IMPORT_OBJECTS)
                 .filter(object => object && ['sword', 'block', 'door'].includes(object.type))
@@ -15117,10 +15393,8 @@ function buildSwordElement() {
                 updatedAt: Number(snapshot.updatedAt) || Date.now(),
                 gravity: clamp(Number(snapshot.gravity) || spawnGravitySetting, SPAWN_GRAVITY_MIN, SPAWN_GRAVITY_MAX),
                 limit: clamp(Number(snapshot.limit) || Math.max(DEFAULT_SPAWN_OBJECT_LIMIT, safeObjects.length), DEFAULT_SPAWN_OBJECT_LIMIT, INCREASED_SPAWN_OBJECT_LIMIT),
-                viewport: snapshot.viewport || {
-                    width: window.innerWidth || 800,
-                    height: window.innerHeight || 600
-                },
+                viewport,
+                deviceType: inferBuildDeviceType(Object.assign({}, snapshot, { viewport })),
                 banner: normalizeBuildSaveBanner(snapshot.banner),
                 objects: safeObjects
             };
@@ -15134,7 +15408,7 @@ function buildSwordElement() {
 
         function decodeBuildSaveCode(code) {
             const trimmed = String(code || '').trim();
-            const payload = trimmed.startsWith(WEBBREAK_SAVE_CODE_PREFIX)
+            const payload = trimmed.toUpperCase().startsWith(WEBBREAK_SAVE_CODE_PREFIX)
                 ? trimmed.slice(WEBBREAK_SAVE_CODE_PREFIX.length)
                 : trimmed;
             const parsed = JSON.parse(decodeUtf8Base64(payload));
@@ -15182,6 +15456,7 @@ function buildSwordElement() {
                     width: window.innerWidth || document.documentElement.clientWidth || 800,
                     height: window.innerHeight || document.documentElement.clientHeight || 600
                 },
+                deviceType: isSpawnCompactViewport() ? 'mobile' : 'pc',
                 objects
             };
         }
@@ -15262,6 +15537,37 @@ function buildSwordElement() {
         function setBuildLibraryStatus(message = '', tone = '') {
             const status = document.getElementById('build-library-status');
             if (status) applyInlineOrNotificationStatus(status, message, tone);
+        }
+
+        function createBuildLibraryDeviceBadge(snapshot) {
+            const strings = getTerminalStrings();
+            const deviceType = inferBuildDeviceType(snapshot);
+            const badge = document.createElement('span');
+            badge.className = `build-library-device-badge ${deviceType}`;
+            badge.textContent = deviceType === 'mobile'
+                ? (strings.libraryDeviceMobile || 'Mobile')
+                : (strings.libraryDevicePc || 'PC');
+            badge.title = deviceType === 'mobile'
+                ? (strings.libraryDeviceMobileTitle || 'Created on mobile')
+                : (strings.libraryDevicePcTitle || 'Created on PC');
+            badge.setAttribute('role', 'button');
+            badge.setAttribute('tabindex', '0');
+            badge.setAttribute('aria-label', badge.title);
+            const showHint = event => {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const message = deviceType === 'mobile'
+                    ? (strings.libraryDeviceMobileHint || badge.title)
+                    : (strings.libraryDevicePcHint || badge.title);
+                showWebBreakNotification(message, 'info', { duration: 3200 });
+            };
+            badge.addEventListener('click', showHint);
+            badge.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') showHint(event);
+            });
+            return badge;
         }
 
         function getBuildLibraryPieceColor(object) {
@@ -15365,6 +15671,11 @@ function buildSwordElement() {
                 title.className = 'build-library-title';
                 title.textContent = slot.name || (strings.saveUnnamedBuild || 'Untitled Build');
 
+                const titleRow = document.createElement('div');
+                titleRow.className = 'build-library-title-row';
+                titleRow.appendChild(title);
+                if (snapshot) titleRow.appendChild(createBuildLibraryDeviceBadge(snapshot));
+
                 const meta = document.createElement('div');
                 meta.className = 'build-library-meta';
                 const objectCount = snapshot && Array.isArray(snapshot.objects) ? snapshot.objects.length : (slot.count || 0);
@@ -15396,7 +15707,7 @@ function buildSwordElement() {
                 deleteButton.addEventListener('click', () => deleteBuildLibrarySlot(slot.id));
 
                 actions.append(viewButton, copyButton, deleteButton);
-                card.append(banner, title, meta, actions);
+                card.append(banner, titleRow, meta, actions);
                 list.appendChild(card);
             });
 
@@ -15595,6 +15906,7 @@ function buildSwordElement() {
                 selectedForEdit: false,
                 isStatic: !!state.isStatic,
                 restFrames: 0,
+                spawnedAt: performance.now(),
                 pointerId: null,
                 dragOffsetX: 0,
                 dragOffsetY: 0,
@@ -16284,11 +16596,18 @@ function buildSwordElement() {
                 spawnImpactFlash(impactScreen.x, impactScreen.y, 34);
                 spawnChaosParticles(impactScreen.x, impactScreen.y, { count: 7, speed: 48, size: 4, color: 'var(--btn-hover-border)' });
                 if (relSpeed > 4.8) vibrateWebBreak(relSpeed > 7 ? [12, 18, 20] : 8);
-                [wrapperA, wrapperB].forEach(wrapper => {
-                    if (!isSpawnGlassBlock(wrapper) || wrapper._glassShattering || relSpeed < 5.4) return;
+                const maybeShatterGlass = (wrapper, otherMatterBody) => {
+                    if (!isSpawnGlassBlock(wrapper) || wrapper._glassShattering) return;
+                    const boundaryHit = otherMatterBody && otherMatterBody.label === 'webbreak-boundary';
+                    const age = performance.now() - (Number(wrapper.spawnedAt) || 0);
+                    const requiredSpeed = boundaryHit ? SPAWN_GLASS_BOUNDARY_SHATTER_SPEED : SPAWN_GLASS_SHATTER_SPEED;
+                    if (boundaryHit && age < SPAWN_GLASS_BOUNDARY_GRACE_MS) return;
+                    if (relSpeed < requiredSpeed) return;
                     wrapper._glassShattering = true;
                     setTimeout(() => shatterSpawnGlassBody(wrapper, x, y), 0);
-                });
+                };
+                maybeShatterGlass(wrapperA, pair.bodyB);
+                maybeShatterGlass(wrapperB, pair.bodyA);
             });
         }
 
@@ -16333,6 +16652,7 @@ function buildSwordElement() {
                     sleeping: false,
                     selectedForEdit: false,
                     restFrames: 0,
+                    spawnedAt: performance.now(),
                     pointerId: null,
                     dragOffsetX: 0,
                     dragOffsetY: 0,
@@ -16932,6 +17252,9 @@ document.addEventListener('pointerdown', beginSpawnMarqueeSelection, { passive: 
         const SPAWN_MATTER_GLASS_FRICTION = 0.18;
         const SPAWN_MATTER_GLASS_STATIC_FRICTION = 0.24;
         const SPAWN_MATTER_GLASS_AIR_FRICTION = 0.006;
+        const SPAWN_GLASS_SHATTER_SPEED = 9.8;
+        const SPAWN_GLASS_BOUNDARY_SHATTER_SPEED = 13.4;
+        const SPAWN_GLASS_BOUNDARY_GRACE_MS = 1600;
 
         function getSpawnMatterApi() {
             return window.Matter || null;
@@ -18130,13 +18453,16 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                 const typeQuery = command.replace('delete ', '').trim();
                 deleteSpawnObjectsByCriteria(typeQuery, strings);
             } else if (command === 'theme') {
+                const activeTheme = document.documentElement.classList.contains('custom-theme-active')
+                    ? 'custom'
+                    : (document.documentElement.getAttribute('data-theme') || 'light');
                 writeTerminalLine(strings.terminalThemeList);
-                writeTerminalLine(`${strings.terminalThemeCurrent} ${document.documentElement.getAttribute('data-theme') || 'light'}`);
+                writeTerminalLine(`${strings.terminalThemeCurrent} ${activeTheme}`);
                 writeTerminalLine(strings.terminalThemeUsage);
                 writeTerminalLine(strings.terminalThemeDescription);
             } else if (command.startsWith('theme set')) {
                 const themeName = command.replace('theme set', '').trim();
-                const availableThemes = ['light', 'dark', 'sunset', 'midnight'];
+                const availableThemes = ['light', 'dark', 'sunset', 'midnight', 'custom'];
                 if (availableThemes.includes(themeName)) {
                     setTheme(themeName);
                     writeTerminalLine(`${strings.terminalThemeChanged} ${themeName}`);
@@ -19534,6 +19860,8 @@ function handleConfirm(action) {
             }
 
             writeWebBreakSettings({ customThemeEnabled: true, customThemeColor: color });
+            localStorage.setItem('preferredTheme', 'custom');
+            setTheme('custom');
             setCustomThemeDraftColor(color, true);
             renderSettingsPanel();
             setCustomThemeStatus(strings.customThemeSaved, 'success');
@@ -19543,7 +19871,9 @@ function handleConfirm(action) {
 
         function resetCustomTheme() {
             const strings = getAuthStrings();
+            const fallbackTheme = document.documentElement.getAttribute('data-theme') || 'light';
             writeWebBreakSettings({ customThemeEnabled: false, customThemeColor: DEFAULT_CUSTOM_THEME_COLOR });
+            setTheme(fallbackTheme, { disableCustom: false });
             setCustomThemeDraftColor(DEFAULT_CUSTOM_THEME_COLOR, true);
             renderSettingsPanel();
             setCustomThemeStatus(strings.customThemeResetDone, 'success');
@@ -20000,6 +20330,7 @@ function handleConfirm(action) {
                 transform: translateY(0) !important;
             }
             body.building-mode #controls-container {
+                position: fixed !important;
                 top: 50% !important;
                 right: max(8px, env(safe-area-inset-right)) !important;
                 bottom: auto !important;
@@ -20486,6 +20817,8 @@ function handleConfirm(action) {
                 letter-spacing: 0.05em !important;
             }
             .community-banner-controls {
+                top: calc(max(10px, env(safe-area-inset-top)) + 104px) !important;
+                bottom: auto !important;
                 width: calc(100dvw - 18px) !important;
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
                 gap: 6px !important;
@@ -20499,9 +20832,16 @@ function handleConfirm(action) {
                 letter-spacing: 0.04em !important;
             }
             .community-banner-status {
-                bottom: calc(max(14px, env(safe-area-inset-bottom)) + 84px) !important;
+                top: calc(max(10px, env(safe-area-inset-top)) + 192px) !important;
+                bottom: auto !important;
                 width: calc(100dvw - 22px) !important;
                 font-size: 9px !important;
+            }
+            body.building-mode.community-banner-selecting #controls-container {
+                top: calc(max(10px, env(safe-area-inset-top)) + 218px) !important;
+                right: max(8px, env(safe-area-inset-right)) !important;
+                left: auto !important;
+                transform: none !important;
             }
             body.building-mode #spawn-edit-panel {
                 top: calc(env(safe-area-inset-top) + 56px) !important;
