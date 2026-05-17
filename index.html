@@ -799,8 +799,18 @@
         }
 
         .theme-swatch-custom {
+            position: relative;
+            overflow: hidden;
             background:
-                linear-gradient(135deg, #ff3366 0 32%, #00f5ff 32% 64%, #f59e0b 64% 100%);
+                linear-gradient(135deg, #00f5ff 0 46%, currentColor 46% 54%, #ff3b2f 54% 100%);
+        }
+
+        .theme-swatch-custom::after {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+            pointer-events: none;
         }
 
         .spawn-edit-shortcut {
@@ -2546,7 +2556,7 @@
         }
 
         .build-library-collections {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto;
         }
 
         .admin-panel-tools {
@@ -7665,6 +7675,49 @@
                 max-height: 42vh;
             }
 
+            .community-card-head {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                align-items: start;
+                justify-content: stretch;
+                gap: 8px;
+            }
+
+            .community-card-head .community-author {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 7px;
+                min-width: 0;
+            }
+
+            .community-card-head .community-author-name {
+                flex: 1 0 100%;
+                max-width: 100%;
+                font-size: 18px;
+                line-height: 1.12;
+                word-break: break-word;
+            }
+
+            .community-card-head .profile-level-badge,
+            .community-card-head .community-badge {
+                flex: 0 0 auto;
+                max-width: 100%;
+                min-height: 24px;
+                padding: 5px 8px;
+                line-height: 1.12;
+                text-align: center;
+                white-space: normal;
+            }
+
+            .community-card-head .community-meta {
+                justify-self: start;
+                max-width: 100%;
+                text-align: left;
+                font-size: 10px;
+                line-height: 1.2;
+            }
+
             .community-comment {
                 padding: 10px;
             }
@@ -8342,7 +8395,7 @@
                 <svg id="theme-icon-sunset" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 5-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
                 <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
                 <svg id="theme-icon-midnight" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9"/><path d="M19 3v4"/><path d="M21 5h-4"/><path d="M5 11v2"/><path d="M6 12H4"/><path d="M13 19v2"/><path d="M14 20h-2"/></svg>
-                <svg id="theme-icon-custom" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 22a10 10 0 1 1 10-10c0 2.2-1.8 4-4 4h-1.5a2 2 0 0 0-1.7 3l.2.3a1.8 1.8 0 0 1-1.5 2.7H12Z"/><circle cx="7.5" cy="10.5" r=".5"/><circle cx="10.5" cy="7.5" r=".5"/><circle cx="14" cy="7.5" r=".5"/><circle cx="16.5" cy="10.5" r=".5"/></svg>
+                <svg id="theme-icon-custom" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M4 20 15.5 8.5"/><path d="m14 7 3 3"/><path d="m16 3 5 5"/><path d="M5 5h4"/><path d="M7 3v4"/><path d="M19 15h3"/><path d="M20.5 13.5v3"/><path d="M3 14h2"/><path d="M4 13v2"/></svg>
             </button>
 
             <div id="theme-menu" class="theme-menu absolute right-0 top-12 w-40 glass-card border opacity-0 invisible transform translate-y-[-10px] transition-all duration-200" role="menu" data-i18n-aria-label="themeMenuLabel" aria-label="Theme">
@@ -8636,6 +8689,7 @@
                                 <select id="build-library-collection-filter" class="interactive" onchange="setBuildLibraryCollectionFilter(this.value)" data-i18n-aria-label="libraryCollectionFilterAria" aria-label="Filter collection"></select>
                                 <input id="build-library-collection-name" class="interactive" maxlength="28" autocomplete="off" data-i18n-placeholder="libraryCollectionPlaceholder" placeholder="New collection">
                                 <button type="button" class="terminal-simple-action-button interactive" onclick="createBuildLibraryCollection()" data-i18n="libraryCollectionCreate">Create</button>
+                                <button id="build-library-collection-delete" type="button" class="terminal-simple-action-button interactive profile-admin-danger" onclick="deleteBuildLibraryCollection()" data-i18n="libraryCollectionDelete">Delete</button>
                             </div>
                             <div id="build-library-status" class="build-library-status" aria-live="polite"></div>
                             <div id="build-library-list" class="build-library-grid"></div>
@@ -8691,6 +8745,7 @@
                             <div class="community-filter-tabs">
                                 <button id="community-filter-all" type="button" class="terminal-simple-action-button active interactive" onclick="setCommunityFilter('all')" data-i18n="communityFilterAll">All</button>
                                 <button id="community-filter-mine" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('mine')" data-i18n="communityFilterMine">Mine</button>
+                                <button id="community-filter-following" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('following')" data-i18n="communityFilterFollowing">Following</button>
                                 <button id="community-filter-profiles" type="button" class="terminal-simple-action-button interactive" onclick="setCommunityFilter('profiles')" data-i18n="communityFilterProfiles">Profiles</button>
                             </div>
 
@@ -9012,6 +9067,7 @@
                         <button id="terminal-simple-build-btn" type="button" class="terminal-simple-action-button wide interactive" onclick="handleTerminalSimpleAction('build')">Build Mode: Off</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('clear')" data-i18n="terminalSimpleClearButton">Clear Objects</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('fling')" data-i18n="terminalSimpleFlingButton">Fling All Objects</button>
+                        <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('stress-test')" data-i18n="terminalSimpleStressTestButton">Stress Test</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('save')" data-i18n="saveBuildButton">Save Build</button>
                         <button type="button" class="terminal-simple-action-button interactive" onclick="handleTerminalSimpleAction('load')" data-i18n="loadBuildButton">Load Build</button>
                         <button type="button" class="terminal-simple-action-button wide interactive" onclick="handleTerminalSimpleAction('limit')" data-i18n="terminalSimpleLimitButton">Increase Limit to 125 Objects</button>
@@ -9550,6 +9606,7 @@
             terminalSimpleGravityButton: "Set Gravity",
             terminalSimpleClearButton: "Clear Objects",
             terminalSimpleFlingButton: "Fling All Objects",
+            terminalSimpleStressTestButton: "Stress Test",
             terminalSimpleLimitButton: "Increase Limit to 125 Objects",
             terminalSimpleLimitHint: "If it doesn't work, type \"increase limit\"",
             terminalSimpleAmountAria: "Spawn amount",
@@ -9579,6 +9636,7 @@
             terminalSimpleGravityButton: "Применить",
             terminalSimpleClearButton: "Очистить объекты",
             terminalSimpleFlingButton: "Разбросать все объекты",
+            terminalSimpleStressTestButton: "Тест прочности",
             terminalSimpleLimitButton: "Увеличить лимит до 125 объектов",
             terminalSimpleLimitHint: "Если не сработает, введите \"increase limit\"",
             terminalSimpleAmountAria: "Количество объектов",
@@ -10258,6 +10316,8 @@
             achievementGlassBody: "Break a glass block.",
             achievementGlassCrusherTitle: "Glass Crusher",
             achievementGlassCrusherBody: "Break 5 glass blocks.",
+            achievementSiteTimeTitle: "Stayed 10 Minutes",
+            achievementSiteTimeBody: "Spend 10 minutes on WebBreak.ru.",
             chaosToolsButton: "Secret Tools",
             chaosToolsTitle: "Secret Tools",
             chaosToolsSubtitle: "Experimental tools armed.",
@@ -10381,6 +10441,8 @@
             achievementGlassBody: "\u0420\u0430\u0437\u0431\u0435\u0439\u0442\u0435 \u0441\u0442\u0435\u043a\u043b\u044f\u043d\u043d\u044b\u0439 \u0431\u043b\u043e\u043a.",
             achievementGlassCrusherTitle: "\u0414\u0440\u043e\u0431\u0438\u0442\u0435\u043b\u044c \u0441\u0442\u0435\u043a\u043b\u0430",
             achievementGlassCrusherBody: "\u0420\u0430\u0437\u0431\u0435\u0439\u0442\u0435 5 \u0441\u0442\u0435\u043a\u043b\u044f\u043d\u043d\u044b\u0445 \u0431\u043b\u043e\u043a\u043e\u0432.",
+            achievementSiteTimeTitle: "\u041d\u0430\u0445\u043e\u0434\u0438\u043b\u0441\u044f \u043d\u0430 \u0441\u0430\u0439\u0442\u0435 10 \u043c\u0438\u043d\u0443\u0442",
+            achievementSiteTimeBody: "\u041f\u0440\u043e\u0432\u0435\u0434\u0438\u0442\u0435 10 \u043c\u0438\u043d\u0443\u0442 \u043d\u0430 WebBreak.ru.",
             chaosToolsButton: "\u0421\u0435\u043a\u0440\u0435\u0442\u043d\u044b\u0435",
             chaosToolsTitle: "\u0421\u0435\u043a\u0440\u0435\u0442\u043d\u044b\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b",
             chaosToolsSubtitle: "\u042d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u044b \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u044b.",
@@ -10611,14 +10673,14 @@
             communityPreviewInvalid: "\u041f\u0440\u0435\u0432\u044c\u044e \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e."
         });
 
-        i18n.en.terminalHelp = "Commands: help, clear, clear objects, save, load, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, helicoptermode, unhelicoptermode, about.";
-        i18n.ru.terminalHelp = "\u041a\u043e\u043c\u0430\u043d\u0434\u044b: help, clear, clear objects, save, load, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, helicoptermode, unhelicoptermode, about.";
+        i18n.en.terminalHelp = "Commands: help, clear, clear objects, save, load, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, stress test, helicoptermode, unhelicoptermode, about.";
+        i18n.ru.terminalHelp = "\u041a\u043e\u043c\u0430\u043d\u0434\u044b: help, clear, clear objects, save, load, increase limit, theme, theme set <name>, lang, lang set <name>, spawn sword/door/glass/<color>block <count>, gravity set <0-200>, build on/off, edit on/off, edit select all, edit clear, edit duplicate, edit reset, delete <object>, fling, stress test, helicoptermode, unhelicoptermode, about.";
 
         Object.assign(i18n.en, {
             terminalIntroLines: [
                 "WEBBREAK.RU // INTERACTIVE PHYSICS SANDBOX ONLINE",
                 "Purpose: build, modify, test materials, save creations, share builds, and run satisfying destruction sequences in an HTML5 2D Matter.js world.",
-                "Core: spawn objects, drag them, throw them, switch Build/Edit modes, save/load builds, and use pinch with two fingers for camera zoom/pan.",
+                "Core: spawn objects, drag them, throw them, switch Build/Edit modes, save/load builds, and stress-test creations.",
                 "Shortcuts: save/load opens local build memory; spawn <object> <count> creates swords, doors, glass, or wool; gravity set <0-200> changes the world.",
                 "Advanced experiments are hidden and unlock through discovery."
             ],
@@ -10626,7 +10688,7 @@
             terminalAutosaveRestored: "Autosave restored.",
             chaosExplosionDropping: "TNT dropping...",
             chaosExplosionStatus: "TNT detonated. Objects affected:",
-            terminalCameraHint: "Two-finger pinch/drag controls camera zoom and pan."
+            terminalCameraHint: "Mobile two-finger zoom is disabled so builds do not shift while touching the screen."
         });
 
         Object.assign(i18n.ru, {
@@ -10634,14 +10696,14 @@
                 "WEBBREAK.RU // \u0418\u041d\u0422\u0415\u0420\u0410\u041a\u0422\u0418\u0412\u041d\u0410\u042f \u0424\u0418\u0417\u0418\u0427\u0415\u0421\u041a\u0410\u042f \u041f\u0415\u0421\u041e\u0427\u041d\u0418\u0426\u0410",
                 "\u0417\u0430\u0434\u0430\u0447\u0430: \u0441\u0442\u0440\u043e\u0438\u0442\u044c, \u043c\u0435\u043d\u044f\u0442\u044c, \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u044b, \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0442\u044c \u0431\u0438\u043b\u0434\u044b \u0438 \u043a\u0440\u0430\u0441\u0438\u0432\u043e \u0432\u0441\u0435 \u043b\u043e\u043c\u0430\u0442\u044c \u0432 HTML5 2D Matter.js \u043c\u0438\u0440\u0435.",
                 "\u041e\u0441\u043d\u043e\u0432\u0430: spawn \u0441\u043e\u0437\u0434\u0430\u0435\u0442 \u043e\u0431\u044a\u0435\u043a\u0442\u044b, Build \u043f\u043e\u043c\u043e\u0433\u0430\u0435\u0442 \u0441\u0442\u0430\u0432\u0438\u0442\u044c, Edit \u043c\u0435\u043d\u044f\u0435\u0442, save/load \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0441 \u0441\u0435\u0439\u0432\u0430\u043c\u0438.",
-                "\u041a\u0430\u043c\u0435\u0440\u0430: \u0434\u0432\u0443\u043c\u044f \u043f\u0430\u043b\u044c\u0446\u0430\u043c\u0438 \u043c\u043e\u0436\u043d\u043e \u043f\u0440\u0438\u0431\u043b\u0438\u0436\u0430\u0442\u044c \u0438 \u0434\u0432\u0438\u0433\u0430\u0442\u044c \u043c\u0438\u0440 \u0431\u0435\u0437 \u0441\u0431\u0438\u0442\u044b\u0445 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0430\u0442.",
+                "\u041a\u0430\u043c\u0435\u0440\u0430: \u043d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435 \u0434\u0432\u0443\u0445\u043f\u0430\u043b\u044c\u0446\u0435\u0432\u044b\u0439 zoom \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d, \u0447\u0442\u043e\u0431\u044b \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u043d\u0435 \u0441\u044a\u0435\u0437\u0436\u0430\u043b\u0430.",
                 "\u0421\u043a\u0440\u044b\u0442\u044b\u0435 \u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u044b \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u044e\u0442\u0441\u044f \u0447\u0435\u0440\u0435\u0437 \u043d\u0430\u0445\u043e\u0434\u043a\u0438."
             ],
             terminalTrashDeleted: "\u041e\u0431\u044a\u0435\u043a\u0442 \u0443\u0434\u0430\u043b\u0435\u043d.",
             terminalAutosaveRestored: "\u0410\u0432\u0442\u043e\u0441\u0435\u0439\u0432 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d.",
             chaosExplosionDropping: "TNT \u043f\u0430\u0434\u0430\u0435\u0442...",
             chaosExplosionStatus: "TNT \u0432\u0437\u043e\u0440\u0432\u0430\u043d. \u0417\u0430\u0434\u0435\u0442\u043e:",
-            terminalCameraHint: "\u041a\u0430\u043c\u0435\u0440\u0430: \u0434\u0432\u0430 \u043f\u0430\u043b\u044c\u0446\u0430 \u0434\u043b\u044f zoom/pan."
+            terminalCameraHint: "\u041d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435 \u0434\u0432\u0443\u0445\u043f\u0430\u043b\u044c\u0446\u0435\u0432\u044b\u0439 zoom \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d."
         });
 
         Object.assign(i18n.en, {
@@ -10864,6 +10926,8 @@
             adminPanelSqlNeeded: "Admin tables need the Supabase SQL patch.",
             adminBanSaved: "Account ban updated.",
             adminBanInvalid: "Enter a valid Account ID.",
+            adminViewReportedPost: "View Post",
+            adminReportedPostMissing: "Reported post was not found.",
             adminReportResolved: "Report resolved.",
             adminReportHidden: "Post hidden and report resolved.",
             adminReportMeta: "Post #{post} // reporter {reporter} // target {target}",
@@ -10873,6 +10937,14 @@
             communityReportInvalid: "Report reason cannot be empty.",
             communityReportSetupNeeded: "Reports need the Supabase SQL patch.",
             communityBannedAction: "This account is banned from Community actions.",
+            communityFollowBuilder: "Follow",
+            communityUnfollowBuilder: "Following",
+            communityFollowedBuilder: "Builder followed.",
+            communityUnfollowedBuilder: "Builder unfollowed.",
+            communityFilterFollowing: "Following",
+            communityFollowingEmpty: "Follow builders to see their posts here.",
+            terminalStressTestStarted: "Stress test launched.",
+            terminalStressTestNoObjects: "No objects available for stress test.",
             communityPinComment: "Pin",
             communityUnpinComment: "Unpin",
             communityPinnedCommentBadge: "Pinned comment",
@@ -10885,8 +10957,12 @@
             libraryCollectionAll: "All collections",
             libraryCollectionDefault: "Unsorted",
             libraryCollectionMove: "Move",
+            libraryCollectionDelete: "Delete",
             libraryCollectionSaved: "Collection updated.",
             libraryCollectionCreated: "Collection created.",
+            libraryCollectionDeleted: "Collection deleted. Builds moved to Unsorted.",
+            libraryCollectionDeleteConfirm: "Delete collection \"{name}\"? Builds inside it will move to Unsorted.",
+            libraryCollectionCannotDelete: "Choose a custom collection to delete.",
             libraryCollectionExists: "Collection already exists."
         });
 
@@ -10906,6 +10982,8 @@
             adminPanelSqlNeeded: "\u0414\u043b\u044f \u0430\u0434\u043c\u0438\u043d-\u0442\u0430\u0431\u043b\u0438\u0446 \u043d\u0443\u0436\u0435\u043d Supabase SQL-\u043f\u0430\u0442\u0447.",
             adminBanSaved: "\u0411\u0430\u043d \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430 \u043e\u0431\u043d\u043e\u0432\u043b\u0451\u043d.",
             adminBanInvalid: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0432\u0435\u0440\u043d\u044b\u0439 Account ID.",
+            adminViewReportedPost: "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u043e\u0441\u0442",
+            adminReportedPostMissing: "\u041f\u043e\u0441\u0442 \u0438\u0437 \u0440\u0435\u043f\u043e\u0440\u0442\u0430 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d.",
             adminReportResolved: "\u0420\u0435\u043f\u043e\u0440\u0442 \u0437\u0430\u043a\u0440\u044b\u0442.",
             adminReportHidden: "\u041f\u043e\u0441\u0442 \u0441\u043a\u0440\u044b\u0442, \u0440\u0435\u043f\u043e\u0440\u0442 \u0437\u0430\u043a\u0440\u044b\u0442.",
             adminReportMeta: "\u041f\u043e\u0441\u0442 #{post} // \u0436\u0430\u043b\u043e\u0431\u0430 \u043e\u0442 {reporter} // \u0446\u0435\u043b\u044c {target}",
@@ -10915,6 +10993,14 @@
             communityReportInvalid: "\u041f\u0440\u0438\u0447\u0438\u043d\u0430 \u0436\u0430\u043b\u043e\u0431\u044b \u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u043f\u0443\u0441\u0442\u043e\u0439.",
             communityReportSetupNeeded: "\u0414\u043b\u044f \u0440\u0435\u043f\u043e\u0440\u0442\u043e\u0432 \u043d\u0443\u0436\u0435\u043d Supabase SQL-\u043f\u0430\u0442\u0447.",
             communityBannedAction: "\u042d\u0442\u043e\u0442 \u0430\u043a\u043a\u0430\u0443\u043d\u0442 \u0437\u0430\u0431\u0430\u043d\u0435\u043d \u0432 Community.",
+            communityFollowBuilder: "\u041f\u043e\u0434\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f",
+            communityUnfollowBuilder: "\u0412 \u043f\u043e\u0434\u043f\u0438\u0441\u043a\u0430\u0445",
+            communityFollowedBuilder: "\u0421\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0432 \u043f\u043e\u0434\u043f\u0438\u0441\u043a\u0438.",
+            communityUnfollowedBuilder: "\u0421\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c \u0443\u0431\u0440\u0430\u043d \u0438\u0437 \u043f\u043e\u0434\u043f\u0438\u0441\u043e\u043a.",
+            communityFilterFollowing: "\u041f\u043e\u0434\u043f\u0438\u0441\u043a\u0438",
+            communityFollowingEmpty: "\u041f\u043e\u0434\u043f\u0438\u0448\u0438\u0442\u0435\u0441\u044c \u043d\u0430 \u0441\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u0435\u0439, \u0447\u0442\u043e\u0431\u044b \u0432\u0438\u0434\u0435\u0442\u044c \u0438\u0445 \u043f\u043e\u0441\u0442\u044b \u0437\u0434\u0435\u0441\u044c.",
+            terminalStressTestStarted: "\u0422\u0435\u0441\u0442 \u043f\u0440\u043e\u0447\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u043f\u0443\u0449\u0435\u043d.",
+            terminalStressTestNoObjects: "\u041d\u0435\u0442 \u043e\u0431\u044a\u0435\u043a\u0442\u043e\u0432 \u0434\u043b\u044f \u0442\u0435\u0441\u0442\u0430.",
             communityPinComment: "\u0417\u0430\u043a\u0440\u0435\u043f",
             communityUnpinComment: "\u041e\u0442\u043a\u0440\u0435\u043f",
             communityPinnedCommentBadge: "\u0417\u0430\u043a\u0440\u0435\u043f\u043b\u0451\u043d",
@@ -10927,8 +11013,12 @@
             libraryCollectionAll: "\u0412\u0441\u0435 \u043a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u0438",
             libraryCollectionDefault: "\u0411\u0435\u0437 \u043f\u0430\u043f\u043a\u0438",
             libraryCollectionMove: "\u041f\u0435\u0440\u0435\u043d\u0435\u0441\u0442\u0438",
+            libraryCollectionDelete: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c",
             libraryCollectionSaved: "\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430.",
             libraryCollectionCreated: "\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f \u0441\u043e\u0437\u0434\u0430\u043d\u0430.",
+            libraryCollectionDeleted: "\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f \u0443\u0434\u0430\u043b\u0435\u043d\u0430. \u0411\u0438\u043b\u0434\u044b \u043f\u0435\u0440\u0435\u043d\u0435\u0441\u0435\u043d\u044b \u0432 \u00ab\u0411\u0435\u0437 \u043f\u0430\u043f\u043a\u0438\u00bb.",
+            libraryCollectionDeleteConfirm: "\u0423\u0434\u0430\u043b\u0438\u0442\u044c \u043a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044e \u00ab{name}\u00bb? \u0411\u0438\u043b\u0434\u044b \u0432\u043d\u0443\u0442\u0440\u0438 \u043f\u0435\u0440\u0435\u0439\u0434\u0443\u0442 \u0432 \u00ab\u0411\u0435\u0437 \u043f\u0430\u043f\u043a\u0438\u00bb.",
+            libraryCollectionCannotDelete: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u0432\u043e\u044e \u043a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044e \u0434\u043b\u044f \u0443\u0434\u0430\u043b\u0435\u043d\u0438\u044f.",
             libraryCollectionExists: "\u0422\u0430\u043a\u0430\u044f \u043a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f \u0443\u0436\u0435 \u0435\u0441\u0442\u044c."
         });
 
@@ -10945,6 +11035,8 @@
         const WEBBREAK_SETTINGS_KEY = 'webbreak.settings.v1';
         const WEBBREAK_ACHIEVEMENTS_STORAGE_KEY = 'webbreak.achievements.v1';
         const WEBBREAK_ACHIEVEMENT_AUDIO_URL = 'https://upload.wikimedia.org/wikipedia/commons/8/85/Achievement_unlocked_sound_effect_video_game.wav';
+        const ACHIEVEMENT_PRESENCE_INTERVAL_MS = 15000;
+        const ACHIEVEMENT_SITE_TIME_TARGET_SECONDS = 600;
         const DEFAULT_CUSTOM_THEME_COLOR = '#00f5ff';
         const CUSTOM_THEME_CSS_VARS = [
             '--bg-from',
@@ -10983,6 +11075,7 @@
         let achievementsState = null;
         let achievementsFilter = 'all';
         let lastAchievementEvaluation = 0;
+        let achievementPresenceTimer = null;
         const FIRST_PAGE_TIP_INTERVAL_MS = 10000;
         let firstPageTipIndex = 0;
         let firstPageTipTimer = null;
@@ -11027,6 +11120,7 @@
         const COMMUNITY_PAGE_SIZE = 6;
         const COMMUNITY_LOCAL_STORAGE_KEY = 'webbreak.community.localPosts.v1';
         const COMMUNITY_COOLDOWN_STORAGE_KEY = 'webbreak.community.cooldowns.v1';
+        const COMMUNITY_FOLLOWED_BUILDERS_KEY = 'webbreak.community.followedBuilders.v1';
         const WEBBREAK_BUILD_COLLECTIONS_KEY = 'webbreak.buildCollections.v1';
         const COMMUNITY_ACTION_COOLDOWN_MS = 850;
         const COMMUNITY_POST_COOLDOWN_MS = 5 * 60 * 1000;
@@ -12143,7 +12237,8 @@
             { id: 'reaction_starter', icon: 'LIKE', titleKey: 'achievementReactionTitle', bodyKey: 'achievementReactionBody', metric: 'reactions', target: 5 },
             { id: 'random_explorer', icon: 'RND', titleKey: 'achievementRandomTitle', bodyKey: 'achievementRandomBody', metric: 'randomBuilds', target: 1 },
             { id: 'glass_test', icon: 'GLS', titleKey: 'achievementGlassTitle', bodyKey: 'achievementGlassBody', metric: 'glassBreaks', target: 1 },
-            { id: 'glass_crusher', icon: 'CRK', titleKey: 'achievementGlassCrusherTitle', bodyKey: 'achievementGlassCrusherBody', metric: 'glassBreaks', target: 5 }
+            { id: 'glass_crusher', icon: 'CRK', titleKey: 'achievementGlassCrusherTitle', bodyKey: 'achievementGlassCrusherBody', metric: 'glassBreaks', target: 5 },
+            { id: 'site_ten_minutes', icon: '10M', titleKey: 'achievementSiteTimeTitle', bodyKey: 'achievementSiteTimeBody', metric: 'siteTimeSeconds', target: ACHIEVEMENT_SITE_TIME_TARGET_SECONDS }
         ];
 
         function getDefaultAchievementsState() {
@@ -12166,7 +12261,8 @@
                     comments: 0,
                     reactions: 0,
                     randomBuilds: 0,
-                    clears: 0
+                    clears: 0,
+                    siteTimeSeconds: 0
                 }
             };
         }
@@ -12270,8 +12366,21 @@
             evaluateAchievements();
         }
 
-        function recordAchievementEvent(metric) {
-            setAchievementMetric(metric, 1, 'add');
+        function recordAchievementEvent(metric, amount = 1) {
+            setAchievementMetric(metric, Math.max(0, Number(amount) || 0), 'add');
+        }
+
+        function startAchievementPresenceTimer() {
+            if (achievementPresenceTimer) return;
+            let lastTick = Date.now();
+            achievementPresenceTimer = setInterval(() => {
+                const now = Date.now();
+                if (document.visibilityState !== 'hidden') {
+                    const deltaSeconds = clamp(Math.round((now - lastTick) / 1000), 0, 30);
+                    if (deltaSeconds > 0) recordAchievementEvent('siteTimeSeconds', deltaSeconds);
+                }
+                lastTick = now;
+            }, ACHIEVEMENT_PRESENCE_INTERVAL_MS);
         }
 
         function evaluateAchievements() {
@@ -14917,6 +15026,7 @@ function normalizeNickname(value) {
             return sortCommunityPosts(posts).filter(post => {
                 if (post.hidden) return false;
                 if (communityFilter === 'mine' && (!user || post.author_id !== user.id)) return false;
+                if (communityFilter === 'following' && !isCommunityPostFromFollowedBuilder(post)) return false;
                 if (communityProfileTarget) {
                     const sameAuthor = targetProfileId && String(post.author_id) === targetProfileId;
                     const sameAccount = targetAccountId && Number(post.author_account_id) === targetAccountId;
@@ -14925,6 +15035,85 @@ function normalizeNickname(value) {
                 if (!query) return true;
                 return `${post.title} ${post.description} ${post.username}`.toLowerCase().includes(query);
             });
+        }
+
+        function getCommunityFollowStorageKey() {
+            const user = getCommunityUser();
+            return `${COMMUNITY_FOLLOWED_BUILDERS_KEY}:${user && user.id ? user.id : 'guest'}`;
+        }
+
+        function readCommunityFollowedBuilders() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(getCommunityFollowStorageKey()) || '[]');
+                return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function writeCommunityFollowedBuilders(list) {
+            try {
+                localStorage.setItem(getCommunityFollowStorageKey(), JSON.stringify(Array.isArray(list) ? list : []));
+            } catch (error) {}
+        }
+
+        function getCommunityBuilderKey(builder) {
+            if (!builder) return '';
+            if (builder.id) return `id:${String(builder.id)}`;
+            if (builder.author_id) return `id:${String(builder.author_id)}`;
+            const accountId = builder.account_id || builder.author_account_id;
+            if (accountId) return `account:${Number(accountId)}`;
+            return '';
+        }
+
+        function getCommunityBuilderFromPost(post) {
+            return {
+                id: post && post.author_id ? String(post.author_id) : '',
+                account_id: post && post.author_account_id ? Number(post.author_account_id) : null,
+                nickname: post && post.username ? post.username : 'Builder'
+            };
+        }
+
+        function isCommunityBuilderSelf(builder) {
+            const user = getCommunityUser();
+            if (!user || !builder) return false;
+            return !!builder.id && String(builder.id) === String(user.id);
+        }
+
+        function isFollowingCommunityBuilder(builder) {
+            const key = getCommunityBuilderKey(builder);
+            if (!key) return false;
+            return readCommunityFollowedBuilders().some(item => getCommunityBuilderKey(item) === key);
+        }
+
+        function isCommunityPostFromFollowedBuilder(post) {
+            return isFollowingCommunityBuilder(getCommunityBuilderFromPost(post));
+        }
+
+        function toggleFollowCommunityBuilder(builder) {
+            const strings = getAuthStrings();
+            const user = requireCommunityUser();
+            if (!user || !builder || isCommunityBuilderSelf(builder)) return;
+            const key = getCommunityBuilderKey(builder);
+            if (!key) return;
+            const follows = readCommunityFollowedBuilders();
+            const isFollowing = follows.some(item => getCommunityBuilderKey(item) === key);
+            const next = isFollowing
+                ? follows.filter(item => getCommunityBuilderKey(item) !== key)
+                : follows.concat({
+                    id: builder.id || builder.author_id || '',
+                    account_id: builder.account_id || builder.author_account_id || null,
+                    nickname: normalizeNickname(builder.nickname || builder.username) || 'Builder',
+                    followed_at: new Date().toISOString()
+                });
+            writeCommunityFollowedBuilders(next);
+            setCommunityStatus(isFollowing ? strings.communityUnfollowedBuilder : strings.communityFollowedBuilder, 'success');
+            if (communityFilter === 'following') {
+                communityPage = 0;
+                loadCommunityPosts({ append: false });
+            } else {
+                renderCommunityPosts();
+            }
         }
 
         function normalizeCommunityProfile(row) {
@@ -14997,7 +15186,7 @@ function normalizeNickname(value) {
 
         function updateCommunityFilterTabs() {
             const strings = getAuthStrings();
-            ['all', 'mine', 'profiles'].forEach(filter => {
+            ['all', 'mine', 'following', 'profiles'].forEach(filter => {
                 const button = document.getElementById(`community-filter-${filter}`);
                 if (button) button.classList.toggle('active', communityFilter === filter || (filter === 'profiles' && !!communityProfileTarget));
             });
@@ -15297,6 +15486,21 @@ function normalizeNickname(value) {
                     query = query.eq('author_id', user.id);
                 }
 
+                if (communityFilter === 'following') {
+                    const followedIds = readCommunityFollowedBuilders()
+                        .map(item => item && item.id ? String(item.id) : '')
+                        .filter(Boolean);
+                    if (followedIds.length === 0) {
+                        communityPosts = [];
+                        communityHasMore = false;
+                        communityLoading = false;
+                        renderCommunityPosts();
+                        setCommunityStatus(strings.communityFollowingEmpty || strings.communityEmpty);
+                        return;
+                    }
+                    query = query.in('author_id', followedIds);
+                }
+
                 if (communityProfileTarget) {
                     query = query.eq('author_id', communityProfileTarget.id);
                 }
@@ -15455,7 +15659,7 @@ function normalizeNickname(value) {
         }
 
         function setCommunityFilter(filter) {
-            communityFilter = ['all', 'mine', 'profiles'].includes(filter) ? filter : 'all';
+            communityFilter = ['all', 'mine', 'following', 'profiles'].includes(filter) ? filter : 'all';
             communityPage = 0;
             communityDetailPostId = null;
             communityProfileTarget = null;
@@ -15778,6 +15982,14 @@ function normalizeNickname(value) {
 
             const actions = document.createElement('div');
             actions.className = 'profile-search-actions';
+            if (!isCommunityBuilderSelf(profile)) {
+                const following = isFollowingCommunityBuilder(profile);
+                actions.appendChild(createCommunityActionButton(
+                    following ? (strings.communityUnfollowBuilder || 'Following') : (strings.communityFollowBuilder || 'Follow'),
+                    () => toggleFollowCommunityBuilder(profile),
+                    following ? 'active' : ''
+                ));
+            }
             actions.appendChild(createCommunityActionButton(strings.communityViewProfilePosts, () => openCommunityProfilePosts(profile)));
 
             card.append(head, description, actions);
@@ -15859,7 +16071,11 @@ function normalizeNickname(value) {
             if (communityPosts.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'community-empty-card';
-                empty.textContent = communityProfileTarget ? strings.communityProfilePostsEmpty : strings.communityEmpty;
+                empty.textContent = communityProfileTarget
+                    ? strings.communityProfilePostsEmpty
+                    : communityFilter === 'following'
+                        ? (strings.communityFollowingEmpty || strings.communityEmpty)
+                        : strings.communityEmpty;
                 feed.appendChild(empty);
             } else {
                 communityPosts.forEach(post => feed.appendChild(renderCommunityPostCard(post)));
@@ -15925,10 +16141,19 @@ function normalizeNickname(value) {
 
             const rightActions = document.createElement('div');
             rightActions.className = 'community-command-row';
+            const authorProfile = getCommunityBuilderFromPost(post);
+            if (!isOwner && !isCommunityBuilderSelf(authorProfile)) {
+                const following = isFollowingCommunityBuilder(authorProfile);
+                rightActions.appendChild(createCommunityActionButton(
+                    following ? (strings.communityUnfollowBuilder || 'Following') : (strings.communityFollowBuilder || 'Follow'),
+                    () => toggleFollowCommunityBuilder(authorProfile),
+                    following ? 'active' : ''
+                ));
+            }
             if (!isDetail) {
-                rightActions.prepend(createCommunityActionButton(strings.communityViewPost, () => openCommunityPostDetail(post.id)));
+                rightActions.appendChild(createCommunityActionButton(strings.communityViewPost, () => openCommunityPostDetail(post.id)));
             } else {
-                rightActions.prepend(createCommunityActionButton(strings.communityPreviewBuild || strings.communityLoadBuild, () => openCommunityBuildPreview(post.id)));
+                rightActions.appendChild(createCommunityActionButton(strings.communityPreviewBuild || strings.communityLoadBuild, () => openCommunityBuildPreview(post.id)));
             }
             if (isOwner) {
                 rightActions.append(
@@ -16869,6 +17094,7 @@ function normalizeNickname(value) {
                 const actions = document.createElement('div');
                 actions.className = 'admin-report-actions';
                 actions.append(
+                    createCommunityActionButton(strings.adminViewReportedPost || 'View Post', () => viewReportedCommunityPost(report)),
                     createCommunityActionButton(strings.communityHidePost || 'Hide', () => hideReportedCommunityPost(report), 'profile-admin-danger'),
                     createCommunityActionButton(strings.adminReportResolved || 'Resolve', () => resolveCommunityReport(report.id)),
                     createCommunityActionButton(strings.adminBanButton || 'Ban', () => banReportedAccount(report), 'profile-admin-danger')
@@ -16877,6 +17103,60 @@ function normalizeNickname(value) {
                 card.append(head, meta, reason, actions);
                 list.appendChild(card);
             });
+        }
+
+        async function fetchReportedCommunityPost(postId) {
+            const id = String(postId || '');
+            if (!id) return null;
+            const existing = getCommunityPostById(id);
+            if (existing) return existing;
+
+            if (communityUsingLocalFallback || !getSupabaseClient()) {
+                return readCommunityLocalPosts().map(normalizeCommunityPost).find(post => String(post.id) === id) || null;
+            }
+
+            const { data, error } = await getSupabaseClient()
+                .from('community_posts')
+                .select('*')
+                .eq('id', id)
+                .maybeSingle();
+            if (error) throw error;
+            if (!data) return null;
+            const enriched = await fetchCommunityStats([normalizeCommunityPost(data)]);
+            return enriched[0] || normalizeCommunityPost(data);
+        }
+
+        async function viewReportedCommunityPost(report) {
+            const strings = getAuthStrings();
+            if (!isCommunityMod() || !report || !report.post_id) return;
+            setAdminPanelStatus(strings.communityLoading || 'Loading community feed...');
+            try {
+                const post = await fetchReportedCommunityPost(report.post_id);
+                if (!post) {
+                    setAdminPanelStatus(strings.adminReportedPostMissing || 'Reported post was not found.', 'error');
+                    return;
+                }
+
+                const input = document.getElementById('community-search-input');
+                if (input) input.value = '';
+                communityFilter = 'all';
+                communityProfileTarget = null;
+                communityProfileResults = [];
+                communitySearchQuery = '';
+                communityPage = 0;
+                communityHasMore = false;
+                communityLoading = false;
+                communityDetailPostId = String(post.id);
+                communityPosts = [post].concat(communityPosts.filter(item => String(item.id) !== String(post.id)));
+                setQuestionZoneTab('community');
+                renderCommunityPosts();
+                setCommunityStatus('');
+                setAdminPanelStatus('');
+                const feed = document.getElementById('community-feed');
+                if (feed) feed.scrollTop = 0;
+            } catch (error) {
+                setAdminPanelStatus(isAdminPanelSetupError(error) ? strings.adminPanelSqlNeeded : getCommunityErrorMessage(error), 'error');
+            }
         }
 
         async function refreshAdminPanel() {
@@ -17959,6 +18239,9 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             } else if (action === 'fling') {
                 writeTerminalLine('> fling', 'themed-text');
                 flingSpawnObjects(strings);
+            } else if (action === 'stress-test') {
+                writeTerminalLine('> stress test', 'themed-text');
+                runSpawnStressTest(strings);
             } else if (action === 'save') {
                 writeTerminalLine('> save', 'themed-text');
                 openSaveBuildModal('save');
@@ -19373,6 +19656,7 @@ function buildSwordElement() {
             const strings = getTerminalStrings();
             const filter = document.getElementById('build-library-collection-filter');
             if (!filter) return;
+            const deleteButton = document.getElementById('build-library-collection-delete');
             const collections = readBuildCollections();
             const current = collections.some(collection => collection.id === buildLibraryCollectionFilter) ? buildLibraryCollectionFilter : 'all';
             buildLibraryCollectionFilter = current;
@@ -19388,6 +19672,14 @@ function buildSwordElement() {
                 filter.appendChild(option);
             });
             filter.value = current;
+            if (deleteButton) {
+                const canDelete = current !== 'all' && current !== 'default';
+                deleteButton.disabled = !canDelete;
+                deleteButton.setAttribute('aria-disabled', canDelete ? 'false' : 'true');
+                deleteButton.title = canDelete
+                    ? (strings.libraryCollectionDelete || 'Delete')
+                    : (strings.libraryCollectionCannotDelete || 'Choose a custom collection to delete.');
+            }
         }
 
         function createBuildLibraryCollection() {
@@ -19405,6 +19697,41 @@ function buildSwordElement() {
             if (input) input.value = '';
             buildLibraryCollectionFilter = id;
             renderBuildLibrary(strings.libraryCollectionCreated || 'Collection created.', 'success');
+        }
+
+        function deleteBuildLibraryCollection() {
+            const strings = getTerminalStrings();
+            const filter = document.getElementById('build-library-collection-filter');
+            const collectionId = String((filter && filter.value) || buildLibraryCollectionFilter || 'all');
+            const collections = readBuildCollections();
+            const target = collections.find(collection => collection.id === collectionId);
+            if (!target || collectionId === 'all' || collectionId === 'default') {
+                setBuildLibraryStatus(strings.libraryCollectionCannotDelete || 'Choose a custom collection to delete.', 'error');
+                return;
+            }
+
+            const confirmMessage = String(strings.libraryCollectionDeleteConfirm || 'Delete collection "{name}"? Builds inside it will move to Unsorted.')
+                .replace('{name}', target.name);
+            if (!window.confirm(confirmMessage)) return;
+
+            const slots = readBuildSaveSlots();
+            let movedBuilds = false;
+            slots.forEach(slot => {
+                if (String(slot.collection_id || 'default') === collectionId) {
+                    slot.collection_id = 'default';
+                    movedBuilds = true;
+                }
+            });
+            if (movedBuilds && !writeBuildSaveSlots(slots)) {
+                setBuildLibraryStatus(strings.saveImportInvalid, 'error');
+                return;
+            }
+
+            const nextCollections = collections.filter(collection => collection.id !== collectionId);
+            if (!writeBuildCollections(nextCollections)) return;
+            buildLibraryCollectionFilter = 'all';
+            renderSaveSlots();
+            renderBuildLibrary(strings.libraryCollectionDeleted || 'Collection deleted. Builds moved to Unsorted.', 'success');
         }
 
         function setBuildLibraryCollectionFilter(collectionId) {
@@ -20015,22 +20342,51 @@ function buildSwordElement() {
             return clamp(Number(input && input.value) || fallback, min, max);
         }
 
-        function getChaosCenter() {
-            return screenToSpawnWorld(
-                (window.innerWidth || document.documentElement.clientWidth || 800) / 2,
-                (window.innerHeight || document.documentElement.clientHeight || 600) / 2
-            );
+        function getChaosCenter(tool = '') {
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
+            let screenX = viewportWidth / 2;
+            let screenY = viewportHeight / 2;
+            if (tool === 'blackhole' && viewportWidth <= 640) {
+                const topInset = Math.max(118, viewportHeight * 0.16);
+                const bottomInset = Math.max(172, viewportHeight * 0.22);
+                const leftInset = Math.max(24, viewportWidth * 0.06);
+                const rightInset = Math.max(84, viewportWidth * 0.18);
+                const minX = leftInset;
+                const maxX = Math.max(minX + 1, viewportWidth - rightInset);
+                const minY = topInset;
+                const maxY = Math.max(minY + 1, viewportHeight - bottomInset);
+                screenX = clamp(viewportWidth * 0.46, minX, maxX);
+                screenY = clamp((minY + maxY) / 2, minY, maxY);
+            }
+            return screenToSpawnWorld(screenX, screenY);
         }
 
         function getBlackHoleSpawnCenter(radius = 320) {
-            const baseCenter = getChaosCenter();
+            const baseCenter = getChaosCenter('blackhole');
             const activeBlackHoles = chaosFields.filter(field => field && field.type === 'blackhole' && !field.released);
             if (activeBlackHoles.length === 0) return baseCenter;
 
             const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
             const inset = Math.max(72, Math.min(150, Number(radius) * 0.32));
-            const screenCandidates = [
+            const mobileBlackHoleLayout = viewportWidth <= 640;
+            const minScreenX = mobileBlackHoleLayout ? Math.max(24, viewportWidth * 0.06) : inset;
+            const maxScreenX = mobileBlackHoleLayout ? Math.max(minScreenX + 1, viewportWidth - Math.max(84, viewportWidth * 0.18)) : viewportWidth - inset;
+            const minScreenY = mobileBlackHoleLayout ? Math.max(118, viewportHeight * 0.16) : inset;
+            const maxScreenY = mobileBlackHoleLayout ? Math.max(minScreenY + 1, viewportHeight - Math.max(172, viewportHeight * 0.22)) : viewportHeight - inset;
+            const screenCandidates = (mobileBlackHoleLayout ? [
+                [0.46, 0.5],
+                [0.28, 0.34],
+                [0.70, 0.34],
+                [0.30, 0.68],
+                [0.66, 0.68],
+                [0.50, 0.24],
+                [0.50, 0.78]
+            ].map(([x, y]) => [
+                minScreenX + (maxScreenX - minScreenX) * x,
+                minScreenY + (maxScreenY - minScreenY) * y
+            ]) : [
                 [viewportWidth * 0.5, viewportHeight * 0.5],
                 [viewportWidth * 0.28, viewportHeight * 0.35],
                 [viewportWidth * 0.72, viewportHeight * 0.35],
@@ -20038,9 +20394,9 @@ function buildSwordElement() {
                 [viewportWidth * 0.72, viewportHeight * 0.66],
                 [viewportWidth * 0.5, viewportHeight * 0.28],
                 [viewportWidth * 0.5, viewportHeight * 0.72]
-            ].map(([x, y]) => screenToSpawnWorld(
-                clamp(x, inset, viewportWidth - inset),
-                clamp(y, inset, viewportHeight - inset)
+            ]).map(([x, y]) => screenToSpawnWorld(
+                clamp(x, minScreenX, maxScreenX),
+                clamp(y, minScreenY, maxScreenY)
             ));
 
             let best = baseCenter;
@@ -21561,6 +21917,42 @@ function buildSwordElement() {
             updateTerminalSimpleState();
             requestSpawnPhysics();
         }
+
+        function runSpawnStressTest(strings = getTerminalStrings()) {
+            if (!document.body.classList.contains('building-mode')) {
+                startBuildingExperience();
+            }
+
+            if (spawnObjectLimit < 30) {
+                spawnObjectLimit = Math.min(INCREASED_SPAWN_OBJECT_LIMIT, 30);
+            }
+
+            let targets = spawnedObjects.filter(body => !body.voiding && !body.temporaryChaos);
+            if (targets.length < 4) {
+                spawnColorBlocks(6, 'random');
+                spawnDoors(1);
+                spawnSwords(1);
+                targets = spawnedObjects.filter(body => !body.voiding && !body.temporaryChaos);
+            }
+
+            if (targets.length === 0) {
+                writeTerminalLine(strings.terminalStressTestNoObjects || 'No objects available for stress test.', 'terminal-warning');
+                updateTerminalSimpleState();
+                return;
+            }
+
+            const centerX = targets.reduce((sum, body) => sum + (Number(body.x) || 0), 0) / targets.length;
+            const radius = clamp(Math.max(340, Math.min(window.innerWidth || 800, window.innerHeight || 600) * 0.58), 260, 560);
+            const power = 8.2;
+            primeChaosAudio('tnt');
+            writeTerminalLine(`${strings.terminalStressTestStarted || 'Stress test launched.'} ${targets.length}`, 'terminal-warning');
+            if (!spawnPhysicsTntDrop(centerX, radius, power)) {
+                detonateChaosExplosion(centerX, Math.max(120, getSpawnGroundY() - 130), radius, power);
+            }
+            updateTerminalSimpleState();
+            requestSpawnPhysics();
+        }
+
 function flingSpawnObjects(strings) {
             const targets = spawnedObjects.filter(body => !body.voiding);
             if (targets.length === 0) {
@@ -21801,6 +22193,10 @@ function rotateSpawnPoint(body, localX, localY) {
             return { center, distance };
         }
 
+        function isMobileSpawnPinchZoomDisabled(event) {
+            return !!(event && event.pointerType === 'touch' && window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+        }
+
         function cancelActiveSpawnDragForCamera() {
             const body = activeSpawnDrag;
             if (!body) return;
@@ -21825,6 +22221,12 @@ function rotateSpawnPoint(body, localX, localY) {
 
         function beginSpawnCameraPointer(event) {
             if (!isSpawnCameraGestureTarget(event.target)) return;
+            if (isMobileSpawnPinchZoomDisabled(event)) {
+                spawnCameraPointers.clear();
+                spawnCameraGesture = null;
+                event.preventDefault();
+                return;
+            }
             spawnCameraPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
             if (spawnCameraPointers.size < 2) return;
 
@@ -21845,6 +22247,12 @@ function rotateSpawnPoint(body, localX, localY) {
         }
 
         function updateSpawnCameraPointer(event) {
+            if (isMobileSpawnPinchZoomDisabled(event)) {
+                spawnCameraPointers.clear();
+                spawnCameraGesture = null;
+                event.preventDefault();
+                return;
+            }
             if (!spawnCameraPointers.has(event.pointerId)) return;
             spawnCameraPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
             if (!spawnCameraGesture) return;
@@ -23105,6 +23513,8 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                 writeTerminalLine(strings.terminalCameraHint, 'terminal-quiet');
             } else if (command === 'fling') {
                 flingSpawnObjects(strings);
+            } else if (command === 'stress test' || command === 'stresstest') {
+                runSpawnStressTest(strings);
             } else if (command === 'flingloop') {
                 startSpawnFlingLoop();
             } else if (command === 'unflingloop') {
@@ -25036,6 +25446,7 @@ function handleConfirm(action) {
             scheduleWebBreakPushPrompt();
             registerWebBreakServiceWorker();
             startSpawnAutosaveLoop();
+            startAchievementPresenceTimer();
             setTimeout(restoreSpawnAutosave, 650);
             setTimeout(() => {
                 showInitialEntryState();
