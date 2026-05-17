@@ -813,6 +813,172 @@
             pointer-events: none;
         }
 
+        #notifications-container {
+            flex: 0 0 auto;
+        }
+
+        .notifications-button {
+            position: relative;
+        }
+
+        .notifications-badge {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            min-width: 19px;
+            height: 19px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 1px solid var(--btn-border);
+            background: #ff3366;
+            color: #ffffff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 9px;
+            font-weight: 900;
+            line-height: 1;
+            box-shadow: 2px 2px 0 var(--card-shadow);
+        }
+
+        .notifications-badge.visible {
+            display: inline-flex;
+        }
+
+        .notifications-panel {
+            position: absolute;
+            right: 0;
+            top: 48px;
+            z-index: 235;
+            width: min(380px, calc(100vw - 24px));
+            max-height: min(520px, calc(100dvh - 96px));
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid var(--card-border);
+            background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+            color: var(--text-main);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(-8px);
+            box-shadow: 7px 7px 0 color-mix(in srgb, var(--card-shadow) 72%, transparent);
+            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+        }
+
+        .notifications-panel.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .notifications-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .notifications-title {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .notifications-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .notifications-actions .terminal-simple-action-button {
+            min-height: 30px;
+            padding: 6px 9px;
+            font-size: 9px;
+        }
+
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 70px;
+            max-height: 360px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .notification-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 82%, transparent);
+            background: color-mix(in srgb, var(--btn-bg) 70%, transparent);
+            color: var(--text-main);
+            text-align: left;
+            box-shadow: 3px 3px 0 color-mix(in srgb, var(--card-shadow) 56%, transparent);
+        }
+
+        .notification-item.unread {
+            border-color: color-mix(in srgb, #ff3366 64%, var(--btn-border));
+            box-shadow: inset 3px 0 0 #ff3366, 3px 3px 0 color-mix(in srgb, var(--card-shadow) 56%, transparent);
+        }
+
+        .notification-item:hover,
+        .notification-item:focus-visible {
+            background: color-mix(in srgb, var(--btn-hover-bg) 78%, transparent);
+            color: var(--btn-hover-text);
+            outline: none;
+            transform: translateY(-1px);
+        }
+
+        .notification-item-title {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            line-height: 1.35;
+        }
+
+        .notification-item-meta {
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        .notifications-status {
+            min-height: 16px;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            line-height: 1.35;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 640px) {
+            .notifications-panel {
+                position: fixed;
+                top: calc(env(safe-area-inset-top) + 64px);
+                right: max(10px, env(safe-area-inset-right));
+                left: max(10px, env(safe-area-inset-left));
+                width: auto;
+                max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 92px);
+            }
+
+            .notifications-list {
+                max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 196px);
+            }
+        }
+
         .spawn-edit-shortcut {
             position: fixed;
             left: 1rem;
@@ -8325,6 +8491,19 @@
                 font-size: 24px !important;
             }
 
+            .notifications-panel {
+                position: fixed !important;
+                top: calc(env(safe-area-inset-top) + 64px) !important;
+                right: max(10px, env(safe-area-inset-right)) !important;
+                left: max(10px, env(safe-area-inset-left)) !important;
+                width: auto !important;
+                max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 92px) !important;
+            }
+
+            .notifications-list {
+                max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 196px) !important;
+            }
+
             #terminal-btn span,
             #changelog-btn span {
                 display: none;
@@ -8419,6 +8598,25 @@
                     <span class="theme-menu-swatch theme-swatch-custom" aria-hidden="true"></span>
                     <span data-i18n="themeCustom">Custom</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Language Toggle -->
+        <div id="notifications-container" class="relative">
+            <button id="notifications-btn" type="button" class="notifications-button w-10 h-10 flex items-center justify-center border themed-btn hover:scale-[1.05] active:scale-[0.95] backdrop-blur-sm focus:outline-none interactive" onclick="toggleCommunityNotificationsPanel()" data-i18n-aria-label="notificationsButton" aria-label="Notifications" aria-haspopup="dialog" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.27 21a2 2 0 0 0 3.46 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.674C19.41 13.956 18 12.499 18 8a6 6 0 0 0-12 0c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                <span id="notifications-badge" class="notifications-badge" aria-hidden="true">0</span>
+            </button>
+            <div id="notifications-panel" class="notifications-panel" role="dialog" aria-hidden="true" data-i18n-aria-label="notificationsTitle" aria-label="Notifications">
+                <div class="notifications-head">
+                    <div class="notifications-title" data-i18n="notificationsTitle">Notifications</div>
+                    <div class="notifications-actions">
+                        <button type="button" class="terminal-simple-action-button interactive" onclick="markAllCommunityNotificationsRead()" data-i18n="notificationsMarkRead">Read</button>
+                        <button type="button" class="terminal-simple-action-button interactive" onclick="refreshCommunityNotifications({ force: true })" data-i18n="notificationsRefresh">Refresh</button>
+                    </div>
+                </div>
+                <div id="notifications-list" class="notifications-list"></div>
+                <div id="notifications-status" class="notifications-status" aria-live="polite"></div>
             </div>
         </div>
 
@@ -10528,6 +10726,7 @@
             communityThreadTitle: "Comments",
             communityCommentPlaceholder: "Write a comment",
             communityCommentButton: "Comment",
+            communityReplyComment: "Reply",
             communityCommentEmpty: "Comment cannot be empty.",
             communityCommentAdded: "Comment added.",
             communityCommentDeleted: "Comment deleted.",
@@ -10631,6 +10830,7 @@
             communityThreadTitle: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0438",
             communityCommentPlaceholder: "\u041d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439",
             communityCommentButton: "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c",
+            communityReplyComment: "\u041e\u0442\u0432\u0435\u0442\u0438\u0442\u044c",
             communityCommentEmpty: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u043f\u0443\u0441\u0442\u044b\u043c.",
             communityCommentAdded: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d.",
             communityCommentDeleted: "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0443\u0434\u0430\u043b\u0451\u043d.",
@@ -10721,7 +10921,22 @@
             pushPromptWorking: "Opening browser permission...",
             pushPromptSubscribed: "Notifications enabled.",
             pushPromptBlocked: "Notifications are blocked in browser settings.",
-            pushPromptUnavailable: "Notifications are unavailable in this browser."
+            pushPromptUnavailable: "Notifications are unavailable in this browser.",
+            notificationsButton: "Notifications",
+            notificationsTitle: "Notifications",
+            notificationsMarkRead: "Read",
+            notificationsRefresh: "Refresh",
+            notificationsEmpty: "No notifications yet.",
+            notificationsSignIn: "Sign in to see notifications.",
+            notificationsSetupNeeded: "Notifications table is not ready in Supabase.",
+            notificationLikeTitle: "{actor} liked your post.",
+            notificationDislikeTitle: "{actor} disliked your post.",
+            notificationCommentTitle: "{actor} commented on your post.",
+            notificationFollowPostTitle: "{actor} posted a new build.",
+            notificationFeaturedTitle: "Your post was featured.",
+            notificationPinnedTitle: "Your post was pinned.",
+            notificationPostLabel: "Post",
+            notificationNow: "now"
         });
 
         Object.assign(i18n.ru, {
@@ -10739,7 +10954,22 @@
             pushPromptWorking: "\u041e\u0442\u043a\u0440\u044b\u0432\u0430\u044e \u0437\u0430\u043f\u0440\u043e\u0441 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430...",
             pushPromptSubscribed: "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u044b.",
             pushPromptBlocked: "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u044b \u0432 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u0445 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.",
-            pushPromptUnavailable: "\u042d\u0442\u043e\u0442 \u0431\u0440\u0430\u0443\u0437\u0435\u0440 \u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f."
+            pushPromptUnavailable: "\u042d\u0442\u043e\u0442 \u0431\u0440\u0430\u0443\u0437\u0435\u0440 \u043d\u0435 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f.",
+            notificationsButton: "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f",
+            notificationsTitle: "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f",
+            notificationsMarkRead: "\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c",
+            notificationsRefresh: "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c",
+            notificationsEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439.",
+            notificationsSignIn: "\u0412\u043e\u0439\u0434\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u0438\u0434\u0435\u0442\u044c \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f.",
+            notificationsSetupNeeded: "\u0422\u0430\u0431\u043b\u0438\u0446\u0430 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439 \u0435\u0449\u0435 \u043d\u0435 \u0433\u043e\u0442\u043e\u0432\u0430 \u0432 Supabase.",
+            notificationLikeTitle: "{actor} \u043b\u0430\u0439\u043a\u043d\u0443\u043b \u0432\u0430\u0448 \u043f\u043e\u0441\u0442.",
+            notificationDislikeTitle: "{actor} \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043b \u0434\u0438\u0437\u043b\u0430\u0439\u043a \u0432\u0430\u0448\u0435\u043c\u0443 \u043f\u043e\u0441\u0442\u0443.",
+            notificationCommentTitle: "{actor} \u043e\u0441\u0442\u0430\u0432\u0438\u043b \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439.",
+            notificationFollowPostTitle: "{actor} \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043b \u043d\u043e\u0432\u044b\u0439 \u0431\u0438\u043b\u0434.",
+            notificationFeaturedTitle: "\u0412\u0430\u0448 \u043f\u043e\u0441\u0442 \u043f\u043e\u043f\u0430\u043b \u0432 \u043b\u0443\u0447\u0448\u0438\u0435.",
+            notificationPinnedTitle: "\u0412\u0430\u0448 \u043f\u043e\u0441\u0442 \u0437\u0430\u043a\u0440\u0435\u043f\u0438\u043b\u0438.",
+            notificationPostLabel: "\u041f\u043e\u0441\u0442",
+            notificationNow: "\u0441\u0435\u0439\u0447\u0430\u0441"
         });
 
         Object.assign(i18n.en, {
@@ -11121,10 +11351,14 @@
         const COMMUNITY_LOCAL_STORAGE_KEY = 'webbreak.community.localPosts.v1';
         const COMMUNITY_COOLDOWN_STORAGE_KEY = 'webbreak.community.cooldowns.v1';
         const COMMUNITY_FOLLOWED_BUILDERS_KEY = 'webbreak.community.followedBuilders.v1';
+        const COMMUNITY_NOTIFICATIONS_STORAGE_KEY = 'webbreak.community.notifications.v1';
+        const COMMUNITY_PUSH_FUNCTION_NAME = 'send-community-push';
         const WEBBREAK_BUILD_COLLECTIONS_KEY = 'webbreak.buildCollections.v1';
         const COMMUNITY_ACTION_COOLDOWN_MS = 850;
         const COMMUNITY_POST_COOLDOWN_MS = 5 * 60 * 1000;
         const COMMUNITY_COMMENT_COOLDOWN_MS = 3 * 60 * 1000;
+        const COMMUNITY_NOTIFICATIONS_LIMIT = 32;
+        const COMMUNITY_NOTIFICATIONS_POLL_MS = 45000;
         const COMMUNITY_BANNER_ASPECT = 4.55;
         const BUILD_LIBRARY_BANNER_ASPECT = 3.65;
         const COMMUNITY_BANNER_BASE_WIDTH = 540;
@@ -11153,6 +11387,11 @@
         let communityPreviewSnapshot = null;
         let communityFallbackReason = '';
         let communityCurrentBan = null;
+        let communityNotifications = [];
+        let communityNotificationsPanelOpen = false;
+        let communityNotificationsHydrated = false;
+        let communityNotificationsPollTimer = null;
+        let oneSignalExternalUserId = '';
         let adminPanelReports = [];
         let adminPanelLoading = false;
         let buildLibraryCollectionFilter = 'all';
@@ -11765,6 +12004,7 @@
             renderBuildLibrary();
             renderAchievements();
             updateChaosToolsUi();
+            renderCommunityNotifications();
             renderCommunityPosts();
             updateCommunityComposerMode();
             renderFeaturedBuildCards(featuredBuildCards);
@@ -13215,6 +13455,13 @@ function normalizeNickname(value) {
             renderProfileSearchResults(profileSearchResults);
             if (questionZoneTab === 'community') {
                 renderCommunityPosts();
+            }
+            if (user) {
+                syncOneSignalExternalUser(user.id);
+                startCommunityNotifications();
+            } else {
+                syncOneSignalExternalUser('');
+                stopCommunityNotifications();
             }
             updateQuestionZoneTabs();
             updateDesktopBuildTimerAnchor();
@@ -15090,6 +15337,490 @@ function normalizeNickname(value) {
             return isFollowingCommunityBuilder(getCommunityBuilderFromPost(post));
         }
 
+        function getCommunityNotificationsStorageKey() {
+            const user = getCommunityUser();
+            return `${COMMUNITY_NOTIFICATIONS_STORAGE_KEY}:${user && user.id ? user.id : 'guest'}`;
+        }
+
+        function createCommunityLocalId(prefix = 'notification') {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return `${prefix}-${window.crypto.randomUUID()}`;
+            }
+            return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function normalizeCommunityNotification(row) {
+            return {
+                id: String(row && row.id ? row.id : createCommunityLocalId()),
+                recipient_id: row && row.recipient_id ? String(row.recipient_id) : '',
+                actor_id: row && row.actor_id ? String(row.actor_id) : '',
+                actor_name: sanitizeCommunityText(row && row.actor_name, 40) || 'WebBreak',
+                type: sanitizeCommunityText(row && row.type, 32) || 'info',
+                post_id: row && row.post_id ? String(row.post_id) : '',
+                post_title: sanitizeCommunityText(row && row.post_title, 90),
+                message: sanitizeCommunityText(row && row.message, 220),
+                read: !!(row && row.read),
+                created_at: row && row.created_at ? row.created_at : new Date().toISOString()
+            };
+        }
+
+        function readCommunityNotificationsLocal() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(getCommunityNotificationsStorageKey()) || '[]');
+                return Array.isArray(parsed) ? parsed.map(normalizeCommunityNotification) : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function writeCommunityNotificationsLocal(list) {
+            try {
+                localStorage.setItem(
+                    getCommunityNotificationsStorageKey(),
+                    JSON.stringify((Array.isArray(list) ? list : []).slice(0, COMMUNITY_NOTIFICATIONS_LIMIT))
+                );
+            } catch (error) {}
+        }
+
+        function getCommunityNotificationTitle(notification) {
+            const strings = getAuthStrings();
+            const actor = notification.actor_name || 'WebBreak';
+            const templates = {
+                like: strings.notificationLikeTitle || '{actor} liked your post.',
+                dislike: strings.notificationDislikeTitle || '{actor} disliked your post.',
+                comment: strings.notificationCommentTitle || '{actor} commented on your post.',
+                follow_post: strings.notificationFollowPostTitle || '{actor} posted a new build.',
+                featured: strings.notificationFeaturedTitle || 'Your post was featured.',
+                pinned: strings.notificationPinnedTitle || 'Your post was pinned.'
+            };
+            return String(templates[notification.type] || notification.message || strings.notificationsTitle || 'Notification')
+                .replace('{actor}', actor);
+        }
+
+        function updateCommunityNotificationsBadge() {
+            const badge = document.getElementById('notifications-badge');
+            const button = document.getElementById('notifications-btn');
+            const unread = communityNotifications.filter(item => !item.read).length;
+            if (badge) {
+                badge.textContent = unread > 99 ? '99+' : (unread > 0 ? `+${unread}` : '0');
+                badge.classList.toggle('visible', unread > 0);
+            }
+            if (button) {
+                button.classList.toggle('active', unread > 0 || communityNotificationsPanelOpen);
+                button.setAttribute('aria-expanded', communityNotificationsPanelOpen ? 'true' : 'false');
+            }
+        }
+
+        function setCommunityNotificationsStatus(message = '', type = '') {
+            const status = document.getElementById('notifications-status');
+            if (!status) return;
+            status.textContent = message || '';
+            status.className = `notifications-status ${type}`.trim();
+        }
+
+        function renderCommunityNotifications() {
+            const list = document.getElementById('notifications-list');
+            const strings = getAuthStrings();
+            if (!list) {
+                updateCommunityNotificationsBadge();
+                return;
+            }
+            list.innerHTML = '';
+
+            if (!getCommunityUser()) {
+                const empty = document.createElement('div');
+                empty.className = 'community-empty-card';
+                empty.textContent = strings.notificationsSignIn || 'Sign in to see notifications.';
+                list.appendChild(empty);
+                setCommunityNotificationsStatus('');
+                updateCommunityNotificationsBadge();
+                return;
+            }
+
+            if (communityNotifications.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'community-empty-card';
+                empty.textContent = strings.notificationsEmpty || 'No notifications yet.';
+                list.appendChild(empty);
+                updateCommunityNotificationsBadge();
+                return;
+            }
+
+            communityNotifications.forEach(notification => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = `notification-item interactive${notification.read ? '' : ' unread'}`;
+                button.addEventListener('click', () => openCommunityNotification(notification));
+
+                const title = document.createElement('div');
+                title.className = 'notification-item-title';
+                title.textContent = getCommunityNotificationTitle(notification);
+
+                const meta = document.createElement('div');
+                meta.className = 'notification-item-meta';
+                const postTitle = notification.post_title ? `${strings.notificationPostLabel || 'Post'}: ${notification.post_title}` : '';
+                meta.textContent = [postTitle, formatCommunityTime(notification.created_at)].filter(Boolean).join(' // ');
+
+                button.append(title, meta);
+                list.appendChild(button);
+            });
+            updateCommunityNotificationsBadge();
+        }
+
+        function showCommunityBrowserNotification(notification) {
+            try {
+                const settings = readWebBreakSettings();
+                if (settings.pushNotifications !== 'on') return;
+                if (!('Notification' in window) || Notification.permission !== 'granted') return;
+                new Notification('WebBreak', {
+                    body: getCommunityNotificationTitle(notification),
+                    icon: 'icon-192.png',
+                    badge: 'favicon-32x32.png',
+                    tag: `webbreak-community-${notification.id}`
+                });
+            } catch (error) {}
+        }
+
+        async function syncOneSignalExternalUser(userId = '') {
+            const normalizedUserId = userId ? String(userId) : '';
+            if (oneSignalExternalUserId === normalizedUserId) return;
+            try {
+                const OneSignal = window.webbreakOneSignal || (window.webbreakOneSignalReady ? await window.webbreakOneSignalReady : null);
+                if (!OneSignal) return;
+                if (normalizedUserId && typeof OneSignal.login === 'function') {
+                    await OneSignal.login(normalizedUserId);
+                    oneSignalExternalUserId = normalizedUserId;
+                    return;
+                }
+                if (!normalizedUserId && oneSignalExternalUserId && typeof OneSignal.logout === 'function') {
+                    await OneSignal.logout();
+                    oneSignalExternalUserId = '';
+                }
+            } catch (error) {
+                // External ID sync is best-effort; push settings still work without blocking auth.
+            }
+        }
+
+        async function invokeCommunityPushFunction(notificationIds = []) {
+            const client = getSupabaseClient();
+            const user = getCommunityUser();
+            const ids = (Array.isArray(notificationIds) ? notificationIds : [notificationIds])
+                .map(id => String(id || '').trim())
+                .filter(Boolean);
+            if (!client || !user || ids.length === 0 || typeof client.functions === 'undefined') return;
+            try {
+                await client.functions.invoke(COMMUNITY_PUSH_FUNCTION_NAME, {
+                    body: { notification_ids: ids }
+                });
+            } catch (error) {
+                // The in-app notification is already saved; missing Edge Function should never break Community.
+            }
+        }
+
+        function cacheCommunityNotifications(list, { allowPush = false } = {}) {
+            const oldIds = new Set(communityNotifications.map(item => item.id));
+            communityNotifications = (Array.isArray(list) ? list : [])
+                .map(normalizeCommunityNotification)
+                .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                .slice(0, COMMUNITY_NOTIFICATIONS_LIMIT);
+            writeCommunityNotificationsLocal(communityNotifications);
+            if (allowPush) {
+                communityNotifications
+                    .filter(item => !item.read && !oldIds.has(item.id))
+                    .slice(0, 3)
+                    .forEach(showCommunityBrowserNotification);
+            }
+            renderCommunityNotifications();
+        }
+
+        function addCommunityLocalNotification(notification, { push = true } = {}) {
+            const normalized = normalizeCommunityNotification(Object.assign({}, notification, {
+                id: notification.id || createCommunityLocalId(),
+                read: false,
+                created_at: notification.created_at || new Date().toISOString()
+            }));
+            const next = [normalized].concat(communityNotifications.filter(item => item.id !== normalized.id));
+            cacheCommunityNotifications(next, { allowPush: false });
+            showWebBreakNotification(getCommunityNotificationTitle(normalized), 'info', { duration: 3600 });
+            if (push) showCommunityBrowserNotification(normalized);
+        }
+
+        function isCommunityNotificationsSetupError(error) {
+            const message = getErrorText(error);
+            return message.includes('community_notifications') || message.includes('profile_follows') || message.includes('relation') || message.includes('does not exist');
+        }
+
+        async function createCommunityNotification(recipientId, type, details = {}) {
+            const user = getCommunityUser();
+            const recipient = recipientId ? String(recipientId) : '';
+            if (!user || !recipient || recipient === user.id) return;
+            const notification = normalizeCommunityNotification({
+                recipient_id: recipient,
+                actor_id: user.id,
+                actor_name: getCommunityDisplayName(),
+                type,
+                post_id: details.post_id || '',
+                post_title: details.post_title || '',
+                message: details.message || '',
+                read: false,
+                created_at: new Date().toISOString()
+            });
+
+            const client = getSupabaseClient();
+            if (!client || communityUsingLocalFallback) return;
+            try {
+                const { data, error } = await client
+                    .from('community_notifications')
+                    .insert({
+                        recipient_id: notification.recipient_id,
+                        actor_id: notification.actor_id,
+                        actor_name: notification.actor_name,
+                        type: notification.type,
+                        post_id: notification.post_id || null,
+                        post_title: notification.post_title,
+                        message: notification.message,
+                        read: false
+                    })
+                    .select('id')
+                    .maybeSingle();
+                if (error) throw error;
+                if (data && data.id) invokeCommunityPushFunction([data.id]);
+            } catch (error) {
+                if (!isCommunityNotificationsSetupError(error)) {
+                    console.warn('Community notification failed:', error);
+                }
+            }
+        }
+
+        async function refreshCommunityNotifications({ force = false, silent = false } = {}) {
+            const strings = getAuthStrings();
+            const user = getCommunityUser();
+            if (!user) {
+                communityNotifications = [];
+                communityNotificationsHydrated = false;
+                renderCommunityNotifications();
+                return;
+            }
+
+            if (!communityNotificationsHydrated || force) {
+                cacheCommunityNotifications(readCommunityNotificationsLocal(), { allowPush: false });
+            }
+
+            const client = getSupabaseClient();
+            if (!client || communityUsingLocalFallback) {
+                if (!silent) setCommunityNotificationsStatus(strings.notificationsSetupNeeded || '');
+                communityNotificationsHydrated = true;
+                return;
+            }
+
+            try {
+                const { data, error } = await client
+                    .from('community_notifications')
+                    .select('*')
+                    .eq('recipient_id', user.id)
+                    .order('created_at', { ascending: false })
+                    .limit(COMMUNITY_NOTIFICATIONS_LIMIT);
+                if (error) throw error;
+                cacheCommunityNotifications(data || [], { allowPush: communityNotificationsHydrated });
+                communityNotificationsHydrated = true;
+                setCommunityNotificationsStatus('');
+            } catch (error) {
+                communityNotificationsHydrated = true;
+                if (!silent) {
+                    setCommunityNotificationsStatus(
+                        isCommunityNotificationsSetupError(error) ? strings.notificationsSetupNeeded : getCommunityErrorMessage(error),
+                        'error'
+                    );
+                }
+            }
+        }
+
+        function startCommunityNotifications() {
+            if (!getCommunityUser()) {
+                stopCommunityNotifications();
+                return;
+            }
+            if (!communityNotificationsHydrated) {
+                cacheCommunityNotifications(readCommunityNotificationsLocal(), { allowPush: false });
+                refreshCommunityNotifications({ silent: true });
+                syncCommunityFollowsFromSupabase();
+            }
+            if (!communityNotificationsPollTimer) {
+                communityNotificationsPollTimer = setInterval(() => {
+                    refreshCommunityNotifications({ silent: true });
+                }, COMMUNITY_NOTIFICATIONS_POLL_MS);
+            }
+        }
+
+        function stopCommunityNotifications() {
+            if (communityNotificationsPollTimer) {
+                clearInterval(communityNotificationsPollTimer);
+                communityNotificationsPollTimer = null;
+            }
+            communityNotifications = [];
+            communityNotificationsHydrated = false;
+            renderCommunityNotifications();
+        }
+
+        function toggleCommunityNotificationsPanel() {
+            const panel = document.getElementById('notifications-panel');
+            if (!panel) return;
+            communityNotificationsPanelOpen = !communityNotificationsPanelOpen;
+            panel.classList.toggle('open', communityNotificationsPanelOpen);
+            panel.setAttribute('aria-hidden', communityNotificationsPanelOpen ? 'false' : 'true');
+            updateCommunityNotificationsBadge();
+            if (communityNotificationsPanelOpen) {
+                refreshCommunityNotifications({ force: true, silent: true });
+            }
+        }
+
+        async function markCommunityNotificationRead(notificationId) {
+            const id = String(notificationId || '');
+            if (!id) return;
+            communityNotifications = communityNotifications.map(item => item.id === id ? Object.assign({}, item, { read: true }) : item);
+            writeCommunityNotificationsLocal(communityNotifications);
+            renderCommunityNotifications();
+            const client = getSupabaseClient();
+            const user = getCommunityUser();
+            if (!client || !user || id.startsWith('notification-')) return;
+            try {
+                await client
+                    .from('community_notifications')
+                    .update({ read: true })
+                    .eq('id', id)
+                    .eq('recipient_id', user.id);
+            } catch (error) {}
+        }
+
+        async function markAllCommunityNotificationsRead() {
+            const user = getCommunityUser();
+            if (!user) return;
+            communityNotifications = communityNotifications.map(item => Object.assign({}, item, { read: true }));
+            writeCommunityNotificationsLocal(communityNotifications);
+            renderCommunityNotifications();
+            const client = getSupabaseClient();
+            if (!client || communityUsingLocalFallback) return;
+            try {
+                await client
+                    .from('community_notifications')
+                    .update({ read: true })
+                    .eq('recipient_id', user.id)
+                    .eq('read', false);
+            } catch (error) {}
+        }
+
+        async function openCommunityNotification(notification) {
+            await markCommunityNotificationRead(notification.id);
+            if (!notification.post_id) return;
+            if (communityNotificationsPanelOpen) toggleCommunityNotificationsPanel();
+            setQuestionZoneTab('community');
+            let post = getCommunityPostById(notification.post_id);
+            if (!post && getSupabaseClient() && !communityUsingLocalFallback) {
+                try {
+                    const { data, error } = await getSupabaseClient()
+                        .from('community_posts')
+                        .select('*')
+                        .eq('id', notification.post_id)
+                        .maybeSingle();
+                    if (error) throw error;
+                    if (data) {
+                        const enriched = await fetchCommunityStats([normalizeCommunityPost(data)]);
+                        post = enriched[0] || normalizeCommunityPost(data);
+                        communityPosts = [post].concat(communityPosts.filter(item => String(item.id) !== String(post.id)));
+                    }
+                } catch (error) {}
+            }
+            if (post) {
+                openCommunityPostDetail(post.id);
+            } else {
+                setCommunityStatus(getAuthStrings().communityEmpty || '');
+            }
+        }
+
+        async function syncCommunityFollowsFromSupabase() {
+            const user = getCommunityUser();
+            const client = getSupabaseClient();
+            if (!user || !client || communityUsingLocalFallback) return;
+            try {
+                const { data, error } = await client
+                    .from('profile_follows')
+                    .select('builder_id, builder_account_id, builder_name, created_at')
+                    .eq('follower_id', user.id);
+                if (error) throw error;
+                const remote = (data || []).map(item => ({
+                    id: item.builder_id || '',
+                    account_id: item.builder_account_id || null,
+                    nickname: sanitizeCommunityText(item.builder_name || 'Builder', 32),
+                    followed_at: item.created_at || new Date().toISOString()
+                }));
+                const merged = readCommunityFollowedBuilders();
+                remote.forEach(item => {
+                    if (!merged.some(existing => getCommunityBuilderKey(existing) === getCommunityBuilderKey(item))) {
+                        merged.push(item);
+                    }
+                });
+                writeCommunityFollowedBuilders(merged);
+            } catch (error) {}
+        }
+
+        async function syncCommunityFollowMutation(builder, shouldFollow) {
+            const user = getCommunityUser();
+            const client = getSupabaseClient();
+            if (!user || !client || communityUsingLocalFallback || !builder || !builder.id) return;
+            try {
+                if (shouldFollow) {
+                    await client
+                        .from('profile_follows')
+                        .upsert({
+                            follower_id: user.id,
+                            builder_id: String(builder.id),
+                            builder_account_id: builder.account_id || builder.author_account_id || null,
+                            builder_name: normalizeNickname(builder.nickname || builder.username) || 'Builder'
+                        }, { onConflict: 'follower_id,builder_id' });
+                } else {
+                    await client
+                        .from('profile_follows')
+                        .delete()
+                        .eq('follower_id', user.id)
+                        .eq('builder_id', String(builder.id));
+                }
+            } catch (error) {}
+        }
+
+        async function notifyCommunityFollowersOfPost(post) {
+            const user = getCommunityUser();
+            const client = getSupabaseClient();
+            if (!user || !client || communityUsingLocalFallback || !post || !post.id) return;
+            try {
+                const { data, error } = await client
+                    .from('profile_follows')
+                    .select('follower_id')
+                    .eq('builder_id', user.id);
+                if (error) throw error;
+                const rows = (data || [])
+                    .map(item => String(item.follower_id || ''))
+                    .filter(id => id && id !== user.id)
+                    .map(recipientId => ({
+                        recipient_id: recipientId,
+                        actor_id: user.id,
+                        actor_name: getCommunityDisplayName(),
+                        type: 'follow_post',
+                        post_id: post.id,
+                        post_title: post.title || '',
+                        message: '',
+                        read: false
+                    }));
+                if (rows.length > 0) {
+                    const { data, error: insertError } = await client
+                        .from('community_notifications')
+                        .insert(rows)
+                        .select('id');
+                    if (insertError) throw insertError;
+                    invokeCommunityPushFunction((data || []).map(item => item.id));
+                }
+            } catch (error) {}
+        }
+
         function toggleFollowCommunityBuilder(builder) {
             const strings = getAuthStrings();
             const user = requireCommunityUser();
@@ -15107,6 +15838,7 @@ function normalizeNickname(value) {
                     followed_at: new Date().toISOString()
                 });
             writeCommunityFollowedBuilders(next);
+            syncCommunityFollowMutation(builder, !isFollowing);
             setCommunityStatus(isFollowing ? strings.communityUnfollowedBuilder : strings.communityFollowedBuilder, 'success');
             if (communityFilter === 'following') {
                 communityPage = 0;
@@ -16218,6 +16950,22 @@ function normalizeNickname(value) {
             renderCommunityPosts();
         }
 
+        function getCommunityCommentInputId(postId) {
+            return `community-comment-input-${String(postId || '').replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+        }
+
+        function replyToCommunityComment(postId, username) {
+            const input = document.getElementById(getCommunityCommentInputId(postId));
+            if (!input) return;
+            const cleanName = normalizeNickname(username) || 'Builder';
+            const prefix = `@${cleanName} `;
+            if (!input.value.trim().startsWith(prefix)) {
+                input.value = `${prefix}${input.value || ''}`;
+            }
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+        }
+
         function renderCommunityComments(post, options = {}) {
             const strings = getAuthStrings();
             const wrap = document.createElement('div');
@@ -16248,6 +16996,10 @@ function normalizeNickname(value) {
                 row.append(head, body);
                 const commentActions = document.createElement('div');
                 commentActions.className = 'community-comment-actions';
+                commentActions.appendChild(createCommunityActionButton(
+                    strings.communityReplyComment || 'Reply',
+                    () => replyToCommunityComment(post.id, comment.username)
+                ));
                 if (options.full && (isCommunityPostOwner(post) || isCommunityMod())) {
                     commentActions.appendChild(createCommunityActionButton(
                         isPinnedComment ? (strings.communityUnpinComment || 'Unpin') : (strings.communityPinComment || 'Pin'),
@@ -16274,6 +17026,7 @@ function normalizeNickname(value) {
             form.className = 'community-comment-form';
             const input = document.createElement('input');
             input.className = 'community-input interactive';
+            input.id = getCommunityCommentInputId(post.id);
             input.maxLength = 360;
             input.placeholder = strings.communityCommentPlaceholder;
             const button = document.createElement('button');
@@ -16653,6 +17406,7 @@ function normalizeNickname(value) {
             const isEditingPost = !!draft.isEditingPost;
             const editPostId = draft.editPostId;
             const user = draft.user || getCommunityUser();
+            let createdPostForNotifications = null;
 
             try {
                 if (communityUsingLocalFallback && communityFallbackReason === 'connection') {
@@ -16668,7 +17422,7 @@ function normalizeNickname(value) {
                         .eq('author_id', user.id);
                     if (error) throw error;
                 } else {
-                    const { error } = await getSupabaseClient()
+                    const { data, error } = await getSupabaseClient()
                         .from('community_posts')
                         .insert(Object.assign({}, payload, {
                             featured: false,
@@ -16676,14 +17430,20 @@ function normalizeNickname(value) {
                             hidden: false,
                             comments_locked: false,
                             is_announcement: false
-                        }));
+                        }))
+                        .select('*')
+                        .maybeSingle();
                     if (error) throw error;
+                    if (data) createdPostForNotifications = normalizeCommunityPost(data);
                 }
                 if (!isEditingPost) setCommunityCooldown('post', user, COMMUNITY_POST_COOLDOWN_MS);
                 const successMessage = isEditingPost ? strings.communityPostUpdated : strings.communityPostCreated;
                 resetCommunityComposer();
                 setCommunityComposeStatus(successMessage, 'success');
                 if (!isEditingPost) recordAchievementEvent('communityPosts');
+                if (!isEditingPost) {
+                    notifyCommunityFollowersOfPost(createdPostForNotifications || Object.assign({}, payload, { id: '' }));
+                }
                 refreshCommunityFeed(true);
                 return true;
             } catch (error) {
@@ -16790,7 +17550,13 @@ function normalizeNickname(value) {
                 post.my_disliked = nextReaction < 0;
                 renderCommunityPosts();
                 setCommunityStatus(strings.communityLikeSaved, 'success');
-                if (nextReaction !== 0) recordAchievementEvent('reactions');
+                if (nextReaction !== 0) {
+                    recordAchievementEvent('reactions');
+                    createCommunityNotification(post.author_id, nextReaction > 0 ? 'like' : 'dislike', {
+                        post_id: post.id,
+                        post_title: post.title
+                    });
+                }
             } catch (error) {
                 setCommunityStatus(getCommunityErrorMessage(error), 'error');
             }
@@ -16848,6 +17614,11 @@ function normalizeNickname(value) {
                 setCommunityCooldown('comment', user, COMMUNITY_COMMENT_COOLDOWN_MS);
                 setCommunityStatus(strings.communityCommentAdded, 'success');
                 recordAchievementEvent('comments');
+                createCommunityNotification(post.author_id, 'comment', {
+                    post_id: post.id,
+                    post_title: post.title,
+                    message: body
+                });
                 refreshCommunityFeed(false);
             } catch (error) {
                 setCommunityStatus(getCommunityErrorMessage(error), 'error');
@@ -17008,6 +17779,18 @@ function normalizeNickname(value) {
                     if (questionZoneTab === 'featured') {
                         loadFeaturedBuilds(true);
                     }
+                }
+                if (patch.featured === true) {
+                    createCommunityNotification(activePost && activePost.author_id, 'featured', {
+                        post_id: postId,
+                        post_title: activePost && activePost.title
+                    });
+                }
+                if (patch.pinned === true) {
+                    createCommunityNotification(activePost && activePost.author_id, 'pinned', {
+                        post_id: postId,
+                        post_title: activePost && activePost.title
+                    });
                 }
                 setCommunityStatus(strings.communityPostModerated, 'success');
                 refreshCommunityFeed(false);
