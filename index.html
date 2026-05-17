@@ -2726,12 +2726,13 @@
         }
 
         .admin-panel-tools {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto;
+            grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(130px, 0.7fr) minmax(150px, 0.8fr) auto auto;
         }
 
         .build-library-collections select,
         .build-library-collections input,
         .build-library-card select,
+        .admin-panel-tools select,
         .admin-panel-tools input {
             min-height: 36px;
             border: 1px solid var(--btn-border);
@@ -2748,6 +2749,7 @@
         .build-library-collections select:focus,
         .build-library-collections input:focus,
         .build-library-card select:focus,
+        .admin-panel-tools select:focus,
         .admin-panel-tools input:focus {
             border-color: var(--btn-hover-border);
             box-shadow: 0 0 0 2px color-mix(in srgb, var(--btn-hover-border) 18%, transparent);
@@ -6358,6 +6360,46 @@
             color: var(--text-muted);
         }
 
+        .community-ban-modal-card {
+            width: min(540px, calc(100vw - 24px));
+            border-color: color-mix(in srgb, var(--terminal-error) 56%, var(--btn-border));
+        }
+
+        .community-ban-details {
+            display: grid;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid color-mix(in srgb, var(--terminal-error) 42%, var(--btn-border));
+            background: color-mix(in srgb, var(--terminal-error) 8%, var(--card-bg));
+        }
+
+        .community-ban-detail-row {
+            display: grid;
+            grid-template-columns: 84px minmax(0, 1fr);
+            gap: 10px;
+            align-items: start;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .community-ban-detail-label {
+            color: var(--terminal-error);
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .community-ban-detail-value {
+            color: var(--text-main);
+            overflow-wrap: anywhere;
+        }
+
+        .community-ban-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
         .save-build-controls {
             align-items: stretch;
         }
@@ -9070,6 +9112,14 @@
                             <div class="admin-panel-tools">
                                 <input id="admin-ban-account-id" class="interactive" autocomplete="off" data-i18n-placeholder="adminBanIdPlaceholder" placeholder="#ID">
                                 <input id="admin-ban-reason" class="interactive" autocomplete="off" maxlength="140" data-i18n-placeholder="adminBanReasonPlaceholder" placeholder="Reason">
+                                <select id="admin-ban-duration" class="interactive" onchange="toggleAdminBanCustomTime()" data-i18n-aria-label="adminBanDurationLabel" aria-label="Ban duration">
+                                    <option value="1d" data-i18n="adminBanDurationOneDay">1 day</option>
+                                    <option value="7d" data-i18n="adminBanDurationSevenDays" selected>7 days</option>
+                                    <option value="30d" data-i18n="adminBanDurationThirtyDays">30 days</option>
+                                    <option value="permanent" data-i18n="adminBanDurationPermanent">Permanent</option>
+                                    <option value="custom" data-i18n="adminBanDurationCustom">Custom</option>
+                                </select>
+                                <input id="admin-ban-custom-until" class="interactive auth-block-hidden" type="datetime-local" data-i18n-aria-label="adminBanCustomUntilLabel" aria-label="Custom ban end time">
                                 <button type="button" class="terminal-simple-action-button interactive profile-admin-danger" onclick="banAdminPanelAccount()" data-i18n="adminBanButton">Ban</button>
                                 <button type="button" class="terminal-simple-action-button interactive" onclick="unbanAdminPanelAccount()" data-i18n="adminUnbanButton">Unban</button>
                             </div>
@@ -9411,6 +9461,33 @@
                 <button type="button" class="terminal-simple-action-button interactive" onclick="closeCustomThemeModal()" data-i18n="customThemeCancel">Cancel</button>
             </div>
             <div id="custom-theme-status" class="custom-theme-status" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <div id="community-ban-modal" class="webbreak-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="community-ban-title">
+        <div class="webbreak-modal-backdrop" aria-hidden="true"></div>
+        <div class="webbreak-modal-card community-ban-modal-card glass-card border rounded-[2px]">
+            <div class="webbreak-modal-head">
+                <div>
+                    <div id="community-ban-title" class="webbreak-modal-title" data-i18n="communityBanTitle">You were banned</div>
+                    <div class="webbreak-modal-subtitle" data-i18n="communityBanSubtitle">Community access is temporarily restricted.</div>
+                </div>
+            </div>
+            <div class="community-ban-details">
+                <div class="community-ban-detail-row">
+                    <span class="community-ban-detail-label" data-i18n="communityBanReasonLabel">Reason:</span>
+                    <span id="community-ban-reason" class="community-ban-detail-value">-</span>
+                </div>
+                <div class="community-ban-detail-row">
+                    <span class="community-ban-detail-label" data-i18n="communityBanTimeLabel">Time:</span>
+                    <span id="community-ban-time" class="community-ban-detail-value">-</span>
+                </div>
+            </div>
+            <div class="webbreak-modal-subtitle" data-i18n="communityBanLocalBuildHint">But you can still build locally.</div>
+            <div class="community-ban-actions">
+                <button type="button" class="terminal-simple-action-button interactive profile-admin-danger" onclick="signOutFromCommunityBanModal()" data-i18n="communityBanSignOut">Sign out</button>
+                <button type="button" class="terminal-simple-action-button interactive" onclick="closeCommunityBanModal()" data-i18n="communityBanOk">OK</button>
+            </div>
         </div>
     </div>
 
@@ -10935,8 +11012,19 @@
             notificationFollowPostTitle: "{actor} posted a new build.",
             notificationFeaturedTitle: "Your post was featured.",
             notificationPinnedTitle: "Your post was pinned.",
+            notificationBanTitle: "Your account was banned.",
             notificationPostLabel: "Post",
-            notificationNow: "now"
+            notificationNow: "now",
+            communityBanTitle: "You were banned",
+            communityBanSubtitle: "Community access is temporarily restricted.",
+            communityBanReasonLabel: "Reason:",
+            communityBanTimeLabel: "Time:",
+            communityBanLocalBuildHint: "But you can still build locally.",
+            communityBanSignOut: "Sign out",
+            communityBanOk: "OK",
+            communityBanNoReason: "No reason provided.",
+            communityBanUntil: "Until {time}",
+            communityBanPermanent: "Permanent"
         });
 
         Object.assign(i18n.ru, {
@@ -10968,8 +11056,19 @@
             notificationFollowPostTitle: "{actor} \u043e\u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043b \u043d\u043e\u0432\u044b\u0439 \u0431\u0438\u043b\u0434.",
             notificationFeaturedTitle: "\u0412\u0430\u0448 \u043f\u043e\u0441\u0442 \u043f\u043e\u043f\u0430\u043b \u0432 \u043b\u0443\u0447\u0448\u0438\u0435.",
             notificationPinnedTitle: "\u0412\u0430\u0448 \u043f\u043e\u0441\u0442 \u0437\u0430\u043a\u0440\u0435\u043f\u0438\u043b\u0438.",
+            notificationBanTitle: "\u0412\u0430\u0448 \u0430\u043a\u043a\u0430\u0443\u043d\u0442 \u0437\u0430\u0431\u0430\u043d\u0435\u043d.",
             notificationPostLabel: "\u041f\u043e\u0441\u0442",
-            notificationNow: "\u0441\u0435\u0439\u0447\u0430\u0441"
+            notificationNow: "\u0441\u0435\u0439\u0447\u0430\u0441",
+            communityBanTitle: "\u0412\u044b \u0431\u044b\u043b\u0438 \u0437\u0430\u0431\u0430\u043d\u0435\u043d\u044b",
+            communityBanSubtitle: "\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0441\u043e\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0443 \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u043e \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d.",
+            communityBanReasonLabel: "\u041f\u0440\u0438\u0447\u0438\u043d\u0430:",
+            communityBanTimeLabel: "\u0412\u0440\u0435\u043c\u044f:",
+            communityBanLocalBuildHint: "\u041d\u043e \u0432\u044b \u0441\u043c\u043e\u0436\u0435\u0442\u0435 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e \u0441\u0442\u0440\u043e\u0438\u0442\u044c.",
+            communityBanSignOut: "\u0412\u044b\u0439\u0442\u0438 \u0438\u0437 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430",
+            communityBanOk: "\u0425\u043e\u0440\u043e\u0448\u043e",
+            communityBanNoReason: "\u041f\u0440\u0438\u0447\u0438\u043d\u0430 \u043d\u0435 \u0443\u043a\u0430\u0437\u0430\u043d\u0430.",
+            communityBanUntil: "\u0414\u043e {time}",
+            communityBanPermanent: "\u041d\u0430\u0432\u0441\u0435\u0433\u0434\u0430"
         });
 
         Object.assign(i18n.en, {
@@ -11147,6 +11246,14 @@
             adminPanelBody: "Review reports and ban accounts by Account ID.",
             adminBanIdPlaceholder: "#ID",
             adminBanReasonPlaceholder: "Reason",
+            adminBanDurationLabel: "Ban duration",
+            adminBanDurationOneDay: "1 day",
+            adminBanDurationSevenDays: "7 days",
+            adminBanDurationThirtyDays: "30 days",
+            adminBanDurationPermanent: "Permanent",
+            adminBanDurationCustom: "Custom",
+            adminBanCustomUntilLabel: "Custom ban end time",
+            adminBanCustomInvalid: "Choose a valid custom ban time.",
             adminBanButton: "Ban",
             adminUnbanButton: "Unban",
             adminRefreshButton: "Refresh",
@@ -11203,6 +11310,14 @@
             adminPanelBody: "\u041f\u0440\u043e\u0432\u0435\u0440\u044f\u0439\u0442\u0435 \u0440\u0435\u043f\u043e\u0440\u0442\u044b \u0438 \u0431\u0430\u043d\u044c\u0442\u0435 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u044b \u043f\u043e Account ID.",
             adminBanIdPlaceholder: "#ID",
             adminBanReasonPlaceholder: "\u041f\u0440\u0438\u0447\u0438\u043d\u0430",
+            adminBanDurationLabel: "\u0414\u043b\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u044c \u0431\u0430\u043d\u0430",
+            adminBanDurationOneDay: "1 \u0434\u0435\u043d\u044c",
+            adminBanDurationSevenDays: "7 \u0434\u043d\u0435\u0439",
+            adminBanDurationThirtyDays: "30 \u0434\u043d\u0435\u0439",
+            adminBanDurationPermanent: "\u041d\u0430\u0432\u0441\u0435\u0433\u0434\u0430",
+            adminBanDurationCustom: "\u0421\u0432\u043e\u0435 \u0432\u0440\u0435\u043c\u044f",
+            adminBanCustomUntilLabel: "\u0421\u0432\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f \u0431\u0430\u043d\u0430",
+            adminBanCustomInvalid: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u043e\u043a\u043e\u043d\u0447\u0430\u043d\u0438\u044f \u0431\u0430\u043d\u0430.",
             adminBanButton: "\u0411\u0430\u043d",
             adminUnbanButton: "\u0420\u0430\u0437\u0431\u0430\u043d",
             adminRefreshButton: "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c",
@@ -11358,7 +11473,8 @@
         const COMMUNITY_POST_COOLDOWN_MS = 5 * 60 * 1000;
         const COMMUNITY_COMMENT_COOLDOWN_MS = 3 * 60 * 1000;
         const COMMUNITY_NOTIFICATIONS_LIMIT = 32;
-        const COMMUNITY_NOTIFICATIONS_POLL_MS = 45000;
+        const COMMUNITY_NOTIFICATIONS_POLL_MS = 15000;
+        const COMMUNITY_BAN_INDEX_TTL_MS = 30000;
         const COMMUNITY_BANNER_ASPECT = 4.55;
         const BUILD_LIBRARY_BANNER_ASPECT = 3.65;
         const COMMUNITY_BANNER_BASE_WIDTH = 540;
@@ -11391,6 +11507,8 @@
         let communityNotificationsPanelOpen = false;
         let communityNotificationsHydrated = false;
         let communityNotificationsPollTimer = null;
+        let communityActiveBansByAccountId = new Map();
+        let communityBanIndexLoadedAt = 0;
         let oneSignalExternalUserId = '';
         let adminPanelReports = [];
         let adminPanelLoading = false;
@@ -12005,11 +12123,13 @@
             renderAchievements();
             updateChaosToolsUi();
             renderCommunityNotifications();
+            if (communityCurrentBan) openCommunityBanModal(communityCurrentBan);
             renderCommunityPosts();
             updateCommunityComposerMode();
             renderFeaturedBuildCards(featuredBuildCards);
             updateFirstPageTip(false);
             renderProfileSearchResults(profileSearchResults);
+            toggleAdminBanCustomTime();
             if (questionZoneTab === 'settings') renderSettingsPanel();
             document.documentElement.lang = currentLang;
             runHeroTitleTyping();
@@ -14037,14 +14157,15 @@ function normalizeNickname(value) {
 
             const { data, error } = await client
                 .from('community_posts')
-                .select('id,title,description,build_code,username,created_at,pinned,featured,is_announcement,hidden')
+                .select('id,title,description,build_code,username,author_account_id,created_at,pinned,featured,is_announcement,hidden')
                 .eq('hidden', false)
                 .eq('featured', true)
                 .order('created_at', { ascending: false })
                 .limit(6);
             if (error) throw error;
 
-            const rows = data || [];
+            await refreshCommunityBanIndex();
+            const rows = filterVisibleCommunityPostsForBan((data || []).map(normalizeCommunityPost));
             const ids = rows.map(row => row.id);
             const likeCounts = {};
             if (ids.length > 0) {
@@ -14241,7 +14362,7 @@ function normalizeNickname(value) {
                         .single();
                     if (error) throw error;
                     const enriched = await fetchCommunityStats([normalizeCommunityPost(data)]);
-                    post = enriched[0] || null;
+                    post = filterVisibleCommunityPostsForBan(enriched)[0] || null;
                 } catch (error) {
                     post = null;
                 }
@@ -14728,6 +14849,7 @@ function normalizeNickname(value) {
             setProfileSearchBusy(true);
 
             try {
+                await refreshCommunityBanIndex();
                 let request = client
                     .from('profiles')
                     .select('id, account_id, nickname, description')
@@ -14745,7 +14867,7 @@ function normalizeNickname(value) {
                 if (error) throw error;
                 if (requestId !== profileSearchRequestId) return;
 
-                profileSearchResults = (data || []).filter(profile => !shouldHideProfileForLocalPrivacy(profile));
+                profileSearchResults = filterVisibleCommunityProfilesForBan((data || []).filter(profile => !shouldHideProfileForLocalPrivacy(profile)));
                 profileSearchVotesByTarget = getEmptyVotesByTarget(profileSearchResults.map(profile => profile.id));
                 renderProfileSearchResults(profileSearchResults);
                 if (profileSearchResults.length === 0) {
@@ -15077,6 +15199,92 @@ function normalizeNickname(value) {
             return reason ? `Banned: ${reason}` : (getAuthStrings().communityBannedAction || 'This account is banned from Community actions.');
         }
 
+        function isCommunityBanActive(row) {
+            if (!row || row.active === false) return false;
+            if (!row.banned_until) return true;
+            const until = new Date(row.banned_until).getTime();
+            return Number.isFinite(until) && until > Date.now();
+        }
+
+        function getCommunityBanEndText(ban) {
+            const strings = getAuthStrings();
+            if (!ban || !ban.banned_until) return strings.communityBanPermanent || 'Permanent';
+            const timeText = formatCommunityTime(ban.banned_until);
+            return String(strings.communityBanUntil || 'Until {time}').replace('{time}', timeText);
+        }
+
+        function openCommunityBanModal(ban = communityCurrentBan) {
+            if (!ban) return;
+            const strings = getAuthStrings();
+            const modal = document.getElementById('community-ban-modal');
+            const reasonEl = document.getElementById('community-ban-reason');
+            const timeEl = document.getElementById('community-ban-time');
+            if (reasonEl) reasonEl.textContent = sanitizeCommunityText(ban.reason || '', 180) || strings.communityBanNoReason || '-';
+            if (timeEl) timeEl.textContent = getCommunityBanEndText(ban);
+            if (modal) {
+                modal.classList.add('open');
+                modal.setAttribute('aria-hidden', 'false');
+            }
+        }
+
+        function closeCommunityBanModal() {
+            const modal = document.getElementById('community-ban-modal');
+            if (!modal) return;
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        async function signOutFromCommunityBanModal() {
+            closeCommunityBanModal();
+            await signOutAuth();
+        }
+
+        function getCommunityBanForAccount(accountId) {
+            const id = Number(accountId);
+            if (!Number.isFinite(id) || id <= 0) return null;
+            const ban = communityActiveBansByAccountId.get(id) || null;
+            return isCommunityBanActive(ban) ? ban : null;
+        }
+
+        function shouldHideBannedCommunityAccount(accountId) {
+            if (isCommunityMod()) return false;
+            return !!getCommunityBanForAccount(accountId);
+        }
+
+        function filterVisibleCommunityProfilesForBan(profiles) {
+            if (isCommunityMod()) return profiles || [];
+            return (profiles || []).filter(profile => !shouldHideBannedCommunityAccount(profile && profile.account_id));
+        }
+
+        function filterVisibleCommunityPostsForBan(posts) {
+            if (isCommunityMod()) return posts || [];
+            return (posts || []).filter(post => !shouldHideBannedCommunityAccount(post && post.author_account_id));
+        }
+
+        async function refreshCommunityBanIndex({ force = false } = {}) {
+            const client = getSupabaseClient();
+            if (!client || communityUsingLocalFallback) return communityActiveBansByAccountId;
+            if (!force && Date.now() - communityBanIndexLoadedAt < COMMUNITY_BAN_INDEX_TTL_MS) return communityActiveBansByAccountId;
+            try {
+                const { data, error } = await client
+                    .from('profile_bans')
+                    .select('account_id, reason, active, banned_until, updated_at')
+                    .eq('active', true);
+                if (error) throw error;
+                const next = new Map();
+                (data || []).forEach(row => {
+                    if (!isCommunityBanActive(row)) return;
+                    const accountId = Number(row.account_id);
+                    if (Number.isFinite(accountId) && accountId > 0) next.set(accountId, row);
+                });
+                communityActiveBansByAccountId = next;
+                communityBanIndexLoadedAt = Date.now();
+            } catch (error) {
+                communityBanIndexLoadedAt = Date.now();
+            }
+            return communityActiveBansByAccountId;
+        }
+
         async function refreshCommunityBanStatus() {
             const client = getSupabaseClient();
             const profile = getCommunityProfile();
@@ -15087,12 +15295,14 @@ function normalizeNickname(value) {
             try {
                 const { data, error } = await client
                     .from('profile_bans')
-                    .select('account_id, reason, active, updated_at')
+                    .select('account_id, reason, active, banned_until, updated_at')
                     .eq('account_id', Number(profile.account_id))
                     .eq('active', true)
                     .maybeSingle();
                 if (error) throw error;
-                communityCurrentBan = data ? Object.assign({}, data, { active: true }) : null;
+                communityCurrentBan = data && isCommunityBanActive(data) ? Object.assign({}, data, { active: true }) : null;
+                if (communityCurrentBan) openCommunityBanModal(communityCurrentBan);
+                else closeCommunityBanModal();
                 return communityCurrentBan;
             } catch (error) {
                 communityCurrentBan = null;
@@ -15349,6 +15559,15 @@ function normalizeNickname(value) {
             return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
         }
 
+        function createCommunityRemoteNotificationId() {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return window.crypto.randomUUID();
+            }
+            return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, char =>
+                (Number(char) ^ Math.random() * 16 >> Number(char) / 4).toString(16)
+            );
+        }
+
         function normalizeCommunityNotification(row) {
             return {
                 id: String(row && row.id ? row.id : createCommunityLocalId()),
@@ -15391,7 +15610,8 @@ function normalizeNickname(value) {
                 comment: strings.notificationCommentTitle || '{actor} commented on your post.',
                 follow_post: strings.notificationFollowPostTitle || '{actor} posted a new build.',
                 featured: strings.notificationFeaturedTitle || 'Your post was featured.',
-                pinned: strings.notificationPinnedTitle || 'Your post was pinned.'
+                pinned: strings.notificationPinnedTitle || 'Your post was pinned.',
+                ban: strings.notificationBanTitle || 'Your account was banned.'
             };
             return String(templates[notification.type] || notification.message || strings.notificationsTitle || 'Notification')
                 .replace('{actor}', actor);
@@ -15554,7 +15774,9 @@ function normalizeNickname(value) {
             const user = getCommunityUser();
             const recipient = recipientId ? String(recipientId) : '';
             if (!user || !recipient || recipient === user.id) return;
+            const notificationId = createCommunityRemoteNotificationId();
             const notification = normalizeCommunityNotification({
+                id: notificationId,
                 recipient_id: recipient,
                 actor_id: user.id,
                 actor_name: getCommunityDisplayName(),
@@ -15569,9 +15791,10 @@ function normalizeNickname(value) {
             const client = getSupabaseClient();
             if (!client || communityUsingLocalFallback) return;
             try {
-                const { data, error } = await client
+                const { error } = await client
                     .from('community_notifications')
                     .insert({
+                        id: notificationId,
                         recipient_id: notification.recipient_id,
                         actor_id: notification.actor_id,
                         actor_name: notification.actor_name,
@@ -15580,11 +15803,9 @@ function normalizeNickname(value) {
                         post_title: notification.post_title,
                         message: notification.message,
                         read: false
-                    })
-                    .select('id')
-                    .maybeSingle();
+                    });
                 if (error) throw error;
-                if (data && data.id) invokeCommunityPushFunction([data.id]);
+                invokeCommunityPushFunction([notificationId]);
             } catch (error) {
                 if (!isCommunityNotificationsSetupError(error)) {
                     console.warn('Community notification failed:', error);
@@ -15644,10 +15865,12 @@ function normalizeNickname(value) {
                 cacheCommunityNotifications(readCommunityNotificationsLocal(), { allowPush: false });
                 refreshCommunityNotifications({ silent: true });
                 syncCommunityFollowsFromSupabase();
+                refreshCommunityBanStatus();
             }
             if (!communityNotificationsPollTimer) {
                 communityNotificationsPollTimer = setInterval(() => {
                     refreshCommunityNotifications({ silent: true });
+                    refreshCommunityBanStatus();
                 }, COMMUNITY_NOTIFICATIONS_POLL_MS);
             }
         }
@@ -15659,6 +15882,8 @@ function normalizeNickname(value) {
             }
             communityNotifications = [];
             communityNotificationsHydrated = false;
+            communityCurrentBan = null;
+            closeCommunityBanModal();
             renderCommunityNotifications();
         }
 
@@ -15801,6 +16026,7 @@ function normalizeNickname(value) {
                     .map(item => String(item.follower_id || ''))
                     .filter(id => id && id !== user.id)
                     .map(recipientId => ({
+                        id: createCommunityRemoteNotificationId(),
                         recipient_id: recipientId,
                         actor_id: user.id,
                         actor_name: getCommunityDisplayName(),
@@ -15811,12 +16037,11 @@ function normalizeNickname(value) {
                         read: false
                     }));
                 if (rows.length > 0) {
-                    const { data, error: insertError } = await client
+                    const { error: insertError } = await client
                         .from('community_notifications')
-                        .insert(rows)
-                        .select('id');
+                        .insert(rows);
                     if (insertError) throw insertError;
-                    invokeCommunityPushFunction((data || []).map(item => item.id));
+                    invokeCommunityPushFunction(rows.map(item => item.id));
                 }
             } catch (error) {}
         }
@@ -16130,7 +16355,9 @@ function normalizeNickname(value) {
             setCommunityStatus(strings.communityProfilesLoading);
 
             if (!client || communityUsingLocalFallback) {
-                communityProfileResults = filterCommunityProfiles(getCommunityLocalProfiles()).filter(profile => !shouldHideProfileForLocalPrivacy(profile));
+                communityProfileResults = filterVisibleCommunityProfilesForBan(
+                    filterCommunityProfiles(getCommunityLocalProfiles()).filter(profile => !shouldHideProfileForLocalPrivacy(profile))
+                );
                 communityLoading = false;
                 renderCommunityPosts();
                 setCommunityStatus(communityProfileResults.length ? '' : strings.communityProfileEmpty);
@@ -16138,6 +16365,7 @@ function normalizeNickname(value) {
             }
 
             try {
+                await refreshCommunityBanIndex();
                 let request = client
                     .from('profiles')
                     .select('id, account_id, nickname, description')
@@ -16156,7 +16384,9 @@ function normalizeNickname(value) {
                 if (error) throw error;
                 if (requestId !== communityRequestId) return;
 
-                communityProfileResults = (data || []).map(normalizeCommunityProfile).filter(profile => !shouldHideProfileForLocalPrivacy(profile));
+                communityProfileResults = filterVisibleCommunityProfilesForBan(
+                    (data || []).map(normalizeCommunityProfile).filter(profile => !shouldHideProfileForLocalPrivacy(profile))
+                );
                 communityLoading = false;
                 renderCommunityPosts();
                 setCommunityStatus(communityProfileResults.length ? '' : strings.communityProfileEmpty);
@@ -16166,7 +16396,9 @@ function normalizeNickname(value) {
                     communityFallbackReason = 'connection';
                     resetSupabaseClient();
                 }
-                communityProfileResults = filterCommunityProfiles(getCommunityLocalProfiles()).filter(profile => !shouldHideProfileForLocalPrivacy(profile));
+                communityProfileResults = filterVisibleCommunityProfilesForBan(
+                    filterCommunityProfiles(getCommunityLocalProfiles()).filter(profile => !shouldHideProfileForLocalPrivacy(profile))
+                );
                 communityLoading = false;
                 renderCommunityPosts();
                 setCommunityStatus(getProfileSearchErrorMessage(error, strings, strings.communityProfileEmpty), 'error');
@@ -16189,7 +16421,7 @@ function normalizeNickname(value) {
             }
 
             if (!client || communityUsingLocalFallback) {
-                const filtered = filterCommunityLocalPosts(readCommunityLocalPosts());
+                const filtered = filterVisibleCommunityPostsForBan(filterCommunityLocalPosts(readCommunityLocalPosts()));
                 const start = communityPage * COMMUNITY_PAGE_SIZE;
                 const pagePosts = filtered.slice(start, start + COMMUNITY_PAGE_SIZE);
                 communityHasMore = start + COMMUNITY_PAGE_SIZE < filtered.length;
@@ -16201,6 +16433,7 @@ function normalizeNickname(value) {
             }
 
             try {
+                await refreshCommunityBanIndex();
                 let query = client
                     .from('community_posts')
                     .select('*')
@@ -16254,8 +16487,8 @@ function normalizeNickname(value) {
                 if (error) throw error;
                 if (requestId !== communityRequestId) return;
 
-                const pagePosts = await fetchCommunityStats((data || []).map(normalizeCommunityPost));
-                communityHasMore = pagePosts.length === COMMUNITY_PAGE_SIZE;
+                const pagePosts = filterVisibleCommunityPostsForBan(await fetchCommunityStats((data || []).map(normalizeCommunityPost)));
+                communityHasMore = (data || []).length === COMMUNITY_PAGE_SIZE;
                 communityPosts = append ? communityPosts.concat(pagePosts) : pagePosts;
                 communityLoading = false;
                 renderCommunityPosts();
@@ -16286,7 +16519,7 @@ function normalizeNickname(value) {
         }
 
         function getRandomCommunityLocalPost() {
-            const localPosts = readCommunityLocalPosts()
+            const localPosts = filterVisibleCommunityPostsForBan(readCommunityLocalPosts())
                 .filter(post => post && !post.hidden && post.build_code)
                 .filter(post => {
                     try {
@@ -16309,6 +16542,7 @@ function normalizeNickname(value) {
                 .select('id', { count: 'exact', head: true })
                 .eq('hidden', false);
             if (countResult.error) throw countResult.error;
+            await refreshCommunityBanIndex();
 
             const count = Math.max(0, Number(countResult.count) || 0);
             if (count === 0) return null;
@@ -16323,7 +16557,7 @@ function normalizeNickname(value) {
             if (error) throw error;
 
             const enriched = await fetchCommunityStats((data || []).map(normalizeCommunityPost));
-            return enriched[0] || null;
+            return filterVisibleCommunityPostsForBan(enriched)[0] || null;
         }
 
         function openCommunityPostFromRandom(post) {
@@ -16730,7 +16964,8 @@ function normalizeNickname(value) {
 
         function renderCommunityProfileResults(feed, loadMore) {
             if (loadMore) loadMore.style.display = 'none';
-            if (communityProfileResults.length === 0) {
+            const visibleProfiles = filterVisibleCommunityProfilesForBan(communityProfileResults);
+            if (visibleProfiles.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'community-empty-card';
                 empty.textContent = getAuthStrings().communityProfileEmpty;
@@ -16738,7 +16973,7 @@ function normalizeNickname(value) {
                 return;
             }
 
-            communityProfileResults.forEach(profile => {
+            visibleProfiles.forEach(profile => {
                 feed.appendChild(renderCommunityProfileCard(profile));
             });
         }
@@ -16790,7 +17025,7 @@ function normalizeNickname(value) {
 
             if (communityDetailPostId) {
                 const post = getCommunityPostById(communityDetailPostId);
-                if (post) {
+                if (post && !shouldHideBannedCommunityAccount(post.author_account_id)) {
                     feed.appendChild(renderCommunityPostDetail(post));
                     if (loadMore) loadMore.style.display = 'none';
                     return;
@@ -16800,7 +17035,8 @@ function normalizeNickname(value) {
 
             renderCommunityProfileContext(feed);
 
-            if (communityPosts.length === 0) {
+            const visiblePosts = filterVisibleCommunityPostsForBan(communityPosts);
+            if (visiblePosts.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'community-empty-card';
                 empty.textContent = communityProfileTarget
@@ -16810,7 +17046,7 @@ function normalizeNickname(value) {
                         : strings.communityEmpty;
                 feed.appendChild(empty);
             } else {
-                communityPosts.forEach(post => feed.appendChild(renderCommunityPostCard(post)));
+                visiblePosts.forEach(post => feed.appendChild(renderCommunityPostCard(post)));
             }
 
             if (loadMore) {
@@ -17812,7 +18048,11 @@ function normalizeNickname(value) {
 
         function isAdminPanelSetupError(error) {
             const message = getErrorText(error);
-            return message.includes('community_reports') || message.includes('profile_bans') || message.includes('relation') || message.includes('does not exist');
+            return message.includes('community_reports')
+                || message.includes('profile_bans')
+                || message.includes('banned_until')
+                || message.includes('relation')
+                || message.includes('does not exist');
         }
 
         function normalizeAdminReport(row) {
@@ -17984,7 +18224,57 @@ function normalizeNickname(value) {
             return Number.isInteger(accountId) && accountId > 0 ? accountId : null;
         }
 
-        async function setAdminAccountBan(accountId, active, reason = '') {
+        function toggleAdminBanCustomTime() {
+            const select = document.getElementById('admin-ban-duration');
+            const custom = document.getElementById('admin-ban-custom-until');
+            if (!custom) return;
+            custom.classList.toggle('auth-block-hidden', !select || select.value !== 'custom');
+        }
+
+        function getAdminBanUntilFromInputs() {
+            const strings = getAuthStrings();
+            const select = document.getElementById('admin-ban-duration');
+            const value = select ? select.value : '7d';
+            if (value === 'permanent') return { iso: null, valid: true };
+            if (value === 'custom') {
+                const custom = document.getElementById('admin-ban-custom-until');
+                const date = custom && custom.value ? new Date(custom.value) : null;
+                if (!date || !Number.isFinite(date.getTime()) || date.getTime() <= Date.now()) {
+                    return { iso: null, valid: false, message: strings.adminBanCustomInvalid || 'Choose a valid custom ban time.' };
+                }
+                return { iso: date.toISOString(), valid: true };
+            }
+            const days = value === '1d' ? 1 : value === '30d' ? 30 : 7;
+            return { iso: new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString(), valid: true };
+        }
+
+        async function getProfileIdByAccountId(accountId) {
+            const client = getSupabaseClient();
+            if (!client || !accountId) return '';
+            try {
+                const { data, error } = await client
+                    .from('profiles')
+                    .select('id')
+                    .eq('account_id', Number(accountId))
+                    .maybeSingle();
+                if (error) throw error;
+                return data && data.id ? String(data.id) : '';
+            } catch (error) {
+                return '';
+            }
+        }
+
+        async function notifyAccountBan(accountId, reason, bannedUntil) {
+            const recipientId = await getProfileIdByAccountId(accountId);
+            if (!recipientId) return;
+            const timeText = getCommunityBanEndText({ banned_until: bannedUntil || null });
+            createCommunityNotification(recipientId, 'ban', {
+                post_title: timeText,
+                message: sanitizeCommunityText(reason, 180)
+            });
+        }
+
+        async function setAdminAccountBan(accountId, active, reason = '', bannedUntil = null) {
             const strings = getAuthStrings();
             const client = getSupabaseClient();
             const user = getCommunityUser();
@@ -17997,6 +18287,7 @@ function normalizeNickname(value) {
                     account_id: accountId,
                     reason: sanitizeCommunityText(reason, 180),
                     active: !!active,
+                    banned_until: active ? (bannedUntil || null) : null,
                     banned_by: user.id,
                     updated_at: new Date().toISOString()
                 };
@@ -18004,7 +18295,19 @@ function normalizeNickname(value) {
                     .from('profile_bans')
                     .upsert(payload, { onConflict: 'account_id' });
                 if (error) throw error;
+                if (active && isCommunityBanActive(payload)) {
+                    communityActiveBansByAccountId.set(Number(accountId), payload);
+                    notifyAccountBan(accountId, reason, bannedUntil);
+                } else {
+                    communityActiveBansByAccountId.delete(Number(accountId));
+                }
+                communityBanIndexLoadedAt = Date.now();
                 setAdminPanelStatus(strings.adminBanSaved || 'Account ban updated.', 'success');
+                if (questionZoneTab === 'community') refreshCommunityFeed(true);
+                if (profileSearchResults.length > 0) {
+                    profileSearchResults = filterVisibleCommunityProfilesForBan(profileSearchResults);
+                    renderProfileSearchResults(profileSearchResults);
+                }
                 return true;
             } catch (error) {
                 setAdminPanelStatus(isAdminPanelSetupError(error) ? strings.adminPanelSqlNeeded : getCommunityErrorMessage(error), 'error');
@@ -18020,7 +18323,12 @@ function normalizeNickname(value) {
                 setAdminPanelStatus(strings.adminBanInvalid || 'Enter a valid Account ID.', 'error');
                 return;
             }
-            await setAdminAccountBan(accountId, true, reasonInput ? reasonInput.value : '');
+            const until = getAdminBanUntilFromInputs();
+            if (!until.valid) {
+                setAdminPanelStatus(until.message || strings.adminBanCustomInvalid || 'Choose a valid custom ban time.', 'error');
+                return;
+            }
+            await setAdminAccountBan(accountId, true, reasonInput ? reasonInput.value : '', until.iso);
         }
 
         async function unbanAdminPanelAccount() {
@@ -18030,7 +18338,7 @@ function normalizeNickname(value) {
                 setAdminPanelStatus(strings.adminBanInvalid || 'Enter a valid Account ID.', 'error');
                 return;
             }
-            await setAdminAccountBan(accountId, false, '');
+            await setAdminAccountBan(accountId, false, '', null);
         }
 
         function banReportedAccount(report) {
@@ -18038,7 +18346,14 @@ function normalizeNickname(value) {
             const idInput = document.getElementById('admin-ban-account-id');
             if (idInput) idInput.value = report.target_account_id ? `#${report.target_account_id}` : '';
             if (reasonInput) reasonInput.value = report.reason || '';
-            if (report.target_account_id) setAdminAccountBan(report.target_account_id, true, report.reason || '');
+            if (report.target_account_id) {
+                const until = getAdminBanUntilFromInputs();
+                if (!until.valid) {
+                    setAdminPanelStatus(until.message || getAuthStrings().adminBanCustomInvalid || 'Choose a valid custom ban time.', 'error');
+                    return;
+                }
+                setAdminAccountBan(report.target_account_id, true, report.reason || '', until.iso);
+            }
         }
 
         async function resolveCommunityReport(reportId, extraPatch = {}) {
@@ -26210,6 +26525,26 @@ function handleConfirm(action) {
 
         window.addEventListener('offline', () => {
             communityFallbackReason = 'connection';
+        });
+
+        window.addEventListener('focus', () => {
+            if (!getCommunityUser()) return;
+            refreshCommunityNotifications({ force: true, silent: true });
+            refreshCommunityBanStatus();
+            refreshCommunityBanIndex({ force: true }).then(() => {
+                renderCommunityPosts();
+                renderProfileSearchResults(profileSearchResults);
+            });
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible' || !getCommunityUser()) return;
+            refreshCommunityNotifications({ force: true, silent: true });
+            refreshCommunityBanStatus();
+            refreshCommunityBanIndex({ force: true }).then(() => {
+                renderCommunityPosts();
+                renderProfileSearchResults(profileSearchResults);
+            });
         });
 
         function initApp() {
