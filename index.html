@@ -823,22 +823,24 @@
 
         .notifications-badge {
             position: absolute;
-            top: -7px;
-            right: -7px;
-            min-width: 19px;
-            height: 19px;
+            top: 4px;
+            right: 4px;
+            min-width: 15px;
+            height: 15px;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 0 5px;
-            border: 1px solid var(--btn-border);
+            padding: 0 3px;
+            border: 1px solid color-mix(in srgb, #ffffff 76%, var(--btn-border));
             background: #ff3366;
             color: #ffffff;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 900;
             line-height: 1;
-            box-shadow: 2px 2px 0 var(--card-shadow);
+            box-shadow: 0 0 0 1px color-mix(in srgb, #ff3366 35%, transparent);
+            z-index: 2;
+            pointer-events: none;
         }
 
         .notifications-badge.visible {
@@ -965,6 +967,21 @@
         }
 
         @media (max-width: 640px) {
+            #theme-menu {
+                position: fixed !important;
+                top: calc(env(safe-area-inset-top) + 74px) !important;
+                left: max(10px, env(safe-area-inset-left)) !important;
+                right: auto !important;
+                width: min(214px, calc(100dvw - 20px - env(safe-area-inset-left) - env(safe-area-inset-right))) !important;
+                min-width: 0 !important;
+                max-width: calc(100dvw - 20px) !important;
+                transform: translateY(-10px) !important;
+            }
+
+            #theme-menu.opacity-100 {
+                transform: translateY(0) !important;
+            }
+
             .notifications-panel {
                 position: fixed;
                 top: calc(env(safe-area-inset-top) + 64px);
@@ -6365,6 +6382,14 @@
             border-color: color-mix(in srgb, var(--terminal-error) 56%, var(--btn-border));
         }
 
+        #community-ban-modal .webbreak-modal-backdrop {
+            background:
+                radial-gradient(circle at center, color-mix(in srgb, var(--terminal-error) 10%, transparent), transparent 54%),
+                color-mix(in srgb, var(--bg-from) 94%, #000000);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
         .community-ban-details {
             display: grid;
             gap: 8px;
@@ -11013,6 +11038,7 @@
             notificationFeaturedTitle: "Your post was featured.",
             notificationPinnedTitle: "Your post was pinned.",
             notificationBanTitle: "Your account was banned.",
+            notificationUnbanTitle: "Your account was unbanned.",
             notificationPostLabel: "Post",
             notificationNow: "now",
             communityBanTitle: "You were banned",
@@ -11057,6 +11083,7 @@
             notificationFeaturedTitle: "\u0412\u0430\u0448 \u043f\u043e\u0441\u0442 \u043f\u043e\u043f\u0430\u043b \u0432 \u043b\u0443\u0447\u0448\u0438\u0435.",
             notificationPinnedTitle: "\u0412\u0430\u0448 \u043f\u043e\u0441\u0442 \u0437\u0430\u043a\u0440\u0435\u043f\u0438\u043b\u0438.",
             notificationBanTitle: "\u0412\u0430\u0448 \u0430\u043a\u043a\u0430\u0443\u043d\u0442 \u0437\u0430\u0431\u0430\u043d\u0435\u043d.",
+            notificationUnbanTitle: "\u0412\u0430\u0448 \u0430\u043a\u043a\u0430\u0443\u043d\u0442 \u0440\u0430\u0437\u0431\u0430\u043d\u0435\u043d.",
             notificationPostLabel: "\u041f\u043e\u0441\u0442",
             notificationNow: "\u0441\u0435\u0439\u0447\u0430\u0441",
             communityBanTitle: "\u0412\u044b \u0431\u044b\u043b\u0438 \u0437\u0430\u0431\u0430\u043d\u0435\u043d\u044b",
@@ -11470,8 +11497,8 @@
         const COMMUNITY_PUSH_FUNCTION_NAME = 'send-community-push';
         const WEBBREAK_BUILD_COLLECTIONS_KEY = 'webbreak.buildCollections.v1';
         const COMMUNITY_ACTION_COOLDOWN_MS = 850;
-        const COMMUNITY_POST_COOLDOWN_MS = 5 * 60 * 1000;
-        const COMMUNITY_COMMENT_COOLDOWN_MS = 3 * 60 * 1000;
+        const COMMUNITY_POST_COOLDOWN_MS = 3 * 60 * 1000;
+        const COMMUNITY_COMMENT_COOLDOWN_MS = 20 * 1000;
         const COMMUNITY_NOTIFICATIONS_LIMIT = 32;
         const COMMUNITY_NOTIFICATIONS_POLL_MS = 15000;
         const COMMUNITY_BAN_INDEX_TTL_MS = 30000;
@@ -15156,6 +15183,7 @@ function normalizeNickname(value) {
         }
 
         function isCommunityAdmin() {
+            if (isCurrentCommunityUserBanned()) return false;
             const user = getCommunityUser();
             const accountId = getTrustedCommunityAccountId();
             const email = user && user.email ? String(user.email).toLowerCase() : '';
@@ -15165,6 +15193,7 @@ function normalizeNickname(value) {
         }
 
         function isCommunityMod() {
+            if (isCurrentCommunityUserBanned()) return false;
             const accountId = getTrustedCommunityAccountId();
             return isCommunityAdmin() || (accountId !== null && COMMUNITY_MOD_ACCOUNT_IDS.includes(Number(accountId)));
         }
@@ -15288,7 +15317,7 @@ function normalizeNickname(value) {
         async function refreshCommunityBanStatus() {
             const client = getSupabaseClient();
             const profile = getCommunityProfile();
-            if (!client || !profile || !profile.account_id || isCommunityMod()) {
+            if (!client || !profile || !profile.account_id) {
                 communityCurrentBan = null;
                 return null;
             }
@@ -15303,6 +15332,7 @@ function normalizeNickname(value) {
                 communityCurrentBan = data && isCommunityBanActive(data) ? Object.assign({}, data, { active: true }) : null;
                 if (communityCurrentBan) openCommunityBanModal(communityCurrentBan);
                 else closeCommunityBanModal();
+                updateQuestionZoneTabs();
                 return communityCurrentBan;
             } catch (error) {
                 communityCurrentBan = null;
@@ -15611,7 +15641,8 @@ function normalizeNickname(value) {
                 follow_post: strings.notificationFollowPostTitle || '{actor} posted a new build.',
                 featured: strings.notificationFeaturedTitle || 'Your post was featured.',
                 pinned: strings.notificationPinnedTitle || 'Your post was pinned.',
-                ban: strings.notificationBanTitle || 'Your account was banned.'
+                ban: strings.notificationBanTitle || 'Your account was banned.',
+                unban: strings.notificationUnbanTitle || 'Your account was unbanned.'
             };
             return String(templates[notification.type] || notification.message || strings.notificationsTitle || 'Notification')
                 .replace('{actor}', actor);
@@ -18274,6 +18305,14 @@ function normalizeNickname(value) {
             });
         }
 
+        async function notifyAccountUnban(accountId) {
+            const recipientId = await getProfileIdByAccountId(accountId);
+            if (!recipientId) return;
+            createCommunityNotification(recipientId, 'unban', {
+                message: getAuthStrings().notificationUnbanTitle || 'Your account was unbanned.'
+            });
+        }
+
         async function setAdminAccountBan(accountId, active, reason = '', bannedUntil = null) {
             const strings = getAuthStrings();
             const client = getSupabaseClient();
@@ -18300,6 +18339,7 @@ function normalizeNickname(value) {
                     notifyAccountBan(accountId, reason, bannedUntil);
                 } else {
                     communityActiveBansByAccountId.delete(Number(accountId));
+                    notifyAccountUnban(accountId);
                 }
                 communityBanIndexLoadedAt = Date.now();
                 setAdminPanelStatus(strings.adminBanSaved || 'Account ban updated.', 'success');
