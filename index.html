@@ -7630,6 +7630,49 @@
                 max-height: 42vh;
             }
 
+            .profile-search-head {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: start;
+                gap: 8px;
+            }
+
+            .profile-search-head .auth-profile-line {
+                grid-column: 1 / 2;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 7px;
+                min-width: 0;
+            }
+
+            .profile-search-name {
+                flex: 1 0 100%;
+                max-width: 100%;
+                font-size: 18px;
+                line-height: 1.15;
+            }
+
+            .profile-search-head .auth-account-id,
+            .profile-search-head .profile-level-badge,
+            .profile-search-head .profile-admin-badge,
+            .profile-search-head .changelog-badge {
+                flex: 0 0 auto;
+                min-width: max-content;
+            }
+
+            .profile-search-head .profile-rank-badge {
+                grid-column: 1 / 2;
+                justify-self: start;
+                margin-top: 2px;
+            }
+
+            .profile-search-head .profile-description-toggle {
+                grid-column: 2 / 3;
+                grid-row: 1 / span 2;
+                align-self: start;
+            }
+
             .featured-build-grid {
                 grid-template-columns: 1fr;
                 max-height: none;
@@ -12620,6 +12663,12 @@ function normalizeNickname(value) {
             return ids[user.id];
         }
 
+        function getExplicitMetadataAccountId(user) {
+            const metadataId = user && user.user_metadata ? user.user_metadata.account_id : null;
+            const accountId = Number(metadataId);
+            return Number.isFinite(accountId) && accountId > 0 ? accountId : null;
+        }
+
         function isUUID(str) {
             if (!str) return false;
             return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
@@ -12790,6 +12839,22 @@ function normalizeNickname(value) {
 
             if (error) throw error;
             return normalizeAuthProfile(data, user, 'database');
+        }
+
+        async function ensureDatabaseAuthProfile() {
+            const user = authSession && authSession.user ? authSession.user : null;
+            if (!user || authProfileSource === 'database') return authProfile;
+            if (!isUUID(user.id) || !getSupabaseClient()) return null;
+            const profile = await fetchOrCreateAuthProfile(user);
+            if (profile && profile.source === 'database') {
+                authProfile = profile;
+                authProfileSource = 'database';
+                updateAuthUi(authSession);
+                updateQuestionZoneTabs();
+                refreshCommunityBanStatus();
+                return profile;
+            }
+            return null;
         }
 
         async function saveAuthProfileToMetadata(user, nickname, description) {
@@ -14377,13 +14442,21 @@ function normalizeNickname(value) {
                 setProfileSearchStatus(strings.profileSearchSelfVote, 'error');
                 return;
             }
-            if (authProfileSource !== 'database') {
-                setProfileSearchStatus("Database profile features (like voting) are currently restricted to standard accounts. Your profile is managed via Google metadata.", 'error');
-                return;
-            }
             if (!client) {
                 setProfileSearchStatus(strings.authMissingClient, 'error');
                 return;
+            }
+            if (authProfileSource !== 'database') {
+                try {
+                    const profile = await ensureDatabaseAuthProfile();
+                    if (!profile || authProfileSource !== 'database') {
+                        setProfileSearchStatus(strings.authProfileFallback || 'Profile table is not ready yet, using account metadata.', 'error');
+                        return;
+                    }
+                } catch (error) {
+                    setProfileSearchStatus(getAuthErrorMessage(error, strings, strings.authProfileFallback), 'error');
+                    return;
+                }
             }
 
             const voteInfo = profileSearchVotesByTarget[targetId] || getEmptyVoteInfo();
@@ -14461,9 +14534,11 @@ function normalizeNickname(value) {
         }
 
         function getTrustedCommunityAccountId() {
-            return authSession && authSession.user && authProfile && authProfileSource === 'database'
-                ? Number(authProfile.account_id)
-                : null;
+            const user = authSession && authSession.user ? authSession.user : null;
+            if (!user || !authProfile) return null;
+            const databaseAccountId = authProfileSource === 'database' ? Number(authProfile.account_id) : null;
+            if (Number.isFinite(databaseAccountId) && databaseAccountId > 0) return databaseAccountId;
+            return getExplicitMetadataAccountId(user);
         }
 
         function isCommunityAdmin() {
