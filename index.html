@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -25,11 +25,11 @@
     <meta property="og:image:height" content="512">
     <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="WebBreak.ru">
-    <meta name="twitter:description" content="Build structures, spawn objects, edit them, and watch physics decide what survives.">
     <meta name="twitter:image" content="https://webbreak.ru/icon-512.png">
     <script>
         (function () {
+            document.documentElement.classList.remove('no-js');
+            document.documentElement.classList.add('js');
             const cores = navigator.hardwareConcurrency || 8;
             const memory = navigator.deviceMemory || 8;
             const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -208,6 +208,102 @@
             overflow: hidden;
             touch-action: manipulation;
             transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        html.no-js body {
+            min-height: 100vh;
+            display: block;
+            overflow: auto;
+            background: #0D0D0D;
+            color: #FFFFFF;
+        }
+
+        html.no-js body > :not(.static-fallback) {
+            display: none !important;
+        }
+
+        .static-fallback {
+            display: none;
+        }
+
+        html.no-js .static-fallback {
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 18px;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 34%),
+                #0D0D0D;
+            color: #FFFFFF;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        html.js .static-fallback {
+            display: none !important;
+        }
+
+        .static-fallback-card {
+            width: min(620px, 100%);
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 12px 12px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .static-fallback-kicker,
+        .static-fallback-alert,
+        .static-fallback-list {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .static-fallback-kicker {
+            margin: 0 0 14px;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .static-fallback h1 {
+            margin: 0;
+            font-size: clamp(38px, 10vw, 72px);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: 0;
+        }
+
+        .static-fallback-copy {
+            margin: 18px 0 0;
+            max-width: 520px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .static-fallback-alert {
+            margin: 20px 0 0;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.45;
+            text-transform: uppercase;
+        }
+
+        .static-fallback-list {
+            display: grid;
+            gap: 8px;
+            margin: 22px 0 0;
+            padding: 0;
+            list-style: none;
+            color: rgba(255, 255, 255, 0.76);
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.45;
         }
 
         html {
@@ -4806,6 +4902,13 @@
             grid-template-columns: minmax(92px, 0.4fr) minmax(0, 0.6fr);
         }
 
+        .terminal-simple-spawn-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            align-items: stretch;
+            gap: 8px;
+        }
+
         .terminal-simple-cell {
             min-width: 0;
             width: 100%;
@@ -4866,6 +4969,89 @@
             white-space: nowrap;
         }
 
+        .terminal-simple-dropdown-selection,
+        .terminal-simple-option-content {
+            min-width: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .terminal-simple-dropdown-selection {
+            flex: 1 1 auto;
+        }
+
+        .terminal-simple-option-content {
+            width: 100%;
+        }
+
+        .terminal-simple-option-label {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .terminal-simple-object-thumb {
+            --thumb-color: #e9ecec;
+            --thumb-texture: none;
+            --thumb-door-top: none;
+            --thumb-door-bottom: none;
+            flex: 0 0 auto;
+            width: 26px;
+            height: 26px;
+            display: inline-block;
+            border: none;
+            background-color: var(--thumb-color);
+            background-image:
+                var(--thumb-texture),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 58%);
+            background-position: center;
+            background-size: cover;
+            box-shadow: none;
+            image-rendering: pixelated;
+        }
+
+        .terminal-simple-object-thumb.kind-image {
+            width: 30px;
+            height: 18px;
+            border: none;
+            background-color: transparent;
+            background-image: var(--thumb-texture);
+            background-size: contain;
+            background-repeat: no-repeat;
+            box-shadow: none;
+            transform: rotate(36deg);
+            filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--card-shadow) 62%, transparent));
+        }
+
+        .terminal-simple-object-thumb.kind-door {
+            width: 24px;
+            height: 38px;
+            background-color: transparent;
+            background-image:
+                var(--thumb-door-top),
+                var(--thumb-door-bottom);
+            background-size: 100% 50%, 100% 50%;
+            background-position: top center, bottom center;
+            background-repeat: no-repeat;
+            box-shadow: none;
+        }
+
+        .terminal-simple-object-thumb.kind-random {
+            background-image:
+                var(--thumb-texture),
+                linear-gradient(135deg, rgba(176, 46, 38, 0.68) 0 22%, rgba(240, 175, 21, 0.68) 22% 44%, rgba(94, 124, 22, 0.68) 44% 66%, rgba(60, 68, 170, 0.68) 66% 100%);
+            background-blend-mode: multiply, normal;
+        }
+
+        .terminal-simple-object-thumb[data-preview-material="glass"] {
+            opacity: 0.86;
+            background-blend-mode: normal;
+            box-shadow:
+                inset -3px -3px 0 rgba(26, 128, 168, 0.2);
+        }
+
         .terminal-simple-dropdown-menu {
             position: absolute;
             top: calc(100% + 6px);
@@ -4915,6 +5101,154 @@
             background: color-mix(in srgb, var(--btn-hover-bg) 82%, transparent);
             color: var(--btn-hover-text);
             outline: none;
+        }
+
+        .terminal-simple-spawn-preview {
+            min-width: 0;
+            min-height: 84px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px;
+            border: 1px solid var(--btn-border);
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--btn-bg) 72%, transparent), transparent),
+                color-mix(in srgb, var(--card-bg) 72%, transparent);
+            box-shadow: 3px 3px 0 color-mix(in srgb, var(--card-shadow) 72%, transparent);
+            overflow: hidden;
+        }
+
+        .terminal-simple-preview-frame {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            display: grid;
+            place-items: center;
+            border: 1px solid color-mix(in srgb, var(--btn-border) 72%, transparent);
+            background:
+                linear-gradient(45deg, color-mix(in srgb, var(--btn-border) 10%, transparent) 25%, transparent 25% 75%, color-mix(in srgb, var(--btn-border) 10%, transparent) 75%),
+                color-mix(in srgb, var(--bg-from) 36%, transparent);
+            background-size: 14px 14px;
+            image-rendering: pixelated;
+            overflow: hidden;
+        }
+
+        .terminal-simple-preview-image {
+            display: none;
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 2px 0 color-mix(in srgb, var(--card-shadow) 58%, transparent));
+        }
+
+        .terminal-simple-preview-block,
+        .terminal-simple-preview-door {
+            display: none;
+        }
+
+        .terminal-simple-preview-block {
+            width: 42px;
+            height: 42px;
+            border: 1px solid color-mix(in srgb, #000000 30%, var(--btn-border));
+            background-color: var(--preview-color, #e9ecec);
+            background-image:
+                var(--preview-texture, none),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 54%);
+            background-position: center;
+            background-size: cover;
+            box-shadow:
+                inset 2px 2px 0 rgba(255, 255, 255, 0.22),
+                inset -3px -3px 0 rgba(0, 0, 0, 0.18),
+                0 3px 0 color-mix(in srgb, var(--card-shadow) 50%, transparent);
+            image-rendering: pixelated;
+        }
+
+        .terminal-simple-preview-door {
+            width: 30px;
+            height: 52px;
+            grid-template-rows: 1fr 1fr;
+            border: 1px solid color-mix(in srgb, #000000 30%, var(--btn-border));
+            box-shadow:
+                inset 2px 2px 0 rgba(255, 255, 255, 0.18),
+                0 3px 0 color-mix(in srgb, var(--card-shadow) 50%, transparent);
+            image-rendering: pixelated;
+        }
+
+        .terminal-simple-preview-door-half {
+            background-color: #9b5a2e;
+            background-position: center;
+            background-size: cover;
+            image-rendering: pixelated;
+        }
+
+        .terminal-simple-preview-door-half.top {
+            background-image: var(--preview-door-top, none);
+        }
+
+        .terminal-simple-preview-door-half.bottom {
+            background-image: var(--preview-door-bottom, none);
+        }
+
+        .terminal-simple-spawn-preview[data-preview-kind="image"] .terminal-simple-preview-image {
+            display: block;
+            transform: rotate(-8deg);
+        }
+
+        .terminal-simple-spawn-preview[data-preview-kind="block"] .terminal-simple-preview-block,
+        .terminal-simple-spawn-preview[data-preview-kind="random"] .terminal-simple-preview-block {
+            display: block;
+        }
+
+        .terminal-simple-spawn-preview[data-preview-kind="door"] .terminal-simple-preview-door {
+            display: grid;
+        }
+
+        .terminal-simple-spawn-preview[data-preview-kind="random"] .terminal-simple-preview-block {
+            background-image:
+                linear-gradient(135deg, #b02e26 0 20%, #f0af15 20% 40%, #5e7c16 40% 60%, #3c44aa 60% 80%, #d88198 80% 100%);
+        }
+
+        .terminal-simple-spawn-preview[data-preview-material="glass"] .terminal-simple-preview-block {
+            opacity: 0.82;
+            box-shadow:
+                inset 0 0 0 2px rgba(255, 255, 255, 0.22),
+                inset -5px -5px 0 rgba(26, 128, 168, 0.18),
+                0 0 12px color-mix(in srgb, #9ee9ff 26%, transparent);
+        }
+
+        .terminal-simple-preview-copy {
+            min-width: 0;
+            width: 100%;
+            display: grid;
+            gap: 1px;
+            text-align: center;
+        }
+
+        .terminal-simple-preview-name,
+        .terminal-simple-preview-type {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        }
+
+        .terminal-simple-preview-name {
+            color: var(--text-main);
+            font-size: 10px;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        .terminal-simple-preview-type {
+            color: var(--text-muted);
+            font-size: 8px;
+            line-height: 1.2;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .terminal-simple-spawn-button {
@@ -6375,6 +6709,94 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: var(--text-muted);
+        }
+
+        .quick-start-modal .webbreak-modal-backdrop {
+            background:
+                radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--btn-hover-border) 10%, transparent), transparent 44%),
+                color-mix(in srgb, var(--bg-from) 72%, #000000);
+        }
+
+        .quick-start-modal-card {
+            width: min(500px, calc(100vw - 24px));
+            max-height: min(82vh, 620px);
+            gap: 18px;
+            padding: 20px;
+            border-radius: 0;
+        }
+
+        .quick-start-steps {
+            display: grid;
+            gap: 16px;
+        }
+
+        .quick-start-step {
+            display: grid;
+            grid-template-columns: 34px minmax(0, 1fr);
+            align-items: start;
+            gap: 10px;
+        }
+
+        .quick-start-step-number {
+            width: 34px;
+            height: 34px;
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid color-mix(in srgb, var(--text-muted) 62%, transparent);
+            border-radius: 0;
+            background: color-mix(in srgb, var(--btn-bg) 76%, transparent);
+            color: var(--text-main);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 14px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .quick-start-step:first-child .quick-start-step-number {
+            border-color: var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-hover-bg) 84%, transparent);
+            color: var(--btn-hover-text);
+        }
+
+        .quick-start-step-copy {
+            min-width: 0;
+            display: grid;
+            gap: 10px;
+            padding-top: 3px;
+        }
+
+        .quick-start-step-title {
+            margin: 0;
+            color: var(--text-main);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 15px;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        .quick-start-step-body {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        .quick-start-modal .quick-start-primary {
+            min-height: 46px;
+            border-radius: 0;
+            border-color: var(--btn-hover-border);
+            background: color-mix(in srgb, var(--btn-hover-bg) 84%, transparent);
+            color: var(--btn-hover-text);
+            box-shadow: 4px 4px 0 color-mix(in srgb, var(--btn-hover-border) 54%, transparent);
+        }
+
+        .quick-start-modal .quick-start-primary:hover,
+        .quick-start-modal .quick-start-primary:focus-visible {
+            background: var(--btn-hover-bg);
+            border-color: var(--btn-hover-border);
+            color: var(--btn-hover-text);
+            box-shadow: 4px 4px 0 var(--btn-border);
         }
 
         .community-ban-modal-card {
@@ -8132,6 +8554,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .terminal-simple-spawn-layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
             .terminal-simple-action-button.wide {
                 grid-column: auto;
             }
@@ -8172,6 +8598,121 @@
 
             .spawn-edit-shortcut {
                 top: 58px;
+            }
+        }
+
+        #question-container[data-category="community"] .first-page-content {
+            align-items: stretch !important;
+            justify-content: flex-start !important;
+            overflow: hidden !important;
+        }
+
+        #first-page-community-panel {
+            height: 100% !important;
+            max-height: 100% !important;
+            min-height: 0 !important;
+            align-items: stretch !important;
+            overflow: hidden !important;
+        }
+
+        #community-panel.community-tab-surface {
+            height: 100% !important;
+            max-height: none !important;
+            overflow: hidden !important;
+        }
+
+        #community-panel .community-shell,
+        #community-panel .community-feed-wrap {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+        }
+
+        #community-panel .community-feed {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 640px) {
+            body:not(.building-mode) #ui-card.expanded-card #question-container.categories-open[data-category="community"] {
+                padding-top: calc(env(safe-area-inset-top) + 54px) !important;
+                padding-bottom: calc(env(safe-area-inset-bottom) + 8px) !important;
+            }
+
+            #question-container[data-category="community"] .first-page-shell {
+                grid-template-rows: auto minmax(0, 1fr) !important;
+                grid-template-areas:
+                    "tabs"
+                    "content" !important;
+                gap: 8px !important;
+            }
+
+            #question-container[data-category="community"] .first-page-tip {
+                display: none !important;
+            }
+
+            #question-container[data-category="community"] .first-page-content {
+                max-height: none !important;
+                height: auto !important;
+                padding: 10px !important;
+            }
+
+            #community-panel.community-tab-surface {
+                gap: 8px !important;
+            }
+
+            #community-panel .community-head {
+                gap: 4px !important;
+            }
+
+            #community-panel .community-subtitle {
+                display: none !important;
+            }
+
+            #community-panel .community-shell {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+
+            #community-panel .community-shell:not(.composer-open) .community-side {
+                display: none !important;
+            }
+
+            #community-panel .community-side {
+                flex: 0 0 auto !important;
+                max-height: 34dvh !important;
+                overflow-y: auto !important;
+            }
+
+            #community-panel .community-feed {
+                padding: 8px !important;
+                gap: 8px !important;
+            }
+
+            #community-panel .community-card {
+                gap: 8px !important;
+            }
+
+            #community-panel .community-card-description {
+                font-size: 12px !important;
+                line-height: 1.38 !important;
+            }
+
+            #community-panel .community-build-banner {
+                min-height: 72px !important;
+                max-height: 112px !important;
+            }
+
+            #community-panel .community-card-actions,
+            #community-panel .community-reaction-row,
+            #community-panel .community-command-row {
+                gap: 6px !important;
             }
         }
 
@@ -8580,7 +9121,28 @@
     </style>
 </head>
 <body class="min-h-screen w-full flex items-center justify-center antialiased">
-    
+    <main class="static-fallback" aria-labelledby="static-fallback-title">
+        <section class="static-fallback-card">
+            <p class="static-fallback-kicker">WebBreak.ru</p>
+            <h1 id="static-fallback-title">Build it.<br>Break it.</h1>
+            <p class="static-fallback-copy">
+                WebBreak.ru is an interactive physics sandbox for spawning objects, editing geometry,
+                saving builds, and testing how structures fall apart under gravity.
+            </p>
+            <noscript>
+                <p class="static-fallback-alert">
+                    JavaScript is disabled. Enable JavaScript to load the interactive builder,
+                    community feed, profiles, achievements, and saved creations.
+                </p>
+            </noscript>
+            <ul class="static-fallback-list" aria-label="Available with JavaScript">
+                <li>Object spawning and build editing</li>
+                <li>Local save slots and build code import/export</li>
+                <li>Community posts, reactions, profiles, and achievements</li>
+            </ul>
+        </section>
+    </main>
+
     <div class="ambient-bg">
         <div class="ambient-blob"></div>
         <div class="ambient-blob"></div>
@@ -9283,30 +9845,35 @@
                         <span id="terminal-simple-spawn-meta" class="terminal-simple-meta">Objects: 0/15</span>
                     </div>
                     <form onsubmit="handleTerminalSimpleSpawn(event)" class="terminal-simple-stack">
-                        <div class="terminal-simple-row">
-                            <input id="terminal-simple-spawn-count" type="number" min="1" max="125" value="1" class="terminal-simple-cell interactive" autocomplete="off" data-i18n-aria-label="terminalSimpleAmountAria" data-i18n-placeholder="terminalSimpleAmountPlaceholder" aria-label="Amount">
-                            <div id="terminal-simple-spawn-dropdown" class="terminal-simple-dropdown">
-                                <button id="terminal-simple-spawn-toggle" type="button" class="terminal-simple-cell terminal-simple-dropdown-toggle interactive" onclick="toggleTerminalSimpleDropdown()" data-i18n-aria-label="terminalSimpleObjectAria" aria-label="Object" aria-haspopup="listbox" aria-expanded="false">
-                                    <span id="terminal-simple-spawn-label" class="terminal-simple-dropdown-label">Sword</span>
-                                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M2 4.25 6 8l4-3.75"/>
-                                    </svg>
-                                </button>
-                                <div id="terminal-simple-spawn-menu" class="terminal-simple-dropdown-menu" role="listbox" data-i18n-aria-label="terminalSimpleObjectListAria" aria-label="Object types">
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="sword" onclick="setTerminalSimpleSpawnType('sword')">Sword</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="door" onclick="setTerminalSimpleSpawnType('door')">Door</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="glass" onclick="setTerminalSimpleSpawnType('glass')">Glass</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="colorblock" onclick="setTerminalSimpleSpawnType('colorblock')">Random wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="redblock" onclick="setTerminalSimpleSpawnType('redblock')">Red wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="greenblock" onclick="setTerminalSimpleSpawnType('greenblock')">Green wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="blueblock" onclick="setTerminalSimpleSpawnType('blueblock')">Blue wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="yellowblock" onclick="setTerminalSimpleSpawnType('yellowblock')">Yellow wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="purpleblock" onclick="setTerminalSimpleSpawnType('purpleblock')">Purple wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="pinkblock" onclick="setTerminalSimpleSpawnType('pinkblock')">Pink wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="cyanblock" onclick="setTerminalSimpleSpawnType('cyanblock')">Cyan wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="orangeblock" onclick="setTerminalSimpleSpawnType('orangeblock')">Orange wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="whiteblock" onclick="setTerminalSimpleSpawnType('whiteblock')">White wool</button>
-                                    <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="blackblock" onclick="setTerminalSimpleSpawnType('blackblock')">Black wool</button>
+                        <div class="terminal-simple-spawn-layout">
+                            <div class="terminal-simple-row">
+                                <input id="terminal-simple-spawn-count" type="number" min="1" max="125" value="1" class="terminal-simple-cell interactive" autocomplete="off" data-i18n-aria-label="terminalSimpleAmountAria" data-i18n-placeholder="terminalSimpleAmountPlaceholder" aria-label="Amount">
+                                <div id="terminal-simple-spawn-dropdown" class="terminal-simple-dropdown">
+                                    <button id="terminal-simple-spawn-toggle" type="button" class="terminal-simple-cell terminal-simple-dropdown-toggle interactive" onclick="toggleTerminalSimpleDropdown()" data-i18n-aria-label="terminalSimpleObjectAria" aria-label="Object" aria-haspopup="listbox" aria-expanded="false">
+                                        <span class="terminal-simple-dropdown-selection">
+                                            <span id="terminal-simple-spawn-label" class="terminal-simple-dropdown-label">Sword</span>
+                                            <span id="terminal-simple-selected-thumb" class="terminal-simple-object-thumb kind-image" aria-hidden="true"></span>
+                                        </span>
+                                        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M2 4.25 6 8l4-3.75"/>
+                                        </svg>
+                                    </button>
+                                    <div id="terminal-simple-spawn-menu" class="terminal-simple-dropdown-menu" role="listbox" data-i18n-aria-label="terminalSimpleObjectListAria" aria-label="Object types">
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="sword" onclick="setTerminalSimpleSpawnType('sword')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Sword</span><span class="terminal-simple-object-thumb kind-image" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="door" onclick="setTerminalSimpleSpawnType('door')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Door</span><span class="terminal-simple-object-thumb kind-door" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="glass" onclick="setTerminalSimpleSpawnType('glass')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Glass</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="colorblock" onclick="setTerminalSimpleSpawnType('colorblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Random wool</span><span class="terminal-simple-object-thumb kind-random" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="redblock" onclick="setTerminalSimpleSpawnType('redblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Red wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="greenblock" onclick="setTerminalSimpleSpawnType('greenblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Green wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="blueblock" onclick="setTerminalSimpleSpawnType('blueblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Blue wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="yellowblock" onclick="setTerminalSimpleSpawnType('yellowblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Yellow wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="purpleblock" onclick="setTerminalSimpleSpawnType('purpleblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Purple wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="pinkblock" onclick="setTerminalSimpleSpawnType('pinkblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Pink wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="cyanblock" onclick="setTerminalSimpleSpawnType('cyanblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Cyan wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="orangeblock" onclick="setTerminalSimpleSpawnType('orangeblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Orange wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="whiteblock" onclick="setTerminalSimpleSpawnType('whiteblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">White wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                        <button type="button" class="terminal-simple-dropdown-option" data-spawn-type="blackblock" onclick="setTerminalSimpleSpawnType('blackblock')"><span class="terminal-simple-option-content"><span class="terminal-simple-option-label">Black wool</span><span class="terminal-simple-object-thumb kind-block" aria-hidden="true"></span></span></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -9369,6 +9936,37 @@
             <span class="terminal-input themed-muted text-sm">&gt;</span>
             <input id="terminal-input" class="terminal-input flex-1 bg-transparent border-none outline-none themed-text text-sm" autocomplete="off" spellcheck="false" placeholder="help">
         </form>
+    </div>
+
+    <div id="quick-start-modal" class="webbreak-modal quick-start-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="quick-start-title">
+        <div class="webbreak-modal-backdrop" onclick="closeQuickStartModal(true)" aria-hidden="true"></div>
+        <div class="webbreak-modal-card quick-start-modal-card glass-card border">
+            <div id="quick-start-title" class="sr-only" data-i18n="quickStartTitle">Quick Start</div>
+            <div class="quick-start-steps">
+                <section class="quick-start-step">
+                    <span class="quick-start-step-number" aria-hidden="true">1</span>
+                    <div class="quick-start-step-copy">
+                        <div class="quick-start-step-title" data-i18n="quickStartStepOneTitle">Spawn an object</div>
+                        <p class="quick-start-step-body" data-i18n="quickStartStepOneBody">Open Terminal, switch to Simple Mode, then choose any object and spawn it into the scene.</p>
+                    </div>
+                </section>
+                <section class="quick-start-step">
+                    <span class="quick-start-step-number" aria-hidden="true">2</span>
+                    <div class="quick-start-step-copy">
+                        <div class="quick-start-step-title" data-i18n="quickStartStepTwoTitle">Edit or move</div>
+                        <p class="quick-start-step-body" data-i18n="quickStartStepTwoBody">Drag to move, right-click to edit properties.</p>
+                    </div>
+                </section>
+                <section class="quick-start-step">
+                    <span class="quick-start-step-number" aria-hidden="true">3</span>
+                    <div class="quick-start-step-copy">
+                        <div class="quick-start-step-title" data-i18n="quickStartStepThreeTitle">Let physics take over</div>
+                        <p class="quick-start-step-body" data-i18n="quickStartStepThreeBody">Click Build Mode to watch gravity break your creation.</p>
+                    </div>
+                </section>
+            </div>
+            <button type="button" class="terminal-simple-action-button quick-start-primary interactive active" onclick="closeQuickStartModal(true)" data-i18n="quickStartGotIt">Got it!</button>
+        </div>
     </div>
 
     <div id="save-build-modal" class="webbreak-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="save-build-title">
@@ -11009,6 +11607,30 @@
         });
 
         Object.assign(i18n.en, {
+            quickStartTitle: "Quick Start",
+            quickStartStepOneTitle: "Spawn an object",
+            quickStartStepOneBody: "Open Terminal, switch to Simple Mode, then choose any object and spawn it into the scene.",
+            quickStartStepTwoTitle: "Edit or move",
+            quickStartStepTwoBody: "Drag to move, right-click to edit properties.",
+            quickStartStepThreeTitle: "Let physics take over",
+            quickStartStepThreeBody: "Click Build Mode to watch gravity break your creation.",
+            quickStartGotIt: "Got it!",
+            terminalSimplePreviewLabel: "Preview"
+        });
+
+        Object.assign(i18n.ru, {
+            quickStartTitle: "\u0411\u044b\u0441\u0442\u0440\u044b\u0439 \u0441\u0442\u0430\u0440\u0442",
+            quickStartStepOneTitle: "\u0421\u043e\u0437\u0434\u0430\u0439\u0442\u0435 \u043e\u0431\u044a\u0435\u043a\u0442",
+            quickStartStepOneBody: "\u041e\u0442\u043a\u0440\u043e\u0439\u0442\u0435 Terminal, \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u0435 Simple Mode, \u0432\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043e\u0431\u044a\u0435\u043a\u0442 \u0438 \u0441\u043e\u0437\u0434\u0430\u0439\u0442\u0435 \u0435\u0433\u043e \u043d\u0430 \u0441\u0446\u0435\u043d\u0435.",
+            quickStartStepTwoTitle: "\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0443\u0439\u0442\u0435 \u0438\u043b\u0438 \u0434\u0432\u0438\u0433\u0430\u0439\u0442\u0435",
+            quickStartStepTwoBody: "\u041f\u0435\u0440\u0435\u0442\u0430\u0441\u043a\u0438\u0432\u0430\u0439\u0442\u0435 \u043e\u0431\u044a\u0435\u043a\u0442, \u0430 \u043f\u0440\u0430\u0432\u044b\u043c \u043a\u043b\u0438\u043a\u043e\u043c \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0439\u0442\u0435 \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.",
+            quickStartStepThreeTitle: "\u0414\u0430\u0439\u0442\u0435 \u0444\u0438\u0437\u0438\u043a\u0435 \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u0442\u044c",
+            quickStartStepThreeBody: "\u041d\u0430\u0436\u043c\u0438\u0442\u0435 Build Mode \u0438 \u043f\u043e\u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435, \u043a\u0430\u043a \u0433\u0440\u0430\u0432\u0438\u0442\u0430\u0446\u0438\u044f \u043b\u043e\u043c\u0430\u0435\u0442 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0443.",
+            quickStartGotIt: "\u041f\u043e\u043d\u044f\u043b",
+            terminalSimplePreviewLabel: "\u041f\u0440\u0435\u0432\u044c\u044e"
+        });
+
+        Object.assign(i18n.en, {
             iosInstallTitle: "Like WebBreak?",
             iosInstallText: "Save it to your Home Screen so it opens like an app.",
             iosInstallStepShare: "Tap Share in Safari.",
@@ -11478,6 +12100,8 @@
         const AUTH_CAPTCHA_LOCK_KEY = 'webbreak.captcha.authLock.v1';
         let questionZoneTab = 'main';
         const GREETING_SEEN_KEY = 'minebuildGreetingSeen';
+        const QUICK_START_SEEN_KEY = 'webbreak.quickStartSeen.v1';
+        let quickStartTimer = null;
         const PROFILE_SEARCH_PAGE_SIZE = 10;
         let profileSearchResults = [];
         let profileSearchVotesByTarget = {};
@@ -11715,6 +12339,11 @@
         }
         
         document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isQuickStartModalOpen()) {
+                closeQuickStartModal(true);
+                return;
+            }
+
             if (e.key === 'Escape' && isAuthPanelOpen()) {
                 closeAuthPanel();
                 return;
@@ -18603,10 +19232,12 @@ function normalizeNickname(value) {
 
             document.querySelectorAll('#terminal-simple-spawn-menu [data-spawn-type]').forEach(option => {
                 const spawnType = option.getAttribute('data-spawn-type') || '';
-                option.textContent = getTerminalSimpleSpawnLabel(spawnType);
+                renderTerminalSimpleSpawnOption(option, spawnType);
                 option.classList.toggle('selected', spawnType === terminalSimpleSpawnType);
                 option.setAttribute('aria-selected', spawnType === terminalSimpleSpawnType ? 'true' : 'false');
             });
+
+            updateTerminalSimpleSpawnPreview();
         }
 
         function updateTerminalSimpleState() {
@@ -19945,6 +20576,156 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             black: { base: '#1d1d21', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}black_wool.png` }
         };
         const SPAWN_BLOCK_COLOR_KEYS = Object.keys(SPAWN_BLOCK_COLORS).filter(colorKey => SPAWN_BLOCK_COLORS[colorKey].material !== 'glass');
+        const TERMINAL_SIMPLE_COLORBLOCK_MAP = {
+            redblock: 'red',
+            greenblock: 'green',
+            blueblock: 'blue',
+            yellowblock: 'yellow',
+            purpleblock: 'purple',
+            pinkblock: 'pink',
+            cyanblock: 'cyan',
+            orangeblock: 'orange',
+            whiteblock: 'white',
+            blackblock: 'black'
+        };
+
+        function getTerminalSimpleSpawnPreview(spawnType) {
+            const label = getTerminalSimpleSpawnLabel(spawnType);
+
+            if (spawnType === 'sword') {
+                return {
+                    kind: 'image',
+                    material: 'metal',
+                    label,
+                    image: SPAWN_SWORD_TEXTURE
+                };
+            }
+
+            if (spawnType === 'door') {
+                return {
+                    kind: 'door',
+                    material: 'wood',
+                    label,
+                    doorTop: SPAWN_DOOR_TEXTURES.top,
+                    doorBottom: SPAWN_DOOR_TEXTURES.bottom
+                };
+            }
+
+            if (spawnType === 'glass') {
+                const glass = SPAWN_BLOCK_COLORS.glass;
+                return {
+                    kind: 'block',
+                    material: 'glass',
+                    label,
+                    color: glass.base,
+                    texture: glass.texture
+                };
+            }
+
+            if (spawnType === 'colorblock') {
+                return {
+                    kind: 'random',
+                    material: 'wool',
+                    label,
+                    color: '#e9ecec',
+                    texture: SPAWN_BLOCK_COLORS.white.texture
+                };
+            }
+
+            const colorKey = TERMINAL_SIMPLE_COLORBLOCK_MAP[spawnType] || 'white';
+            const block = SPAWN_BLOCK_COLORS[colorKey] || SPAWN_BLOCK_COLORS.white;
+            return {
+                kind: 'block',
+                material: 'wool',
+                label,
+                color: block.base,
+                texture: block.texture
+            };
+        }
+
+        function setCssUrlValue(element, propertyName, url) {
+            if (!element) return;
+            element.style.setProperty(propertyName, url ? `url("${String(url).replace(/"/g, '%22')}")` : 'none');
+        }
+
+        function applyTerminalSimpleThumb(thumb, data) {
+            if (!thumb || !data) return;
+            thumb.classList.remove('kind-image', 'kind-block', 'kind-door', 'kind-random');
+            thumb.classList.add(`kind-${data.kind === 'random' ? 'random' : data.kind === 'door' ? 'door' : data.kind === 'image' ? 'image' : 'block'}`);
+            thumb.dataset.previewMaterial = data.material || '';
+            thumb.style.setProperty('--thumb-color', data.color || '#e9ecec');
+            setCssUrlValue(thumb, '--thumb-texture', data.image || data.texture || '');
+            setCssUrlValue(thumb, '--thumb-door-top', data.doorTop || '');
+            setCssUrlValue(thumb, '--thumb-door-bottom', data.doorBottom || '');
+        }
+
+        function renderTerminalSimpleSpawnOption(option, spawnType) {
+            if (!option) return;
+            const data = getTerminalSimpleSpawnPreview(spawnType);
+            let content = option.querySelector('.terminal-simple-option-content');
+            if (!content) {
+                content = document.createElement('span');
+                content.className = 'terminal-simple-option-content';
+                option.replaceChildren(content);
+            }
+
+            let label = content.querySelector('.terminal-simple-option-label');
+            if (!label) {
+                label = document.createElement('span');
+                label.className = 'terminal-simple-option-label';
+                content.appendChild(label);
+            }
+            label.textContent = data.label;
+
+            let thumb = content.querySelector('.terminal-simple-object-thumb');
+            if (!thumb) {
+                thumb = document.createElement('span');
+                thumb.className = 'terminal-simple-object-thumb';
+                thumb.setAttribute('aria-hidden', 'true');
+                content.appendChild(thumb);
+            }
+            applyTerminalSimpleThumb(thumb, data);
+        }
+
+        function updateTerminalSimpleSpawnPreview() {
+            const data = getTerminalSimpleSpawnPreview(terminalSimpleSpawnType);
+            const selectedThumb = document.getElementById('terminal-simple-selected-thumb');
+            const toggle = document.getElementById('terminal-simple-spawn-toggle');
+            const strings = getTerminalStrings();
+            const previewLabel = strings.terminalSimplePreviewLabel || 'Preview';
+
+            applyTerminalSimpleThumb(selectedThumb, data);
+            if (toggle) {
+                toggle.setAttribute('aria-label', `${strings.terminalSimpleObjectAria || 'Object type'}: ${data.label}`);
+            }
+
+            const preview = document.getElementById('terminal-simple-spawn-preview');
+            if (!preview) return;
+
+            const image = document.getElementById('terminal-simple-preview-image');
+            const block = document.getElementById('terminal-simple-preview-block');
+            const door = document.getElementById('terminal-simple-preview-door');
+            const name = document.getElementById('terminal-simple-preview-name');
+
+            preview.dataset.previewKind = data.kind;
+            preview.dataset.previewMaterial = data.material || '';
+            preview.setAttribute('aria-label', `${previewLabel}: ${data.label}`);
+
+            if (name) name.textContent = data.label;
+            if (image) {
+                image.src = data.image || SPAWN_SWORD_TEXTURE;
+                image.alt = '';
+            }
+            if (block) {
+                block.style.setProperty('--preview-color', data.color || '#e9ecec');
+                setCssUrlValue(block, '--preview-texture', data.texture || '');
+            }
+            if (door) {
+                setCssUrlValue(door, '--preview-door-top', data.doorTop || '');
+                setCssUrlValue(door, '--preview-door-bottom', data.doorBottom || '');
+            }
+        }
+
         const SPAWN_GRAVITY_MIN = 0;
         const SPAWN_GRAVITY_MAX = 200;
         const SPAWN_VOID_EXIT_PADDING = 180;
@@ -25552,6 +26333,60 @@ function setSpawnBuildMode(active, strings = getTerminalStrings(), announce = tr
                 // If storage is unavailable, continue normally for this session.
             }
         }
+        function hasSeenQuickStart() {
+            try {
+                return localStorage.getItem(QUICK_START_SEEN_KEY) === 'true';
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function markQuickStartSeen() {
+            try {
+                localStorage.setItem(QUICK_START_SEEN_KEY, 'true');
+            } catch (error) {
+                // If storage is unavailable, keep the onboarding session-only.
+            }
+        }
+
+        function isQuickStartModalOpen() {
+            const modal = document.getElementById('quick-start-modal');
+            return !!(modal && modal.classList.contains('open'));
+        }
+
+        function openQuickStartModal() {
+            const modal = document.getElementById('quick-start-modal');
+            if (!modal || hasSeenQuickStart() || document.body.classList.contains('building-mode')) return;
+
+            closeChangelogPanel();
+            closeAuthPanel();
+            closeCommunityPanel();
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+
+            const button = modal.querySelector('.quick-start-primary');
+            if (button && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                setTimeout(() => button.focus({ preventScroll: true }), 80);
+            }
+        }
+
+        function closeQuickStartModal(markSeen = true) {
+            const modal = document.getElementById('quick-start-modal');
+            if (!modal) return;
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+            if (markSeen) markQuickStartSeen();
+        }
+
+        function maybeShowQuickStart(delay = 420) {
+            if (hasSeenQuickStart() || isQuickStartModalOpen() || document.body.classList.contains('building-mode')) return;
+            if (quickStartTimer) return;
+
+            quickStartTimer = window.setTimeout(() => {
+                quickStartTimer = null;
+                openQuickStartModal();
+            }, delay);
+        }
 function getInitialEntryStateId() {
             return 'question-container';
         }
@@ -25727,6 +26562,11 @@ function handleConfirm(action) {
             closeChangelogPanel();
             closeAuthPanel();
             closeCommunityPanel();
+            closeQuickStartModal(false);
+            if (quickStartTimer) {
+                clearTimeout(quickStartTimer);
+                quickStartTimer = null;
+            }
             card.classList.add('first-page-fading');
             card.style.pointerEvents = 'none';
             showBuildingControls();
@@ -25800,6 +26640,7 @@ function handleConfirm(action) {
             card.classList.remove('first-page-hidden', 'first-page-fading');
             card.style.pointerEvents = '';
             revealSiteControls();
+            maybeShowQuickStart(options.instant ? 260 : 520);
         }
 
         function enterSite(fromStateId = null) {
@@ -26924,6 +27765,23 @@ function handleConfirm(action) {
             #terminal-panel .terminal-simple-row {
                 gap: 6px !important;
             }
+            #terminal-panel .terminal-simple-spawn-layout {
+                grid-template-columns: minmax(0, 1fr) !important;
+                gap: 6px !important;
+            }
+            #terminal-panel .terminal-simple-object-thumb {
+                width: 22px !important;
+                height: 22px !important;
+                border: none !important;
+            }
+            #terminal-panel .terminal-simple-object-thumb.kind-image {
+                width: 26px !important;
+                height: 16px !important;
+            }
+            #terminal-panel .terminal-simple-object-thumb.kind-door {
+                width: 22px !important;
+                height: 34px !important;
+            }
             #terminal-panel .terminal-simple-section-title,
             #terminal-panel .terminal-simple-meta {
                 font-size: 10px !important;
@@ -26979,6 +27837,43 @@ function handleConfirm(action) {
                 height: 30px !important;
                 min-width: 30px !important;
                 min-height: 30px !important;
+            }
+            .quick-start-modal-card {
+                width: min(100%, calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px)) !important;
+                max-height: min(78dvh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 18px)) !important;
+                padding: 16px !important;
+                gap: 14px !important;
+                border-radius: 0 !important;
+            }
+            .quick-start-steps {
+                gap: 14px !important;
+            }
+            .quick-start-step {
+                grid-template-columns: 32px minmax(0, 1fr) !important;
+                gap: 10px !important;
+            }
+            .quick-start-step-number {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 13px !important;
+            }
+            .quick-start-step-copy {
+                gap: 7px !important;
+                padding-top: 2px !important;
+            }
+            .quick-start-step-title {
+                font-size: 16px !important;
+                line-height: 1.2 !important;
+            }
+            .quick-start-step-body {
+                font-size: 13px !important;
+                line-height: 1.45 !important;
+            }
+            .quick-start-primary {
+                min-height: 44px !important;
+                height: 44px !important;
+                font-size: 12px !important;
+                letter-spacing: 0.02em !important;
             }
             .save-build-controls,
             .save-code-actions {
