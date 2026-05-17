@@ -4317,10 +4317,45 @@
         }
 
         .community-comment {
+            display: grid;
+            gap: 8px;
             padding: 8px;
             border: 1px solid color-mix(in srgb, var(--btn-border) 58%, transparent);
             background: color-mix(in srgb, var(--card-bg) 42%, transparent);
             animation: communityCommentIn 0.2s ease both;
+        }
+
+        .community-comment .community-comment-head {
+            align-items: flex-start;
+        }
+
+        .community-comment .community-author {
+            flex: 1 1 auto;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .community-comment .community-author-name {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .community-comment .community-meta {
+            flex: 0 0 auto;
+            max-width: 140px;
+            text-align: right;
+            white-space: normal;
+        }
+
+        .community-comment-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .community-comment-actions .terminal-simple-action-button {
+            min-height: 34px;
+            padding: 7px 12px;
         }
 
         .community-comment-form {
@@ -7628,6 +7663,67 @@
 
             .profile-search-results {
                 max-height: 42vh;
+            }
+
+            .community-comment {
+                padding: 10px;
+            }
+
+            .community-comment-head {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: start;
+                gap: 8px;
+            }
+
+            .community-comment .community-author {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                min-width: 0;
+            }
+
+            .community-comment .community-author-name {
+                flex: 1 0 100%;
+                max-width: 100%;
+                font-size: 17px;
+                line-height: 1.12;
+                word-break: break-word;
+            }
+
+            .community-comment .community-badge {
+                flex: 0 0 auto;
+                max-width: min(100%, 150px);
+                min-height: 24px;
+                padding: 5px 8px;
+                line-height: 1.12;
+                text-align: center;
+                white-space: normal;
+            }
+
+            .community-comment .community-meta {
+                justify-self: end;
+                max-width: 104px;
+                text-align: right;
+                font-size: 10px;
+                line-height: 1.2;
+            }
+
+            .community-comment-body {
+                font-size: 15px;
+                line-height: 1.35;
+            }
+
+            .community-comment-actions {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
+            }
+
+            .community-comment-actions .terminal-simple-action-button {
+                width: 100%;
+                min-width: 0;
+                padding-inline: 8px;
             }
 
             .profile-search-head {
@@ -12710,7 +12806,15 @@ function normalizeNickname(value) {
         }
 
         function isCurrentUserAdmin() {
-            return !!(authSession && authSession.user && authProfile && Number(authProfile.account_id) === 1 && authProfileSource === 'database');
+            const user = authSession && authSession.user ? authSession.user : null;
+            if (!user || !authProfile) return false;
+            const databaseAccountId = authProfileSource === 'database' ? Number(authProfile.account_id) : null;
+            const metadataAccountId = getExplicitMetadataAccountId(user);
+            const accountId = Number.isFinite(databaseAccountId) && databaseAccountId > 0 ? databaseAccountId : metadataAccountId;
+            const email = user.email ? String(user.email).toLowerCase() : '';
+            const adminEmails = COMMUNITY_ADMIN_EMAILS.map(item => String(item).toLowerCase());
+            return (Number.isFinite(accountId) && COMMUNITY_ADMIN_ACCOUNT_IDS.includes(Number(accountId)))
+                || (!!email && adminEmails.includes(email));
         }
 
         function isProtectedAdminAccount(profile = authProfile, user = authSession && authSession.user ? authSession.user : null) {
@@ -12720,7 +12824,8 @@ function normalizeNickname(value) {
             return COMMUNITY_ADMIN_ACCOUNT_IDS.includes(accountId) || (!!email && adminEmails.includes(email));
         }
 
-        const PROFILE_SELECT_BASE = 'id, account_id, nickname, description, visibility, created_at';
+        const PROFILE_SELECT_BASE = 'id, account_id, nickname, description, created_at';
+        const PROFILE_SELECT_WITH_VISIBILITY = 'id, account_id, nickname, description, visibility, created_at';
         const PROFILE_SELECT_WITH_CLEANUP = 'id, account_id, nickname, description, visibility, delete_after_months, last_seen_at, created_at';
 
         function isProfileCleanupColumnError(error) {
@@ -12734,6 +12839,13 @@ function normalizeNickname(value) {
                 .select(PROFILE_SELECT_WITH_CLEANUP)
                 .eq('id', userId)
                 .maybeSingle();
+            if (result.error && isProfileCleanupColumnError(result.error)) {
+                result = await client
+                    .from('profiles')
+                    .select(PROFILE_SELECT_WITH_VISIBILITY)
+                    .eq('id', userId)
+                    .maybeSingle();
+            }
             if (result.error && isProfileCleanupColumnError(result.error)) {
                 result = await client
                     .from('profiles')
@@ -12760,6 +12872,18 @@ function normalizeNickname(value) {
                 result = await client
                     .from('profiles')
                     .insert(fallbackPayload)
+                    .select(PROFILE_SELECT_WITH_VISIBILITY)
+                    .maybeSingle();
+            }
+            if (result.error && isProfileCleanupColumnError(result.error)) {
+                const minimalPayload = {
+                    id: profilePayload.id,
+                    nickname: profilePayload.nickname,
+                    description: profilePayload.description
+                };
+                result = await client
+                    .from('profiles')
+                    .insert(minimalPayload)
                     .select(PROFILE_SELECT_BASE)
                     .maybeSingle();
             }
@@ -12782,6 +12906,18 @@ function normalizeNickname(value) {
                 result = await client
                     .from('profiles')
                     .upsert(fallbackPayload, { onConflict: 'id' })
+                    .select(PROFILE_SELECT_WITH_VISIBILITY)
+                    .maybeSingle();
+            }
+            if (result.error && isProfileCleanupColumnError(result.error)) {
+                const minimalPayload = {
+                    id: profilePayload.id,
+                    nickname: profilePayload.nickname,
+                    description: profilePayload.description
+                };
+                result = await client
+                    .from('profiles')
+                    .upsert(minimalPayload, { onConflict: 'id' })
                     .select(PROFILE_SELECT_BASE)
                     .maybeSingle();
             }
@@ -15885,16 +16021,19 @@ function normalizeNickname(value) {
                 body.className = 'community-comment-body';
                 body.textContent = comment.body;
                 row.append(head, body);
+                const commentActions = document.createElement('div');
+                commentActions.className = 'community-comment-actions';
                 if (options.full && (isCommunityPostOwner(post) || isCommunityMod())) {
-                    row.appendChild(createCommunityActionButton(
+                    commentActions.appendChild(createCommunityActionButton(
                         isPinnedComment ? (strings.communityUnpinComment || 'Unpin') : (strings.communityPinComment || 'Pin'),
                         () => togglePinnedCommunityComment(post.id, comment.id),
                         isPinnedComment ? 'active' : ''
                     ));
                 }
                 if (isCommunityMod() || (getCommunityUser() && getCommunityUser().id === comment.author_id)) {
-                    row.appendChild(createCommunityActionButton(strings.communityDeletePost, () => deleteCommunityComment(post.id, comment.id), 'profile-admin-danger'));
+                    commentActions.appendChild(createCommunityActionButton(strings.communityDeletePost, () => deleteCommunityComment(post.id, comment.id), 'profile-admin-danger'));
                 }
+                if (commentActions.children.length) row.appendChild(commentActions);
                 wrap.appendChild(row);
             });
 
