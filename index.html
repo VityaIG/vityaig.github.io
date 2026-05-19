@@ -47,8 +47,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
-    <link rel="preload" href="sword.png?v=2" as="image">
-    <link rel="preload" href="whitewool.png?v=2" as="image">
+    <link rel="preload" href="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21.8/assets/minecraft/textures/item/iron_sword.png" as="image">
+    <link rel="preload" href="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21.8/assets/minecraft/textures/block/white_wool.png" as="image">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="module" src="https://cdn.r.js.netrender.ru/v1/minjs.mjs"></script>
@@ -87,9 +87,7 @@
         });
     </script>
     <script>
-        // Supabase Config
-        const SUPABASE_URL = 'https://cqwsbupsmybjcuejkwrz.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxd3NidXBzbXliamN1ZWprd3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MDU5MjAsImV4cCI6MjA5NDA4MTkyMH0.mQFmIlhgjFVKzimh6Gr9avgW0m_u4PQz6N-CYKs4Rg0';
+        // Local Configuration Only
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Fira+Code:wght@500;700&family=Inter:wght@300;400;500;600;700;800;900&family=Unbounded:wght@900&display=swap" rel="stylesheet">
     <style>
@@ -7146,7 +7144,7 @@
             width: 58px;
             height: 58px;
             border: 1px solid var(--btn-border);
-            background: url("whitewool.png?v=2") center / cover no-repeat;
+            background: url("https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21.8/assets/minecraft/textures/block/white_wool.png") center / cover no-repeat;
             image-rendering: pixelated;
             box-shadow: inset 0 0 0 1px color-mix(in srgb, #ffffff 20%, transparent), 0 0 16px color-mix(in srgb, var(--btn-hover-border) 18%, transparent);
         }
@@ -10291,7 +10289,7 @@
                 </button>
             </form>
             <div id="auth-status" class="auth-status" aria-live="polite"></div>
-            <p class="auth-hint" data-i18n="authHint">Your account is powered by Supabase Auth and stays signed in on this browser.</p>
+            <p class="auth-hint" data-i18n="authHint">Your account stays signed in on this browser.</p>
         </div>
         <div id="auth-signed-in" class="auth-block-hidden">
             <div class="auth-user-box mb-3">
@@ -10351,7 +10349,7 @@
                 </div>
                 <p class="changelog-entry-text" data-i18n="changelogRelease120Summary">A major WebBreak.ru systems update: Community, saves, banners, achievements, admin tools, account settings, chaos effects, and mobile polish all landed together.</p>
                 <div class="changelog-detail-list">
-                    <span class="changelog-detail" data-i18n="changelogRelease120DetailOne">Added Community posts with Supabase support, likes, dislikes, comments, reports, featured builds, profile search, pinned comments, and post-owner moderation controls.</span>
+                    <span class="changelog-detail" data-i18n="changelogRelease120DetailOne">Added Community posts, likes, dislikes, comments, reports, featured builds, profile search, pinned comments, and post-owner moderation controls.</span>
                     <span class="changelog-detail" data-i18n="changelogRelease120DetailTwo">Added My Library saves, build preview banners, resizable banner selection, Build Collections, copy-code tools, random community builds, and PC/Mobile creation badges.</span>
                     <span class="changelog-detail" data-i18n="changelogRelease120DetailThree">Added Achievements, achievement notifications with sound, profile levels, account cleanup settings, delete-account flow, visibility settings, and the Admin Panel for bans and reports.</span>
                     <span class="changelog-detail" data-i18n="changelogRelease120DetailFour">Upgraded Chaos tools with TNT physics, explosion particles and sounds, stronger black-hole absorption, slow motion toggle fixes, secret terminal behavior, and better built-in notifications.</span>
@@ -10379,7 +10377,7 @@
                 <p class="changelog-entry-text" data-i18n="changelogReleaseSummary">WebBreak.ru is now a full building playground with accounts, profile search, terminal tools, object editing, and stronger physics.</p>
                 <div class="changelog-detail-list">
                     <span class="changelog-detail" data-i18n="changelogReleaseDetailOne">Added Start Building, draggable Terminal, Build Mode, Edit Mode, object selection, and quick edit buttons.</span>
-                    <span class="changelog-detail" data-i18n="changelogReleaseDetailTwo">Added Supabase profiles, Account IDs, search pages, likes, dislikes, descriptions, refresh, and admin tools.</span>
+                    <span class="changelog-detail" data-i18n="changelogReleaseDetailTwo">Added Online profiles, Account IDs, search pages, likes, dislikes, descriptions, refresh, and admin tools.</span>
                     <span class="changelog-detail" data-i18n="changelogReleaseDetailThree">Rebuilt object physics on Matter.js, then kept mobile comfort, Midnight Theme, rotating tips, and register captcha.</span>
                 </div>
             </div>
@@ -10681,7 +10679,7 @@
             changelogLegacyBadge: "Base",
             changelogRelease120Label: "Update 1.2.0",
             changelogRelease120Summary: "A major WebBreak.ru systems update: Community, saves, banners, achievements, admin tools, account settings, chaos effects, and mobile polish all landed together.",
-            changelogRelease120DetailOne: "Added Community posts with Supabase support, likes, dislikes, comments, reports, featured builds, profile search, pinned comments, and post-owner moderation controls.",
+            changelogRelease120DetailOne: "Added Community posts, likes, dislikes, comments, reports, featured builds, profile search, pinned comments, and post-owner moderation controls.",
             changelogRelease120DetailTwo: "Added My Library saves, build preview banners, resizable banner selection, Build Collections, copy-code tools, random community builds, and PC/Mobile creation badges.",
             changelogRelease120DetailThree: "Added Achievements, achievement notifications with sound, profile levels, account cleanup settings, delete-account flow, visibility settings, and the Admin Panel for bans and reports.",
             changelogRelease120DetailFour: "Upgraded Chaos tools with TNT physics, explosion particles and sounds, stronger black-hole absorption, slow motion toggle fixes, secret terminal behavior, and better built-in notifications.",
@@ -10696,7 +10694,7 @@
             changelogFirstBuildLabel: "First Build 0.0.1",
             changelogReleaseSummary: "WebBreak.ru is now a full building playground with accounts, profile search, terminal tools, object editing, and stronger physics.",
             changelogReleaseDetailOne: "Added Start Building, draggable Terminal, Build Mode, Edit Mode, object selection, and quick edit buttons.",
-            changelogReleaseDetailTwo: "Added Supabase profiles, Account IDs, search pages, likes, dislikes, descriptions, refresh, and admin tools.",
+            changelogReleaseDetailTwo: "Added Online profiles, Account IDs, search pages, likes, dislikes, descriptions, refresh, and admin tools.",
             changelogReleaseDetailThree: "Rebuilt object physics on Matter.js, then kept mobile comfort, Midnight Theme, rotating tips, and register captcha.",
             changelogFirstBuildSummary: "The first build started as a playful entry screen with a question flow, captcha card, theme switcher, and language toggle.",
             firstPageMainTab: "Main",
@@ -10811,7 +10809,7 @@
             changelogLegacyBadge: "База",
             changelogRelease120Label: "Обновление 1.2.0",
             changelogRelease120Summary: "Большое системное обновление WebBreak.ru: вместе появились Community, сохранения, баннеры, достижения, админ-инструменты, настройки аккаунта, эффекты хаоса и мобильная полировка.",
-            changelogRelease120DetailOne: "Добавлены посты Community с Supabase, лайки, дизлайки, комментарии, репорты, лучшие постройки, поиск профилей, закрепление комментариев и модерация для автора поста.",
+            changelogRelease120DetailOne: "Добавлены посты Community, лайки, дизлайки, комментарии, репорты, лучшие постройки, поиск профилей, закрепление комментариев и модерация для автора поста.",
             changelogRelease120DetailTwo: "Добавлены сохранения в My Library, превью-баннеры построек, выбор и изменение рамки баннера, Build Collections, копирование кода, случайная постройка и бейджи PC/Mobile.",
             changelogRelease120DetailThree: "Добавлены достижения, отдельные уведомления о наградах со звуком, уровни профиля, автоочистка аккаунта, удаление аккаунта, видимость профиля и Admin Panel для банов и репортов.",
             changelogRelease120DetailFour: "Улучшены секретные инструменты: TNT с физикой, частицами и звуками, усиленная черная дыра, исправленное бесконечное замедление, скрытые команды и новые встроенные уведомления.",
@@ -10826,7 +10824,7 @@
             changelogFirstBuildLabel: "First Build 0.0.1",
             changelogReleaseSummary: "WebBreak.ru теперь полноценная строительная песочница с аккаунтами, поиском профилей, терминалом, редактором объектов и улучшенной физикой.",
             changelogReleaseDetailOne: "Добавлены Start Building, перемещаемый Terminal, Build Mode, Edit Mode, выделение объектов и быстрые кнопки редактирования.",
-            changelogReleaseDetailTwo: "Добавлены Supabase-профили, Account ID, страницы поиска, лайки, дизлайки, описания, обновление и админ-инструменты.",
+            changelogReleaseDetailTwo: "Добавлены онлайн-профили, Account ID, страницы поиска, лайки, дизлайки, описания, обновление и админ-инструменты.",
             changelogReleaseDetailThree: "Физика объектов перестроена на Matter.js, также сохранены удобство на телефоне, Midnight Theme, случайные советы и капча при регистрации.",
             changelogFirstBuildSummary: "Первый билд начинался как забавный входной экран с вопросом, карточкой капчи, переключателем темы и выбором языка.",
             terminalSimpleEditTitle: "Редактирование",
@@ -10871,7 +10869,7 @@
             terminalEditSelectedAll: "Выделено объектов:",
             terminalEditSelectionCleared: "Выделение снято.",
             terminalEditDuplicated: "Дублировано объектов:",
-            terminalEditReset: "Сброшен размер объектов:",
+            terminalEditReset: "Сброшен размер объ��ктов:",
             terminalEditDuplicateLimit: "Лимит объектов достигнут при дублировании. Создано:",
             terminalEditDeleted: "Удалено выбранных объектов:",
             terminalEditGrown: "Увеличен размер выбранных объектов:",
@@ -10890,8 +10888,8 @@
             profileSearchLoading: "Searching profiles, be patient...",
             profileSearchRefreshing: "Refreshing profiles, be patient...",
             profileSearchEmpty: "No profiles found.",
-            profileSearchTableMissing: "Profiles and votes need the Supabase SQL setup first.",
-            profileSearchConnectionError: "Could not connect to Supabase. Check internet or try again.",
+            profileSearchTableMissing: "Profiles and votes need the SQL setup first.",
+            profileSearchConnectionError: "Could not connect to service. Check internet or try again.",
             profileSearchSignIn: "Sign in to like or dislike profiles.",
             profileSearchSelfVote: "You cannot vote on your own profile.",
             profileSearchVoteSaved: "Vote saved.",
@@ -10936,8 +10934,8 @@
             profileSearchLoading: "Ищу профили...",
             profileSearchRefreshing: "Обновляю профили, подождите...",
             profileSearchEmpty: "Профили не найдены.",
-            profileSearchTableMissing: "Для профилей и оценок нужно сначала выполнить Supabase SQL.",
-            profileSearchConnectionError: "Could not connect to Supabase. Check internet or try again.",
+            profileSearchTableMissing: "Для профилей и оценок нужно сначала выполнить SQL.",
+            profileSearchConnectionError: "Не удалось связаться с сервером. Попробуйте ещё раз.",
             profileSearchSignIn: "Войдите в аккаунт, чтобы ставить лайк или дизлайк.",
             profileSearchSelfVote: "Нельзя оценивать свой профиль.",
             profileSearchVoteSaved: "Оценка сохранена.",
@@ -10998,7 +10996,7 @@
             authCaptchaNoInputPlaceholder: "Use the buttons",
             authLoginSubmit: "Log In",
             authRegisterSubmit: "Create Account",
-            authHint: "Your account is powered by Supabase Auth and stays signed in on this browser.",
+            authHint: "Your account stays signed in locally on this browser.",
             authSocialDivider: "OR",
             authGoogleButton: "Sign in with Google",
             authSignedInLabel: "Profile",
@@ -11020,14 +11018,14 @@
             authAccountIdPending: "#--",
             authReady: "Ready.",
             authWorking: "Working...",
-            authMissingClient: "Supabase client did not load. Check your internet connection.",
-            authConnectionError: "Could not reach Supabase. Check your internet, ad blocker, or SUPABASE_URL.",
-            authInvalidApiKey: "Supabase anon key is invalid. Paste the project's anon/public key into SUPABASE_ANON_KEY.",
+            authMissingClient: "Local state client did not load. Check your connection.",
+            authConnectionError: "Could not reach network. Check your internet or ad blocker.",
+            authInvalidApiKey: "Verification key is invalid.",
             authFillFields: "Enter email and password.",
             authPasswordShort: "Password must be at least 6 characters.",
             authLoginSuccess: "Logged in.",
             authRegisterSuccess: "Account created.",
-            authCheckEmail: "Account created. Check your email if confirmation is enabled.",
+            authCheckEmail: "Account created.",
             authSignOutSuccess: "Signed out.",
             authSignOutError: "Could not sign out.",
             authDeleteConfirm: "Delete this account? This removes your public profile and signs you out.",
@@ -11069,7 +11067,7 @@
             authCaptchaNoInputPlaceholder: "Используйте кнопки",
             authLoginSubmit: "Войти",
             authRegisterSubmit: "Создать аккаунт",
-            authHint: "Аккаунт работает через Supabase Auth и остаётся в этом браузере.",
+            authHint: "Аккаунт сохраняется локально в этом браузере.",
             authSignedInLabel: "Профиль",
             authSignOutButton: "Выйти",
             authDangerTitle: "Опасная зона",
@@ -11089,14 +11087,14 @@
             authAccountIdPending: "#--",
             authReady: "Готово.",
             authWorking: "Работаю...",
-            authMissingClient: "Supabase клиент не загрузился. Проверьте подключение к интернету.",
-            authConnectionError: "Не удалось подключиться к Supabase. Проверьте интернет, блокировщик или SUPABASE_URL.",
-            authInvalidApiKey: "Неверный anon key Supabase. Вставьте anon/public key проекта в SUPABASE_ANON_KEY.",
+            authMissingClient: "Клиент локального профиля не загрузился.",
+            authConnectionError: "Не удалось подключиться к подсистеме. Проверьте интернет или блокировщик.",
+            authInvalidApiKey: "Неверный ключ верификации.",
             authFillFields: "Введите почту и пароль.",
             authPasswordShort: "Пароль должен быть минимум 6 символов.",
             authLoginSuccess: "Вход выполнен.",
             authRegisterSuccess: "Аккаунт создан.",
-            authCheckEmail: "Аккаунт создан. Проверьте почту, если в Supabase включено подтверждение email.",
+            authCheckEmail: "Аккаунт создан.",
             authSignOutSuccess: "Вы вышли из аккаунта.",
             authSignOutError: "Не получилось выйти из аккаунта.",
             authDeleteConfirm: "Удалить этот аккаунт? Публичный профиль будет удалён, а вы выйдете.",
@@ -11474,7 +11472,7 @@
             communityProfilePostsEmpty: "This builder has not posted yet.",
             communityBackToProfiles: "Back to profiles",
             communityTableMissing: "Community tables are not ready yet, using local mode.",
-            communityConnectionError: "Could not connect to Supabase, using local mode.",
+            communityConnectionError: "Could not connect to server, using local mode.",
             communitySignInRequired: "Sign in to use community actions.",
             communityInvalidPost: "Title, description, and a valid exported build code are required.",
             communityPostCreated: "Post created.",
@@ -11578,7 +11576,7 @@
             communityProfilePostsEmpty: "\u042d\u0442\u043e\u0442 \u0431\u0438\u043b\u0434\u0435\u0440 \u043f\u043e\u043a\u0430 \u043d\u0435 \u043f\u0443\u0431\u043b\u0438\u043a\u043e\u0432\u0430\u043b \u043f\u043e\u0441\u0442\u044b.",
             communityBackToProfiles: "\u041a \u043f\u0440\u043e\u0444\u0438\u043b\u044f\u043c",
             communityTableMissing: "\u0422\u0430\u0431\u043b\u0438\u0446\u044b Community \u0435\u0449\u0451 \u043d\u0435 \u0433\u043e\u0442\u043e\u0432\u044b, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
-            communityConnectionError: "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 Supabase, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
+            communityConnectionError: "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f \u0441 \u0441\u0435\u0440\u0432\u0435\u0440\u043e\u043c, \u0432\u043a\u043b\u044e\u0447\u0451\u043d \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c.",
             communitySignInRequired: "\u0412\u043e\u0439\u0434\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0434\u0435\u0439\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c.",
             communityInvalidPost: "\u041d\u0443\u0436\u043d\u044b \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a, \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0438 \u0432\u0435\u0440\u043d\u044b\u0439 \u044d\u043a\u0441\u043f\u043e\u0440\u0442-\u043a\u043e\u0434.",
             communityPostCreated: "\u041f\u043e\u0441\u0442 \u0441\u043e\u0437\u0434\u0430\u043d.",
@@ -11717,7 +11715,7 @@
             notificationsRefresh: "Refresh",
             notificationsEmpty: "No notifications yet.",
             notificationsSignIn: "Sign in to see notifications.",
-            notificationsSetupNeeded: "Notifications table is not ready in Supabase.",
+            notificationsSetupNeeded: "Notifications are temporarily unavailable.",
             notificationLikeTitle: "{actor} liked your post.",
             notificationDislikeTitle: "{actor} disliked your post.",
             notificationCommentTitle: "{actor} commented on your post.",
@@ -11762,7 +11760,7 @@
             notificationsRefresh: "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c",
             notificationsEmpty: "\u041f\u043e\u043a\u0430 \u043d\u0435\u0442 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439.",
             notificationsSignIn: "\u0412\u043e\u0439\u0434\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u0438\u0434\u0435\u0442\u044c \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f.",
-            notificationsSetupNeeded: "\u0422\u0430\u0431\u043b\u0438\u0446\u0430 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u0439 \u0435\u0449\u0435 \u043d\u0435 \u0433\u043e\u0442\u043e\u0432\u0430 \u0432 Supabase.",
+            notificationsSetupNeeded: "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u043e \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b.",
             notificationLikeTitle: "{actor} \u043b\u0430\u0439\u043a\u043d\u0443\u043b \u0432\u0430\u0448 \u043f\u043e\u0441\u0442.",
             notificationDislikeTitle: "{actor} \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u043b \u0434\u0438\u0437\u043b\u0430\u0439\u043a \u0432\u0430\u0448\u0435\u043c\u0443 \u043f\u043e\u0441\u0442\u0443.",
             notificationCommentTitle: "{actor} \u043e\u0441\u0442\u0430\u0432\u0438\u043b \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439.",
@@ -11849,7 +11847,7 @@
             settingsDeleteAfterOneMonth: "1 month",
             settingsDeleteAfterSixMonths: "6 months",
             settingsDeleteAfterEightMonths: "8 months",
-            settingsDeleteAfterSavedLocal: "Cleanup setting saved locally. Run the Supabase SQL to sync it.",
+            settingsDeleteAfterSavedLocal: "Cleanup setting saved locally.",
             settingsDeleteAfterSynced: "Cleanup setting synced.",
             settingsDeleteAfterAdminProtected: "Admin accounts are protected from automatic cleanup.",
             settingsPushTitle: "Push Notifications",
@@ -11908,7 +11906,7 @@
             settingsDeleteAfterOneMonth: "1 \u043c\u0435\u0441\u044f\u0446",
             settingsDeleteAfterSixMonths: "6 \u043c\u0435\u0441\u044f\u0446\u0435\u0432",
             settingsDeleteAfterEightMonths: "8 \u043c\u0435\u0441\u044f\u0446\u0435\u0432",
-            settingsDeleteAfterSavedLocal: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0447\u0438\u0441\u0442\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0430 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e. \u0414\u043b\u044f \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0443\u0436\u0435\u043d SQL \u0432 Supabase.",
+            settingsDeleteAfterSavedLocal: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0447\u0438\u0441\u0442\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0430 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e.",
             settingsDeleteAfterSynced: "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0447\u0438\u0441\u0442\u043a\u0438 \u0441\u0438\u043d\u0445\u0440\u043e\u043d\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u0430.",
             settingsDeleteAfterAdminProtected: "\u0410\u0434\u043c\u0438\u043d-\u0430\u043a\u043a\u0430\u0443\u043d\u0442\u044b \u0437\u0430\u0449\u0438\u0449\u0435\u043d\u044b \u043e\u0442 \u0430\u0432\u0442\u043e\u0447\u0438\u0441\u0442\u043a\u0438.",
             settingsPushTitle: "Уведомления",
@@ -11932,7 +11930,7 @@
             settingsPromptsReset: "\u041f\u043e\u0434\u0441\u043a\u0430\u0437\u043a\u0438 \u0441\u0431\u0440\u043e\u0448\u0435\u043d\u044b.",
             settingsStorageSummary: "Сейвов: {saves} // Локальных постов: {posts} // Уведомления: {push}",
             settingsPushGranted: "разрешены",
-            settingsPushDenied: "заблокированы",
+            settingsPushDenied: "заблокиро��аны",
             settingsPushDefault: "не выбраны",
             settingsCustomThemeTitle: "\u0421\u0432\u043e\u044f \u0442\u0435\u043c\u0430",
             settingsCustomThemeBody: "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u0443\u044e \u043f\u0430\u043b\u0438\u0442\u0440\u0443 \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430.",
@@ -11974,7 +11972,7 @@
             adminReportsLoading: "Loading reports...",
             adminReportsEmpty: "No open reports.",
             adminPanelDenied: "Admin panel is only available for moderators.",
-            adminPanelSqlNeeded: "Admin tables need the Supabase SQL patch.",
+            adminPanelSqlNeeded: "Admin tables need the SQL patch.",
             adminBanSaved: "Account ban updated.",
             adminBanInvalid: "Enter a valid Account ID.",
             adminViewReportedPost: "View Post",
@@ -11986,7 +11984,7 @@
             communityReportPrompt: "Why are you reporting this post?",
             communityReportSent: "Report sent to admins.",
             communityReportInvalid: "Report reason cannot be empty.",
-            communityReportSetupNeeded: "Reports need the Supabase SQL patch.",
+            communityReportSetupNeeded: "Reports need the SQL patch.",
             communityBannedAction: "This account is banned from Community actions.",
             communityFollowBuilder: "Follow",
             communityUnfollowBuilder: "Following",
@@ -12038,7 +12036,7 @@
             adminReportsLoading: "\u0417\u0430\u0433\u0440\u0443\u0436\u0430\u044e \u0440\u0435\u043f\u043e\u0440\u0442\u044b...",
             adminReportsEmpty: "\u041e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u0440\u0435\u043f\u043e\u0440\u0442\u043e\u0432 \u043d\u0435\u0442.",
             adminPanelDenied: "\u0410\u0434\u043c\u0438\u043d-\u043f\u0430\u043d\u0435\u043b\u044c \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u043c\u043e\u0434\u0435\u0440\u0430\u0442\u043e\u0440\u0430\u043c.",
-            adminPanelSqlNeeded: "\u0414\u043b\u044f \u0430\u0434\u043c\u0438\u043d-\u0442\u0430\u0431\u043b\u0438\u0446 \u043d\u0443\u0436\u0435\u043d Supabase SQL-\u043f\u0430\u0442\u0447.",
+            adminPanelSqlNeeded: "\u0414\u043b\u044f \u0430\u0434\u043c\u0438\u043d-\u0442\u0430\u0431\u043b\u0438\u0446 \u043d\u0443\u0436\u0435\u043d SQL-\u043f\u0430\u0442\u0447.",
             adminBanSaved: "\u0411\u0430\u043d \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430 \u043e\u0431\u043d\u043e\u0432\u043b\u0451\u043d.",
             adminBanInvalid: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0432\u0435\u0440\u043d\u044b\u0439 Account ID.",
             adminViewReportedPost: "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u043e\u0441\u0442",
@@ -12050,7 +12048,7 @@
             communityReportPrompt: "\u041f\u043e\u0447\u0435\u043c\u0443 \u0432\u044b \u0436\u0430\u043b\u0443\u0435\u0442\u0435\u0441\u044c \u043d\u0430 \u044d\u0442\u043e\u0442 \u043f\u043e\u0441\u0442?",
             communityReportSent: "\u0416\u0430\u043b\u043e\u0431\u0430 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0430 \u0430\u0434\u043c\u0438\u043d\u0430\u043c.",
             communityReportInvalid: "\u041f\u0440\u0438\u0447\u0438\u043d\u0430 \u0436\u0430\u043b\u043e\u0431\u044b \u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u043f\u0443\u0441\u0442\u043e\u0439.",
-            communityReportSetupNeeded: "\u0414\u043b\u044f \u0440\u0435\u043f\u043e\u0440\u0442\u043e\u0432 \u043d\u0443\u0436\u0435\u043d Supabase SQL-\u043f\u0430\u0442\u0447.",
+            communityReportSetupNeeded: "\u0414\u043b\u044f \u0440\u0435\u043f\u043e\u0440\u0442\u043e\u0432 \u043d\u0443\u0436\u0435\u043d SQL-\u043f\u0430\u0442\u0447.",
             communityBannedAction: "\u042d\u0442\u043e\u0442 \u0430\u043a\u043a\u0430\u0443\u043d\u0442 \u0437\u0430\u0431\u0430\u043d\u0435\u043d \u0432 Community.",
             communityFollowBuilder: "\u041f\u043e\u0434\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f",
             communityUnfollowBuilder: "\u0412 \u043f\u043e\u0434\u043f\u0438\u0441\u043a\u0430\u0445",
@@ -12144,8 +12142,8 @@
         let featuredBuildCards = [];
         let featuredBuildsLoaded = false;
         let featuredBuildsLoading = false;
-        let supabaseClient = null;
-        let supabaseAuthConfigCheck = null;
+        let localClient = null;
+        let localAuthConfigCheck = null;
         let authSession = null;
         let authProfile = null;
         let authMode = 'login';
@@ -13153,24 +13151,12 @@
         }
 
         function getSupabaseClient() {
-            if (supabaseClient) return supabaseClient;
-            if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-                return null;
-            }
-
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true,
-                    detectSessionInUrl: true
-                }
-            });
-            return supabaseClient;
+            return null;
         }
 
         function resetSupabaseClient() {
-            supabaseClient = null;
-            supabaseAuthConfigCheck = null;
+            localClient = null;
+            localAuthConfigCheck = null;
         }
 
         function allowSupabaseReconnect() {
@@ -13225,44 +13211,7 @@
         }
 
         async function ensureSupabaseAuthReady() {
-            if (supabaseAuthConfigCheck) return supabaseAuthConfigCheck;
-            if (typeof fetch !== 'function') return true;
-
-            const baseUrl = String(SUPABASE_URL || '').replace(/\/+$/, '');
-            supabaseAuthConfigCheck = (async () => {
-                try {
-                    const response = await fetch(`${baseUrl}/auth/v1/settings`, {
-                        method: 'GET',
-                        headers: {
-                            apikey: SUPABASE_ANON_KEY,
-                            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
-                        },
-                        cache: 'no-store'
-                    });
-
-                    if (response.status === 401 || response.status === 403) {
-                        const body = await response.text().catch(() => '');
-                        throw createAuthDiagnosticError(
-                            'invalid-api-key',
-                            body || getAuthStrings().authInvalidApiKey
-                        );
-                    }
-                    if (!response.ok) {
-                        throw createAuthDiagnosticError('auth-config', `Supabase auth check failed (${response.status}).`);
-                    }
-                    return true;
-                } catch (error) {
-                    if (isSupabaseInvalidKeyError(error)) throw error;
-                    throw createAuthDiagnosticError('connection', error && error.message ? error.message : 'Failed to fetch');
-                }
-            })();
-
-            try {
-                return await supabaseAuthConfigCheck;
-            } catch (error) {
-                supabaseAuthConfigCheck = null;
-                throw error;
-            }
+            return true;
         }
 
         function isAuthUserMarkedDeleted(user) {
@@ -14511,36 +14460,8 @@ function normalizeNickname(value) {
                 }
             };
 
-        // Listen to Supabase Auth
-        // (Firebase Auth logic removed)
-        const supabase = getSupabaseClient();
-        if (supabase) {
-            supabase.auth.onAuthStateChange(async (_event, session) => {
-                if (session && session.user) {
-                    if (isAuthUserMarkedDeleted(session.user)) {
-                        await supabase.auth.signOut();
-                        setAuthStatus(getAuthStrings().authDeleteAlreadyDeleted, 'error');
-                        return;
-                    }
-                    const user = session.user;
-                    authSession = { user: { 
-                        id: user.id, 
-                        email: user.email,
-                        user_metadata: user.user_metadata
-                    }};
-                    updateAuthUi(authSession);
-                    loadAuthProfile(authSession.user);
-                    if (typeof profileSearchResults !== 'undefined' && profileSearchResults.length > 0) {
-                        searchProfiles();
-                    }
-                } else {
-                    authSession = null;
-                    authProfile = null;
-                    authProfileSource = 'none';
-                    updateAuthUi(null);
-                }
-            });
-        }
+        // Listen to Auth State
+        // (Supabase and Firebase connections disabled)
 
             if (!client) {
                 // We still have Firebase
@@ -20774,7 +20695,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
         const DEFAULT_SPAWN_OBJECT_LIMIT = 15;
         const INCREASED_SPAWN_OBJECT_LIMIT = 125;
         let spawnObjectLimit = DEFAULT_SPAWN_OBJECT_LIMIT;
-        const SPAWN_SWORD_TEXTURE = 'sword.png?v=2';
+        const SPAWN_SWORD_TEXTURE = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21.8/assets/minecraft/textures/item/iron_sword.png';
         const SPAWN_SWORD_SIZE = 96;
         const SPAWN_SWORD_LENGTH = Math.hypot(86, 86);
         const SPAWN_SWORD_HITBOXES = [
@@ -20813,7 +20734,7 @@ function resizeSelectedSpawnBodies(multiplier, strings, resultLabel) {
             pink: { base: '#d88198', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}pink_wool.png` },
             cyan: { base: '#169c9c', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}cyan_wool.png` },
             orange: { base: '#f9801d', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}orange_wool.png` },
-            white: { base: '#e9ecec', texture: 'whitewool.png' },
+            white: { base: '#e9ecec', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}white_wool.png` },
             black: { base: '#1d1d21', texture: `${SPAWN_BLOCK_TEXTURE_ROOT}black_wool.png` }
         };
         const SPAWN_BLOCK_COLOR_KEYS = Object.keys(SPAWN_BLOCK_COLORS).filter(colorKey => SPAWN_BLOCK_COLORS[colorKey].material !== 'glass');
@@ -21340,12 +21261,17 @@ function buildSwordElement() {
             return element;
         }
 
+        let cachedViewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
+        let cachedViewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
+        window.addEventListener('resize', () => {
+            cachedViewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
+            cachedViewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
+        });
+
         function isSpawnBodyNearViewport(body, padding = 420) {
             if (!body) return false;
-            const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 800;
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 600;
             const topLeft = screenToSpawnWorld(-padding, -padding);
-            const bottomRight = screenToSpawnWorld(viewportWidth + padding, viewportHeight + padding);
+            const bottomRight = screenToSpawnWorld(cachedViewportWidth + padding, cachedViewportHeight + padding);
             const halfWidth = (body.width || 0) / 2;
             const halfHeight = (body.height || 0) / 2;
             return body.x + halfWidth >= Math.min(topLeft.x, bottomRight.x)
@@ -27713,7 +27639,7 @@ function handleConfirm(action) {
                 padding-left: 0 !important;
             }
             body.building-mode {
-                --mobile-building-top-size: 46px;
+                --mobile-building-top-size: 42px;
                 --mobile-building-top-gap: 8px;
                 flex-direction: row !important;
                 padding: 0 !important;
@@ -27742,7 +27668,8 @@ function handleConfirm(action) {
                 padding-right: 12px !important;
                 padding-left: 12px !important;
             }
-            body.building-mode .build-back-btn {
+            body.building-mode .build-back-btn,
+            body.building-mode .build-back-btn.show {
                 top: max(10px, env(safe-area-inset-top)) !important;
                 left: max(10px, env(safe-area-inset-left)) !important;
                 width: var(--mobile-building-top-size) !important;
@@ -27801,6 +27728,7 @@ function handleConfirm(action) {
             }
             body.building-mode #lang-toggle-container,
             body.building-mode #theme-toggle-container,
+            body.building-mode #notifications-container,
             body.building-mode #account-btn,
             body.building-mode #terminal-btn {
                 transition: opacity 0.24s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease !important;
@@ -27832,6 +27760,7 @@ function handleConfirm(action) {
             }
             body.building-mode #theme-btn,
             body.building-mode #lang-btn,
+            body.building-mode #notifications-btn,
             body.building-mode #account-btn,
             body.building-mode #terminal-btn {
                 width: 42px !important;
@@ -27853,8 +27782,12 @@ function handleConfirm(action) {
                 order: 3 !important;
                 width: 42px !important;
             }
-            body.building-mode #terminal-btn {
+            body.building-mode #notifications-container {
                 order: 4 !important;
+                width: 42px !important;
+            }
+            body.building-mode #terminal-btn {
+                order: 5 !important;
             }
             body.building-mode #account-btn span,
             body.building-mode #terminal-btn span {
@@ -27881,9 +27814,19 @@ function handleConfirm(action) {
             }
             body.building-mode #theme-menu {
                 top: 50% !important;
+                left: auto !important;
                 right: calc(100% + 10px) !important;
                 width: min(174px, calc(100dvw - 74px)) !important;
                 transform: translateY(-50%) !important;
+            }
+            body.building-mode #notifications-panel {
+                position: absolute !important;
+                top: 50% !important;
+                left: auto !important;
+                right: calc(100% + 10px) !important;
+                width: min(320px, calc(100dvw - 74px)) !important;
+                transform: translateY(-50%) !important;
+                max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px) !important;
             }
             body.building-mode .spawn-edit-shortcut {
                 top: max(10px, env(safe-area-inset-top)) !important;
@@ -27912,6 +27855,7 @@ function handleConfirm(action) {
             }
             body.building-mode.mobile-controls-hidden #lang-toggle-container,
             body.building-mode.mobile-controls-hidden #theme-toggle-container,
+            body.building-mode.mobile-controls-hidden #notifications-container,
             body.building-mode.mobile-controls-hidden #account-btn,
             body.building-mode.mobile-controls-hidden #terminal-btn {
                 opacity: 0 !important;
@@ -28445,33 +28389,36 @@ function handleConfirm(action) {
 
         @media (max-width: 768px) {
             body.building-mode {
-                --mobile-building-top-y: max(8px, env(safe-area-inset-top));
+                --mobile-building-top-y: max(10px, env(safe-area-inset-top));
             }
 
             body.building-mode .build-back-btn,
+            body.building-mode .build-back-btn.show,
             body.building-mode .spawn-edit-shortcut,
             body.building-mode #build-timer,
             body.building-mode .mobile-building-controls-toggle {
                 top: var(--mobile-building-top-y) !important;
-                height: var(--mobile-building-top-size, 46px) !important;
-                min-height: var(--mobile-building-top-size, 46px) !important;
+                height: var(--mobile-building-top-size, 42px) !important;
+                min-height: var(--mobile-building-top-size, 42px) !important;
                 box-sizing: border-box !important;
                 align-items: center !important;
                 justify-content: center !important;
                 line-height: 1 !important;
             }
 
-            body.building-mode .build-back-btn {
+            body.building-mode .build-back-btn,
+            body.building-mode .build-back-btn.show {
                 display: inline-flex !important;
-                width: var(--mobile-building-top-size, 46px) !important;
-                min-width: var(--mobile-building-top-size, 46px) !important;
+                width: var(--mobile-building-top-size, 42px) !important;
+                min-width: var(--mobile-building-top-size, 42px) !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 transform: none !important;
                 translate: 0 0 !important;
             }
 
-            body.building-mode .build-back-btn svg {
+            body.building-mode .build-back-btn svg,
+            body.building-mode .build-back-btn.show svg {
                 width: 18px !important;
                 height: 18px !important;
                 margin: 0 !important;
